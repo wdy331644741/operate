@@ -1,0 +1,52 @@
+{include file="header.html"}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <form class="form-horizontal" id="form01">
+        <div class="top-title">
+            <h2 class="sub-header">修改资金管理配置</h2>
+            <div class="top-tools">
+                <button type="button" class="btn btn-primary" id="submit">保存</button>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        {if $list}
+        {foreach $list as $item}
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">{$item.remark}</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="名称" name="data[{$item.name}]" id="data[{$item.name}]" value="{$item.config_value}">
+            </div>
+        </div>
+        {/foreach}
+        {/if}
+    </form>
+</div>
+
+<script>
+    $("#effectiveEnd").datetimepicker({
+        language:'zh-CN',
+    });
+</script>
+<script>
+    $(function () {
+        //提交表单
+        $("#submit").click(function () {
+            $.ajax({
+                "url": "?c=config&a=upd",
+                'type': 'POST',
+                'data': $('#form01').serialize(),
+                'dataType': 'json',
+                'success': function (data) {
+                    if (data.error != 0) {
+                        layer.alert(data.message);
+                    }
+                    else {
+                        window.location.href = '?c=config&a=lst';
+                    }
+                }
+
+            });
+        });
+    });
+</script>
+{include file="footer.html"}

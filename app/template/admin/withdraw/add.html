@@ -1,0 +1,130 @@
+{include file="header.html"}
+<style type="text/css">
+    h2{ text-align: center;}
+</style>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+     <div class="top-title">
+            <h2 class="sub-header">添加提现信息</h2>
+            <div class="top-tools">
+              <a class="btn btn-default" href="?c=withdraw&a=index">返回</a>
+            </div>
+          </div>
+    <div id="myTabContent" class="tab-content" style="margin-top:10px">
+
+        <!-- start 线下合同 -->
+        <div class="tab-pane fade in active" id="no2">
+
+            <form class="form-horizontal"   method="post" >
+                <h2>提现信息</h2>
+                <!--红包的基本信息-->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">用户id：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="user_id" value="" id="user_id" class="form-control" placeholder="用户id">
+                    </div>
+                </div>
+                <div class="form-group userAmount" style="display: none;">
+                    <label class="col-sm-2 control-label">用户总金额：</label>
+                    <div class="col-sm-7 userAmountMoney">
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">原始提现金额：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="source_amount" value="" class="form-control" placeholder="原始提现金额">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">实际到账金额：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="amount" value="" class="form-control" placeholder="实际到账金额">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fee" class="col-sm-2 control-label">手续费：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="fee" id="fee" value="" class="form-control" placeholder="手续费">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="remake" class="col-sm-2 control-label">备注：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="remake" id="remake" value="" class="form-control" placeholder="备注">
+                    </div>
+                </div>
+                <!--用户的基本信息 end-->
+                <div class="form-group">
+                    <div class="col-sm-7">
+                        <button type="button" class="btn btn-primary add_withdraw pull-right" >提交</button>
+                    </div>
+                </div>
+
+
+            </form>
+
+        </div>
+        <!-- end 线下合同 -->
+    </div>
+    <hr/>
+</div>
+<!-- 获取用户总的金额数  -->
+<script>
+    $("#user_id").mouseout(function(){
+        var user_id = $('input[name=user_id]').val();
+        $.post("?c=withdraw&a=getAmountByuserId",{
+            'uid':user_id,
+        },function(response){
+            console.log(response);
+            if(response.error==100) {
+                throwExc(response.msg);
+                return false;
+            }else if(response.error==200) {
+                $('.userAmountMoney').html('<span> '+ response.msg +' </span>');
+                $('.userAmount').css('display','block');
+            }
+           },"json");
+    })
+</script>
+<script>
+    $(".add_withdraw").click(function(){
+        var user_id = $('input[name=user_id]').val();
+        var source_amount = $('input[name=source_amount]').val();
+        var amount = $('input[name=amount]').val();
+        var fee = $('input[name=fee]').val();
+        var remake = $('input[name=remake]').val();
+        var totalAmount = $('.userAmount span').html();
+        if(user_id == '')
+        {
+            throwExc('用户id必须填写');
+            return false;
+        }
+        if(parseInt(source_amount) > parseInt(totalAmount))
+        {
+            throwExc('提现金额大于总金额');
+            return false;
+        }
+
+        $.post("?c=withdraw&a=add",{
+            'user_id':user_id,
+            'source_amount':source_amount,
+            'amount':amount,
+            'fee':fee,
+            'remake':remake,
+        },function( response ){
+            console.log(response);
+            if(response.error==100) {
+                throwExc(response.msg);
+                return false;
+            }else if(response.error==200) {
+                showSucc(response.msg);
+                setTimeout("load()",1000);
+            }
+        },"json");
+    });
+
+    function load(){
+        window.location.href="?c=withdraw&a=index";
+    }
+</script>
+{include file="footer.html"}

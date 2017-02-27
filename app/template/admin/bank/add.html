@@ -1,0 +1,110 @@
+{include file="header.html"}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <form class="form-horizontal" id="form01" action="?c=bank&a=add" method="post" enctype="multipart/form-data">
+        <div class="top-title">
+            <h2 class="sub-header">银行卡信息</h2>
+            <div class="top-tools">
+                <button type="button" class="btn btn-primary add_bank">保存</button>
+                <a class="btn btn-default" href="?c=bank&a=index">返回</a>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">银行名</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="银行名" name="bank_name" value="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">银行代码</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="银行代码" name="bank_code" value="">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">pc限额信息</span><i>*</i></label>
+            <div class="col-sm-7">
+            <script type="text/plain" id="myEditor" style="width:750px;height:240px;">
+                    <p>增加pc限额信息</p>
+                </script>
+            </div>
+        </div>
+        {if $smarty.get.type eq '1'}
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">网银显示</span><i>*</i></label>
+            <div class="radio">
+                <label>
+                    <input type="radio"　 name="is_pc_display" value="1" >显示&nbsp;&nbsp;&nbsp;
+                    <input type="radio"  name="is_pc_display" value="2" >不显示
+                </label>
+            </div>
+        </div>
+        {else}
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">快捷是否显示</span><i>*</i></label>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="is_app_display" value="1" >显示&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="is_app_display" value="2" >不显示
+                </label>
+            </div>
+        </div>
+        {/if}
+        <hr/>
+        <div class="table-responsive">
+        </div>
+    </form>
+</div>
+{include file="footer.html"}
+
+<script>
+
+    $(".add_bank").click(function(){
+        var bank_name = $('input[name=bank_name]').val();
+        var bank_code = $('input[name=bank_code]').val();
+        var is_pc_display=$('input[name=is_pc_display]:checked').val();
+        var is_app_display=$('input[name=is_app_display]:checked').val();
+        var pc_limit = UE.getEditor('myEditor').getContent();
+      /*  if(is_pc_display =='undefined')
+        {
+            is_pc_display = '0';
+        }
+        if(is_app_display =='undefined')
+        {
+            is_app_display = '0';
+        }*/
+        if($.trim(bank_name) == '')
+        {
+            throwExc('银行名字必须填写');
+            return false;
+        }
+        if($.trim(bank_code) == '')
+        {
+            throwExc('银行代码必须填写');
+            return false;
+        }
+        $.post("?c=bank&a=add",{
+            'bank_name':bank_name,
+            'bank_code':bank_code,
+            'is_pc_display':is_pc_display,
+            'is_app_display':is_app_display,
+            'pc_limit':pc_limit,
+        },function( response ){
+            console.log(response);
+            if(response.error==100) {
+                throwExc(response.msg);
+                return false;
+            }else if(response.error==200) {
+                showSucc(response.msg);
+                setTimeout("load()",1000);
+            }
+        },"json");
+    });
+
+    function load(){
+        window.location.href="?c=bank&a=index";
+    }
+    var um = UE.getEditor('myEditor');
+</script>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="accounts/jquery.min.js"></script>
+</head>
+<body>
+
+<div id="registerForm" class="login-form">
+    <div class="registerFormDiv">
+        <ul class="registerForm">
+            <li class="clearfix">
+                <label>手机号码 ：</label>
+                <input id="registerMobile" type="text" name="identifier" placeholder="请输入手机号" autocomplete="off" title="请输入手机号" class="placeholderInput checkMobile"><input name="MlGb" type="hidden">
+            </li>
+            <br/>
+
+            <li class="clearfix">
+                <label>图片验证 ：</label>
+                <input type="hidden" name="captcha_0" autocomplete="off">
+                <input id="registerCode" type="text" name="captcha" placeholder="请输入计算结果" autocomplete="off" title="请输入验证码" value="" class="w115 placeholderInput checkCode">
+                <br/>
+                <img alt="captcha" id="registerRefresh" class="captchaImg fl">
+            </li>
+
+            <br/>
+            <li id="passWordInput" class="pwdLi clearfix">
+                <label>输入密码 ：</label>
+                <input type="password" name="password" placeholder="请输入密码" autocomplete="off" title="请输入密码">
+            </li>
+            <br/>
+            <li class="SMELI clearfix">
+                <label>验证码 ：</label>
+                <input type="hidden" name="captcha_1" autocomplete="off">
+                <input id="registerSMSCode" type="text" name="validate_code" placeholder="请输入验证码">
+                <button type="button" class="getCodeBtn buttonGray">获取验证码</button>
+            </li>
+            <br/>
+
+            <li style="display:none" class="voice">没有收到验证码？请尝试<a href="javascript:void(0)" class="voiceValidate">语音验证</a>
+
+            </li>
+            <br/>
+            <li class="clearfix">
+                <label>邀请码 ：</label>
+                <input id="invitecode" type="text" name="invitecode" placeholder="邀请码（选填）" autocomplete="off" title="邀请码（选填）" class="placeholderInput">
+                <div class="pop">如果没有邀请码请忽略</div>
+            </li>
+        </ul>
+        <div class="loginError">请输入短信验证码</div>
+
+        <div class="form_bottom">
+            <div class="checkboxDiv">
+                <label>
+                    <input id="agreement" type="checkbox" name="" checked="checked" class="checkboxStyle"><a href="/agreement/" target="_blank">我已阅读并同意《网利宝注册协议》</a>
+                </label>
+            </div>
+            <br/>
+            <div class="form_submit clearfix">
+                <button id="registerSubmit" class="submitFormStyle">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+$(document).ready(function(){
+    getCaptcha();
+
+    $("#registerRefresh").on('click', function(){
+        getCaptcha();
+    });
+
+    $("#registerSubmit").on('click', function(){
+        var identifier = $("#registerMobile").val(),
+            captcha_0 = $("input[name='captcha_0']").val(),
+            captcha  = $("input[name='captcha']").val(),
+            password = $("input[name='password']").val(),
+            captcha_1 = $("input[name='captcha_1']").val(),
+            validate_code = $("#registerSMSCode").val(),
+            invitecode = $("#invitecode").val();
+
+        $.post('accounts.php?c=register&a=api_register',{
+            identifier: identifier,
+                    captcha_0: captcha_0,
+                     captcha : captcha,
+                    captcha_1: captcha_1,
+                    password: password,
+                    validate_code: validate_code,
+                    invitecode: invitecode
+        },function(data){
+            console.log(data);
+
+        },'json');
+
+    })
+
+    $(".getCodeBtn").on('click',function(){
+        $.get('accounts.php?c=register&a=refreshSmsCode', function(data){
+            $("input[name='captcha_1']").val(data.key),
+            alert(data.value);
+        },'json')
+    });
+});
+
+    function getCaptcha(){
+        $.get('accounts.php?c=register&a=refreshCaptcha',function(data){
+            $("input[name='captcha_0']").val(data.key);
+            $("#registerCode").val(data.code);
+            $("#registerRefresh").attr('src', data.imgSrc);
+        },'json');
+    }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{include file="header.html"}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="top-title">
+        <h2 class="sub-header">发放奖励列表&nbsp;&nbsp;<small>共{if isset($total)}{$total}{/if}条数据</small></h2>
+        <div class="top-tools">
+            <a href="?c=award&a=add"class="btn btn-primary">增加发放奖品</a>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th >id</th>
+                <th >用户信息</th>
+                <th >奖品类型</th>
+                <th >奖品id</th>
+                <th >来源名称</th>
+                <th >发送数量</th>
+                <th >发送状态</th>
+                <th >创建时间</th>
+                <th >更新时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if isset($list)}
+            {foreach $list as $item}
+            <tr>
+                <td>{$item.id}</td>
+                <td>{$item.user}</td>
+                <td>{if $item.award_type ==1}体验金{else}加息劵{/if}</td>
+                <td>{$item.award_id}</td>
+                <td>{$item.remark}</td>
+                <td>{$item.send_count}</td>
+                <td>{if $item.send_status ==0}发送中{else}发放成功{/if}</td>
+                <td>{$item.create_time}</td>
+                <td>{$item.update_time}</td>
+              </tr>
+            {/foreach}
+            {/if}
+            </tbody>
+        </table>
+    </div>
+    <div>{if isset($pageNum)}{$pageNum}{/if}</div>
+    {include file="footer.html"}

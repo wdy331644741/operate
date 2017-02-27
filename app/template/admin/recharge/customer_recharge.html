@@ -1,0 +1,102 @@
+{include file="header.html"}
+<style>
+    .search_order{
+        cursor:pointer;
+    }
+    #divObj{
+        position:fixed;
+        top:50%;
+        left:50%;
+        display:none;
+        z-index:999;
+        width:620px;
+        height:200px;
+        margin-top:-100px;
+        margin-left:-210px;
+        background: #fff;
+        border:1px solid #ccc;
+        border-radius:5px;
+        box-shadow: 1px 1px 5px #fff;
+    }
+</style>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="top-title">
+        <h2 class="sub-header">充值&nbsp;&nbsp;<small>{if isset($total)}共{$total}条数据{/if}{if isset($amount) && (isset($smarty.get.status)) &&  ($smarty.get.status neq '1' && $smarty.get.status neq '')}金额共{$amount}元{/if}</small></h2>
+    </div>
+    <div style="clear:both"></div>
+    <form name="form1" class="form-inline" method="post" action="?c=recharge&a=customer_recharge">
+        <div class="form-group">
+            <div class="form-group">
+                <select id="type" name="type" class="form-control">
+                    <option {if $sessionObj->get('userData.admin_user.serach.queryType')=='phone_num'}selected{/if} value="phone_num">按手机号查询</option>
+                    <option {if $sessionObj->get('userData.admin_user.serach.queryType')=='user_name'}selected{/if} value="user_name">按姓名查询</option>
+                    <option {if $sessionObj->get('userData.admin_user.serach.queryType')=='id_number'}selected{/if} value="id_number">按身份证号查询</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{if $sessionObj->get('userData.admin_user.serach.queryValue')}{$sessionObj->get('userData.admin_user.serach.queryValue')}{/if}" name="phone">
+            </div>
+            <div class="form-group">
+                开始时间:<input type="text" class="form-control" value="{if $sessionObj->get('userData.admin_user.serach.startTime')}{$sessionObj->get('userData.admin_user.serach.startTime')}{/if}" name="start_time" id="datepicker">
+            </div>
+            <div class="form-group">
+                结束时间:<input type="text" class="form-control" value="{if $sessionObj->get('userData.admin_user.serach.endTime')}{$sessionObj->get('userData.admin_user.serach.endTime')}{/if}" name="end_time" id="datepicker1">
+            </div>
+            <button type="submit" class="btn btn-default" onClick="form1.submit();">查询</button>
+        </div>
+    </form>
+    <ul id="myTab" class="nav nav-tabs">
+        <li active="form01"class="{if $smarty.get.status eq '1' or $smarty.get.status eq ''}active{/if}"><a href="?c=recharge&a=customer_recharge&status=1">
+            全部</a>
+        </li>
+        <li active="form02"class="{if $smarty.get.status eq '2'}active{/if}"><a href="?c=recharge&a=customer_recharge&status=2">
+            成功</a>
+        </li>
+        <li active="form03"class="{if $smarty.get.status eq '3'}active{/if}"><a href="?c=recharge&a=customer_recharge&status=3">
+            处理中</a>
+        </li>
+        <li active="form04"class="{if $smarty.get.status eq '4'}active{/if}"><a href="?c=recharge&a=customer_recharge&status=4">
+            失败</a>
+        </li>
+    </ul>
+   <!-- <script>
+        $("#datepicker").datetimepicker();
+        $("#datepicker1").datetimepicker();
+    </script>-->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th >id</th>
+                <th >用户ID</th>
+                <th >金额</th>
+                <th >银行卡号</th>
+                <th >支付渠道订单</th>
+                <th >备注</th>
+                <th >状态</th>
+                <th >操作时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if $lists}
+            {foreach $lists as $item}
+            <tr class="search_order">
+                <td>{$item.id}</td>
+                <td>{$item.user_id}</td>
+                <td>{$item.amount}</td>
+                <td>{$item.id_number}</td>
+                <td class="orderid">{$item.order_id}</td>
+                <td>{$item.remake}</td>
+                <td>{if $item.status=='200'}成功{elseif $item.status=='400'}失败{else}处理中{/if}</td>
+                <td>{if $item.update_time}{$item.update_time}{else}{$item.create_time}{/if}</td>
+                <th><a class="btn btn-primary btn-xs szpq" href="?c=recharge&a=detail&id={$item.id}">详情</a></th>
+            </tr>
+            {/foreach}
+            {/if}
+            </tbody>
+        </table>
+
+    </div>
+    <div>{if isset($pageNum)}{$pageNum}{/if}</div>
+    {include file="footer.html"}

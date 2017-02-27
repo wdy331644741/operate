@@ -1,0 +1,88 @@
+{include file="header.html"}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="top-title">
+        <h2 class="sub-header">用户银行卡查询</h2><!--&nbsp;&nbsp;<small>共{$total}条数据</small>-->
+    </div>
+    <div style="clear:both"></div>
+    <form name="form1" class="form-inline" method="post" action="?c=banksearch&a=index">
+        <div class="form-group">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="输入银行卡号" value="{if isset($search['bank_card'])}{$search['bank_card']}{/if}" name="bank_card">
+            </div>
+            <div class="form-group">
+                <select id="channel" name="channel" class="form-control">
+                    <option {if isset($search["channel"]) && $search["channel"]==''}selected{/if}  value="0">选择支付渠道</option>
+                    <option {if isset($search["channel"]) && $search["channel"]=='BAOFOO'}selected{/if}  value="BAOFOO">宝付</option>
+                    <option {if isset($search["channel"]) && $search["channel"]=='YEEPAY'}selected{/if}  value="YEEPAY">易宝</option>
+                    <option {if isset($search["channel"]) && $search["channel"]=='KUAIQIAN'}selected{/if} value="KUAIQIAN">快钱</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-default" onClick="form1.submit();">查询</button>
+        </div>
+    </form>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th >用户id</th>
+                <th >用户姓名</th>
+                <th >银行名</th>
+                <th >银行卡号</th>
+                <th >渠道</th>
+                <th >状态</th>
+                <th >返回信息</th>
+                <th >本地bind_id</th>
+                <th >渠道方bind_id</th>
+                <th >操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if isset($lists)}
+            {if $lists}
+            <tr>
+                <td>{$lists.user_id}</td>
+                <td>{$lists.realname}</td>
+                <td>{$lists.bankname}</td>
+                <td class="card">{$lists.cardno}</td>
+                <td class="channel">{$lists.channel}</td>
+                <td>{if $lists.status==1}已绑定{else if $lists.status==2}解除绑定{else}未绑定{/if}</td>
+                <td>{if isset($lists.mess)}{$lists.mess}{else}{if $lists.bind_id==$lists.wl_bind_id}bind_id一致{else}bind_id不一致{/if}{/if}</td>
+                <td class="wl_bind_id">{if isset($lists.wl_bind_id)}{$lists.wl_bind_id}{/if}</td>
+                <td class="bind_id">{if isset($lists.bind_id)}{$lists.bind_id}{/if}</td>
+                <td>{if isset($lists.wl_bind_id) && isset($lists.bind_id)}{if $lists.wl_bind_id!=$lists.bind_id}<span class="btn btn-primary btn-xs updateBind">同步bind_id</span>{/if}{/if}</td>
+            </tr>
+            {/if}
+            {/if}
+            </tbody>
+        </table>
+    </div>
+    </div>
+    {include file="footer.html"}
+    <script>
+        $('.updateBind').click(function(){
+            var wl_bind_id = $('.wl_bind_id').html();
+            var bind_id = $('.bind_id').html();
+            var card = $('.card').html();
+            var channel= $('.channel').html();
+            $.ajax({
+                'type':'post',
+                'url':'?c=banksearch&a=update',
+                'data':{
+                    'wl_bind_id':wl_bind_id,'bind_id':bind_id,'card':card,'channel':channel
+                },
+                success:function(response){
+                    response = $.parseJSON(response);
+                    if(response.error==100) {
+                        throwExc(response.msg);
+                        return false;
+                    }else if(response.error==200) {
+                        showSucc(response.msg);
+                        setTimeout("load()",1000);
+                    }
+                }
+            })
+        });
+        function load(){
+            window.location.href('?c=banksearch&a=index');
+        }
+    </script>

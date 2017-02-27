@@ -1,0 +1,89 @@
+
+.wlbitem{
+	display: inline-block;
+	color: white;
+	margin-bottom: 0.5em;
+}
+
+.wlbedititem{
+	display: block;
+}
+.wlbitem:after{
+	content:attr(data-item);
+	background-color: gray;
+	border:1px solid silver;
+	padding:0.2em 1em;
+	display: inline-block;
+	border-radius: 3px;
+}
+
+.wlbtable:after{
+	content:attr(data-item);
+	background-color: gray;
+	border:1px solid silver;
+	padding:2em;
+	text-align: center;
+	display: block;
+	border-radius: 3px;
+	color: white;
+}
+
+.agreementeditbox{
+	position: relative;
+}
+.wlbagreementeditor
+{
+	position: absolute;
+	/*left:0;*/
+	top:0;
+	right: 0;
+	/*height: 300px;*/
+	visibility:hidden;
+	overflow: auto;
+	/*float: left;*/
+
+}
+
+.editortoolbox
+{
+	position: absolute;
+	right: 0;
+	left:700px;
+	/*width: 100px;*/
+	top:0;
+	right: 0;
+	background-color: #f0f0ee;
+	border: 1px solid #ccc;
+	display: inline-block;
+	font-size: small;
+	padding: 1em;
+	overflow: auto;
+	height: 400px;
+	/*float:left;*/
+}
+
+#agreementeditorbox{
+	position: relative;
+}
+
+#agreement_edit_toolbox{
+	position: absolute;
+	display: inline-block;
+	right: 0;
+	/*left:700px;*/
+	/*width: 100px;*/
+	top:0;
+	right: 0;
+	background-color: #f0f0ee;
+	border: 1px solid #ccc;
+	display: inline-block;
+	font-size: small;
+	padding: 1em;
+	overflow: auto;
+	/*height: 400px;*/
+}
+
+#agreement_content_box
+{
+	position: relative;
+}

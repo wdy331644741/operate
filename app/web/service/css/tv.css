@@ -1,0 +1,37 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body {
+    font-size: 14px;
+    background-color: #f0f4f7;
+}
+.tv {
+    padding: 4% 0;
+}
+.number {
+    width: 90%;
+    text-align: right;
+    line-height: 100px;
+    font-size: 25px;
+    color: #fff;
+    background-color: red;
+    margin: 0px auto;
+
+    -moz-border-radius: 0.3em;
+    -webkit-border-radius: 0.3em;
+    border-radius: 0.3em;
+    padding-right: 20px;
+}
+.tv-row {
+    margin-bottom: 80px;
+}
+.desc {
+    width: 95%;
+    text-align: right;
+    font-size: 1.8em;
+}
+.disp {
+    display: none;
+}

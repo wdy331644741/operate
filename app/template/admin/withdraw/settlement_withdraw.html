@@ -1,0 +1,76 @@
+{include file="header.html"}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="top-title">
+        <h2 class="sub-header">结算核对提现&nbsp;&nbsp;<small><br/>{if isset($total)}总提现笔数：{$total}笔<br />{/if}{if isset($amount)}总提现金额:{$amount}元{/if}</small></h2>
+    </div>
+    <div style="clear:both"></div>
+    <form name="form1" class="form-inline" method="post" action="?c=withdraw&a=settlement_withdraw">
+        <div class="form-group">
+            <div class="form-group">
+                取现状态:
+                <select id="status" name="status" class="form-control">
+                    <option {if $sessionObj->get('userData.admin_user.serach.status')=='1'}selected{/if}  value="1">全部</option>
+                    <option {if $sessionObj->get('userData.admin_user.serach.status')=='2'}selected{/if} value="2">取现成功</option>
+                    <option {if $sessionObj->get('userData.admin_user.serach.status')=='3'}selected{/if}  value="3">取现处理中</option>
+                    <option {if $sessionObj->get('userData.admin_user.serach.status')=='4'}selected{/if}  value="4">取现失败</option>
+                </select>
+            </div>
+            <div class="form-group">
+                开始时间:<input type="text" class="form-control" value="{if $sessionObj->get('userData.admin_user.serach.startTime')}{$sessionObj->get('userData.admin_user.serach.startTime')}{/if}" name="start_time" id="datepicker2">
+            </div>
+            <div class="form-group">
+                结束时间:<input type="text" class="form-control" value="{if $sessionObj->get('userData.admin_user.serach.endTime')}{$sessionObj->get('userData.admin_user.serach.endTime')}{/if}" name="end_time" id="datepicker1">
+            </div>
+            <button type="submit" class="btn btn-default" onClick="form1.submit();">查询</button>
+        </div>
+    </form>
+    <script>
+       $('#datepicker2').datetimepicker({
+           language: 'zh-CN',
+           format: 'yyyy-mm-dd hh:ii:ss'
+       });
+        $("#datepicker1").datetimepicker( {
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd hh:ii:ss'
+        });
+    </script>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th >id</th>
+                <th >用户ID</th>
+                <th >原始提现金额</th>
+                <th >手续费</th>
+                <th >管理手续费</th>
+                <th >实际到账金额</th>
+                <th >银行卡号</th>
+                <th >提现平台</th>
+                <th >状态</th>
+                <th >创建时间</th>
+                <th >更新时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if isset($lists)}
+            {foreach $lists as $item}
+            <tr>
+                <td>{$item.id}</td>
+                <td>{$item.user_id}</td>
+                <td>{$item.source_amount}</td>
+                <td>{$item.fee}</td>
+                <td>{$item.management_fee}</td>
+                <td>{$item.amount}</td>
+                <td>{$item.bank_account}</td>
+                <td>{$item.from_platform}</td>
+                <td>{if $item.status==200}成功{elseif $item.status==100}处理中{else}失败{/if}</td>
+                <td>{$item.create_time}</td>
+                <td>{$item.update_time}</td>
+            </tr>
+            {/foreach}
+            {/if}
+            </tbody>
+        </table>
+    </div>
+    <div>{if isset($pageNum)}{$pageNum}{/if}</div>
+    {include file="footer.html"}

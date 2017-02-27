@@ -1,0 +1,119 @@
+{include file="header.html"}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+             <div class="top-title">
+            <h2 class="sub-header">增加角色</h2>
+            <div class="top-tools">
+              <a class="btn btn-default" href="?c=admin_role">返回</a>
+            </div>
+          </div>
+          <div id="myTabContent" class="tab-content" style="margin-top:10px">
+
+             <!-- start 线下合同 -->
+             <div class="tab-pane fade in active" id="no2">
+           
+              <form class="form-horizontal"   method="post" >
+			        
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">角色名称：</label>
+                  <div class="col-sm-7">
+                    <input type="text" name="name" value="" class="form-control" placeholder="角色名称">
+                  </div>
+                </div>
+                  <div class="form-group">
+                  <label  class="col-sm-2 control-label">角色描述：</label>
+                  <div class="col-sm-7">
+                      <textarea class="form-control col-sm-6" rows="5" id="remark" name="remark"></textarea>
+                  </div>
+                </div>
+
+                
+                  <div class="form-group">
+                      <label  for="inputSelect" class="col-sm-2 control-label">状态：</label>
+                      <div class="col-sm-7">
+                          <div class="input-group">
+                              <select class="form-control" name="status" id="status">
+                                  {foreach from=$status key=k item=val}
+                                  <option value="{$k}" >{$val}</option>
+                                  {/foreach}
+                              </select>
+                      <span class="input-group-btn">
+                        <button class="btn btn-default addbank" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                      </span>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <div class="col-sm-7">
+                          <button type="button" class="btn btn-primary add_company pull-right" >提交</button>
+                      </div>
+
+                  </div>
+
+
+              </form>
+
+             </div>
+             <!-- end 线下合同 -->
+
+  
+          </div>
+          <hr/>
+
+
+
+
+        </div>
+
+
+
+<script>
+
+var saving = false;
+$('#form02').submit(function()
+{
+  saving = true;
+});
+
+window.onbeforeunload = function() { 
+  if (saving)
+    return;
+  if(is_form_changed()) { 
+    return "您的修改内容还没有保存，您确定离开吗？"; 
+  } 
+} 
+
+</script>
+
+<script>
+
+$(".add_company").click(function(){
+   var name=$('input[name=name]').val();
+   var remark=$('#remark').val();
+   var status=$('#status').val();
+   if($.trim(name)==''){
+       throwExc('角色名称必须填写');
+       return false;
+   }
+    $.post("?c=admin_role&a=add",{
+              'status':status,
+              'remark':remark,
+              'name':name
+          },function( response ){
+              if(response.error==100) {
+                  throwExc(response.msg);
+                  return false;
+              }else if(response.error==200) {
+                  showSucc(response.msg);
+                  setTimeout("load()",1000);
+              }
+          },"json");
+});
+
+function load(){
+    window.location.href="?c=admin_role&a=index";
+}
+
+
+</script>
+{include file="footer.html"}

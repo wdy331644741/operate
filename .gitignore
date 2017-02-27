@@ -1,0 +1,11 @@
+#IDE
+._.DS_Store
+.DS_Store
+.idea/
+app/cache/smarty/cache/*
+app/logs/*
+system/
+vendor/
+app/web/*.php
+app/conf/config.php
+

@@ -1,0 +1,46 @@
+{include file="header.html"}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="top-title">
+        <h2 class="sub-header">用户资产</h2><!--&nbsp;&nbsp;<small>共{$total}条数据</small>-->
+    </div>
+    <div style="clear:both"></div>
+    {include file="search.html"}
+   <!-- <ul id="myTab" class="nav nav-tabs">
+        <li active="form01"class="active"><a href="?c=fs&a=index&type=1">
+            正常文件列表</a>
+        </li>
+        <li active="form02"class="active"><a href="?c=fs&a=index&type=2">
+            删除文件列表</a>
+        </li>
+    </ul>-->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th >用户id</th>
+                <th >用户总资产</th>
+                <th >可用余额</th>
+                <th >待收本金</th>
+                <th >待收利息</th>
+                <th >提现中金额</th>
+                <th >投资中金额</th>
+                <th >代收本息</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if $lists}
+            <tr>
+                <td>{$lists.user_id}</td>
+                <td>{$lists.total_amount}</td>
+                <td>{$lists.avaliable_amount}</td>
+                <td>{if $lists.unprincipal_amount == null}0.00{else}{$lists.unprincipal_amount}{/if}</td>
+                <td>{if $lists.uninterest_amount == null}0.00{else}{$lists.uninterest_amount}{/if}</td>
+                <td>{$lists.withdrawing_amount}</td>
+                <td>{$lists.investing_amount}</td>
+                <td>{$lists.un_principal_interest}</td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+    </div>
+    {include file="footer.html"}

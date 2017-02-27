@@ -1,0 +1,29 @@
+<form name="form1" class="form-inline" method="post" action="">
+    {if $roleStatus==1}
+    <div class="form-group">
+        <div class="form-group">
+            <select id="type" name="type" class="form-control">
+                <option {if $sessionObj->get('userData.admin_user.serach.queryType')=='phone_num'}selected{/if} value="phone_num">按手机号查询</option>
+                <option {if $sessionObj->get('userData.admin_user.serach.queryType')=='user_name'}selected{/if} value="user_name">按姓名查询</option>
+                <option {if $sessionObj->get('userData.admin_user.serach.queryType')=='id_number'}selected{/if} value="id_number">按身份证号查询</option>
+                <option {if $sessionObj->get('userData.admin_user.serach.queryType')=='user_id'}selected{/if} value="user_id">按用户id查询</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" value="{if $sessionObj->get('userData.admin_user.serach.queryValue')}{$sessionObj->get('userData.admin_user.serach.queryValue')}{/if}" name="phone">
+        </div>
+        <button type="submit" class="btn btn-default" onClick="form1.submit();">查询</button>
+    </div>
+    {else}
+    <div class="form-group">
+        <div class="form-group">
+            请输入用户id:<input type="hidden" name="type" value="user_id" />
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" value="{if $sessionObj->get('userData.admin_user.serach.queryValue')}{$sessionObj->get('userData.admin_user.serach.queryValue')}{/if}" name="phone">
+        </div>
+        <button type="submit" class="btn btn-default" onClick="form1.submit();">查询</button>
+    </div>
+    {/if}
+
+</form>

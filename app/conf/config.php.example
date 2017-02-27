@@ -1,0 +1,185 @@
+<?php
+return [
+    "DEFAULT_CONTROLLER" => 'index', //默认控制器
+    "DEFAULT_ACTION" => 'index', //默认方法
+
+    "BASE_HOST" => 'http://passport.homestead.com/passport/', //域名
+    "SERVER_PASSPORT" => 'http://passport.homestead.com', //域名
+
+    "URL_CONTROL_NAME" => 'c', // 默认控制器参数名
+    "URL_ACTION_NAME" => 'a', // 默认动作参数名
+    "URL_MODE" => 0, // 0 GET  1 PATHINFO
+
+    "REDIS_HOST" => "127.0.0.1", //redis主机地址
+    "REDIS_PORT" => "6379", //redis端口
+    "REDIS_PWD" => "", //redis密码
+    "REDIS_TIMEOUT" => "60", //redis超时时间
+
+
+    "SQS_HOST" => "", //HTTPSQS主机地址
+    "SQS_PORT" => "",//HTTPSQS端口
+    "SQS_PWD" => "", //HTTPSQS密码
+    "SQS_CHARSET" => "", //HTTPSQS编
+
+
+    "DB_TYPE" => 'pdo', //连接驱动
+
+    //36
+    "DB_HOST" => '192.168.10.36', //主机地址
+    "DB_PORT" => 3306,//端口
+    "DB_USERNAME" => 'root',//用户名
+    "DB_PASSWORD" => '123123',//密码
+    "DB_NAME" => 'wl_passport',//数据库名
+
+
+    "DB_PREFIX" => '',//表前缀
+    "DB_PCONNECT" => false, //长连接
+    "DB_DEBUG" => true, //调试模式
+    "DB_CHARSET" => 'utf8', //编码
+
+    "PAGE_SIZE" => 20, //分页每页数量
+
+    "DEBUG" => true, //日志全开
+
+    "MULTIPLE_SIGNIN" => true, //多设备限制登录
+
+    "WITHDRAW_CHECKED" => false, //提现账户余额检查
+
+    "APP_TOKEN_MAXLIFETIME" => 604800, //app 端用户token最长保留时间7天
+
+    //验证码配置
+//    "CAPTCHA_CONF" => array('useCurve' => false, 'useNoise' => false),
+
+    //爰金身份认证账户
+    "YJ_ACCOUNT" => "wljr_admin02",
+    "YJ_SECRET" => "egV623d8",
+
+    //极验
+    "GEETEST_KEY" => "6e308a5eb3bd08a2e065af3e31e3e31c",
+    "GEETEST_SEC" => "89761c6c32fa9cc70b14b438fb5e3474",
+
+    //禁用session
+    "DISABLE_SESSION_ROUTE" => '*',
+
+    //消息服务器接口
+    'MCQUEUE_API_URL' => 'https://php1.wanglibao.com/messagecenter/services.php',
+
+    //接口访问限制配置
+    "ACCESS_LIMIT" => array(
+        //登录接口
+        "limit_signin" => array(
+            "username_limit_num" => 3,
+            "ip_limit_num" => 6
+        ),
+        //登录接口
+        "login" => array(
+            "username_limit_num" => 2,
+            "ip_limit_num" => 6
+        ),
+    ),
+
+    "CAPTCHAT" => array(
+        'captcha_expire' => 600, //短信、语音验证码，未验证保留有效期
+        'frozen_max_num' => 10, //获取未验证冻结配置
+        'send_filter' => array(
+            array(
+                'interval' => 60, //单位秒
+                'limit' => 1,   // 每 interval 分最多发送次数
+            ),
+            array(
+                'interval' => 60*60,
+                'limit' => 3,
+            ),
+            array(
+                'interval' => 24*60*60,
+                'limit' => 6,
+            )
+        ),
+        'ip_limit' => array(
+            'interval' => 60,
+            'limit' => 10
+        ),
+        'ip_limit_num' => 10,
+    ),
+
+    //账号冻结配置
+    "FROZEN_CONFIG" => array(
+        //交易密码冻结配置
+        "trade_pwd" => array(
+            'cycle_time' => 10800, //冻结时间
+            'trigger_num' => 3,     //最多尝试次数
+        ),
+
+        //登录密码冻结配置
+        "login" => array(
+            'cycle_time' => 10800, //冻结时间
+            'trigger_num' => 6,     //最多尝试次数
+        ),
+
+        //实名冻结
+        "identify" => array(
+            'trigger_num' => 3,     //最多尝试次数
+        ),
+    ),
+
+    //内部rpc接口地址配置
+    "RPC_API" => array(
+        "passport" => "http://passport.homestead.com/service.php?c=account",//用户
+        "projects" => "http://newapi.dev.wanglibao.com/api.php",            //标
+        "bank" => "http://wl_pay.dev.wanglibao.com/?c=bankrpc",
+//        "bank" => "https://php1.wanglibao.com/pay/?c=bankrpc",
+        "pay" => "http://wl_pay.dev.wanglibao.com/?c=payrpc",               //支付
+//        "pay" => "https://php1.wanglibao.com/pay/?c=payrpc",               //支付
+//        "pcpay" => "http://wl_pay.dev.wanglibao.com/?c=pcpay&a=pc_pay",
+        "pcpay" => "https://php1.wanglibao.com/pay/?c=pcpay&a=pay",
+        "withdraw" => array(
+            'url' => "http://115.29.146.25:9900/cash_api",                  //提现
+            'secret' => '123456',
+        ),
+        "msg" => "https://php1.wanglibao.com/message/message.php?c=msg",//站内信
+    ),
+
+    //第三方渠道
+    "CHANNEL" => array(
+        'url_expire' => 10,
+        'aiyouqian' => array(
+            'secret' => 'ed732d8d5204aa2d3fed97b8589e22e7',
+            'partner_id' => '117161019180313642',
+            'md5_key' => '4b701c4aca7dd5ee6ddc78c9e0b741df',
+            'push_api' => 'http://yxapi.yuanin.com/'
+        ),
+        'xeenho' => array(
+            'token_expire' => 6000,
+            'token_key'  => '74ae5c111d7a44b783504063f325be97',
+            'token_iv'    => 'e5c111d7a44b7835',
+            'sha256_key' => 'wanglibao_xhzhit',
+            'key_iv'     => 'wanglibao_xhzhit',
+            'notify_api' => 'http://www.xeenho.cc/openapi/user_bind/notify/'
+        ),
+    ),
+
+    //ip 白名单
+    "WHITE_IP_LIST" => "127.0.0.1;192.168.20.242;192.168.20.243;192.168.20.245;192.168.10.32;192.168.33.1",
+
+    //微信相关
+    "WECHAT" => array(
+        'appid' => 'wx4dc8114e0fe3f390',
+        'secret' => 'ed732d8d5204aa2d3fed97b8589e22e7'
+    ),
+
+    //图片key值
+    "STORAGE_ACCESS_KEY"=>"6498cb3b7f607dbfd14c703f2bbefe69",
+    "STORAGE_SECRET_KEY"=>"5b5280bbf241f20eb442061c54442548",
+
+    //后台rbac权限设置
+    'RBAC_ROLE' => 'admin_role', //用户组数据表名
+    'RBAC_NODE' => 'admin_node', //权限规则表
+    'RBAC_USER' => 'admin_user',//用户信息表
+    //后台rbac Url设置
+    "RBAC_URL" => [
+        '1'=>'http://sunfeng.wlpassport.dev.wanglibao.com/admin.php',
+        '2'=>'http://zhangfu.support.dev.wanglibao.com/admin.php',
+        '3'=>'http://sunfeng.wlmessage.dev.wanglibao.com/admin.php',
+    ],
+
+];

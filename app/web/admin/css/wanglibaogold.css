@@ -1,0 +1,47 @@
+.goldbox{
+  position: relative;
+  margin-bottom: 50px;
+
+}
+
+.goldbox > .goldpool{
+  border:1px solid black;
+  position: relative;
+  height: 202px;
+  margin:0 auto;
+  background: silver;
+  overflow: hidden;
+}
+
+.goldbox > .goldpool > .golditem{
+  position: absolute;
+  background: white;
+  /*text-align: center;*/
+  border: 1px solid black;
+  line-height: 100%;
+  filter:alpha(opacity=80);
+  -moz-opacity:0.8;
+  -khtml-opacity: 0.8;
+  opacity: 0.8;  
+  cursor: move;
+}
+.goldbox > .goldpool > .golddragable{
+  position: absolute;
+  background: white;
+  /*text-align: center;*/
+  border: 1px solid black;
+  line-height: 100%;
+}
+.goldbox > .goldpool > .golditem:hover{
+  border:1px solid red;
+}
+
+
+.goldbox > .goldpool > .goldrunning{
+  background: silver;
+  cursor: crosshair;
+}
+
+.goldbox > .goldpool > .goldinvalid{
+  background: red;
+}

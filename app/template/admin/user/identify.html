@@ -1,0 +1,71 @@
+{include file="header.html"}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="top-title">
+        <h2 class="sub-header">用户实名信息</h2>
+    </div>
+    <div style="clear:both"></div>
+    {include file="search.html"}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th >用户id</th>
+                <th >身份证号</th>
+                <th >姓名</th>
+                <th >是否通过</th>
+                <th >操作实名的平台</th>
+                <th >验证时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if $lists}
+            {foreach $lists as $item}
+            <tr>
+                <td>{$item.user_id}</td>
+                <td>{$item.id_number}</td>
+                <td>{$item.name}</td>
+                <td>{if $item.is_valid==1}通过{else}未通过{/if}</td>
+                <td>{$item.from_client}</td>
+                <td>{$item.create_time}</td>
+                {if $item.is_valid==1}
+                <td><a href="javascript:void(0);" data="{$item.id}"  class="btn btn-danger btn-xs identify">取消实名认证</a></td>
+                {/if}
+            </tr>
+            {/foreach}
+            {/if}
+            </tbody>
+        </table>
+    </div>
+    {include file="footer.html"}
+    <script>
+        //取消实名认证
+        $('.identify').click(function(){
+            var id = $(this).attr('data');
+            if (!confirm("确定要取消该用户的实名认证嘛?")) {
+                return false;
+            }
+            $.ajax({
+                url:'?c=user&a=cancelAuthentication',
+                method:'post',
+                data:{
+                    'id':id
+                },
+                dataType:'json',
+                success:function(data) {
+                    if(data.error == 100)
+                    {
+                        throwExc(data.msg);
+                        return false;
+                    }else if(data.error == 200)
+                    {
+                        showSucc(data.msg);
+                        setTimeout("load()",1000);
+                    }
+                },
+            })
+            });
+        function load(){
+            window.location.href="?c=user&a=identify";
+        };
+    </script>

@@ -1,0 +1,218 @@
+{include file="header.html"}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="top-title">
+        <h2 class="sub-header">银行信息&nbsp;&nbsp;<small>共{if isset($total)}{$total}{/if}条数据</small></h2>
+        <div class="top-tools">
+            <a href="?c=bank&a=add{if isset($smarty.get.type)}{if $smarty.get.type eq '1'}&type=1{else}&type=2{/if}{else}&type=1{/if}"class="btn btn-primary">增加银行</a>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+    <ul id="myTab" class="nav nav-tabs">
+        <li active="form01"class="{if $smarty.get.type eq '1' or $smarty.get.type eq ''}active{/if}"><a href="?c=bank&a=index&type=1">
+            PC银行信息</a>
+        </li>
+        <li active="form03"class="{if $smarty.get.type eq '2'}active{/if}"><a href="?c=bank&a=index&type=2">
+            APP银行信息</a>
+        </li>
+    </ul>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>银行名字</th>
+                <th >银行简称</th>
+                <th >银行logo</th>
+                {if isset($smarty.get.type) && $smarty.get.type==2}
+                    <th >快捷渠道</th>
+                    <th >快捷是否显示 </th>
+                {else}
+                    <th >网银渠道</th>
+                    <th >网银是否显示 </th>
+                {/if}
+
+
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if isset($lists) && $lists}
+            {foreach $lists as $item}
+            <tr>
+                <td>{$item.bank_id}</td>
+                <td>{$item.bank_name}</td>
+                <td>{$item.bank_code}</td>
+                <td><img width="30px;" src="{$imgurl}{$item.bank_logo}" /></td>
+                {if isset($smarty.get.type) && $smarty.get.type==2}
+                    <td>{if isset($item.app_channel_name) && $item.app_channel_name}{$item.app_channel_name}{else}未设置{/if}</td>
+                     <td>{if $item.is_app_display==1}显示{else}不显示{/if}</td>
+                {else}
+                    <td>{if isset($item.pc_channel_name) && $item.pc_channel_name}{$item.pc_channel_name}{else}未设置{/if}</td>
+                    <td>{if $item.is_pc_display==1}显示{else}不显示{/if}</td>
+                {/if}
+                <td>
+                    <a href='?c=bank&a=edit&bank_id={$item.bank_id}&bank_name={$item.bank_name}&bank_code={$item.bank_code}&bank_logo={$item.bank_logo}&pc_channel_id={$item.pc_channel_id}&app_channel_id={$item.app_channel_id}&is_pc_display={$item.is_pc_display}&is_app_display={$item.is_app_display}&pc_limit={htmlspecialchars($item.pc_limit)}&type={if isset($smarty.get.type)}{$smarty.get.type}{/if}'>修改银行信息</a><br/>
+                    <!-- <a href="?c=bank&a=set_channel&id={$item.bank_id}&extra=1" class="show_set_channel show">增加银行渠道</a>-->
+                    <a href="javascript:void (0)" class="show_set_channel show">显示银行渠道</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="10">
+                    <table class="table table-striped table-hover" id="item{$item.bank_id}" style="display: none;" >
+
+                        {if isset($smarty.get.type) && $smarty.get.type eq '2'}
+                        <thead>
+                        <tr>
+                            <th>渠道名字</th>
+                            <th>银行id</th>
+                            <th>渠道id</th>
+                            <th>首次限额</th>
+                            <th>单次限额</th>
+                            <th>单日限额</th>
+                            <th>类型</th>
+                            <th>code</th>
+                            <th>现用渠道</th>
+                            <th>渠道代码 </th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $item.channle_info as $info}
+                        <tr>
+                            <td>{$info.channel_name}</td>
+                            <td>{$info.bank_id}</td>
+                            <td>{$info.channel_id}</td>
+                            <td>{$info.first_quota}</td>
+                            <td>{$info.times_quota}</td>
+                            <td>{$info.days_quota}</td>
+                            <td>{if $info.type==1}PC网银{else}APP快捷{/if}</td>
+                            <td>{$info.code}</td>
+                            <td>{if $item.app_channel_name==$info.channel_name}是{else}否{/if}</td>
+                            <td>{$info.channel_code}</td>
+                            <td>
+                                <a href="?c=bank&a=set_channel&bank_id={$info.bank_id}&channel_id={$info.channel_id}&first_quota={$info.first_quota}&time_quota={$info.times_quota}&days_quota={$info.days_quota}&type={$info.type}&code={$info.code}&extra=2">修改</a>
+                                {if $item.app_channel_name != $info.channel_name}
+                                <a href="javascript:void(0)" data-value="{$info.bank_id},{$info.channel_id},{$smarty.get.type}" class="switch_channel">切换渠道</a>
+                                {else}
+                                <a href="javascript:void(0)" >已选择该渠道</a>
+                                {/if}
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                        {else}
+                        <thead>
+                        <tr>
+                            <th>渠道名字</th>
+                            <th>银行id</th>
+                            <th>渠道id</th>
+                            <th>类型</th>
+                            <th>code</th>
+                            <th>现用渠道</th>
+                            <th>渠道代码 </th>
+                            <th>操作</th>
+                        </tr>
+                        <tbody>
+                        {foreach $item.channle_info as $info}
+                        <tr>
+                            <td>{$info.channel_name}</td>
+                            <td>{$info.bank_id}</td>
+                            <td>{$info.channel_id}</td>
+                            <td>{if $info.type==1}PC网银{else}APP快捷{/if}</td>
+                            <td>{$info.code}</td>
+                            <td>{if $item.pc_channel_name==$info.channel_name}是{else}否{/if}</td>
+                            <td>{$info.channel_code}</td>
+                            <td>
+                                <a href="?c=bank&a=set_channel&bank_id={$info.bank_id}&channel_id={$info.channel_id}&type={$info.type}&code={$info.code}&extra=2">修改</a>
+                                {if $item.pc_channel_name != $info.channel_name}
+                                <a href="javascript:void(0)" data-value="{$info.bank_id},{$info.channel_id},{if isset($smarty.get.type)}{$smarty.get.type}{/if}" class="switch_channel">切换渠道</a>
+                                {else}
+                                <a href="javascript:void(0)" >已选择该渠道</a>
+                                {/if}
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                        {/if}
+                        <tr>
+                            <td colspan="10" align="center"><a href="?c=bank&a=set_channel&id={$item.bank_id}&extra=1&type={if isset($smarty.get.type)}{$smarty.get.type}{/if}" >增加银行渠道</a></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            {/foreach}
+            {/if}
+            </tbody>
+        </table>
+    </div>
+
+    {include file="footer.html"}
+    <script>
+        $(".show_set_channel").click(function(){
+            var id = $(this).parent().parent().find('td:first').html();
+            if($(this).hasClass('show'))
+            {
+                $("#item"+id).css('display','block');
+                $(this).removeClass('show');
+            }else{
+                $("#item"+id).css('display','none');
+                $(this).addClass('show');
+            }
+        });
+
+        $(".switch_channel").click(function(){
+            var info = $(this).attr('data-value');
+            if (!confirm("您确定要切换为该通道嘛？")) {
+                return false;
+            }
+            $.post("?c=bank&a=switch_channel",{
+                'info':info,
+            },function( response ){
+                console.log(response);
+                if(response.error==100) {
+                    throwExc(response.msg);
+                    return false;
+                }else if(response.error==200) {
+                    showSucc(response.msg);
+                    setTimeout("load()",1000);
+                }
+            },"json");
+        });
+        $(".bankchannel_offline").click(function(){
+            var info = $(this).attr('data-value');
+            var status = $(this).attr('data-status');
+            var strs= new Array();
+            var message='';
+            strs=info.split(",");
+            var bank_id = strs['0'];
+            var channel_id = strs['1'];
+            var type = strs['2'];
+            var is_offline = strs['3'];
+            if(status ==2 && is_offline ==2)
+            {
+                throwExc("请您切换渠道后在进行上下线操作！");
+                return false;
+            }
+            if (!confirm("您确定要操作嘛？")) {
+                return false;
+            }
+            $.post("?c=bank&a=bankchannel_offline",{
+                'bank_id':bank_id,
+                'channel_id':channel_id,
+                'type':type,
+                'is_offline':is_offline
+            },function( response ){
+                console.log(response);
+                if(response.error==100) {
+                    throwExc(response.msg);
+                    return false;
+                }else if(response.error==200) {
+                    showSucc(response.msg);
+                    setTimeout("load()",1000);
+                }
+            },"json");
+        })
+        function load(){
+            window.location.href="?c=bank&a=index&type="+"{if isset($smarty.get.type)}{$smarty.get.type}{else}1{/if}";
+        }
+    </script>

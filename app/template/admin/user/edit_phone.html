@@ -1,0 +1,169 @@
+{include file="header.html"}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <form class="form-horizontal" id="form01" action="?c=user&a=edit_phone" method="post">
+        <div style="clear:both"></div>
+        <input name="start_userId" type="hidden" value="{$oldAuth['id']}">
+        <input name="edit_userId" type="hidden" value="{$lists['authInfo']['id']}">
+        <input name="type" type="hidden" value="2">
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">原手机号</span></label>
+            <div class="col-sm-3">
+                <span>{$oldAuth['username']}</span>
+                <input type="hidden" class="form-control name" readonly name="old_phone" value="{$oldAuth['username']}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">更改手机号</span><i>*</i></label>
+            <div class="col-sm-3">
+                <span>{$newPhone}</span>
+                <input type="hidden" class="form-control name" placeholder="更改手机号" readonly name="new_mobile" value="{$newPhone}">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-primary edit_user_phone pull-right" >提交</button>
+            </div>
+
+        </div>
+    </form>
+    <div class="top-title">
+        <h3 class="sub-header">更改手机号资产数据</h3>
+    </div>
+    <div id="myTabContent1" class="tab-content" style="margin-top:10px">
+        <!-- start 已上线 -->
+        <div class="table-responsive tab-pane fade in active" id="no1">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th >用户id</th>
+                    <th >可用余额</th>
+                    <th >代收本金</th>
+                    <th >提现冻结</th>
+                    <th >投资冻结</th>
+                    <th >充值未投资管理费</th>
+                </tr>
+                </tr>
+                </thead>
+                <tbody>
+                {if $lists['marginInfo']}
+                <tr>
+                    <td>{$lists['marginInfo']['user_id']}</td>
+                    <td>{$lists['marginInfo']['avaliable_amount']}</td>
+                    <td>{$lists['marginInfo']['principal_amount']}</td>
+                    <td>{$lists['marginInfo']['withdrawing_amount']}</td>
+                    <td>{$lists['marginInfo']['invset_amount']}</td>
+                    <td>{$lists['marginInfo']['management_amount']}</td>
+                </tr>
+                {else}
+                <tr>
+                    <td colspan="6">没有该数据</td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+            <h3>更改手机号充值记录</h3>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th >用户id</th>
+                    <th >真实姓名</th>
+                    <th >手机号</th>
+                    <th >充值金额</th>
+                    <th >银行卡号</th>
+                    <th >银行名称</th>
+                    <th >充值状态</th>
+                    <th >充值时间</th>
+                </tr>
+                </tr>
+                </thead>
+                <tbody>
+                {if  $lists['rechargeInfo']}
+                {foreach $lists['rechargeInfo'] as $item}
+                <tr>
+                    <td>{$item.user_id}</td>
+                    <td>{$item.realname}</td>
+                    <td>{$item.phone}</td>
+                    <td>{$item.amount}</td>
+                    <td>{$item.bank_account}</td>
+                    <td>{$item.bank_name}</td>
+                    <td>{if $item.status==200}成功{else}失败{/if}</td>
+                    <td>{$item.update_time}</td>
+                </tr>
+                {/foreach}
+                {else}
+                <tr>
+                    <td colspan="7">没有该数据</td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+            <h3>更改手机号流水记录</h3>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th >用户id</th>
+                    <th >流水类型</th>
+                    <th >流水金额</th>
+                    <th >操作之前可用余额</th>
+                    <th >操作之后可用余额</th>
+                    <th >状态</th>
+                    <th >创建时间</th>
+                </tr>
+                </tr>
+                </thead>
+                <tbody>
+                {if  $lists['recordInfo']}
+                {foreach $lists['recordInfo'] as $item}
+                <tr>
+                    <td>{$item.user_id}</td>
+                    <td>{$item.type_to_cn}</td>
+                    <td>{$item.amount}</td>
+                    <td>{$item.before_avaliable_amount}</td>
+                    <td>{$item.after_avaliable_amount}</td>
+                    <td>{if $item.status==200}成功{else}失败{/if}</td>
+                    <td>{$item.create_time}</td>
+                </tr>
+                {/foreach}
+                {else}
+                <tr>
+                    <td colspan="7">没有该数据</td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+        <!-- end 已上线 -->
+    </div>
+    </div>
+{include file="footer.html"}
+<script>
+    var old_userId = $("input[name=start_userId]").val();
+    var new_userId = $("input[name=edit_userId]").val();
+    var old_phone = $("input[name=old_phone]").val();
+    var new_mobile = $("input[name=new_mobile]").val();
+    var type = $("input[name=type]").val();
+    $('.edit_user_phone').click(function(){
+        $.ajax({
+            //提交数据的类型 POST GET
+            type:"POST",
+            //提交的网址
+            url:"?c=user&a=edit_phone",
+            //提交的数据
+            data:{ old_userId:old_userId,new_userId:new_userId,old_phone:old_phone,new_mobile:new_mobile,type:type},
+            //成功返回之后调用的函数
+            success:function(response){
+                response = $.parseJSON(response);
+                 if(response.error==100) {
+                    throwExc(response.msg);
+                    return false;
+                }else if(response.error==200) {
+                    showSucc(response.msg);
+                    setTimeout("load()",1000);
+                }
+            }
+        });
+    })
+    function load(){
+        window.location.href="?c=user&a=index";
+    }
+</script>

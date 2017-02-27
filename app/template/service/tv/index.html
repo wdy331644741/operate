@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)http://127.0.0.1:8000/PK7wlbQ4Q9KPs9Io_zOpac/statistics/tv_1 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>网利宝网站数据</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="baidu-site-verification" content="iBKXouRC1a">
+    <meta name="keywords" content="网利宝网站数据">
+    <meta name="description" content="网利宝网站数据">
+    <meta http-equiv="refresh" content="600">
+    <link href="./service/css/bootstrap.min.css" media="screen, projection" rel="stylesheet" type="text/css">
+    <link href="./service/css/tv.css" media="screen, projection" rel="stylesheet" type="text/css">
+    <script src="./service/js/jquery-1.11.1.min.js" data-main="/static/js/header"></script>
+    <script src="./service/js/jquery.animateNumber.min.js"></script>
+</head>
+<body>
+<div class="tv">
+    <div class="container">
+        <div class="row tv-row">
+            <div class="col-xs-6 col-sm-4">
+                <div class="number today_user">{$data.todayUser}</div>
+                <div class="desc">今日注册人数</div>
+            </div>
+            <div class="col-xs-6 col-sm-4">
+                <div class="number today_num">{$data.todayTradeUser}</div>
+                <div class="desc">今日交易人数</div>
+            </div>
+            <div class="col-xs-6 col-sm-4">
+                <div class="number today_amount">{$data.todayTradeAmount}</div>
+                <div class="desc">今日交易金额</div>
+            </div>
+        </div>
+        <div class="row tv-row">
+            <div class="col-xs-6 col-sm-4">
+                <div class="number all_user">{$data.totalUser}</div>
+                <div class="desc">累计注册人数</div>
+            </div>
+            <div class="col-xs-6 col-sm-4">
+                <div class="number all_num">{$data.totalTradeUser}</div>
+                <div class="desc">累计交易人数</div>
+            </div>
+            <div class="col-xs-6 col-sm-4">
+                <div class="number all_amount">{$data.totalTradeAmount}</div>
+                <div class="desc">累计交易金额</div>
+            </div>
+        </div>
+       <div class="row tv-row">
+
+           <div class="col-xs-6 col-sm-4">
+               <div class="number yesterday_new_amount">{$data.todayRefundAmount}</div>
+               <div class="desc">今日还款金额</div>
+           </div>
+           <div class="col-xs-6 col-sm-4">
+               <div class="number"><span class="disp">-</span><span class="yesterday_inflow">{$data.todayWithdrawAmount}</span>
+               </div>
+               <div class="desc">今日提现金额</div>
+           </div>
+            <div class="col-xs-6 col-sm-4">
+                <div class="number yesterday_repayment_total">{$data.todayRechargeAmount}</div>
+                <div class="desc">今日充值金额</div>
+            </div>
+
+
+        </div>
+
+        <div class="row tv-row">
+            <div class="col-xs-6 col-sm-4">
+                <div class="number yesterday_repayment_total">{$data.yesterdayRefundAmount}</div>
+                <div class="desc">昨日还款金额</div>
+            </div>
+
+            <div class="col-xs-6 col-sm-4">
+                <div class="number yesterday_repayment_total">{$data.yesterdayWithdrawAmount}</div>
+                <div class="desc">昨日提现金额</div>
+            </div>
+
+            <div class="col-xs-6 col-sm-4">
+                <div class="number today_deposit_amount2">{$data.yesterdayUserFirst}</div>
+                <div class="desc">昨日新用户投资金额</div>
+            </div>
+
+
+
+
+        </div>
+
+        <div class="row tv-row">
+
+            <div class="col-xs-6 col-sm-4">
+                <div class="number yesterday_withdraw">{$data.yesterdayAmountInflows}</div>
+                <div class="desc">昨日资金净流入</div>
+            </div>
+
+            <div class="col-xs-6 col-sm-4">
+                <div class="number yesterday_withdraw">{$data.yesterdayTradeAmount}</div>
+                <div class="desc">昨日投资总金额</div>
+            </div>
+
+            <div class="col-xs-6 col-sm-4">
+                <div class="number yesterday_withdraw">{$data.projectPeriod}</div>
+                <div class="desc">加权期限</div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+</body>
+</html>

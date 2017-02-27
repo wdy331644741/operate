@@ -1,0 +1,126 @@
+{include file="header.html"}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <form class="form-horizontal" id="form01">
+        <div class="top-title">
+            <h2 class="sub-header">添加文章</h2>
+            <div class="top-tools">
+                <button type="button" class="btn btn-primary" id="submit">保存</button>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">标题</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="标题" name="title" id="title" value="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">分类</span><i>*</i></label>
+            <div class="col-sm-7">
+                <select class="form-control" name="cateNode">
+                    {if $nodeList}
+                    {foreach $nodeList as $node}
+                    <option value="{$node.id}">{$node.title}</option>
+                    {/foreach}
+                    {/if}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">图片</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="button" class="form-control" name="img" id="img" value="">
+                <input type="hidden" class="form-control" placeholder="图片" name="imgUrl" id="imgUrl" value="">
+                <img id="img_view" src="" width="120px" style="display:none"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">内容</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="hidden" class="form-control" name="content" id="content" value="">
+                <script type="text/plain" id="myEditor" style="width:750px;height:240px;"></script>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">排序</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="相同位置越大越靠前" name="sort" id="sort" value="1">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">状态</span><i>*</i></label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="status_no" value="0" checked> 禁用
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="status_yes" value="1"> 启用
+            </label>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    var ue  = UE.getEditor('myEditor', {
+                toolbars: [
+                    ['fullscreen', 'source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'backcolor', 'fontsize', 'fontfamily', 'justifyleft', 'justifyright', 'justifycenter', 'justifyjustify', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', 'link', 'unlink', 'emotion']
+                ],
+            }
+    );
+    ue.ready(function() {
+        ue.setContent('');
+    });
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#img').uploadify({
+            'buttonText': '选择图片',
+
+            'fileObjName': 'filename',
+            'swf': 'admin/uploadify/uploadify.swf',
+
+            'uploader': "{$url}",
+            'onUploadSuccess': function (file, data, response) {
+                var data = JSON.parse(data);
+                if (data.err_code == 0) {
+                    filejosn = $.parseJSON(data.err_msg);
+                    $.each(filejosn, function (index, imgval) {
+                        if (index == 'filename') {
+                            $("#imgUrl").val(imgval.name);
+                            $("#img_view").attr('src', imgval.url);
+                            $("#img_view").show();
+                        }
+                    });
+                } else {
+                    layer.alert(data.err_msg);
+                }
+
+            }
+        });
+    });
+</script>
+<script>
+    $(function () {
+        //提交表单
+        $("#submit").click(function () {
+            $("#content").val(window.ue.getContent());
+            $.ajax({
+                "url": "",
+                'type': 'POST',
+                'data': $('#form01').serialize(),
+                'dataType': 'json',
+                'success': function (data) {
+                    if (data.error != 0) {
+                        layer.alert(data.message);
+                    }
+                    else {
+                        window.location.href = '{U("admin.php",["c" => I("get.c/s","index")])}';
+                    }
+                }
+
+            });
+        });
+    });
+</script>
+{include file="footer.html"}

@@ -1,0 +1,39 @@
+{include file="header.html"}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="top-title">
+        <h2 class="sub-header">用户邀请关系&nbsp;&nbsp;<small>共{if isset($total)}{$total}{/if}条数据</small></h2>
+    </div>
+    <div style="clear:both"></div>
+    {include file="search.html"}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th >用户ID</th>
+                <th >姓名</th>
+                <th >电话号码</th>
+                <th >客户端来源</th>
+                <th >最后登陆IP</th>
+                <th >IP归属地</th>
+                <th >注册时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if isset($list)}
+            {foreach $list as $item}
+            <tr>
+                <td>{$item.id}</td>
+                <td>{$item.realname}</td>
+                <td>{$item.phone}</td>
+                <td>{$item.system}</td>
+                <td>{$item.last_ip}</td>
+                <td>{$item.ip_area}</td>
+                <td>{$item.create_time}</td>
+              </tr>
+            {/foreach}
+            {/if}
+            </tbody>
+        </table>
+    </div>
+    <div>{if isset($pageNum)}{$pageNum}{/if}</div>
+    {include file="footer.html"}

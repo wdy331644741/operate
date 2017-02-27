@@ -1,0 +1,123 @@
+{include file="header.html"}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <form class="form-horizontal" id="form01" action="?c=bank&a=set_channel" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="bank_id" value="{$data['bank_id']}">
+        <input type="hidden" name="type" value="{$data['type']}">
+        <div class="top-title">
+            <h2 class="sub-header">渠道银行信息</h2>
+            <div class="top-tools">
+                <button type="button" class="btn btn-primary set_channels">保存</button>
+                <a class="btn btn-default" href="?c=bank&a=index">返回</a>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span"> 渠道ID</span><i>*</i></label>
+            <div class="col-sm-7">
+                <select class="form-control" name="channel_id">
+                    <option>请选择</option>
+                    {foreach $lists as $item}
+                    <option {if array_key_exists('channel_id',$data) && $data['channel_id']==$item.channel_id}selected{/if}  value="{$item.channel_id}">{$item.channel_name}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">渠道银行代码</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="渠道银行代码" name="code" value="{if array_key_exists('code',$data)}{$data['code']}{/if}">
+            </div>
+        </div>
+        {if isset($data['type']) && $data['type']==2}
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="name_span">首次限额</span><i>*</i></label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control name" placeholder="首次限额" name="first_quota" value="{if array_key_exists('first_quota',$data)}{$data['first_quota']}{else}1000{/if}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="name_span">单次限额</span><i>*</i></label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control name" placeholder="单次限额" name="times_quota" value="{if array_key_exists('time_quota',$data)}{$data['time_quota']}{else}1000{/if}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="name_span">单日限额</span><i>*</i></label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control name" placeholder="单日限额" name="days_quota" value="{if array_key_exists('days_quota',$data)}{$data['days_quota']}{else}1000{/if}">
+                </div>
+            </div>
+        {/if}
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span"> 渠道类型</span><i>*</i></label>
+            <div class="col-sm-7">
+                <span>{if array_key_exists('type',$data) && $data['type']==1}PC网银{else}APP快捷{/if}</span>
+            </div>
+        </div>
+        <hr/>
+        <div class="table-responsive">
+        </div>
+    </form>
+</div>
+{include file="footer.html"}
+<script>
+
+    $(".set_channels").click(function(){
+        var channel_id = $('select[name=channel_id]').val();
+        var code = $('input[name=code]').val();
+        var bank_id=$('input[name=bank_id]').val();
+        var type = $('input[name=type]').val();
+        var first_quota = '0';
+        var times_quota = '0';
+        var days_quota = '0';
+        if(type==2)
+        {
+            first_quota = $('input[name=first_quota]').val();
+            times_quota = $('input[name=times_quota]').val();
+            days_quota = $('input[name=days_quota]').val();
+        }
+
+        if($.trim(channel_id) == '')
+        {
+            throwExc('渠道名称必须填写');
+            return false;
+        }
+        if($.trim(code) == '')
+        {
+            throwExc('银行代码必须填写');
+            return false;
+        }
+        $.post("?c=bank&a=set_channel",{
+            'channel_id':channel_id,
+            'code':code,
+            'first_quota':first_quota,
+            'times_quota':times_quota,
+            'days_quota':days_quota,
+            'type':type,
+            'bank_id':bank_id,
+        },function( response ){
+            console.log(response);
+            if(response.error==100) {
+                throwExc(response.msg);
+                return false;
+            }else if(response.error==200) {
+                showSucc(response.msg);
+                setTimeout("load()",1000);
+            }
+        },"json");
+    });
+
+    function load(){
+        window.location.href="?c=bank&a=index&type="+$('input[name=type]').val();
+    }
+    var us = UE.getEditor('editor', {
+                toolbars: [
+                    ['fullscreen', 'source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'backcolor', 'fontsize', 'fontfamily', 'justifyleft', 'justifyright', 'justifycenter', 'justifyjustify', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', 'link', 'unlink', 'emotion']
+                ],
+            }
+    );
+    us.ready(function() {
+        //设置编辑器的内容
+        us.setContent('{if isset($data["pc_limit"])}{$data["pc_limit"]}{/if}');
+    });
+</script>

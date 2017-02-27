@@ -1,0 +1,51 @@
+{include file="header.html"}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <form class="form-horizontal" id="form01">
+        <div class="top-title">
+            <h2 class="sub-header">添加用户购买金额配置</h2>
+            <div class="top-tools">
+                <button type="button" class="btn btn-primary" id="submit">保存</button>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">金额</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="请写数值" name="amount" id="amount" value="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">状态</span><i>*</i></label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="status_no" value="0" checked> 禁用
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="status_yes" value="1"> 启用
+            </label>
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+        //提交表单
+        $("#submit").click(function () {
+            $.ajax({
+                "url": "?c=config_purchase&a=add",
+                'type': 'POST',
+                'data': $('#form01').serialize(),
+                'dataType': 'json',
+                'success': function (data) {
+                    if (data.error != 0) {
+                        layer.alert(data.message);
+                    }
+                    else {
+                        window.location.href = '?c=config_purchase&a=lst';
+                    }
+                }
+
+            });
+        });
+    });
+</script>
+{include file="footer.html"}

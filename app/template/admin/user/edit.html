@@ -1,0 +1,205 @@
+{include file="header.html"}
+<style type="text/css">
+    h2{ text-align: center;}
+</style>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+     <div class="top-title">
+            <h2 class="sub-header">修改用户信息</h2>
+            <div class="top-tools">
+              <a class="btn btn-default" href="?c=user">返回</a>
+            </div>
+          </div>
+    <div id="myTabContent" class="tab-content" style="margin-top:10px">
+
+        <!-- start 线下合同 -->
+        <div class="tab-pane fade in active" id="no2">
+
+            <form class="form-horizontal"   method="post" >
+                <h2>用户基本信息</h2>
+                <!--用户的基本信息-->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">用户账号：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="username" value="{$basicInfo.username}" class="form-control" placeholder="用户手机号">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">邮箱：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="emial" value="{$basicInfo.email}" class="form-control" placeholder="用户邮箱">
+                    </div>
+                </div>
+                 <div class="form-group">
+                      <label  for="is_active" class="col-sm-2 control-label">是否启用：</label>
+                      <div class="col-sm-7">
+                          <div class="input-group">
+                              <select class="form-control" name="is_active" id="is_active">
+                                 <option {if $basicInfo['is_active']==1}checked{/if} value="1">启用</option>
+                                 <option {if $basicInfo['is_active']==0}checked{/if} value="0">禁用</option>
+                              </select>
+                          </div>
+                      </div>
+                  </div>
+                <div class="form-group">
+                    <label  for="is_admin" class="col-sm-2 control-label">是否后台管理员：</label>
+                    <div class="col-sm-7">
+                        <div class="input-group">
+                            <select class="form-control" name="is_admin" id="is_admin">
+                                <option {if $basicInfo['is_admin']==1}selected{/if} value="1">是</option>
+                                <option {if $basicInfo['is_admin']==0}selected{/if} value="0">不是</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  for="is_staff" class="col-sm-2 control-label">是否是公司职员：</label>
+                    <div class="col-sm-7">
+                        <div class="input-group">
+                            <select class="form-control" name="is_staff" id="is_staff">
+                                <option {if $basicInfo['is_staff']==1}selected{/if} value="1">是</option>
+                                <option {if $basicInfo['is_staff']==0}selected{/if} value="0">不是</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--用户的基本信息 end-->
+                <!--用户认证的信息-->
+                <h2>用户认证信息</h2>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">身份证号：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="id_number" value="{$identifyInfo.id_number}" class="form-control" placeholder="用户身份证号">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">姓名：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="name" value="{$identifyInfo.name}" class="form-control" placeholder="用户身份证号">
+                    </div>
+                </div>
+                <!--用户认证的信息end-->
+                <!--用户地址信息-->
+                <h2>用户地址信息</h2>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">地址：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="address" value="{$addressInfo.address}" class="form-control" placeholder="用户地址">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">省：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="province" value="{$addressInfo.province}" class="form-control" placeholder="用户地址">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">市：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="city" value="{$addressInfo.city}" class="form-control" placeholder="用户地址">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">区：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="area" value="{$addressInfo.area}" class="form-control" placeholder="用户地址">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">邮政编码：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="postcode" value="{$addressInfo.postcode}" class="form-control" placeholder="用户地址">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  for="is_staff" class="col-sm-2 control-label">是否为默认地址：</label>
+                    <div class="col-sm-7">
+                        <div class="input-group">
+                            <select class="form-control" name="is_staff" id="is_default">
+                                <option {if $addressInfo['is_default']==1}checked{/if} value="1">是</option>
+                                <option {if $addressInfo['is_default']==0}checked{/if} value="0">不是</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--用户地址信息end-->
+                <div class="form-group">
+                    <div class="col-sm-7">
+                        <input type="hidden" name="id" value="{$userInfo.id}">
+                        <button type="button" class="btn btn-primary add_company pull-right" >提交</button>
+                    </div>
+
+                </div>
+
+
+            </form>
+
+        </div>
+        <!-- end 线下合同 -->
+
+
+    </div>
+    <hr/>
+
+
+
+
+</div>
+
+
+
+<script>
+
+    var saving = false;
+    $('#form02').submit(function()
+    {
+        saving = true;
+    });
+
+    window.onbeforeunload = function() {
+        if (saving)
+            return;
+        if(is_form_changed()) {
+            return "您的修改内容还没有保存，您确定离开吗？";
+        }
+    }
+
+</script>
+
+<script>
+
+    $(".add_company").click(function(){
+        var name=$('input[name=name]').val();
+        var is_del=$('#is_del').val();
+        var role=$("#role").val();
+        var id=$('input[name=id]').val();
+        if($.trim(name)==''){
+            throwExc('昵称必须填写');
+            return false;
+        }
+        if(isNaN(role)){
+           throwExc('请选择角色');
+            return false;
+        }
+        $.post("?c=admin_user&a=edit",{
+            'id':id,
+            'role':role,
+            'is_del':is_del,
+            'username':name
+        },function( response ){
+            if(response.error==100) {
+                throwExc(response.msg);
+                return false;
+            }else if(response.error==200) {
+                showSucc(response.msg);
+                setTimeout("load()",1000);
+            }
+        },"json");
+    });
+
+    function load(){
+        window.location.href="?c=admin_user&a=index";
+    }
+
+
+</script>
+{include file="footer.html"}

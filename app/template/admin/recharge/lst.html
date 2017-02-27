@@ -1,0 +1,70 @@
+{include file="header.html"}
+<style>
+    .search_order{
+        cursor:pointer;
+    }
+    #divObj{
+        position:fixed;
+        top:50%;
+        left:50%;
+        display:none;
+        z-index:999;
+        width:620px;
+        height:200px;
+        margin-top:-100px;
+        margin-left:-210px;
+        background: #fff;
+        border:1px solid #ccc;
+        border-radius:5px;
+        box-shadow: 1px 1px 5px #fff;
+    }
+</style>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="top-title">
+        <h2 class="sub-header">充值&nbsp;&nbsp;<small>共{if isset($total)}{$total}{/if}条数据</small></h2>
+    </div>
+    <div style="clear:both"></div>
+    {include file="search.html"}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th >id</th>
+                <th >用户ID</th>
+                <th >金额</th>
+                <th >银行</th>
+                <th >卡号</th>
+                <th >平台</th>
+                <th >渠道</th>
+                <th >状态</th>
+                <th >错误提示</th>
+                <th >操作时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if $lists}
+            {foreach $lists as $item}
+            <tr class="search_order">
+                <td>{$item.id}</td>
+                <td>{$item.user_id}</td>
+                <td>{$item.amount}</td>
+                <td>{$item.bank_name}</td>
+                <td>{$item.bank_account}</td>
+                <td>{$item.from_platform}</td>
+                <td>{$item.pay_channel}</td>
+                <td>{if $item.status=='200'}成功{elseif $item.status=='400'}失败{else}处理中{/if}</td>
+                <td>{$item.error_message}</td>
+                <td>{if $item.update_time}{$item.update_time}{else}{$item.create_time}{/if}</td>
+                <th><a class="btn btn-primary btn-xs szpq" href="?c=recharge&a=detail&id={$item.id}">详情</a></th>
+                {if $item.status=='100'}
+                <th><a class="btn btn-primary btn-xs szpq" href="?c=recharge&a=syncOrderUp&id={$item.id}">同步订单状态</a></th>
+                {/if}
+            </tr>
+            {/foreach}
+            {/if}
+            </tbody>
+        </table>
+
+    <div>{if isset($pageNum)}{$pageNum}{/if}</div>
+    {include file="footer.html"}

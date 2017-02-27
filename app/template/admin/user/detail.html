@@ -1,0 +1,381 @@
+{include file="header.html"}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<style type="text/css">
+   th,td,h2{ text-align: center;}
+</style>
+    <div id="myTabContent" class="tab-content" style="margin-top:10px">
+       <!-- start 已上线 -->
+        <div class="table-responsive tab-pane fade in active" id="no2">
+            <input  type="hidden" name="id" value="{$basicInfo['id']}">
+            <input  type="hidden" name="phone" value="{$basicInfo['phone']}">
+            <table class="table table-striped table-hover table-bordered">
+                <h2>用户基本信息</h2>
+                <thead>
+                    <tr>
+                        <td>基本信息字段</td>
+                        <td>信息数据</td>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th >用户帐号</th>
+                    <th>{$basicInfo.phone}</th>
+                </tr>
+                <tr>
+                    <th >显示名称</th>
+                    <th>{$basicInfo.display_name}{if mask_string($basicInfo.username, 3, 6) != $basicInfo.display_name}<span class="btn btn-primary btn-xs szpq  editName">更正名称</span>{/if}</th>
+                </tr>
+                <tr>
+                    <th >性别</th>
+                    <th>{if $basicInfo.gender ==0}未知{elseif $basicInfo.gender ==1}男{else}女{/if}</th>
+                </tr>
+                <tr>
+                    <th >年龄</th>
+                    <td>{$basicInfo.birthday}</td>
+                </tr>
+                <tr>
+                    <th >邮箱</th>
+                    <th>{$basicInfo.email}</th>
+                </tr>
+                <tr>
+                    <th >邀请人id</th>
+                    <th>{if $basicInfo.from_user_id}{$basicInfo.from_user_id}{else if $basicInfo.invite_user_id}{$basicInfo.invite_user_id}{else}0{/if}</th>
+                </tr>
+                {if isset($basicInfo['invite_phone'])}
+                <tr>
+                    <th >邀请人手机号</th>
+                    <th>{$basicInfo['invite_phone']}</th>
+                </tr>
+                {/if}
+                <tr>
+                    <th >来源渠道</th>
+                    <th>{$basicInfo.from_channel}</th>
+                </tr>
+                <tr>
+                    <th >来源平台</th>
+                    <th>{$basicInfo.from_platform}</th>
+                </tr>
+                <tr>
+                    <th >会员等级</th>
+                    <th>{if $basicInfo.level == -1}非会员{else}会员{$basicInfo.level}级{/if}</th>
+                </tr>
+                <tr>
+                    <th >上次登录时间</th>
+                    <th>{$basicInfo.last_login}</th>
+                </tr>
+                <tr>
+                    <th >上次登录IP</th>
+                    <th>{$basicInfo.last_ip}</th>
+                </tr>
+                <tr>
+                    <th >是否启用</th>
+                    <th>
+                        {if $basicInfo.is_active == 1}
+                        <span class="adminstatus adminoffline">正常</span>
+                        {else}
+                        <span class="adminstatus adminonline">禁用</span>
+                        {/if}
+                    </th>
+                </tr>
+                <tr>
+                    <th >是否为后台管理员</th>
+                    <th>{if $basicInfo.is_admin ==0}不是{else}是{/if}</th>
+                </tr>
+                <tr>
+                    <th >是否为公司职员</th>
+                    <th>{if $basicInfo.is_staff ==0}不是{else}是{/if}</th>
+                </tr>
+                <tr>
+                    <th >创建时间</th>
+                    <th>{$basicInfo.create_time}</th>
+                </tr>
+                <tr>
+                    <th >交易密码次数是否冻结</th>
+                    <th style="vertical-align:middle;" class="btn btn-primary btn-xs szpq  trade_frozen">{if $rateInfo.trade_pwd_failed_count >0}已冻结{elseif $rateInfo.trade_pwd_failed_count ==0}未冻结{/if}</th>
+                </tr>
+                <tr>
+                    <th >登录密码次数是否冻结</th>
+                    <th style="vertical-align:middle;" class="btn btn-primary btn-xs szpq  signin_frozen">{if $rateInfo.login_failed_count >0}已冻结{elseif $rateInfo.login_failed_count ==0}未冻结{/if}</th>
+                </tr>
+                <tr>
+                    <th >实名认证次数是否冻结</th>
+                    <th style="vertical-align:middle;" data-value="2" class="btn btn-primary btn-xs szpq  frozen_identify">{if $rateInfo.identify_failed_count >0}已冻结{elseif $rateInfo.identify_failed_count ==0}未冻结{/if}</th>
+                </tr>
+                <tr>
+                    <th >清除短信冻结</th>
+                    <th style="vertical-align:middle;" data-value="1" class="btn btn-primary btn-xs szpq sms_status">清除</th>
+                </tr>
+                <tr>
+                    <th >初始化交易密码</th>
+                    <th style="vertical-align:middle; text-align: center;" data-value="1" class="btn btn-primary btn-xs szpq trade_pwd">初始化</th>
+                </tr>
+                <tr>
+                    <th >是否加入懒人计划</th>
+                    <th>{if $auto_planList}是{else}否{/if}</th>
+                    {if $auto_planList}
+                        <th style="vertical-align:middle;" data-toggle="modal" data-target="#myModal1" class="btn btn-primary btn-xs szpq">详情</th>
+                    {/if}
+                </tr>
+                </tbody>
+            </table>
+            <!--展示懒人计划列表-->
+            <tr>
+                <td>
+                    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title" id="myModalLabel1">懒人计划列表</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-striped table-hover" id="item{$item.id}" >
+                                        <thead>
+                                        <tr>
+                                            <th>懒人订单id</th>
+                                            <th>项目名称</th>
+                                            <th>时间</th>
+                                            <th>状态 </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {if $auto_planList}
+                                        {foreach $auto_planList as $plan}
+                                        <tr>
+                                            <td>{$plan.order_number}</td>
+                                            <td>{$plan.name}</td>
+                                            <td>{$plan.time}</td>
+                                            <td>{if $plan.status==0}退出失效{else if $plan.status==1}加入生效 {else if $plan.status==2}锁定 {else if $plan.status==3}完成 {else if $plan.status==4}失败{/if}</td>
+                                        </tr>
+                                        {/foreach}
+                                        {/if}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <!--结束-->
+            <table class="table table-striped table-hover table-bordered">
+                <h2>用户地址信息</h2>
+                <thead>
+                <tr>
+                    <td>地址信息字段</td>
+                    <td>地址信息数据</td>
+                </tr>
+
+                </thead>
+                <tbody>
+                {if $addressInfo }
+                <tr>
+                    <th >姓名</th>
+                    <th>{$addressInfo.name}</th>
+                </tr>
+                <tr>
+                    <th >地址</th>
+                    <th>{$addressInfo.address}</th>
+                </tr>
+                <tr>
+                    <th >省</th>
+                    <th>{$addressInfo.province}</th>
+                </tr>
+                <tr>
+                    <th >市</th>
+                    <th>{$addressInfo.city}</th>
+                </tr>
+                <tr>
+                    <th >区</th>
+                    <th>{$addressInfo.area}</th>
+                </tr>
+                <tr>
+                    <th >手机号</th>
+                    <th>{$addressInfo.phone_number}</th>
+                </tr>
+                <tr>
+                    <th >邮政编码</th>
+                    <th>{$addressInfo.postcode}</th>
+                </tr>
+                <tr>
+                    <th >是否为默认地址</th>
+                    <th>{if $addressInfo.is_default==0}是{else}不是{/if}</th>
+                </tr>
+                {else}
+                <tr><td colspan="2">没有地址信息</td></tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+        <!-- start 已上线 -->
+    </div>
+        <div class="button" id="button-back">
+            <a class="btn btn-default btn-back" href="?c=user&a=index">返回</a>
+        </div>
+</div>
+</div>
+</div>
+</body>
+{include file="footer.html"}
+<script>
+    //交易密码冻结/解冻
+    var uid = $('input[name=id]').val();
+    $(".trade_frozen").click(function(){
+        var status_msg = $(this).text();//1冻结了，需要解冻  0 未冻结，操作冻结
+        var status = '';
+        if(status_msg =='已冻结') {
+            status = '0';
+        }else if(status_msg =='未冻结') {
+            status = '1';
+        }else {
+            throwExc('信息错误,请重试');
+            return false;
+        }
+        $.ajax({
+            url:'?c=user&a=trade_frozen',
+            method:'post',
+            data:{
+                'status':status,
+                'uid':uid
+            },
+            dataType:'json',
+            success:function(data) {
+                if(data.error == 100){
+                    throwExc(data.msg);
+                    return false;
+                }else if(data.error == 200){
+                    showSucc(data.msg);
+                    setTimeout("load()",1000);
+                }
+            },
+        })
+    });
+    //登录冻结/解冻
+    $(".signin_frozen").click(function(){
+        var status_msg = $(this).text();//1冻结了，需要解冻  0 未冻结，操作冻结
+        var status = '';
+        if(status_msg =='已冻结') {
+            status = '0';
+        }else if(status_msg =='未冻结') {
+            status = '1';
+        }else {
+            throwExc('信息错误,请重试');
+            return false;
+        }
+        $.ajax({
+            url:'?c=user&a=signin_frozen',
+            method:'post',
+            data:{
+                'status':status,
+                'uid':uid
+            },
+            dataType:'json',
+            success:function(data) {
+                if(data.error == 100){
+                    throwExc(data.msg);
+                    return false;
+                }else if(data.error == 200){
+                    showSucc(data.msg);
+                    setTimeout("load()",1000);
+                }
+            },
+        })
+    });
+    //登录冻结/解冻
+    $(".frozen_identify").click(function(){
+        var status_msg = $(this).text();//1冻结了，需要解冻  0 未冻结，操作冻结
+        var status = '';
+        if(status_msg =='已冻结'){
+            status = '0';
+        }else if(status_msg =='未冻结'){
+            status = '1';
+        }else {
+            throwExc('信息错误,请重试');
+            return false;
+        }
+        $.ajax({
+            url:'?c=user&a=frozen_identify',
+            method:'post',
+            data:{
+                'status':status,
+                'uid':uid
+            },
+            dataType:'json',
+            success:function(data){
+                if(data.error == 100){
+                    throwExc(data.msg);
+                    return false;
+                }else if(data.error == 200){
+                    showSucc(data.msg);
+                    setTimeout("load()",1000);
+                }
+            },
+        })
+    });
+    //登录冻结/解冻
+    $(".trade_pwd").click(function(){
+        $.ajax({
+            url:'?c=user&a=trade_pwd',
+            method:'post',
+            data:{
+                'uid':uid
+            },
+            dataType:'json',
+            success:function(data){
+                if(data.error == 100){
+                    throwExc(data.msg);
+                    return false;
+                }else if(data.error == 200){
+                    showSucc(data.msg);
+                    setTimeout("load()",1000);
+                }
+            },
+        })
+    });
+    //修改用户显示名称
+    $(".editName").click(function(){
+        $.ajax({
+            url:'?c=user&a=edit_displayName',
+            method:'post',
+            data:{
+                'uid':uid
+            },
+            dataType:'json',
+            success:function(data){
+                if(data.error == 100){
+                    throwExc(data.msg);
+                    return false;
+                }else if(data.error == 200){
+                    showSucc(data.msg);
+                    setTimeout("load()",1000);
+                }
+            },
+        })
+    });
+    function load(){
+        window.location.href="?c=user&a=detail&id="+uid;
+    }
+    //后台清除短信限制
+    var mobile = $('input[name=phone]').val();
+    $('.sms_status').click(function(){
+        $.ajax({
+            url:'?c=user&a=reliveSms',
+            method:'post',
+            data:{
+                'mobile':mobile,
+            },
+            dataType:'json',
+            success:function(data) {
+                if(data.error == 100)
+                {
+                    throwExc(data.msg);
+                    return false;
+                }else if(data.error == 200)
+                {
+                    showSucc(data.msg);
+                    setTimeout("load()",1000);
+                }
+            },
+        })
+    });
+</script>

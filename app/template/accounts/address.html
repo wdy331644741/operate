@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="registerForm" class="login-form">
+    <div class="registerFormDiv">
+        <form method="post" action="">
+        <ul class="registerForm">
+            <li class="clearfix">
+                <label>真实姓名 ：</label>
+                <!--{if $user_profile.firstname == null}-->
+                <a href="javascript:;">实名认证</a>
+                <!--{else}-->
+                <input id="registerMobile" readonly type="text" name="realname" />
+                <!--{/if}-->
+            </li><br/>
+
+
+
+            <li id="passWordInput" class="pwdLi clearfix">
+                <label>邮箱地址 ：</label>
+                <input type="text" name="email" value="{$user_profile.email}"/>
+            </li><br/>
+
+            <li id="passWordInput" class="pwdLi clearfix">
+                <label>性别 ：</label>
+                <label><input type="radio" {if $user_profile.gender ==0}checked{/if} value="0" name="gender" />保密</label>
+                <label><input type="radio" {if $user_profile.gender ==1}checked{/if} value="1" name="gender" />男</label>
+                <label><input type="radio" {if $user_profile.gender ==2}checked{/if} value="2" name="gender" />女</label>
+            </li><br/>
+
+            <li id="passWordInput" class="pwdLi clearfix">
+                <label>生日 ：</label>
+                <input type="text" name="birthday[]" value="{array_shift($user_profile['birthday'])}" />年
+                <input type="text" name="birthday[]" value="{array_shift($user_profile['birthday'])}" />月
+                <input type="text" name="birthday[]" value="{array_shift($user_profile['birthday'])}" />日
+            </li><br/>
+
+        </ul>
+            <button id="loginSubmit" name="submit">提交</button>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

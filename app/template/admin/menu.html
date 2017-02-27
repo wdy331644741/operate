@@ -1,0 +1,41 @@
+    <nav class="navbar navbar-inverse navbar-fixed-top navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="admin.php?c=index&a=index">微理财用户后台</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="">管理员： {$CURRENT_USER}</a></li>
+          
+            <li><a href="admin.php?a=logout&c=login">退出</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </nav>
+    <div class="container-fluid" id="authUrlList">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          {foreach from=$rbacList item=item}
+          <ul class="nav nav-sidebar">
+            <li class="active" >
+             <!-- <span class="active">{$item.remark}</span>-->
+              <a>{$item.remark}</a>
+            </li>
+            {foreach from=$item.child item=controls}
+            <li class="{if $controls.controller==$smarty.get.c && $controls.action==$smarty.get.a}on{/if}"><a href="{$controls.url}">{$controls.remark}</a></li><!--  class="{if $smarty.get.c eq $controls.controller}active{/if}" -->
+            {/foreach}
+          </ul>
+          {/foreach}
+        </div>
+      </div>
+    </div>    
+

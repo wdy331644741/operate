@@ -1,0 +1,115 @@
+{include file="header.html"}
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+          <h2 class="sub-header">分配权限&nbsp;&nbsp;<small>node</small></h2>
+
+          <div id="myTabContent" class="tab-content" style="margin-top:10px">
+
+             <!-- start 已上线 -->
+          <div class="table-responsive tab-pane fade in active" id="no2">
+          <form class="form-horizontal"   method="post" id="myForm">
+            <table class="table table-striped table-hover">
+             
+              <tbody>
+      				{foreach from=$nodeList item=item }
+                <tr>
+                  <th class="right" colspan="10">
+                      <input type="checkbox"  name="node[]" value="{$item.id}"
+                     {if $item.access== 1} checked="checked" {/if}
+                      /> <span class="lbl">&nbsp;&nbsp;{$item.remark}</span>
+
+                  </th>
+
+              </tr>
+              {foreach from=$item.child item=val}
+                <tr>
+                  <td  class="right td{$item.id}" style="width: 300px;">&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"  name="node[]" value="{$val.id}"
+                     {if $val.access== 1} checked="checked" {/if}
+                      /> <span class="lbl">&nbsp;&nbsp;{$val.remark}</span>
+                  </td>
+                 
+                  {foreach from=$val.child item=v }
+                     <td class="td{$item.id}" style="width: 150px;" >&nbsp;&nbsp;&nbsp;&nbsp;
+                     <input type="checkbox"  name="node[]" value="{$v.id}"
+                     {if $v.access== 1} checked="checked" {/if} ><span class="lbl">&nbsp;&nbsp;{$v.remark}</span>
+                  </td>
+                  {/foreach}
+                  
+
+              </tr>
+              {/foreach}
+
+      				<!-- <tr class="initialized parent collapsed expander" id="tr{$item.id}">
+					       <td><input class="ids" type="checkbox" value="{$item.id}-{$item.uid}" name="id[]"></td>  
+
+      					<td><span style="padding-left: 20px"{if $item.show==1} class="expander"{/if} onclick="tr_show({$item.id})"></span><span>{$item.id}</span></td>
+      					<td>{$item.controller}</td>
+      					<td>{$item.remark}</td>
+           			<td>{$item.create_time}</td>
+           			
+				      </tr>
+               -->
+				  {/foreach}
+           <tr>
+                  <td colspan="10">
+                      <input type="hidden" name="group_id" value="{$group_id}">
+                      <div class="btn btn-success pull-left " id="submit">
+                          提交
+                      </div>
+                  </td>
+              </tr>
+              </tbody>
+            </table>
+          </form>
+            <!--  <div>{$pagination_link}</div> -->
+          </div>
+             <!-- end 已上线 -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript">
+  	  jQuery(function( $ ){
+
+            $('table th input:checkbox').on('click',function(){
+                var that=this;
+                var id='.td'+$(this).val();
+                $(this).closest('tr').nextAll().find(id+' input:checkbox')
+                .each(function(){
+                    this.checked=that.checked;
+                    //$(this).closest('tr').toggleClass('selected');
+                });
+
+            });
+            $('table .right input:checkbox').on('click',function(){
+                var that=this;
+                //alert($(this).closest('td').attr('class'));
+                $(this).closest('tr').find('td input:checkbox')
+                .each(function(){
+                    this.checked=that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+
+            });
+              $("#submit").click(function(){
+                       var id=$('input[name=group_id]').val();
+                        $.post("?c=admin_role&a=rbac",$("#myForm").serialize(),function( response ){
+                            if(response.error==100) {
+                                throwExc(response.msg);
+                                return false;
+                            }else if(response.error==200) {
+                                showSucc(response.msg);
+                                setTimeout("load("+id+")",1000);
+                            }
+                        },"json");
+                    });
+         
+
+        })
+       function load(id){
+           window.location.href="?c=admin_role&a=rbac&id="+id;
+       }
+  </script>

@@ -1,0 +1,74 @@
+{include file="header.html"}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+             <div class="top-title">
+            <h2 class="sub-header">修改展示信息权限</h2>
+            <div class="top-tools">
+              <a class="btn btn-default" href="?c=admin_role">返回</a>
+            </div>
+          </div>
+          <div id="myTabContent" class="tab-content" style="margin-top:10px">
+
+             <!-- start 线下合同 -->
+             <div class="tab-pane fade in active" id="no2">
+           
+              <form class="form-horizontal"   method="post" action="" >
+			    {if $roleList}
+                  {foreach $roleList as $role}
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">{$role['name']}：</label>
+                      <div class="col-sm-7">
+                          <input type="checkbox" name="{$role['id']}[id_number]" {if $result}{foreach $result as  $list}{if $list['role_id']==$role['id']}{if $list['id_number']=='2'}checked{/if}{/if}{/foreach}{/if} value="2" >身份证号
+                          <input type="checkbox" name="{$role['id']}[phone]" {if $result}{foreach $result as  $list}{if $list['role_id']==$role['id']}{if $list['phone']=='2'}checked{/if}{/if}{/foreach}{/if} value="2" >手机号
+                          <input type="radio" name="{$role['id']}[select_type]" {if $result}{foreach $result as  $list}{if $list['role_id']==$role['id']}{if $list['select_type']=='1'}checked{/if}{/if}{/foreach}{/if} value="1" >普通查询
+                          <input type="radio" name="{$role['id']}[select_type]" {if $result}{foreach $result as  $list}{if $list['role_id']==$role['id']}{if $list['select_type']=='2'}checked{/if}{/if}{/foreach}{/if} value="2" >高级查询查询
+                      </div>
+                  </div>
+
+                  {/foreach}
+                {/if}
+                  <div class="form-group">
+                      <div class="col-sm-7">
+                          <button type="submit" class="btn btn-primary add_company pull-right" >提交</button>
+                      </div>
+
+                  </div>
+
+
+              </form>
+
+             </div>
+             <!-- end 线下合同 -->
+          </div>
+          <hr/>
+        </div>
+<script>
+/*$(".add_company").click(function(){
+   var name=$('input[name=name]').val();
+   var remark=$('#remark').val();
+   var status=$('#status').val();
+   if($.trim(name)==''){
+       throwExc('角色名称必须填写');
+       return false;
+   }
+    $.post("?c=admin_role&a=add",{
+              'status':status,
+              'remark':remark,
+              'name':name
+          },function( response ){
+              if(response.error==100) {
+                  throwExc(response.msg);
+                  return false;
+              }else if(response.error==200) {
+                  showSucc(response.msg);
+                  setTimeout("load()",1000);
+              }
+          },"json");
+});*/
+
+function load(){
+    window.location.href="?c=admin_role&a=index";
+}
+
+
+</script>
+{include file="footer.html"}

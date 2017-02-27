@@ -1,0 +1,78 @@
+{include file="header.html"}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+          <h2 class="sub-header">角色列表&nbsp;&nbsp;<small>role</small></h2>
+
+           <a href="?c=admin_role&a=add" class="btn btn-success">添加</a>
+           <a href="?c=admin_role&a=edit_user_role" class="btn btn-success">分配展示用户信息权限</a>
+
+          <div id="myTabContent" class="tab-content" style="margin-top:10px">
+
+             <!-- start 已上线 -->
+          <div class="table-responsive tab-pane fade in active" id="no2">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                 	<!-- <th><input type="checkbox"></th> -->
+          					<th colspan="1" rowspan="1">编号</th>
+          					<th >角色名称</th>
+          					<th >角色描述</th>
+          					<th >创建时间</th>
+          					<th >状态</th>
+	                <th >操作</th>
+                </tr>
+                </tr>
+              </thead>
+              <tbody>
+				{foreach from=$roleList item=item key=key}
+				<tr >
+					<!--<td><input class="ids" type="checkbox" value="{$item.id}-{$item.uid}" name="id[]"></td>  -->
+					<td>{$item.id}</td>
+					<td>{$item.name}</td>
+					<td>{$item.remark}</td>
+           			<td>{$item.create_time}</td>
+           			<td>
+           				{if $item.status ==Model\Pub::STATUS_DISABLE}
+           				<span class="adminstatus adminoffline">{$item.roleStatus}</span>
+           				{else}
+           				<span class="adminstatus adminonline">{$item.roleStatus}</span>
+           				{/if}
+           			</td>
+                  <td>
+                    <a href="?c=admin_role&a=edit&id={$item.id}" class="btn btn-primary btn-xs szpq">编辑</a>
+                  {if $item.status ==Model\Pub::STATUS_ENABLE}
+                    <a href="javascript:void(0);"  class="btn btn-danger btn-xs status">禁用</a>  
+           				{else}
+           				  <a href="javascript:void(0);"  class="btn btn-primary btn-xs status">启用</a>
+           				{/if}  
+                   <a href="?c=admin_role&a=rbac&id={$item.id}" class="btn btn-primary btn-xs szpq">分配权限</a>
+                  </td>
+				      </tr>
+				  {/foreach}
+              </tbody>
+            </table>
+             <div>{$pagination_link}</div>
+          </div>
+             <!-- end 已上线 -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript">
+  	$(function(){
+  		$(".status").click(function(){
+  			var id=$(this).parent().parent().find('td:first').html();
+  			var msg=$(this).parent().parent().find('.adminstatus').html();
+  			if(msg=='启用'){
+                msg='禁用';
+  			}else{
+                msg='启用';
+  			}
+  			if(confirm('你确定要'+msg+"吗？")){
+  				window.location.href="?c=admin_role&a=del&id="+id;
+  			}
+  		});
+  	})
+  </script>
