@@ -1,11 +1,11 @@
 {include file="header.html"}
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-     <div class="top-title">
-            <h2 class="sub-header">修改管理员</h2>
-            <div class="top-tools">
-              <a class="btn btn-default" href="?c=admin_user">返回</a>
-            </div>
-          </div>
+    <div class="top-title">
+        <h2 class="sub-header">修改管理员</h2>
+        <div class="top-tools">
+            <a class="btn btn-default" href="?c=admin_user">返回</a>
+        </div>
+    </div>
     <div id="myTabContent" class="tab-content" style="margin-top:10px">
 
         <!-- start 线下合同 -->
@@ -19,22 +19,22 @@
                         <input type="text" name="name" value="{$userInfo.name}" class="form-control" placeholder="管理员昵称">
                     </div>
                 </div>
-                
-                 <div class="form-group">
-                      <label  for="inputSelect" class="col-sm-2 control-label">选择角色：</label>
-                      <div class="col-sm-7">
-                          <div class="input-group">
-                              <select class="form-control" name="role" id="role">
-                                  {foreach from=$roleList key=k item=val}
-                                  <option value="{$val.id}" {if $userInfo.role_id== $val.id}selected{/if}>{$val.name}</option>
-                                  {/foreach}
-                              </select>
-                      <span class="input-group-btn">
+
+                <div class="form-group">
+                    <label  for="inputSelect" class="col-sm-2 control-label">选择角色：</label>
+                    <div class="col-sm-7">
+                        <div class="input-group">
+                            <select class="form-control" name="role" id="role">
+                                {foreach from=$roleList key=k item=val}
+                                <option value="{$val.id}" {if $userInfo.role_id== $val.id}selected{/if}>{$val.name}</option>
+                                {/foreach}
+                            </select>
+                            <span class="input-group-btn">
                         <button class="btn btn-default addbank" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                       </span>
-                          </div>
-                      </div>
-                  </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label  for="inputSelect" class="col-sm-2 control-label">状态：</label>
                     <div class="col-sm-7">
@@ -44,7 +44,7 @@
                                 <option value="{$k}" {if $userInfo.is_del == $k}checked{/if}>{$val}</option>
                                 {/foreach}
                             </select>
-                      <span class="input-group-btn">
+                            <span class="input-group-btn">
                         <button class="btn btn-default addbank" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                       </span>
                         </div>
@@ -56,25 +56,14 @@
                         <input type="hidden" name="id" value="{$userInfo.id}">
                         <button type="button" class="btn btn-primary add_company pull-right" >提交</button>
                     </div>
-
                 </div>
-
-
             </form>
-
         </div>
         <!-- end 线下合同 -->
 
-
     </div>
     <hr/>
-
-
-
-
 </div>
-
-
 
 <script>
 
@@ -106,7 +95,7 @@
             return false;
         }
         if(isNaN(role)){
-           throwExc('请选择角色');
+            throwExc('请选择角色');
             return false;
         }
         $.post("?c=admin_user&a=edit",{

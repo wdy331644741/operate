@@ -6,6 +6,11 @@ namespace App\service\rpcserverimpl;
 use Lib\UserData;
 use App\service\exception\AllErrorException;
 
+/**
+ * 用户加息券
+ * Class CouponRpcImpl
+ * @package App\service\rpcserverimpl
+ */
 class CouponRpcImpl extends BaseRpcImpl {
 
     /**

@@ -84,15 +84,14 @@
                     {
                         if(index == 'filename')
                         {
-                           $("#imgUrl").val(imgval.name);
-                           $("#img_view").attr('src',imgval.url);
-                           $("#img_view").show();
+                            $("#imgUrl").val(imgval.name);
+                            $("#img_view").attr('src',imgval.url);
+                            $("#img_view").show();
                         }
                     });
                 }else{
                     layer.alert(data.err_msg);
                 }
-
             }
         });
     });
@@ -112,7 +111,7 @@
                         layer.alert(data.message);
                     }
                     else {
-                        window.location.href = '{U("admin.php",["c" => I("get.c/s","index")])}';
+                        window.location.href = '{U("admin.php",["c" => I("get.c/s","index"),"a"=>"index"])}';
                     }
                 }
 

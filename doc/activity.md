@@ -62,12 +62,16 @@
 
 ##### 请求参数
 
-	{
-		"jsonrpc": "2.0",
-		"method": "activities",
-		"params": [],
-		"id": 1
-	}
+    {
+        "jsonrpc": "2.0",
+        "method": "activities",
+        "params": [
+            {
+               "page": 1
+            }
+        ],
+        "id": 1
+    }
 
 
 ##### 返回结果
@@ -102,7 +106,11 @@
 	{
 		"jsonrpc": "2.0",
 		"method": "noticeList",
-		"params": [],
+		"params": [
+              {
+                 "page": 1
+              }
+          ],
 		"id": 1
 	}
 

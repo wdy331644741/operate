@@ -30,7 +30,6 @@ class MarketingCheckin extends Model {
             'create_time' => date('Y-m-d H:i:s')
         );
         $data['continue_days'] = empty($yesterdayCheckInfo) ? 1 : $yesterdayCheckInfo['continue_days'];
-
         return $this->add($data);
     }
 

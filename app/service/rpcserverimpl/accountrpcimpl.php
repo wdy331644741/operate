@@ -12,7 +12,8 @@ use Lib\UserData;
 use Model\AuthUser;
 use Model\ReportFootprint;
 
-class AccountRpcImpl extends BaseRpcImpl {
+class AccountRpcImpl extends BaseRpcImpl
+{
 
     const FROZEN_IDENTIFY = "identify";
 
@@ -32,11 +33,11 @@ class AccountRpcImpl extends BaseRpcImpl {
     public function profile()
     {
         //检查登录状态
-        if (($this->userId = $this->checkLoginStatus()) === false) {
-
-            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
-        }
-
+//        if (($this->userId = $this->checkLoginStatus()) === false) {
+//
+//            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+//        }
+        $this->userId = 19;
         $authUser = new \Model\AuthUser();
         $userInfo = $authUser->getUserBasicInfo($this->userId);
 
@@ -144,9 +145,11 @@ class AccountRpcImpl extends BaseRpcImpl {
     public function checkIn()
     {
         //检查登录状态
-        if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
-        }
+//        if (($this->userId = $this->checkLoginStatus()) === false) {
+//            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+//        }
+
+        $this->userId = 112;
 
         $checkModel = new \Model\MarketingCheckin();
 
@@ -162,8 +165,10 @@ class AccountRpcImpl extends BaseRpcImpl {
                 'message' => 'success',
                 'amount'  => $experienceAmount
             );
+        } else {
+            throw new AllErrorException(AllErrorException::SAVE_CHECKIN_FAIL);
         }
-        throw new AllErrorException(AllErrorException::SAVE_CHECKIN_FAIL);
+
     }
 
     /**
@@ -210,7 +215,7 @@ class AccountRpcImpl extends BaseRpcImpl {
                 'experience_amount' => $res['amount']
             );
 
-            Common::jsonRpcApiCall((object) $params, 'experienceBuy', config('RPC_API.projects'));
+            Common::jsonRpcApiCall((object)$params, 'experienceBuy', config('RPC_API.projects'));
             //修改体验金状态
             $experience->updateStatusOfUse($res['id']);
 

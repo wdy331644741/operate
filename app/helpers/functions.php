@@ -30,7 +30,7 @@ if (!function_exists('get_client_ip')) {
         ];
         foreach ($keys as $key) {
             if (array_key_exists($key, $_SERVER)) {
-                foreach (explode(',', $_SERVER[ $key ]) as $ip) {
+                foreach (explode(',', $_SERVER[$key]) as $ip) {
                     $ip = trim($ip); // just to be safe
 
                     if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false) {
@@ -123,12 +123,12 @@ if (!function_exists('config')) {
         }
 
         if (array_key_exists($key, $array)) {
-            return $array[ $key ];
+            return $array[$key];
         }
 
         foreach (explode('.', $key) as $segment) {
             if (is_array($array) && array_key_exists($segment, $array)) {
-                $array = $array[ $segment ];
+                $array = $array[$segment];
             } else {
                 return $default;
             }
@@ -156,7 +156,7 @@ if (!function_exists('generate_invite_code')) {
         //如果32进制小于6位
         if (($len = strlen($hex32)) < 6) {
             while (6 - $len) {
-                $fillStr .= $codeSet[ mt_rand(0, 3) ];
+                $fillStr .= $codeSet[mt_rand(0, 3)];
                 $len++;
             }
         }
@@ -175,8 +175,8 @@ if (!function_exists('array_orderby')) {
             if (is_string($field)) {
                 $tmp = array();
                 foreach ($data as $key => $row)
-                    $tmp[ $key ] = $row[ $field ];
-                $args[ $n ] = $tmp;
+                    $tmp[$key] = $row[$field];
+                $args[$n] = $tmp;
             }
         }
         $args[] = &$data;
@@ -282,10 +282,10 @@ function node_merges($node, $access = array(), $pid = 0, $id = 'id')
     $arr = array();
     foreach ($node as $k => $nodeList) {
         if (is_array($node)) {
-            $nodeList['access'] = in_array($nodeList[ $id ], $access) ? 1 : 0;
+            $nodeList['access'] = in_array($nodeList[$id], $access) ? 1 : 0;
         }
         if ($nodeList['parent_id'] == $pid) {
-            $nodeList['child'] = node_merges($node, $access, $nodeList[ $id ]);
+            $nodeList['child'] = node_merges($node, $access, $nodeList[$id]);
             if (empty($nodeList['child'])) {
                 $nodeList['show'] = 0;
             } else {
@@ -360,10 +360,10 @@ function assoc_unique($arr, $key)
     $tmpKey = array();
     $data = array();
     foreach ($arr as $item) {
-        if (in_array($item[ $key ], $tmpKey)) {
+        if (in_array($item[$key], $tmpKey)) {
             continue;
         }
-        $tmpKey[] = $item[ $key ];
+        $tmpKey[] = $item[$key];
         $data[] = $item;
     }
 
@@ -396,12 +396,12 @@ function maskData($data)
             } else {
                 if ($adminUserRole['id_number'] == 2) {
                     if ($key == 'id_number') {
-                        $data[ $key ] = mask_string($val, 6, 8);
+                        $data[$key] = mask_string($val, 6, 8);
                     }
                 }
                 if ($adminUserRole['phone'] == 2) {
                     if ($key == 'phone') {
-                        $data[ $key ] = mask_string($val, 3, 6);
+                        $data[$key] = mask_string($val, 3, 6);
                     }
                 }
             }
@@ -412,3 +412,30 @@ function maskData($data)
     return $data;
 }
 
+/**
+ * $randData = [['id' => 1, 'probability' => 0.999],['id' => 2, 'probability' => 0.001]];
+ * @param $randData
+ * @return string
+ */
+function getRandChance($randData)
+{
+    //概率数组的总概率精度
+    $result = '';
+    $proSum = '';
+    foreach ($randData as $key => $item) {
+        $sortData[] = ['id' => $item['id'], 'probability' => $item['probability'] * 1000];
+        $proSum += $item['probability'] * 1000;
+    }
+
+    //概率数组循环
+    array_multisort($sortData);
+    $randNum = mt_rand(1, $proSum);
+
+    foreach ($sortData as $current) {
+        if (intval($randNum) <= intval($current['probability'])) {
+            $result = $current['id'];
+            break;
+        }
+    }
+    return $result;
+}

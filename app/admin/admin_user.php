@@ -68,6 +68,7 @@ function add()
         $adminUserModel->is_form = '1';
         $adminUserModel->password = md5($password);
        // $adminUserModel->salt = rand(1000,9000);
+        
         if ($adminUserModel->save()) {
             ajaxReturn(array('error' => 200, 'msg' => '添加成功'));
         } else {

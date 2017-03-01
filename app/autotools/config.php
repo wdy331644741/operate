@@ -7,7 +7,7 @@ return [
     "DB_USERNAME" => 'root',//用户名
 //    "DB_PASSWORD" => 'secret',//密码
    "DB_PASSWORD" => '123123',//密码
-    "DB_NAME" => 'demand_passport',//数据库名
+    "DB_NAME" => 'demand_operate',//数据库名
     "DB_PREFIX" => '',//表前缀
     "DB_PCONNECT" => false, //长连接
     "DB_DEBUG" => true, //调试模式

@@ -17,20 +17,22 @@ class MarketingArticle extends Model
         $where = ['id' => $id];
         $row = $this->where($where)->get()->row();
         if ($row->status == self::STATUS_TRUE)
-            $status =  self::STATUS_FALSE;
+            $status = self::STATUS_FALSE;
         else
-            $status =  self::STATUS_TRUE;
+            $status = self::STATUS_TRUE;
         return $this->where($where)->upd(['status' => $status]);
     }
 
-    public function noticeList()
+    public function noticeList($page)
     {
+        $start = intval(($page - 1) * C('PAGE_SIZE'));
         $articleNode = new MarketingArticleNode();
         $noticeCate = $articleNode->where("`name` = 'notice'")->get()->rowArr();
 
         return $this->fields('id, title, content')
             ->where("`is_del` = 0 and `status` = 1 and cate_node = {$noticeCate['id']}")
             ->orderby("sort DESC")
+            ->limit($start, C('PAGE_SIZE'))
             ->get()->resultArr();
     }
 

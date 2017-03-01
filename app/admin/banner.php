@@ -4,6 +4,7 @@
  */
 function add()
 {
+
     if (IS_POST) {
         $title = $imgUrl = $linkUrl = $pos = $sort = $startTime = $endTime = $status = null;
         $requireFields = ['title', 'imgUrl','linkUrl', 'pos', 'sort', 'startTime', 'endTime', 'status'];
@@ -12,25 +13,29 @@ function add()
             if ('' === $$field)
                 ajaxReturn(['error' => 4000, 'message' => $field . '不能为空']);
         }
-        $data['title'] = $title;
-        $data['img_url'] = $imgUrl;
-        $data['link_url'] = $linkUrl;
-        $data['pos'] = $pos;
-        $data['sort'] = $sort;
-        $data['start_time'] = $startTime;
-        $data['end_time'] = $endTime;
-        $data['status'] = $status;
-        $data['create_time'] = date('Y-m-d H:i:s');//注册时间
 
+
+        $bannerModel = new Model\MarketingBanner();
+
+        $bannerModel->title = $title;
+        $bannerModel->img_url = $imgUrl;
+        $bannerModel->link_url = $linkUrl;
+        $bannerModel->pos = $pos;
+        $bannerModel->sort = $sort;
+        $bannerModel->start_time = $startTime;
+        $bannerModel->end_time = $endTime;
+        $bannerModel->is_del = 0;
+        $bannerModel->status = $status;
+        $bannerModel->create_time = date('Y-m-d H:i:s');//注册时间
 
         try {
-            $bannerModel = new \Model\MarketingBanner();
-            //创建用户账号
-            $userId = $bannerModel->add($data);
-            if (!$userId)
+
+            $result = $bannerModel->save();
+            if (!$result)
                 throw new \Exception('添加banner失败', 4011);
 
             ajaxReturn(['error' => 0, 'message' => '添加banner图成功']);
+
         } catch (\Exception $e) {
             ajaxReturn(['error' => $e->getCode(), 'message' => $e->getMessage()]);
         }
@@ -115,7 +120,6 @@ function upd()
         $data['end_time'] = $endTime;
         $data['status'] = $status;
         $data['update_time'] = date('Y-m-d H:i:s');//注册时间
-
 
         try {
             $bannerModel = new \Model\MarketingBanner();

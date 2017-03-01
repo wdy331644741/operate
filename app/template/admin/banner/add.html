@@ -114,11 +114,10 @@
                 'data': $('#form01').serialize(),
                 'dataType': 'json',
                 'success': function (data) {
-                    if (data.error != 0) {
+                    if (data.error == "undefined") {
                         layer.alert(data.message);
-                    }
-                    else {
-                        window.location.href = '{U("admin.php",["c" => I("get.c/s","index")])}';
+                    } else {
+                        window.location.href = '{U("admin.php",["c" => I("get.c/s","index"),"a" => "index"])}';
                     }
                 }
 
