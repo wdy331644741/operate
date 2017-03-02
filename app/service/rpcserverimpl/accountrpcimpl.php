@@ -148,27 +148,21 @@ class AccountRpcImpl extends BaseRpcImpl
 //        if (($this->userId = $this->checkLoginStatus()) === false) {
 //            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
 //        }
+//        $userId = $this->userId;
 
-        $this->userId = 112;
+        $userId = $this->userId = 13;
 
-        $checkModel = new \Model\MarketingCheckin();
+        $params = array(
+            'user_id' => $userId,
+        );
+        //使用体验金
+        $message = Common::jsonRpcApiCall((object)$params, 'userSignIn', config('RPC_API.passport'));
 
-        if ($checkModel->isChecked($this->userId)) {
-            throw new AllErrorException(AllErrorException::HAD_CHECKED_IN);
-        }
-
-        if ($checkModel->checkIn($this->userId)) {
-            $experienceAmount = $this->sendAwardToUserIfExist(self::CHECK_IN_TYPE);
-
-            return array(
-                'code'    => 0,
-                'message' => 'success',
-                'amount'  => $experienceAmount
-            );
+        if (isset($message['result']) && count($message['result']) != 0) {
+            return $message['result'];
         } else {
             throw new AllErrorException(AllErrorException::SAVE_CHECKIN_FAIL);
         }
-
     }
 
     /**
