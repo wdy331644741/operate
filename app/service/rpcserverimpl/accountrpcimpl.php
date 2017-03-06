@@ -145,12 +145,10 @@ class AccountRpcImpl extends BaseRpcImpl
     public function checkIn()
     {
         //检查登录状态
-//        if (($this->userId = $this->checkLoginStatus()) === false) {
-//            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
-//        }
-//        $userId = $this->userId;
-
-        $userId = $this->userId = 13;
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+        $userId = $this->userId;
 
         $params = array(
             'user_id' => $userId,
@@ -162,6 +160,59 @@ class AccountRpcImpl extends BaseRpcImpl
             return $message['result'];
         } else {
             throw new AllErrorException(AllErrorException::SAVE_CHECKIN_FAIL);
+        }
+    }
+
+    /**
+     * 获取用户的签到记录
+     *
+     * @JsonRpcMethod
+     */
+    public function userSignInMonth($params)
+    {
+
+        if (($this->userId = $this->checkLoginStatus()) === false || empty($params->start_date)) {
+            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+        }
+
+        $postParams = array(
+            'user_id'    => $params->user_id,
+            'start_date' => $params->start_date,
+            'end_date'   => $params->end_date,
+        );
+
+        $message = Common::jsonRpcApiCall((object)$postParams, 'userSignInMonth', config('RPC_API.passport'));
+
+        if (isset($message['result']) && count($message['result']) != 0) {
+            return $message['result'];
+        } else {
+            throw new AllErrorException(AllErrorException::SAVE_CHECKIN_FAIL);
+        }
+
+    }
+
+    /**
+     * 用户补签到
+     *
+     * @JsonRpcMethod
+     */
+    public function supplementUserSignIn($params)
+    {
+        if (($this->userId = $this->checkLoginStatus()) === false || empty($params->start_date)) {
+            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+        }
+
+        $postParams = array(
+            'user_id'    => $params->user_id,
+            'date' => $params->date,
+        );
+
+        $message = Common::jsonRpcApiCall((object)$postParams, 'supplementUserSignIn', config('RPC_API.passport'));
+
+        if (isset($message['result']) && count($message['result']) != 0) {
+            return $message['result'];
+        } else {
+            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
         }
     }
 
