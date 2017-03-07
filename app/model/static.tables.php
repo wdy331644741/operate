@@ -1542,6 +1542,100 @@ return array (
     ),
     'pk_name' => 'id',
   ),
+  'config_earnings' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '11',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'title' => 
+    array (
+      'field' => 'title',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '255',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'amount' => 
+    array (
+      'field' => 'amount',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'desc' => 
+    array (
+      'field' => 'desc',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '255',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'start_time' => 
+    array (
+      'field' => 'start_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'end_time' => 
+    array (
+      'field' => 'end_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'is_del' => 
+    array (
+      'field' => 'is_del',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '1',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'pk_name' => 'id',
+  ),
   'config_purchase' => 
   array (
     'id' => 
@@ -2985,6 +3079,90 @@ return array (
       'default' => NULL,
       'unsigned' => false,
       'null' => false,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'pk_name' => 'id',
+  ),
+  'marketing_revenuesharing' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '11',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'user_id' => 
+    array (
+      'field' => 'user_id',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '11',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'type' => 
+    array (
+      'field' => 'type',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '20',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'amount' => 
+    array (
+      'field' => 'amount',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'start_time' => 
+    array (
+      'field' => 'start_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'end_time' => 
+    array (
+      'field' => 'end_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => '',
+      'default' => '100',
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
     ),
     'update_time' => 
     array (

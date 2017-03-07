@@ -10,6 +10,7 @@ namespace App\service\rpcserverimpl;
 use App\service\exception\AllErrorException;
 use Lib\UserData;
 use Model\AuthUser;
+use Model\Model;
 use Model\ReportFootprint;
 
 class AccountRpcImpl extends BaseRpcImpl
@@ -203,8 +204,8 @@ class AccountRpcImpl extends BaseRpcImpl
         }
 
         $postParams = array(
-            'user_id'    => $params->user_id,
-            'date' => $params->date,
+            'user_id' => $params->user_id,
+            'date'    => $params->date,
         );
 
         $message = Common::jsonRpcApiCall((object)$postParams, 'supplementUserSignIn', config('RPC_API.passport'));
@@ -215,6 +216,37 @@ class AccountRpcImpl extends BaseRpcImpl
             throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
         }
     }
+
+
+    /**
+     * 共享好友收益
+     *
+     * @JsonRpcMethod
+     */
+    public function friendsShareEarnings($params)
+    {
+        if (empty($params->userId) || empty($params->uesCashTotal) || empty($params->uesInterestCouponTotal)) {
+            throw new AllErrorException(AllErrorException::API_MIS_PARAMS, [], '必要参数不能为空');
+        }
+        $model = new \Model\MarketingRevenueSharing();
+
+        $data = [
+            'user_id'    => $params->userId,
+            'amount'     => ($params->uesCashTotal + $params->uesInterestCouponTotal),
+            'start_time' => ($params->beginTime),
+            'end_time'   => ($params->endTime),
+        ];
+
+        $model->addRevenueSharing($data, $params->type);
+
+        return [
+            "code"    => "200",
+            "message" => "执行成功",
+        ];
+
+    }
+
+    /******************** ****************************/
 
     /**
      * 版本检查

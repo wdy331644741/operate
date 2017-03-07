@@ -450,5 +450,53 @@
 非法请求 | 1001 | 参数非法或缺少必要参数type
 
 
+## 共享好友收益 
+ 
+说明：获取用户的签到记录 
+ 
+##### 请求参数
+ 
+        {
+            "jsonrpc": "2.0",
+            "method": "friendsShareEarnings",
+            "params": [{
+                        "userId": "18",
+                        "uesCashTotal": "9999",
+                        "uesInterestCouponTotal": "9999",
+                        "amount": "9999",
+                        "type": "revenueSharing",
+                        "beginTime": "2017-02-28",
+                        "endTime": "2017-02-28"
+                    }],
+            "id": 1
+        }
+  
+##### 返回结果
+ 
+     成功：
+         
+     {
+       "jsonrpc": "2.0",
+       "result": {
+         "code": "200",
+         "message": "执行成功"
+       },
+       "id": 1
+     }
+     
+     失败:
+      {
+        "jsonrpc": "2.0",
+        "error": {
+          "code": 1000,
+          "message": "缺少必要参数"
+        },
+        "id": 1
+      }
+错误信息 | 错误码 | 错误说明
+:--|:--|:--
+非法请求 | 1001 | 参数非法或缺少必要参数type
+
+
 
 
