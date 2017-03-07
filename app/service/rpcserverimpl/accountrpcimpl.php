@@ -149,10 +149,10 @@ class AccountRpcImpl extends BaseRpcImpl
         if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
-        $userId = $this->userId;
+
 
         $params = array(
-            'user_id' => $userId,
+            'user_id' => $this->userId,
         );
         //使用体验金
         $message = Common::jsonRpcApiCall((object)$params, 'userSignIn', config('RPC_API.passport'));
