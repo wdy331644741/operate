@@ -65,7 +65,7 @@ class ActivityRpcImpl extends BaseRpcImpl
      */
     public function noticeList($params)
     {
-        //验证是否有page
+        //验证是否有page;
         if (empty($params->page)) {
             throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
         }
