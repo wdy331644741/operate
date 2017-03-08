@@ -147,4 +147,30 @@ function pushInterestCoupon($userId, $couponId)
     Common::localApiCall((object) $params, 'pushInterestCoupon', 'InsideRpcImpl');
 }
 
+/**
+ * 记录好友共享收益
+ * @pageroute
+ */
+function friendsShare()
+{
+    $model = new \Model\MarketingRevenueSharing();
 
+    logs('记录好友共享收益:' . PHP_EOL . var_export($_POST, true), 'friendsShare');
+
+    $data = [
+        'user_id'    => I('post.userId', '', 'intval'),
+        'amount'     => I('post.total'),
+        'start_time' => I('post.beginTime'),
+        'end_time'   => I('post.endTime'),
+    ];
+
+    try {
+        $model->addRevenueSharing($data, I('post.type', '', 'strval'));
+    } catch (\Exception $e) {
+        $msg = "接口错误码：{$e->getCode()}, 错误信息：{$e->getMessage()}" . PHP_EOL;
+        logs($msg, 'friendsshare');
+
+        echo $msg;
+    }
+
+}
