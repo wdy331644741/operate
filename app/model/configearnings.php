@@ -33,4 +33,12 @@ class ConfigEarnings extends Model
             ->limit($start, C('PAGE_SIZE'))
             ->get()->resultArr();
     }
+
+    public function getInfoByTitle($titile)
+    {
+        $where = ['title' => $titile];
+        $row = $this->fields("id,title,start_time,end_time", false)
+            ->where($where)->get()->row();
+        return $row;
+    }
 }

@@ -405,7 +405,7 @@
 
 ## 用户补签到 
  
-说明：获取用户的签到记录 
+说明：用户补签到  
  
 ##### 请求参数
  
@@ -499,4 +499,60 @@
 
 
 
-
+## 用户收益明细 
+ 
+说明：用户收益明细 
+ 
+##### 请求参数
+ 
+       {
+       	"jsonrpc": "2.0",
+       	"method": "userProceedsDetailed",
+       	"params": [{
+               	    "user_id": "8"
+               	}],
+       	"id": 1
+       }
+  
+##### 返回结果
+ 
+     成功：
+     {
+       "jsonrpc": "2.0",
+       "result": {
+         "code" : 200,
+         "experience_amount": "0.00",
+         "revenue_sharing_amount": "998.0000000000",
+         "data": [
+           {
+             "recharge": false,
+             "id": "11",
+             "username": "18801301379",
+             "display_name": "188******79",
+             "amount": 0
+           },
+           {
+             "recharge": true,
+             "amount": "998.0000000000",
+             "id": "10",
+             "username": "18646003680",
+             "display_name": "186******80"
+           }
+           ..........
+         ]
+       },
+       "id": 1
+     }
+     
+     失败:
+      {
+        "jsonrpc": "2.0",
+        "error": {
+          "code": 1000,
+          "message": "缺少必要参数"
+        },
+        "id": 1
+      }
+错误信息 | 错误码 | 错误说明
+:--|:--|:--
+非法请求 | 1001 | 参数非法或缺少必要参数type

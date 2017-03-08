@@ -29,6 +29,9 @@ class MarketingRevenueSharing extends Model
     //给用户添加记录
     public function addRevenueSharing($awardInfo, $type)
     {
+        if (empty($awardInfo['amount']) || empty($type) || empty($awardInfo['user_id'])) {
+            return false;
+        }
         $data = array(
             'type'        => $type,
             'user_id'     => $awardInfo['user_id'],
@@ -56,5 +59,26 @@ class MarketingRevenueSharing extends Model
         }
 
         return false;
+    }
+
+
+    public function getSumByUserId($userId)
+    {
+        $result = $this->fields("SUM(amount) as amount", false)
+            ->where("`user_id` = {$userId}")
+            ->get()
+            ->rowArr();
+        
+        return empty($result['amount']) ? '0.00' : $result['amount'];
+    }
+
+    public function getSumByUserIds($userIds)
+    {
+        $result = $this->fields("SUM(amount) as amount", false)
+            ->whereIn('user_id', $userIds)
+            ->get()
+            ->rowArr();
+
+        return empty($result['amount']) ? '0.00' : $result['amount'];
     }
 }

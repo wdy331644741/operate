@@ -218,7 +218,63 @@ class AccountRpcImpl extends BaseRpcImpl
     }
 
 
+    /**
+     * 用户收益明细
+     * @param $params
+     * @return array
+     * @throws AllErrorException
+     *
+     * @JsonRpcMethod
+     */
+    public function userProceedsDetailed($params)
+    {
+        $userId = $params->user_id;
 
+        if (empty($userId)) {
+            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+        }
+
+        $configEarnings = new \Model\ConfigEarnings();
+        
+        $configEarningsInfo = $configEarnings->getInfoByTitle('earnings');
+
+        $startTime = date('Y-m-d',strtotime($configEarningsInfo->start_time));
+        $endTime = date('Y-m-d',strtotime($configEarningsInfo->end_time));
+
+        //获取累计获得体验金
+        $postParams = array(
+            'user_id'    => $userId,
+            'start_time' => $startTime,
+            'end_time'   => $endTime,
+        );
+        $amountExperience = Common::jsonRpcApiCall((object)$postParams, 'userExperienceGoldSum', config('RPC_API.passport'));
+
+        //未投资好友/已投资好友
+        $userInvestmentRecordPostParams = [
+            'user_id' => $userId
+        ];
+        $userInvestmentRecord = Common::jsonRpcApiCall((object)$userInvestmentRecordPostParams, 'userInvestmentRecord', config('RPC_API.passport'));
+
+        $marketingRevenueSharing = new \Model\MarketingRevenueSharing();
+
+        foreach ($userInvestmentRecord['result'] as $key => $value) {
+            if ($value['recharge'] == true) {
+                $userInvestmentRecord['result'][$key]['amount'] = $marketingRevenueSharing->getSumByUserId($value['id']);
+            } else {
+                $userInvestmentRecord['result'][$key]['amount'] = 0;
+            }
+        }
+
+        //获取累计获得收益
+        $amount = $marketingRevenueSharing->getSumByUserIds(implode(',', array_column($userInvestmentRecord['result'], 'id')));
+
+        return [
+            'code'                   => 200,
+            'experience_amount'      => $amountExperience['result']['count'],
+            'revenue_sharing_amount' => $amount,
+            'data'                   => $userInvestmentRecord['result']
+        ];
+    }
 
     /******************** ****************************/
 
