@@ -239,7 +239,7 @@ class AccountRpcImpl extends BaseRpcImpl
 
         $result = [
             'code'         => 200,
-            'continueDays' => $continueDays['result']['continue_days'],
+            'continueDays' => empty($continueDayNumber) ? 0 : $continueDayNumber,
             'today'        => date("Y年m月d日", time()),
             'stringData'   => $stringData,
             'data'         => $data,
