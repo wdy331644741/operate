@@ -363,11 +363,7 @@
     {
     	"jsonrpc": "2.0",
     	"method": "userSignInMonth",
-    	"params": [{
-            	    "user_id": "18",
-            	    "start_date": "2017-03-01",
-            	    "end_date": "2017-03-04"
-            	}],
+    	"params": [],
     	"id": 1
     }
     

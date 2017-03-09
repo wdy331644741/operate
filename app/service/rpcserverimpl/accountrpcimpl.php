@@ -169,14 +169,15 @@ class AccountRpcImpl extends BaseRpcImpl
      *
      * @JsonRpcMethod
      */
-    public function userSignInMonth($params)
+    public function userSignInMonth()
     {
 
 //        if (($this->userId = $this->checkLoginStatus()) === false)) {
 //            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
 //        }
 
-        $userId = $params->user_id;
+//        $userId = $this->userId;
+        $userId = 18;
 
         $beginDate = date('Y-m-01', strtotime(date("Y-m-d")));
         $endDate = date('Y-m-d', strtotime("{$beginDate} +1 month -1 day"));
@@ -206,23 +207,24 @@ class AccountRpcImpl extends BaseRpcImpl
             $data[$key] = [
                 'time'       => $dateFormats,
                 'check_in'   => 0,
-                'gift_check' => $this->getGift($continueDays, $today),
+                'gift_check' => 0,
             ];
             if (count($message['result']) != 0) {
                 foreach ($message['result'] as $value) {
                     if (date('Y-m-d', strtotime($value['create_time'])) == $dateFormats) {
-                        $data[$key] = [
-                            'time'       => $dateFormats,
-                            'check_in'   => 1,
-                            'gift_check' => $this->getGift($continueDays, $today),
-                        ];
+                        $data[$key]['check_in'] = 1;
                     }
+                }
+            }
+            foreach ($gift as $item) {
+                if (intval($i) == intval($item['day'])) {
+                    $data[$key]['gift_check'] = $item['type'];
                 }
             }
         }
 
-        if (isset($message['result']) && count($message['result']) != 0) {
-            return $message['result'];
+        if (isset($data)) {
+            return $data;
         } else {
             throw new AllErrorException(AllErrorException::SAVE_CHECKIN_FAIL);
         }
@@ -262,6 +264,8 @@ class AccountRpcImpl extends BaseRpcImpl
         foreach ($gift as $key => $value) {
             $gift[$key]['day'] = intval($value['day']) - intval($continueDays) + 1;
         }
+
+        return $gift;
     }
 
     /**
@@ -298,14 +302,14 @@ class AccountRpcImpl extends BaseRpcImpl
      *
      * @JsonRpcMethod
      */
-    public function userProceedsDetailed($params)
+    public function userProceedsDetailed()
     {
-        if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
-        }
+//        if (($this->userId = $this->checkLoginStatus()) === false) {
+//            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+//        }
 
-        $userId = $params->user_id;
-
+//        $userId = $this->userId;
+        $userId = 18;
         if (empty($userId)) {
             throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
         }
