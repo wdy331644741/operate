@@ -237,12 +237,20 @@ class AccountRpcImpl extends BaseRpcImpl
             }
         }
 
+        //判断今天是否签到
+        $postParamsCheckTodayUserSignIn = [
+            "user_id" => $userId,
+            "date"    => date('Y-m-d', time())
+        ];
+        $checkTodayUserSignIn = Common::jsonRpcApiCall((object)$postParamsCheckTodayUserSignIn, 'checkTodayUserSignIn', config('RPC_API.passport'));
+
         $result = [
             'code'         => 200,
             'continueDays' => empty($continueDayNumber) ? 0 : $continueDayNumber,
             'today'        => date("Y年m月d日", time()),
             'stringData'   => $stringData,
             'data'         => $data,
+            'today_check'  => (isset($checkTodayUserSignIn['result']['status']) && isset($checkTodayUserSignIn['result']['status']) == true) ? 1 : 0,
         ];
         if (isset($result)) {
             return $result;
