@@ -508,9 +508,7 @@
        {
        	"jsonrpc": "2.0",
        	"method": "userProceedsDetailed",
-       	"params": [{
-               	    "user_id": "8"
-               	}],
+       	"params": [],
        	"id": 1
        }
   

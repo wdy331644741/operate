@@ -172,17 +172,54 @@ class AccountRpcImpl extends BaseRpcImpl
     public function userSignInMonth($params)
     {
 
-        if (($this->userId = $this->checkLoginStatus()) === false || empty($params->start_date)) {
-            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
-        }
+//        if (($this->userId = $this->checkLoginStatus()) === false)) {
+//            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+//        }
+
+        $userId = $params->user_id;
+
+        $beginDate = date('Y-m-01', strtotime(date("Y-m-d")));
+        $endDate = date('Y-m-d', strtotime("{$beginDate} +1 month -1 day"));
 
         $postParams = array(
-            'user_id'    => $params->user_id,
-            'start_date' => $params->start_date,
-            'end_date'   => $params->end_date,
+            'user_id'    => $userId,
+            'start_date' => $beginDate,
+            'end_date'   => $endDate,
         );
-
+        //获取所有本月签到时间
         $message = Common::jsonRpcApiCall((object)$postParams, 'userSignInMonth', config('RPC_API.passport'));
+
+        //获取用户的连续签到情况
+        $postParamsContinueDays = ['user_id' => $userId];
+        $continueDays = Common::jsonRpcApiCall((object)$postParamsContinueDays, 'userSignInSuccessive', config('RPC_API.passport'));
+
+        $year = date("Y", time());
+        $month = date("m", time());
+        $today = date("d", time());
+        $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $gift = $this->getGift($continueDays, $today);
+        //处理签到情况
+        $data = [];
+        for ($i = 1; $i <= $days; $i++) {
+            $key = $i - 1;
+            $dateFormats = date('Y-m-d', strtotime("{$beginDate} +{$key} day"));
+            $data[$key] = [
+                'time'       => $dateFormats,
+                'check_in'   => 0,
+                'gift_check' => $this->getGift($continueDays, $today),
+            ];
+            if (count($message['result']) != 0) {
+                foreach ($message['result'] as $value) {
+                    if (date('Y-m-d', strtotime($value['create_time'])) == $dateFormats) {
+                        $data[$key] = [
+                            'time'       => $dateFormats,
+                            'check_in'   => 1,
+                            'gift_check' => $this->getGift($continueDays, $today),
+                        ];
+                    }
+                }
+            }
+        }
 
         if (isset($message['result']) && count($message['result']) != 0) {
             return $message['result'];
@@ -190,6 +227,41 @@ class AccountRpcImpl extends BaseRpcImpl
             throw new AllErrorException(AllErrorException::SAVE_CHECKIN_FAIL);
         }
 
+    }
+
+    /**
+     *
+     * 在用户连续签到1-4次时，可以在页面中看到第5天可得奖励，当用户连续签到6天时，可以看到连续签到15天对应奖励.
+     * 当用户连续签到5天，给用户0.1%加息券，加息时间2天
+     * 当用户连续签到10天，给用户0.2%加息券，加息时间5天
+     * 当用户连续签到20天，给用户0.3%加息券，加息时间5天
+     * 后续每连续签到10天，给用户0.3%加息券，加息时间3天
+     *
+     * @param $day
+     * @param $continueDays
+     * @return bool
+     */
+    public function getGift($continueDays, $today)
+    {
+
+        $gift = [
+            ['name' => '当用户连续签到5天，给用户0.1%加息券，加息时间2天', 'type' => '1', 'day' => '5'],
+            ['name' => '当用户连续签到10天，给用户0.2%加息券，加息时间5天', 'type' => '2', 'day' => '10'],
+            ['name' => '当用户连续签到20天，给用户0.3%加息券，加息时间5天', 'type' => '3', 'day' => '20'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '30'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '40'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '50'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '60'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '70'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '80'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '90'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '100'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '110'],
+        ];
+
+        foreach ($gift as $key => $value) {
+            $gift[$key]['day'] = intval($value['day']) - intval($continueDays) + 1;
+        }
     }
 
     /**
@@ -228,6 +300,10 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function userProceedsDetailed($params)
     {
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+        }
+
         $userId = $params->user_id;
 
         if (empty($userId)) {
@@ -235,11 +311,11 @@ class AccountRpcImpl extends BaseRpcImpl
         }
 
         $configEarnings = new \Model\ConfigEarnings();
-        
+
         $configEarningsInfo = $configEarnings->getInfoByTitle('earnings');
 
-        $startTime = date('Y-m-d',strtotime($configEarningsInfo->start_time));
-        $endTime = date('Y-m-d',strtotime($configEarningsInfo->end_time));
+        $startTime = date('Y-m-d', strtotime($configEarningsInfo->start_time));
+        $endTime = date('Y-m-d', strtotime($configEarningsInfo->end_time));
 
         //获取累计获得体验金
         $postParams = array(
