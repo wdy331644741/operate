@@ -373,14 +373,201 @@
      成功：
         {
           "jsonrpc": "2.0",
-          "result": [
-            {
-              "id": "7",
-              "type": "1",
-              "create_time": "2017-03-02 17:56:51"
-            }
-            ......
-          ],
+          "result": {
+            "code": 200,
+            "continueDays": "1",
+            "today": "09",
+            "stringData": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            "data": [
+              {
+                "time": "2017-03-01",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-02",
+                "check_in": 1,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-03",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-04",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-05",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-06",
+                "check_in": 1,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-07",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-08",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-09",
+                "check_in": 1,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-10",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-11",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-12",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-13",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-14",
+                "check_in": 0,
+                "gift_check": "1"
+              },
+              {
+                "time": "2017-03-15",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-16",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-17",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-18",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-19",
+                "check_in": 0,
+                "gift_check": "2"
+              },
+              {
+                "time": "2017-03-20",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-21",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-22",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-23",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-24",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-25",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-26",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-27",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-28",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-29",
+                "check_in": 0,
+                "gift_check": "3"
+              },
+              {
+                "time": "2017-03-30",
+                "check_in": 0,
+                "gift_check": 0
+              },
+              {
+                "time": "2017-03-31",
+                "check_in": 0,
+                "gift_check": 0
+              }
+            ]
+          },
           "id": 1
         }
      

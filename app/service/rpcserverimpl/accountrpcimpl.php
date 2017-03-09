@@ -171,7 +171,6 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function userSignInMonth()
     {
-
 //        if (($this->userId = $this->checkLoginStatus()) === false)) {
 //            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
 //        }
@@ -223,8 +222,26 @@ class AccountRpcImpl extends BaseRpcImpl
             }
         }
 
-        if (isset($data)) {
-            return $data;
+        $stringData = [];
+        foreach ($data as $key => $item) {
+            if (!empty($item['gift_check'])) {
+                $stringData[] = 2;
+            } elseif (!empty($item['check_in'])) {
+                $stringData[] = 1;
+            } else {
+                $stringData[] = 0;
+            }
+        }
+
+        $result = [
+            'code'         => 200,
+            'continueDays' => $continueDays['result']['continue_days'],
+            'today'        => $today,
+            'stringData'   => $stringData,
+            'data'         => $data,
+        ];
+        if (isset($result)) {
+            return $result;
         } else {
             throw new AllErrorException(AllErrorException::SAVE_CHECKIN_FAIL);
         }
@@ -259,10 +276,16 @@ class AccountRpcImpl extends BaseRpcImpl
             ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '90'],
             ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '100'],
             ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '110'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '120'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '130'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '140'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '150'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '160'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => '3', 'day' => '170'],
         ];
 
         foreach ($gift as $key => $value) {
-            $gift[$key]['day'] = intval($value['day']) - intval($continueDays) + 1;
+            $gift[$key]['day'] = intval($value['day']) - intval($continueDays) + 1 + intval($today);
         }
 
         return $gift;
@@ -316,7 +339,7 @@ class AccountRpcImpl extends BaseRpcImpl
 
         $configEarnings = new \Model\ConfigEarnings();
 
-        $configEarningsInfo = $configEarnings->getInfoByTitle('earnings');
+        $configEarningsInfo = $configEarnings->getInfoByTitle('revenueSharing');
 
         $startTime = date('Y-m-d', strtotime($configEarningsInfo->start_time));
         $endTime = date('Y-m-d', strtotime($configEarningsInfo->end_time));
