@@ -146,13 +146,15 @@ class AccountRpcImpl extends BaseRpcImpl
     public function checkIn()
     {
         //检查登录状态
-        if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
-        }
+//        if (($this->userId = $this->checkLoginStatus()) === false) {
+//            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+//        }
 
+//        $userId = $this->userId;
 
+        $userId = 18;
         $params = array(
-            'user_id' => $this->userId,
+            'user_id' => $userId,
         );
         //使用体验金
         $message = Common::jsonRpcApiCall((object)$params, 'userSignIn', config('RPC_API.passport'));
@@ -193,11 +195,13 @@ class AccountRpcImpl extends BaseRpcImpl
         $postParamsContinueDays = ['user_id' => $userId];
         $continueDays = Common::jsonRpcApiCall((object)$postParamsContinueDays, 'userSignInSuccessive', config('RPC_API.passport'));
 
+        $continueDayNumber = (isset($continueDays['result']['continue_days']) && !empty($continueDays['result']['continue_days'])) ? $continueDays['result']['continue_days'] : 0;
+
         $year = date("Y", time());
         $month = date("m", time());
         $today = date("d", time());
         $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        $gift = $this->getGift($continueDays, $today);
+        $gift = $this->getGift($continueDayNumber, $today);
         //处理签到情况
         $data = [];
         for ($i = 1; $i <= $days; $i++) {
@@ -236,7 +240,7 @@ class AccountRpcImpl extends BaseRpcImpl
         $result = [
             'code'         => 200,
             'continueDays' => $continueDays['result']['continue_days'],
-            'today'        => $today,
+            'today'        => date("Y年m月d日", time()),
             'stringData'   => $stringData,
             'data'         => $data,
         ];
