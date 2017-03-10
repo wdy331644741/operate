@@ -34,11 +34,10 @@ class AccountRpcImpl extends BaseRpcImpl
     public function profile()
     {
         //检查登录状态
-//        if (($this->userId = $this->checkLoginStatus()) === false) {
-//
-//            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
-//        }
-        $this->userId = 19;
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
         $authUser = new \Model\AuthUser();
         $userInfo = $authUser->getUserBasicInfo($this->userId);
 
@@ -146,13 +145,10 @@ class AccountRpcImpl extends BaseRpcImpl
     public function checkIn()
     {
         //检查登录状态
-//        if (($this->userId = $this->checkLoginStatus()) === false) {
-//            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
-//        }
-
-//        $userId = $this->userId;
-
-        $userId = 183;
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+        $userId = $this->userId;
         $params = array(
             'user_id' => $userId,
         );
@@ -173,12 +169,11 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function userSignInMonth()
     {
-//        if (($this->userId = $this->checkLoginStatus()) === false)) {
-//            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
-//        }
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+        }
 
-//        $userId = $this->userId;
-        $userId = 28;
+        $userId = $this->userId;
 
         $beginDate = date('Y-m-01', strtotime(date("Y-m-d")));
         $endDate = date('Y-m-d', strtotime("{$beginDate} +1 month -1 day"));
@@ -252,12 +247,12 @@ class AccountRpcImpl extends BaseRpcImpl
             'data'         => $data,
             'today_check'  => (isset($checkTodayUserSignIn['result']['status']) && !empty($checkTodayUserSignIn['result']['status'])) ? true : false,
         ];
+
         if (isset($result)) {
             return $result;
         } else {
             throw new AllErrorException(AllErrorException::SAVE_CHECKIN_FAIL);
         }
-
     }
 
     /**
@@ -339,12 +334,11 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function userProceedsDetailed()
     {
-//        if (($this->userId = $this->checkLoginStatus()) === false) {
-//            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
-//        }
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+        }
 
-//        $userId = $this->userId;
-        $userId = 18;
+        $userId = $this->userId;
         if (empty($userId)) {
             throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
         }
