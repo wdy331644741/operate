@@ -152,7 +152,7 @@ class AccountRpcImpl extends BaseRpcImpl
 
 //        $userId = $this->userId;
 
-        $userId = 182;
+        $userId = 183;
         $params = array(
             'user_id' => $userId,
         );
@@ -178,7 +178,7 @@ class AccountRpcImpl extends BaseRpcImpl
 //        }
 
 //        $userId = $this->userId;
-        $userId = 18;
+        $userId = 28;
 
         $beginDate = date('Y-m-01', strtotime(date("Y-m-d")));
         $endDate = date('Y-m-d', strtotime("{$beginDate} +1 month -1 day"));
@@ -250,7 +250,7 @@ class AccountRpcImpl extends BaseRpcImpl
             'today'        => date("Y年m月d日", time()),
             'stringData'   => $stringData,
             'data'         => $data,
-            'today_check'  => (isset($checkTodayUserSignIn['result']['status']) && isset($checkTodayUserSignIn['result']['status']) == true) ? 1 : 0,
+            'today_check'  => (isset($checkTodayUserSignIn['result']['status']) && !empty($checkTodayUserSignIn['result']['status'])) ? true : false,
         ];
         if (isset($result)) {
             return $result;
@@ -297,7 +297,7 @@ class AccountRpcImpl extends BaseRpcImpl
         ];
 
         foreach ($gift as $key => $value) {
-            $gift[$key]['day'] = intval($value['day']) - intval($continueDays) + 1 + intval($today);
+            $gift[$key]['day'] = intval($value['day']) - intval($continueDays) + intval($today);
         }
 
         return $gift;
