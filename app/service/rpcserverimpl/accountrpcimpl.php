@@ -183,11 +183,13 @@ class AccountRpcImpl extends BaseRpcImpl
         $checkTodayUserSignIn = Common::jsonRpcApiCall((object)$postParamsCheckTodayUserSignIn, 'checkTodayUserSignIn', config('RPC_API.passport'));
 
         //签到
+        $userSignInData = '';
         if ((isset($checkTodayUserSignIn['result']['status']) && !empty($checkTodayUserSignIn['result']['status'])) != true) {
             $paramsSignIn = array(
                 'user_id' => $userId,
             );
-            Common::jsonRpcApiCall((object)$paramsSignIn, 'userSignIn', config('RPC_API.passport'));
+            $userSignIn = Common::jsonRpcApiCall((object)$paramsSignIn, 'userSignIn', config('RPC_API.passport'));
+            $userSignInData = $userSignIn['result'];
         }
 
         $beginDate = date('Y-m-01', strtotime(date("Y-m-d")));
@@ -248,12 +250,13 @@ class AccountRpcImpl extends BaseRpcImpl
         }
 
         $result = [
-            'code'         => 200,
-            'continueDays' => empty($continueDayNumber) ? 0 : $continueDayNumber,
-            'today'        => date("Y年m月d日", time()),
-            'stringData'   => $stringData,
-            'today_check'  => (isset($checkTodayUserSignIn['result']['status']) && !empty($checkTodayUserSignIn['result']['status'])) ? true : false,
-            'data'         => $data,
+            'code'           => 200,
+            'continueDays'   => empty($continueDayNumber) ? 0 : $continueDayNumber,
+            'today'          => date("Y年m月d日", time()),
+            'stringData'     => $stringData,
+            'today_check'    => (isset($checkTodayUserSignIn['result']['status']) && !empty($checkTodayUserSignIn['result']['status'])) ? true : false,
+            'userSignInData' => $userSignInData,
+            'data'           => $data,
         ];
 
         if (isset($result)) {
