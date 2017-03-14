@@ -152,7 +152,7 @@ class AccountRpcImpl extends BaseRpcImpl
         $params = array(
             'user_id' => $userId,
         );
-        //使用体验金
+        //签到
         $message = Common::jsonRpcApiCall((object)$params, 'userSignIn', config('RPC_API.passport'));
 
         if (isset($message['result']) && count($message['result']) != 0) {
@@ -174,6 +174,21 @@ class AccountRpcImpl extends BaseRpcImpl
         }
 
         $userId = $this->userId;
+
+        //判断今天是否签到
+        $postParamsCheckTodayUserSignIn = [
+            "user_id" => $userId,
+            "date"    => date('Y-m-d', time())
+        ];
+        $checkTodayUserSignIn = Common::jsonRpcApiCall((object)$postParamsCheckTodayUserSignIn, 'checkTodayUserSignIn', config('RPC_API.passport'));
+
+        //签到
+        if ((isset($checkTodayUserSignIn['result']['status']) && !empty($checkTodayUserSignIn['result']['status'])) != true) {
+            $paramsSignIn = array(
+                'user_id' => $userId,
+            );
+            Common::jsonRpcApiCall((object)$paramsSignIn, 'userSignIn', config('RPC_API.passport'));
+        }
 
         $beginDate = date('Y-m-01', strtotime(date("Y-m-d")));
         $endDate = date('Y-m-d', strtotime("{$beginDate} +1 month -1 day"));
@@ -232,20 +247,13 @@ class AccountRpcImpl extends BaseRpcImpl
             }
         }
 
-        //判断今天是否签到
-        $postParamsCheckTodayUserSignIn = [
-            "user_id" => $userId,
-            "date"    => date('Y-m-d', time())
-        ];
-        $checkTodayUserSignIn = Common::jsonRpcApiCall((object)$postParamsCheckTodayUserSignIn, 'checkTodayUserSignIn', config('RPC_API.passport'));
-
         $result = [
             'code'         => 200,
             'continueDays' => empty($continueDayNumber) ? 0 : $continueDayNumber,
             'today'        => date("Y年m月d日", time()),
             'stringData'   => $stringData,
-            'data'         => $data,
             'today_check'  => (isset($checkTodayUserSignIn['result']['status']) && !empty($checkTodayUserSignIn['result']['status'])) ? true : false,
+            'data'         => $data,
         ];
 
         if (isset($result)) {
@@ -291,9 +299,16 @@ class AccountRpcImpl extends BaseRpcImpl
             ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '170'],
         ];
 
-        foreach ($gift as $key => $value) {
-            $gift[$key]['day'] = intval($value['day']) - intval($continueDays) + intval($today);
+        if (empty($continueDays)) {
+            foreach ($gift as $key => $value) {
+                $gift[$key]['day'] = intval($value['day']) - intval($continueDays) + intval($today) - 1;
+            }
+        } else {
+            foreach ($gift as $key => $value) {
+                $gift[$key]['day'] = intval($value['day']) - intval($continueDays) + intval($today);
+            }
         }
+
 
         return $gift;
     }
