@@ -376,28 +376,31 @@
           "jsonrpc": "2.0",
           "result": {
             "code": 200,
-            "continueDays": "1",
-            "today": "09",
+            "continueDays": "2",
+            "today": "2017年03月14日",
             "stringData": [
               0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
               1,
               0,
               0,
-              0,
-              1,
-              0,
-              0,
-              1,
+              "s1",
               0,
               0,
               0,
               0,
-              2,
-              0,
-              0,
-              0,
-              0,
-              2,
+              "s2",
               0,
               0,
               0,
@@ -405,12 +408,11 @@
               0,
               0,
               0,
-              0,
-              0,
-              2,
               0,
               0
             ],
+            "today_check": true,
+            "userSignInData": "",
             "data": [
               {
                 "time": "2017-03-01",
@@ -419,7 +421,7 @@
               },
               {
                 "time": "2017-03-02",
-                "check_in": 1,
+                "check_in": 0,
                 "gift_check": 0
               },
               {
@@ -439,7 +441,7 @@
               },
               {
                 "time": "2017-03-06",
-                "check_in": 1,
+                "check_in": 0,
                 "gift_check": 0
               },
               {
@@ -454,7 +456,7 @@
               },
               {
                 "time": "2017-03-09",
-                "check_in": 1,
+                "check_in": 0,
                 "gift_check": 0
               },
               {
@@ -474,13 +476,13 @@
               },
               {
                 "time": "2017-03-13",
-                "check_in": 0,
+                "check_in": 1,
                 "gift_check": 0
               },
               {
                 "time": "2017-03-14",
-                "check_in": 0,
-                "gift_check": "1"
+                "check_in": 1,
+                "gift_check": 0
               },
               {
                 "time": "2017-03-15",
@@ -495,7 +497,7 @@
               {
                 "time": "2017-03-17",
                 "check_in": 0,
-                "gift_check": 0
+                "gift_check": "s1"
               },
               {
                 "time": "2017-03-18",
@@ -505,7 +507,7 @@
               {
                 "time": "2017-03-19",
                 "check_in": 0,
-                "gift_check": "2"
+                "gift_check": 0
               },
               {
                 "time": "2017-03-20",
@@ -520,7 +522,7 @@
               {
                 "time": "2017-03-22",
                 "check_in": 0,
-                "gift_check": 0
+                "gift_check": "s2"
               },
               {
                 "time": "2017-03-23",
@@ -555,7 +557,7 @@
               {
                 "time": "2017-03-29",
                 "check_in": 0,
-                "gift_check": "3"
+                "gift_check": 0
               },
               {
                 "time": "2017-03-30",
