@@ -189,7 +189,7 @@ class AccountRpcImpl extends BaseRpcImpl
                 'user_id' => $userId,
             );
             $userSignIn = Common::jsonRpcApiCall((object)$paramsSignIn, 'userSignIn', config('RPC_API.passport'));
-            $userSignInData = $userSignIn['result'];
+            $userSignInData = (array)$userSignIn['result'];
         }
 
         $beginDate = date('Y-m-01', strtotime(date("Y-m-d")));
@@ -280,7 +280,6 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function getGift($continueDays, $today)
     {
-
         $gift = [
             ['name' => '当用户连续签到5天，给用户0.1%加息券，加息时间2天', 'type' => 's1', 'day' => '5'],
             ['name' => '当用户连续签到10天，给用户0.2%加息券，加息时间5天', 'type' => 's2', 'day' => '10'],
@@ -300,6 +299,12 @@ class AccountRpcImpl extends BaseRpcImpl
             ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '150'],
             ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '160'],
             ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '170'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '180'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '190'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '200'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '210'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '220'],
+            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '230'],
         ];
 
         if (empty($continueDays)) {
@@ -311,7 +316,6 @@ class AccountRpcImpl extends BaseRpcImpl
                 $gift[$key]['day'] = intval($value['day']) - intval($continueDays) + intval($today);
             }
         }
-
 
         return $gift;
     }
