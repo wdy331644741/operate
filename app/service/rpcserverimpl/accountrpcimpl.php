@@ -364,7 +364,6 @@ class AccountRpcImpl extends BaseRpcImpl
         if (empty($userId)) {
             throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
         }
-
         $configEarnings = new \Model\ConfigEarnings();
 
         $configEarningsInfo = $configEarnings->getInfoByTitle('revenueSharing');
@@ -405,6 +404,27 @@ class AccountRpcImpl extends BaseRpcImpl
             'revenue_sharing_amount' => $amount,
             'data'                   => $userInvestmentRecord['result']
         ];
+    }
+
+    /**
+     * 判断用户当天是否签到
+     * @JsonRpcMethod
+     */
+    public function checkTodaySignIn()
+    {
+//        if (($this->userId = $this->checkLoginStatus()) === false) {
+//            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+//        }
+//
+//        $userId = $this->userId;
+        $userId = 9;
+        //获取累计获得体验金
+        $postParams = array(
+            'user_id' => $userId,
+        );
+        $checkTodaySignIn = Common::jsonRpcApiCall((object)$postParams, 'checkTodaySignIn', config('RPC_API.passport'));
+
+        return ['code' => 200, 'status' => $checkTodaySignIn['result']['status']];
     }
 
     /******************** ****************************/
