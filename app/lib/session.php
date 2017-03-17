@@ -31,9 +31,9 @@ class Session
         //判断请求来源
         $device = getUAInfo('platform');
 
-        if ($device == 'IOS' || $device == 'ANDROID') {
+//        if ($device == 'IOS' || $device == 'ANDROID') {
             @ini_set('session.gc_maxlifetime', config('APP_TOKEN_MAXLIFETIME', 604800));
-        }
+//        }
 
         $sessionId = empty($sid) ? I('cookie.'.self::SESSION_NAME, '') : $sid;
         if ($sessionId)
