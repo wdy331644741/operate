@@ -170,7 +170,7 @@ class AccountRpcImpl extends BaseRpcImpl
     public function userSignInMonth()
     {
         if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
 
         $userId = $this->userId;
@@ -214,6 +214,7 @@ class AccountRpcImpl extends BaseRpcImpl
         $today = date("d", time());
         $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $gift = $this->getGift($continueDayNumber, $today);
+
         //处理签到情况
         $data = [];
         for ($i = 1; $i <= $days; $i++) {
@@ -233,12 +234,13 @@ class AccountRpcImpl extends BaseRpcImpl
             }
             foreach ($gift as $item) {
                 if (intval($i) == intval($item['day'])) {
-                    $data[$key]['gift_check'] = $item['type'];
+                    $data[$key]['gift_check'] = $item['type'].'_'.(intval($item['day']) - $continueDayNumber - intval(date("d", time())) + 1);
                 }
             }
         }
 
         $stringData = [];
+
         foreach ($data as $key => $item) {
             if (!empty($item['check_in'])) {
                 $stringData[] = 1;
@@ -328,7 +330,7 @@ class AccountRpcImpl extends BaseRpcImpl
     public function supplementUserSignIn($params)
     {
         if (($this->userId = $this->checkLoginStatus()) === false || empty($params->start_date)) {
-            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
 
         $postParams = array(
@@ -357,7 +359,7 @@ class AccountRpcImpl extends BaseRpcImpl
     public function userProceedsDetailed()
     {
         if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
 
         $userId = $this->userId;
@@ -412,19 +414,19 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function checkTodaySignIn()
     {
-//        if (($this->userId = $this->checkLoginStatus()) === false) {
-//            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
-//        }
-//
-//        $userId = $this->userId;
-        $userId = 9;
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+
+        $userId = $this->userId;
+
         //获取累计获得体验金
         $postParams = array(
             'user_id' => $userId,
         );
         $checkTodaySignIn = Common::jsonRpcApiCall((object)$postParams, 'checkTodaySignIn', config('RPC_API.passport'));
 
-        return ['code' => 200, 'status' => $checkTodaySignIn['result']['status']];
+        return ['code' => 0, 'status' => $checkTodaySignIn['result']['status']?1:0];
     }
 
     /******************** ****************************/
