@@ -34,11 +34,13 @@ class ConfigEarnings extends Model
             ->get()->resultArr();
     }
 
-    public function getInfoByTitle($titile)
+    public function getInfoByTitle($title)
     {
-        $where = ['title' => $titile];
-        $row = $this->fields("id,title,start_time,end_time", false)
-            ->where($where)->get()->row();
+        $where = ['title' => $title,'is_del'=>'0','status'=>1];
+        $row = $this->fields("id,title,amount,head_count,start_time,end_time", false)
+            ->where($where)
+            ->get()
+            ->rowArr();
         return $row;
     }
 }
