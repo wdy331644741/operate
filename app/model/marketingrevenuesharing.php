@@ -94,7 +94,7 @@ class MarketingRevenueSharing extends Model
 
     public function getSumByUserIds($userIds)
     {
-        $where = ['status' => '400'];
+        $where = ['status' => '200'];
         $result = $this->fields("SUM(amount) as amount", false)
             ->where($where)
             ->whereIn('user_id', $userIds)
@@ -127,7 +127,7 @@ class MarketingRevenueSharing extends Model
      */
     public function successExecute($id, $userId, $type)
     {
-        $where = ['id' => $id, 'user_id' => $userId];
+        $where = ['id' => $id, 'from_user_id' => $userId];
         $this->where($where)->upd(['status' => $type]);
     }
 }

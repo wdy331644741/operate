@@ -47,7 +47,7 @@ function friendsShare()
     foreach ($result as $item) {
 
         $getUsernameByUserid = [
-            'user_id' => $item['user_id'],
+            'user_id' => $item['from_user_id'],
         ];
 
         /**
@@ -57,7 +57,7 @@ function friendsShare()
         $username = $usernameData['result']['username'];
 
         //判断给个用户的收益是否超过100元
-        $sumamount = $marketingRevenueSharing->getSumByUserId($item['user_id']);
+        $sumamount = $marketingRevenueSharing->getSumByUserId($item['from_user_id']);
         if ($sumamount < $maxAmount || ($sumamount + $item['amount']) < $maxAmount) {
             //给用户发好友收益
             $checkUserWithdraw = [
@@ -73,9 +73,9 @@ function friendsShare()
             $result = Common::jsonRpcApiCall((object)$checkUserWithdraw, 'insertOperation', config('RPC_API.projects'));
 
             if (isset($result['data']['result']) && $result['data']['result']['code'] == 0) {
-                $marketingRevenueSharing->successExecute($item['id'], $item['user_id'], 200);
+                $marketingRevenueSharing->successExecute($item['id'], $item['from_user_id'], 200);
             } else {
-                $marketingRevenueSharing->successExecute($item['id'], $item['user_id'], 400);
+                $marketingRevenueSharing->successExecute($item['id'], $item['from_user_id'], 400);
             }
         }
 
