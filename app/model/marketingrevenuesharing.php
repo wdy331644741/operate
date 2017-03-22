@@ -74,7 +74,7 @@ class MarketingRevenueSharing extends Model
     public function getSumByUserId($userId)
     {
         $result = $this->fields("SUM(amount) as amount", false)
-            ->where("`user_id` = {$userId} and `status` = '200' ")
+            ->where("`user_id` = '{$userId}' and `status` = '200' ")
             ->get()
             ->rowArr();
 
@@ -85,7 +85,7 @@ class MarketingRevenueSharing extends Model
     public function getSumByFromUserId($userId)
     {
         $result = $this->fields("SUM(amount) as amount", false)
-            ->where("`from_user_id` = {$userId}")
+            ->where("`from_user_id` = '{$userId}'")
             ->get()
             ->rowArr();
 

@@ -257,8 +257,8 @@ class AccountRpcImpl extends BaseRpcImpl
 
         $configEarningsInfo = $configEarnings->getInfoByTitle('revenueSharing');
 
-        $startTime = date('Y-m-d', strtotime($configEarningsInfo->start_time));
-        $endTime = date('Y-m-d', strtotime($configEarningsInfo->end_time));
+        $startTime = $configEarningsInfo['start_time'];
+        $endTime = $configEarningsInfo['end_time'];
 
         //获取累计获得体验金
         $postParams = array(
@@ -266,6 +266,7 @@ class AccountRpcImpl extends BaseRpcImpl
             'start_time' => $startTime,
             'end_time'   => $endTime,
         );
+
         $amountExperience = Common::jsonRpcApiCall((object)$postParams, 'userExperienceGoldSum', config('RPC_API.passport'));
 
         //未投资好友/已投资好友
@@ -273,7 +274,7 @@ class AccountRpcImpl extends BaseRpcImpl
             'user_id' => $userId
         ];
         $userInvestmentRecord = Common::jsonRpcApiCall((object)$userInvestmentRecordPostParams, 'userInvestmentRecord', config('RPC_API.passport'));
-
+        
         $marketingRevenueSharing = new \Model\MarketingRevenueSharing();
 
         foreach ($userInvestmentRecord['result'] as $key => $value) {

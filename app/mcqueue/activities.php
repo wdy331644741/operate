@@ -16,15 +16,15 @@ function friendsShare()
     $interestCouponTotal = I('post.uesInterestCouponTotal') * 0.10;
     if ($total >= 0.0000000000) {
 
-        $fromUserId = I('post.userId', '', 'intval');
+        $userId = I('post.userId', '', 'intval');
 
         $postParams = array(
-            'user_id' => $fromUserId,
+            'user_id' => $userId,
         );
 
         //获取邀请用户id
         $result = $message = Common::jsonRpcApiCall((object)$postParams, 'getFormUserId', config('RPC_API.passport'));
-        $userId = (isset($result['result']['user_id']) && !empty($result['result']['user_id'])) ? $result['result']['user_id'] : '';
+        $fromUserId = (isset($result['result']['user_id']) && !empty($result['result']['user_id'])) ? $result['result']['user_id'] : '';
 
         if ($userId) {
             $data = [

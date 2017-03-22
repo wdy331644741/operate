@@ -62,7 +62,7 @@ function friendsShare()
             //给用户发好友收益
             $checkUserWithdraw = [
                 'activity_id'     => $item['id'],//用户id
-                'user_id'         => $item['user_id'],//用户id
+                'user_id'         => $item['from_user_id'],//用户id
                 'amount'          => $item['amount'],//总利息
                 'basics_amount'   => $item['cash_total'],//基本利息
                 'interest_coupon' => $item['interest_coupon_total'],//加息劵利息
