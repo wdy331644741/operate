@@ -14,7 +14,7 @@ function friendsShare()
     $total = I('post.total') * 0.10;
     $cashTotal = I('post.uesCashTotal') * 0.10;
     $interestCouponTotal = I('post.uesInterestCouponTotal') * 0.10;
-    if ($total >= 0.01) {
+    if ($total >= 0.0000000000) {
 
         $fromUserId = I('post.userId', '', 'intval');
 

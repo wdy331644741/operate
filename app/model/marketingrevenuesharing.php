@@ -42,6 +42,7 @@ class MarketingRevenueSharing extends Model
             'amount'                => $awardInfo['amount'],
             'start_time'            => $awardInfo['start_time'],
             'end_time'              => $awardInfo['end_time'],
+            'status'                => '100',
             'create_time'           => date('Y-m-d H:i:s', strtotime('-1 day')),
             'update_time'           => date('Y-m-d H:i:s', strtotime('-1 day'))
         );
@@ -65,11 +66,15 @@ class MarketingRevenueSharing extends Model
         return false;
     }
 
-
+    /**
+     * 计算完成
+     * @param $userId
+     * @return string
+     */
     public function getSumByUserId($userId)
     {
         $result = $this->fields("SUM(amount) as amount", false)
-            ->where("`user_id` = {$userId}")
+            ->where("`user_id` = {$userId} and `status` = '200' ")
             ->get()
             ->rowArr();
 
