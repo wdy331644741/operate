@@ -42,8 +42,8 @@ class MarketingRevenueSharing extends Model
             'amount'                => $awardInfo['amount'],
             'start_time'            => $awardInfo['start_time'],
             'end_time'              => $awardInfo['end_time'],
-            'create_time'           => date('Y-m-d H:i:s'),
-            'update_time'           => date('Y-m-d H:i:s')
+            'create_time'           => date('Y-m-d H:i:s', strtotime('-1 day')),
+            'update_time'           => date('Y-m-d H:i:s', strtotime('-1 day'))
         );
 
         $result = $this->fields('id')
@@ -102,12 +102,12 @@ class MarketingRevenueSharing extends Model
 
     public function getYesterdayData()
     {
-        $status = 100;
+        $status = '100';
         $start_today = date("Y-m-d 00:00:00", strtotime("-1 day"));
         $end_today = date("Y-m-d 23:59:59", strtotime("-1 day"));
 
         $result = $this->fields("id, user_id, from_user_id, amount, cash_total, interest_coupon_total, start_time,end_time,status,create_time,update_time", false)
-            ->where(" `create_time`>'{$start_today}' and `create_time` < '{$end_today}' ")
+            ->where(" `create_time` > '{$start_today}' and `create_time` < '{$end_today}' ")
             ->whereIn('status', $status)
             ->get()
             ->resultArr();
@@ -118,7 +118,7 @@ class MarketingRevenueSharing extends Model
     /**
      * @param $id
      * @param $userId
-     * @param $type  400/200
+     * @param $type 400/200
      */
     public function successExecute($id, $userId, $type)
     {

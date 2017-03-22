@@ -7,7 +7,7 @@ function add()
 
     if (IS_POST) {
         $title = $amount = $desc = $startTime = $endTime = $status = null;
-        $requireFields = ['title', 'amounts', 'desc', 'startTime', 'endTime', 'status'];
+        $requireFields = ['title', 'amounts', 'desc', 'startTime', 'endTime', 'status', 'head_count'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -15,13 +15,14 @@ function add()
         }
         $data['title'] = $title;
         $data['amount'] = I('post.amounts/d');
+        $data['head_count'] = I('post.head_count/d');
         $data['desc'] = $desc;
         $data['start_time'] = $startTime;
         $data['end_time'] = $endTime;
         $data['status'] = $status;
         $data['create_time'] = date('Y-m-d H:i:s');//注册时间
         $data['update_time'] = date('Y-m-d H:i:s');//注册时间
-        
+
         try {
             $activityModel = new \Model\ConfigEarnings();
             $userId = $activityModel->add($data);
@@ -54,7 +55,7 @@ function lst()
     $framework = getFrameworkInstance();
     $activityModel = new \Model\ConfigEarnings();
     $list = $activityModel->get()->resultArr();
-    
+
     $framework->smarty->assign('list', $list);
     $framework->smarty->display('earnings/lst.html');
 }
@@ -88,7 +89,7 @@ function upd()
     $id = I('get.id/d', 0);
     if (IS_POST) {
         $title = $amount = $desc = $startTime = $endTime = $status = null;
-        $requireFields = ['title', 'amounts', 'desc', 'startTime', 'endTime', 'status'];
+        $requireFields = ['title', 'amounts', 'desc', 'startTime', 'endTime', 'status', 'head_count'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -96,6 +97,7 @@ function upd()
         }
         $data['title'] = $title;
         $data['amount'] = I('post.amounts/d');
+        $data['head_count'] = I('post.head_count/d');
         $data['desc'] = $desc;
         $data['start_time'] = $startTime;
         $data['end_time'] = $endTime;

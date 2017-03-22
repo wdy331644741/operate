@@ -41,7 +41,8 @@ function friendsShare()
 
     //查看配置
     $earnings = new \Model\ConfigEarnings();
-    $earnings->getInfoByTitle('revenueSharing');
+    $configEarningsData = $earnings->getInfoByTitle('revenueSharing');
+    $maxAmount = $configEarningsData['amount'];  //配置中的收益最大金额
 
     foreach ($result as $item) {
 
@@ -57,9 +58,10 @@ function friendsShare()
 
         //判断给个用户的收益是否超过100元
         $sumamount = $marketingRevenueSharing->getSumByUserId($item['user_id']);
-        if ($sumamount < 100 || ($sumamount + $item['amount']) < 100) {
+        if ($sumamount < $maxAmount || ($sumamount + $item['amount']) < $maxAmount) {
             //给用户发好友收益
             $checkUserWithdraw = [
+                'activity_id'     => $item['id'],//用户id
                 'user_id'         => $item['user_id'],//用户id
                 'amount'          => $item['amount'],//总利息
                 'basics_amount'   => $item['cash_total'],//基本利息
