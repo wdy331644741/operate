@@ -274,7 +274,7 @@ class AccountRpcImpl extends BaseRpcImpl
             'user_id' => $userId
         ];
         $userInvestmentRecord = Common::jsonRpcApiCall((object)$userInvestmentRecordPostParams, 'userInvestmentRecord', config('RPC_API.passport'));
-        
+
         $marketingRevenueSharing = new \Model\MarketingRevenueSharing();
 
         foreach ($userInvestmentRecord['result'] as $key => $value) {

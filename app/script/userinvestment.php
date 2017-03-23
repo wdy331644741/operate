@@ -58,21 +58,31 @@ function friendsShare()
 
         //判断给个用户的收益是否超过100元
         $sumamount = $marketingRevenueSharing->getSumByUserId($item['from_user_id']);
-        if ($sumamount < $maxAmount || ($sumamount + $item['amount']) < $maxAmount) {
+        $total = $item['amount'];
+        $finallyAmount = ($sumamount + $total) < $maxAmount ? $total : ($maxAmount - $sumamount);
+
+        if ($finallyAmount > 0) {
+            $cashTotal = $item['cash_total'];
+            $interestCouponTotal = $item['interest_coupon_total'];
+            if ($finallyAmount != $total) {
+                $cashTotal = $cashTotal * ($finallyAmount / $total);
+                $interestCouponTotal = $interestCouponTotal * ($finallyAmount / $total);
+            }
+
             //给用户发好友收益
             $checkUserWithdraw = [
                 'activity_id'     => $item['id'],//用户id
                 'user_id'         => $item['from_user_id'],//用户id
-                'amount'          => $item['amount'],//总利息
-                'basics_amount'   => $item['cash_total'],//基本利息
-                'interest_coupon' => $item['interest_coupon_total'],//加息劵利息
+                'amount'          => $finallyAmount,//总利息
+                'basics_amount'   => $cashTotal,//基本利息
+                'interest_coupon' => $interestCouponTotal,//加息劵利息
                 'user_mobile'     => $username,
                 'user_name'       => $username,
                 'type_to_cn'      => "活动端加息百分之10转入",
             ];
             $result = Common::jsonRpcApiCall((object)$checkUserWithdraw, 'insertOperation', config('RPC_API.projects'));
-
-            if (isset($result['data']['result']) && $result['data']['result']['code'] == 0) {
+            
+            if (isset($result['result']) && $result['result']['code'] == 0) {
                 $marketingRevenueSharing->successExecute($item['id'], $item['from_user_id'], 200);
             } else {
                 $marketingRevenueSharing->successExecute($item['id'], $item['from_user_id'], 400);

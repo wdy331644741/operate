@@ -73,12 +73,13 @@ class MarketingRevenueSharing extends Model
      */
     public function getSumByUserId($userId)
     {
-        $result = $this->fields("SUM(amount) as amount", false)
-            ->where("`user_id` = '{$userId}' and `status` = '200' ")
+        $result = $this->fields("SUM(amount) as amounts", false)
+            ->where("`user_id` = '{$userId}'")
+            ->whereIn("status", "200")
             ->get()
             ->rowArr();
 
-        return empty($result['amount']) ? '0.00' : $result['amount'];
+        return empty($result['amounts']) ? '0.00' : $result['amounts'];
     }
 
 
