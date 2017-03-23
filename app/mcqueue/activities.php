@@ -20,6 +20,11 @@ function friendsShare()
     $configEarningsData = $earnings->getInfoByTitle('revenueSharing');
     $maxAmount = $configEarningsData['amount'];  //配置中的收益最大金额
 
+    $start_time = $configEarningsData['start_time'];
+    $end_time = $configEarningsData['end_time'];
+
+    $headCount = $configEarningsData['head_count'];
+
     if ($total >= 0.0000000000) {
 
         $userId = I('post.userId', '', 'intval');
@@ -42,8 +47,8 @@ function friendsShare()
                 $cashTotal = $cashTotal * ($finallyAmount / $total);
                 $interestCouponTotal = $interestCouponTotal * ($finallyAmount / $total);
             }
-
-            if ($userId) {
+            $accountCount = $model->getAccountCount($fromUserId, $start_time, $end_time);
+            if ($userId && $accountCount < $headCount) {
                 $data = [
                     'user_id'               => $userId,
                     'from_user_id'          => $fromUserId,
