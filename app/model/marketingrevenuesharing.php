@@ -135,13 +135,13 @@ class MarketingRevenueSharing extends Model
     public function getAccountCount($userId, $start_time, $end_time)
     {
         $status = '100,200';
-        $result = $this->fields("count(*) as counts", false)
-            ->where(" `create_time` > '{$start_time}' and `create_time` < '{$end_time}' and 'from_user_id'=>$userId")
+        $result = $this->fields("user_id", false)
+            ->where(" `create_time` > '{$start_time}' and `create_time` < '{$end_time}' and `from_user_id` = '{$userId}'")
             ->whereIn('status', $status)
             ->groupby('user_id')
             ->get()
-            ->rowArr();
+            ->resultArr();
 
-        return $result['counts'];
+        return $result;
     }
 }

@@ -25,7 +25,7 @@ function friendsShare()
 
     $headCount = $configEarningsData['head_count'];
 
-    if ($total >= 0.0000000000) {
+    if (($total >= 0.0000000000) && (date("Y-m-d H:is", strtotime('-1 day')) < $end_time)) {
 
         $userId = I('post.userId', '', 'intval');
 
@@ -41,14 +41,17 @@ function friendsShare()
 
         $finallyAmount = ($sumamount + $total) < $maxAmount ? $total : ($maxAmount - $sumamount);
 
-        if ($finallyAmount > 0) {
+        if ($finallyAmount > 0 && !empty($fromUserId)) {
 
             if ($finallyAmount != $total) {
                 $cashTotal = $cashTotal * ($finallyAmount / $total);
                 $interestCouponTotal = $interestCouponTotal * ($finallyAmount / $total);
             }
-            $accountCount = $model->getAccountCount($fromUserId, $start_time, $end_time);
-            if ($userId && $accountCount < $headCount) {
+            $accountCountUserId = $model->getAccountCount($fromUserId, $start_time, $end_time);
+
+            logs('accountCount:' . $accountCountUserId, 'accountCount');
+
+            if (($userId && (intval(count($accountCountUserId)) < intval($headCount))) || in_array($userId, array_column($accountCountUserId, 'user_id'))) {
                 $data = [
                     'user_id'               => $userId,
                     'from_user_id'          => $fromUserId,
