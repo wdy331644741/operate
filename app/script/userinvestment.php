@@ -43,6 +43,8 @@ function friendsShare()
     $earnings = new \Model\ConfigEarnings();
     $configEarningsData = $earnings->getInfoByTitle('revenueSharing');
     $maxAmount = $configEarningsData['amount'];  //配置中的收益最大金额
+    $start_time = $configEarningsData['start_time'];  //配置中的开始时间
+    $end_time = $configEarningsData['end_time'];  //配置中结束时间
 
     foreach ($result as $item) {
 
@@ -69,26 +71,35 @@ function friendsShare()
                 $interestCouponTotal = $interestCouponTotal * ($finallyAmount / $total);
             }
 
-            //给用户发好友收益
-            $checkUserWithdraw = [
-                'activity_id'     => $item['id'],//用户id
-                'user_id'         => $item['from_user_id'],//用户id
-                'amount'          => $finallyAmount,//总利息
-                'basics_amount'   => $cashTotal,//基本利息
-                'interest_coupon' => $interestCouponTotal,//加息劵利息
-                'user_mobile'     => $username,
-                'user_name'       => $username,
-                'type_to_cn'      => "活动端加息百分之10转入",
+            $getActivityUser = [
+                'user_id'    => $item['user_id'],
+                'start_time' => $start_time,
+                'end_time'   => $end_time
             ];
-            $result = Common::jsonRpcApiCall((object)$checkUserWithdraw, 'insertOperation', config('RPC_API.projects'));
-            
-            if (isset($result['result']) && $result['result']['code'] == 0) {
-                $marketingRevenueSharing->successExecute($item['id'], $item['from_user_id'], 200);
+            $activityUser = Common::jsonRpcApiCall((object)$getActivityUser, 'getActivityUser', config('RPC_API.passport'));
+
+            if (isset($activityUser['result']['data']) && $activityUser['result']['data'] != false) {
+                //给用户发好友收益
+                $checkUserWithdraw = [
+                    'activity_id'     => $item['id'],//用户id
+                    'user_id'         => $item['from_user_id'],//用户id
+                    'amount'          => $finallyAmount,//总利息
+                    'basics_amount'   => $cashTotal,//基本利息
+                    'interest_coupon' => $interestCouponTotal,//加息劵利息
+                    'user_mobile'     => $username,
+                    'user_name'       => $username,
+                    'type_to_cn'      => "活动端加息百分之10转入",
+                ];
+                $result = Common::jsonRpcApiCall((object)$checkUserWithdraw, 'insertOperation', config('RPC_API.projects'));
+
+                if (isset($result['result']) && $result['result']['code'] == 0) {
+                    $marketingRevenueSharing->successExecute($item['id'], $item['from_user_id'], 200);
+                } else {
+                    $marketingRevenueSharing->successExecute($item['id'], $item['from_user_id'], 400);
+                }
             } else {
                 $marketingRevenueSharing->successExecute($item['id'], $item['from_user_id'], 400);
             }
         }
-
     }
-
 }

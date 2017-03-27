@@ -13,24 +13,6 @@ function index()
     //活动相关
     $jsonRPCServer->addService(loadRpcImpl('ActivityRpcImpl'));
 
-    //注册登录服务接口
-    $jsonRPCServer->addService(loadRpcImpl('AuthorizeRpcImpl'));
-
-    //通用的接口类（类似图片验证码、短信验证码）
-    $jsonRPCServer->addService(loadRpcImpl('ToolsRpcImpl'));
-
-    //账号安全相关服务
-    $jsonRPCServer->addService(loadRpcImpl('SecureRpcImpl'));
-
-    //银行卡行管服务接口
-    $jsonRPCServer->addService(loadRpcImpl('BankcardRpcImpl'));
-
-    //理财券相关服务接口
-    $jsonRPCServer->addService(loadRpcImpl('CouponRpcImpl'));
-
-    //用户资产相关服务接口
-    $jsonRPCServer->addService(loadRpcImpl('FundsRpcImpl'));
-
     $jsonRPCServer->processingRequests();
 }
 
