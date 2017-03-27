@@ -271,7 +271,9 @@ class AccountRpcImpl extends BaseRpcImpl
 
         //未投资好友/已投资好友
         $userInvestmentRecordPostParams = [
-            'user_id' => $userId
+            'user_id' => $userId,
+            'start_time' => $startTime,
+            'end_time'   => $endTime,
         ];
         $userInvestmentRecord = Common::jsonRpcApiCall((object)$userInvestmentRecordPostParams, 'userInvestmentRecord', config('RPC_API.passport'));
 
