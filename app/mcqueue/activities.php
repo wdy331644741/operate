@@ -52,27 +52,36 @@ function friendsShare()
             logs('accountCount:' . $accountCountUserId, 'accountCount');
 
             if (($userId && (intval(count($accountCountUserId)) < intval($headCount))) || in_array($userId, array_column($accountCountUserId, 'user_id'))) {
-                $data = [
-                    'user_id'               => $userId,
-                    'from_user_id'          => $fromUserId,
-                    'amount'                => $finallyAmount,
-                    'cash_total'            => $cashTotal,
-                    'interest_coupon_total' => $interestCouponTotal,
-                    'start_time'            => I('post.beginTime'),
-                    'end_time'              => I('post.endTime'),
+
+                $getActivityUser = [
+                    'user_id'    => $userId,
+                    'start_time' => $start_time,
+                    'end_time'   => $end_time
                 ];
+                $activityUser = Common::jsonRpcApiCall((object)$getActivityUser, 'getActivityUser', config('RPC_API.passport'));
 
-                try {
-                    $model->addRevenueSharing($data, I('post.type', '', 'strval'));
-                } catch (\Exception $e) {
-                    $msg = "接口错误码：{$e->getCode()}, 错误信息：{$e->getMessage()}" . PHP_EOL;
-                    logs($msg, 'friendsshare');
+                if (isset($activityUser['result']['data']) && $activityUser['result']['data'] != false) {
+                    $data = [
+                        'user_id'               => $userId,
+                        'from_user_id'          => $fromUserId,
+                        'amount'                => $finallyAmount,
+                        'cash_total'            => $cashTotal,
+                        'interest_coupon_total' => $interestCouponTotal,
+                        'start_time'            => I('post.beginTime'),
+                        'end_time'              => I('post.endTime'),
+                    ];
 
-                    echo $msg;
+                    try {
+                        $model->addRevenueSharing($data, I('post.type', '', 'strval'));
+                    } catch (\Exception $e) {
+                        $msg = "接口错误码：{$e->getCode()}, 错误信息：{$e->getMessage()}" . PHP_EOL;
+                        logs($msg, 'friendsshare');
+
+                        echo $msg;
+                    }
                 }
             }
         }
-
     }
 
 }

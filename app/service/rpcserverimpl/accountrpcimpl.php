@@ -33,7 +33,7 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function checkIn()
     {
-        //检查登录状态
+        //检查登录状态 null === false
         if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
@@ -271,7 +271,9 @@ class AccountRpcImpl extends BaseRpcImpl
 
         //未投资好友/已投资好友
         $userInvestmentRecordPostParams = [
-            'user_id' => $userId
+            'user_id' => $userId,
+            'start_time' => $startTime,
+            'end_time'   => $endTime,
         ];
         $userInvestmentRecord = Common::jsonRpcApiCall((object)$userInvestmentRecordPostParams, 'userInvestmentRecord', config('RPC_API.passport'));
 
