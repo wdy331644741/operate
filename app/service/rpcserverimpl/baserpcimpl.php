@@ -44,18 +44,9 @@ class BaseRpcImpl extends JsonRpcService {
      */
     protected function checkLoginStatus()
     {
-        $userData = $this->sessionHandle->get(USER_DATA_SKEY);
-
-        //记录user_agent 信息
-        $this->logUserAgent('user_agent');
-
-        if (empty($userData) || empty($userData['user_id'])) {
-            return false;
-        }
-        //设备检查
-        config("MULTIPLE_SIGNIN") && $this->deviceProtect($userData['user_id']);
-
-        return $userData['user_id'];
+        $userData = new \Lib\UserData();
+        $userId = $userData->get('user_id');
+        return $userId ? $userId : false;
     }
 
     //检查接口ip限制
