@@ -33,7 +33,6 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function checkIn()
     {
-
         //检查登录状态 null === false
         if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
