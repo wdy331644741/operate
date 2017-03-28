@@ -17,6 +17,12 @@ function index()
     //获取所有本月签到时间
     $message = Common::jsonRpcApiCall((object)$postParams, 'getAllRechargeUser', config('RPC_API.passport'));
 
+    $earnings = new \Model\ConfigEarnings();
+    $configEarningsData = $earnings->getInfoByTitle('revenueSharing');
+    $start_time = $configEarningsData['start_time'];  //配置中的开始时间
+    $end_time = $configEarningsData['end_time'];  //配置中结束时间
+    $today = date('Y-m-d H:i:s', time());
+
     if (count($message['result']['data']) != 0) {
         foreach ($message['result']['data'] as $key => $item) {
             $checkUserWithdraw = [
@@ -24,7 +30,9 @@ function index()
                 'date'    => date('Y-m-d', time()),
             ];
 
-            Common::jsonRpcApiCall((object)$checkUserWithdraw, 'checkUserWithdraw', config('RPC_API.passport'));
+            if ($today > $start_time && $today < $end_time) {
+                Common::jsonRpcApiCall((object)$checkUserWithdraw, 'checkUserWithdraw', config('RPC_API.passport'));
+            }
         }
     }
 }
