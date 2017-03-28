@@ -33,8 +33,8 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function checkIn()
     {
-        //检查登录状态
-        if (($this->userId == $this->checkLoginStatus()) === false) {
+        //检查登录状态 null === false
+        if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
         $userId = $this->userId;
@@ -58,7 +58,7 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function userSignInMonth()
     {
-        if (($this->userId == $this->checkLoginStatus()) === false) {
+        if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
 
@@ -216,7 +216,7 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function supplementUserSignIn($params)
     {
-        if (($this->userId == $this->checkLoginStatus()) === false || empty($params->start_date)) {
+        if (($this->userId = $this->checkLoginStatus()) === false || empty($params->start_date)) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
 
@@ -245,7 +245,7 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function userProceedsDetailed()
     {
-        if (($this->userId == $this->checkLoginStatus()) === false) {
+        if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
 
@@ -304,7 +304,7 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function checkTodaySignIn()
     {
-        if (($this->userId == $this->checkLoginStatus()) === false) {
+        if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
 
