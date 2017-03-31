@@ -84,7 +84,7 @@ class AccountRpcImpl extends BaseRpcImpl
         }
 
         $beginDate = date('Y-m-01', strtotime(date("Y-m-d")));
-        $endDate = date('Y-m-d', strtotime("{$beginDate} +1 month -1 day"));
+        $endDate = date('Y-m-d', strtotime("{$beginDate} +1 month"));
 
         $postParams = array(
             'user_id'    => $userId,
@@ -141,7 +141,7 @@ class AccountRpcImpl extends BaseRpcImpl
                 $stringData[] = 0;
             }
         }
-
+        
         $result = [
             'code'           => 200,
             'continueDays'   => empty($continueDayNumber) ? 0 : $continueDayNumber,
