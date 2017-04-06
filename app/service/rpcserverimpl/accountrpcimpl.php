@@ -141,7 +141,7 @@ class AccountRpcImpl extends BaseRpcImpl
                 $stringData[] = 0;
             }
         }
-        
+
         $result = [
             'code'           => 200,
             'continueDays'   => empty($continueDayNumber) ? 0 : $continueDayNumber,
@@ -169,32 +169,28 @@ class AccountRpcImpl extends BaseRpcImpl
      */
     public function getGift($continueDays, $today)
     {
-        $gift = [
-            ['name' => '当用户连续签到5天，给用户0.1%加息券，加息时间2天', 'type' => 's1', 'day' => '5'],
-            ['name' => '当用户连续签到10天，给用户0.2%加息券，加息时间5天', 'type' => 's2', 'day' => '10'],
-            ['name' => '当用户连续签到20天，给用户0.3%加息券，加息时间5天', 'type' => 's3', 'day' => '20'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '30'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '40'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '50'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '60'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '70'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '80'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '90'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '100'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '110'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '120'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '130'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '140'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '150'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '160'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '170'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '180'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '190'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '200'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '210'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '220'],
-            ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => '230'],
-        ];
+        $gift = [];
+
+        for ($i = 1; $i <= 1000; $i++) {
+
+            if($i==5){
+                array_push($gift, ['name' => '当用户连续签到5天，给用户0.1%加息券，加息时间2天', 'type' => 's1', 'day' => $i]);
+            }
+
+            if ($i % 10 == 0) {
+                switch ($i) {
+                    case $i == 10:
+                        array_push($gift, ['name' => '当用户连续签到10天，给用户0.2%加息券，加息时间5天', 'type' => 's2', 'day' => $i]);
+                        break;
+                    case $i == 20:
+                        array_push($gift, ['name' => '当用户连续签到20天，给用户0.3%加息券，加息时间5天', 'type' => 's3', 'day' => $i]);
+                        break;
+                    case $i >= 30:
+                        array_push($gift, ['name' => '后续每连续签到10天，给用户0.3%加息券，加息时间3天', 'type' => 's4', 'day' => $i]);
+                        break;
+                }
+            }
+        }
 
         if (empty($continueDays)) {
             foreach ($gift as $key => $value) {
@@ -271,7 +267,7 @@ class AccountRpcImpl extends BaseRpcImpl
 
         //未投资好友/已投资好友
         $userInvestmentRecordPostParams = [
-            'user_id' => $userId,
+            'user_id'    => $userId,
             'start_time' => $startTime,
             'end_time'   => $endTime,
         ];
@@ -333,6 +329,6 @@ class AccountRpcImpl extends BaseRpcImpl
 
         $marketingRevenueSharing = new \Model\ConfigEarnings();
         $result = $marketingRevenueSharing->getInfoByTitle($title);
-        return ['code'=>0,'data'=>$result];
+        return ['code' => 0, 'data' => $result];
     }
 }
