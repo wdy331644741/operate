@@ -274,23 +274,40 @@ class AccountRpcImpl extends BaseRpcImpl
         $userInvestmentRecord = Common::jsonRpcApiCall((object)$userInvestmentRecordPostParams, 'userInvestmentRecord', config('RPC_API.passport'));
 
         $marketingRevenueSharing = new \Model\MarketingRevenueSharing();
-
+        $friendProperty = array();
+        if($userInvestmentRecord['result']){
+            $last_names = array_column($userInvestmentRecord['result'], 'id');
+            //获取好友总资产
+            $friendPropertyParams = [
+                'friend_users' => $last_names
+            ];
+            $friendProperty = Common::jsonRpcApiCall((object)$friendPropertyParams, 'getUserAvaliableMargin', config('RPC_API.projects'));
+        }
+        // $friend_users = array();
+        // $unInvest_users = array();
         foreach ($userInvestmentRecord['result'] as $key => $value) {
             if ($value['recharge'] == true) {
                 $userInvestmentRecord['result'][$key]['amount'] = $marketingRevenueSharing->getSumByUserId($value['id']);
+                $userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
             } else {
                 $userInvestmentRecord['result'][$key]['amount'] = 0;
+                $userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
+                
             }
         }
 
         //获取累计获得收益
         $amount = $marketingRevenueSharing->getSumByUserIds(implode(',', array_column($userInvestmentRecord['result'], 'id')));
-
+        //返回该用户的(推广员状态)
+        $promoterModel = new \Model\PromoterList();
+        $res = $promoterModel -> getPromoterInfoById($userId);//var_dump($res['status']);exit;
+        $res = empty($res['status']) && $res['status'] != '0'?-1:$res['status'];
         return [
             'code'                   => 200,
             'experience_amount'      => $amountExperience['result']['count'],
             'revenue_sharing_amount' => $amount,
-            'data'                   => $userInvestmentRecord['result']
+            'promoter_status'        => $res,
+            'data'                   => $userInvestmentRecord['result']            
         ];
     }
 
@@ -331,4 +348,139 @@ class AccountRpcImpl extends BaseRpcImpl
         $result = $marketingRevenueSharing->getInfoByTitle($title);
         return ['code' => 0, 'data' => $result];
     }
+
+    /**
+     * 申请成为推广员
+     * @JsonRpcMethod
+     */
+    public function applyToPromoter(){
+
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+
+        $userId = $this->userId;
+        //未投资好友/已投资好友
+        $configEarnings = new \Model\ConfigEarnings();
+        $configEarningsInfo = $configEarnings->getInfoByTitle('revenueSharing');
+        $startTime = $configEarningsInfo['start_time'];
+        $endTime = $configEarningsInfo['end_time'];
+
+        $userInvestmentRecordPostParams = [
+            'user_id' => $userId,
+            'start_time' => $startTime,
+            'end_time'   => $endTime,
+        ];
+        $userInvestmentRecord = Common::jsonRpcApiCall((object)$userInvestmentRecordPostParams, 'userInvestmentRecord', config('RPC_API.passport'));
+        //判断好友数量是否达到5个
+        $friendNum = array_column($userInvestmentRecord['result'],'recharge');
+        if(count($friendNum)  < 5 ){
+            return ['code' => 2, 'data' => 'Error!'];
+        }
+        //获取好友总资产
+        $last_names = array_column($userInvestmentRecord['result'], 'id');
+        $friendPropertyParams = [
+            'friend_users' => $last_names
+        ];
+        $friendProperty = Common::jsonRpcApiCall((object)$friendPropertyParams, 'getUserAvaliableMargin', config('RPC_API.projects'));
+        $marketingRevenueSharing = new \Model\MarketingRevenueSharing();
+        $inve_amount = 0;//所有好友投资总额
+        foreach ($userInvestmentRecord['result'] as $key => $value) {
+            if ($value['recharge'] == true) {
+                $userInvestmentRecord['result'][$key]['amount'] = $marketingRevenueSharing->getSumByUserId($value['id']);
+                //每个好友投资的钱
+                $inve_amount += $friendProperty['result']['data'][$value['id']];
+            } else {
+                $userInvestmentRecord['result'][$key]['amount'] = 0;
+                //$inve_amount += $friendProperty['result']['data'][$value['id']];
+            }
+        }
+        //从所有好友那里 获取累计获得收益
+        $amount = $marketingRevenueSharing->getSumByUserIds(implode(',', array_column($userInvestmentRecord['result'], 'id')));
+
+        $promoterModel = new \Model\PromoterList();
+        //查询该用户是否已存在
+        if(!($promoterModel -> getPromoterInfoById($userId) )){
+            $PromoterParams = [
+                'auth_id' => $userId,
+                'invite_num' => count($userInvestmentRecord['result']),  //邀请好友的数量
+                'total_inve_amount' => $inve_amount,//好友投资总额
+                'commission' => $amount,  //从好友 获取累计获得收益
+                'create_time' => date('Y-m-d H:i:s',strtotime("-1 day")),
+                'update_time' => date('Y-m-d H:i:s',strtotime("-1 day"))
+            ];
+            $result = $promoterModel -> addPromoter($PromoterParams);//增加推广员
+        }else{
+            return ['code' => 1, 'data' => 'Promoter exist'];
+        }
+
+        return ['code' => 0, 'data' => 'ApplySucceed'];
+    }
+
+    /**
+     * 推广员龙虎榜
+     * @JsonRpcMethod
+     */
+    public function winnersList(){
+
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+
+        $userId = $this->userId;
+
+        $promoterModel = new \Model\PromoterList();
+        $PromoterInfo  = $promoterModel -> getPromoterInfoById($userId);
+
+        $status = empty($PromoterInfo)?-1:$PromoterInfo['status'];
+
+        $List = array(
+                0 => array(
+                        'show_phone' => "130****1717",
+                        'earn'       => "1543.21",
+                        ),
+                1 => array(
+                        'show_phone' => "130****1716",
+                        'earn'       => "1142.64",
+                        ),
+                2 => array(
+                        'show_phone' => "130****1745",
+                        'earn'       => "852.64",
+                        ),
+                3 => array(
+                        'show_phone' => "130****1745",
+                        'earn'       => "852.64",
+                        ),
+                4 => array(
+                        'show_phone' => "130****1745",
+                        'earn'       => "852.64",
+                        ),
+                5 => array(
+                        'show_phone' => "130****1745",
+                        'earn'       => "852.64",
+                        ),
+                6 => array(
+                        'show_phone' => "130****1745",
+                        'earn'       => "852.64",
+                        ),
+                7 => array(
+                        'show_phone' => "130****1745",
+                        'earn'       => "852.64",
+                        ),
+                8 => array(
+                        'show_phone' => "130****1745",
+                        'earn'       => "852.64",
+                        ),
+                9 => array(
+                        'show_phone' => "130****1745",
+                        'earn'       => "852.64",
+                        ),
+                );
+        return [
+            'code' => 200,
+            'Promoter' => $status,
+            'data' => $List
+        ];
+    }
+
 }
