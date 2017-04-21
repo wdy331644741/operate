@@ -563,6 +563,48 @@ return array (
     ),
     'pk_name' => 'id',
   ),
+  'award_node' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'title' => 
+    array (
+      'field' => 'title',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '30',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'name' => 
+    array (
+      'field' => 'name',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '30',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'pk_name' => 'id',
+  ),
   'config_earnings' => 
   array (
     'id' => 
@@ -652,6 +694,16 @@ return array (
       'field' => 'update_time',
       'key' => '',
       'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'head_count' => 
+    array (
+      'field' => 'head_count',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '11',
       'unsigned' => false,
       'null' => true,
     ),
@@ -1330,7 +1382,17 @@ return array (
     'user_id' => 
     array (
       'field' => 'user_id',
-      'key' => '',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '11',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'from_user_id' => 
+    array (
+      'field' => 'from_user_id',
+      'key' => 'MUL',
       'default' => NULL,
       'type' => 'int',
       'lenght' => '11',
@@ -1340,7 +1402,7 @@ return array (
     'type' => 
     array (
       'field' => 'type',
-      'key' => '',
+      'key' => 'MUL',
       'default' => NULL,
       'type' => 'varchar',
       'lenght' => '20',
@@ -1350,7 +1412,23 @@ return array (
     'amount' => 
     array (
       'field' => 'amount',
-      'key' => '',
+      'key' => 'MUL',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'cash_total' => 
+    array (
+      'field' => 'cash_total',
+      'key' => 'MUL',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'interest_coupon_total' => 
+    array (
+      'field' => 'interest_coupon_total',
+      'key' => 'MUL',
       'default' => NULL,
       'unsigned' => false,
       'null' => true,
@@ -1376,8 +1454,8 @@ return array (
       'field' => 'status',
       'key' => '',
       'default' => '100',
-      'type' => 'tinyint',
-      'lenght' => '3',
+      'type' => 'int',
+      'lenght' => '5',
       'unsigned' => false,
       'null' => true,
     ),
@@ -1398,6 +1476,101 @@ return array (
       'null' => true,
     ),
     'pk_name' => 'id',
+  ),
+  'promoter_list' => 
+  array (
+    'apply_id' => 
+    array (
+      'field' => 'apply_id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'auth_id' => 
+    array (
+      'field' => 'auth_id',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'username' => 
+    array (
+      'field' => 'username',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '30',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'phone' => 
+    array (
+      'field' => 'phone',
+      'key' => 'UNI',
+      'default' => NULL,
+      'lenght' => '11',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'invite_num' => 
+    array (
+      'field' => 'invite_num',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '5',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'total_inve_amount' => 
+    array (
+      'field' => 'total_inve_amount',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'commission' => 
+    array (
+      'field' => 'commission',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '1',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'pk_name' => 'apply_id',
   ),
   'sms_log' => 
   array (

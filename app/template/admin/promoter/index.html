@@ -1,0 +1,156 @@
+{include file="header.html"}
+<style>
+    .adminstatus { cursor:pointer;}
+</style>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="top-title">
+        <h2 class="sub-header">推广员申请列表</h2>
+        <!--<div class="top-tools">
+            <a href="?c=company&a=add"class="btn btn-primary">增加企业用户</a>
+        </div>-->
+    </div>
+    <div style="clear:both"></div>
+    <form name="form1" class="form-inline" method="post" action="">
+    {if $roleStatus==1}
+    <div class="form-group">
+        <div class="form-group">
+            <select id="type" name="type" class="form-control">
+                <option {if $sessionObj->get('userData.admin_user.serach.queryType')=='phone_num'}selected{/if} value="phone_num">按手机号查询</option>
+                <option {if $sessionObj->get('userData.admin_user.serach.queryType')=='user_name'}selected{/if} value="user_name">按姓名查询</option>
+                <option {if $sessionObj->get('userData.admin_user.serach.queryType')=='user_id'}selected{/if} value="user_id">按用户id查询</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" value="{if $sessionObj->get('userData.admin_user.serach.queryValue')}{$sessionObj->get('userData.admin_user.serach.queryValue')}{/if}" name="phone">
+        </div>
+        <button type="submit" class="btn btn-default" onClick="form1.submit();">查询</button>
+    </div>
+    {else}
+    <div class="form-group">
+        <div class="form-group">
+            请输入用户id:<input type="hidden" name="type" value="user_id" />
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" value="{if $sessionObj->get('userData.admin_user.serach.queryValue')}{$sessionObj->get('userData.admin_user.serach.queryValue')}{/if}" name="phone">
+        </div>
+        <button type="submit" class="btn btn-default" onClick="form1.submit();">查询</button>
+    </div>
+    {/if}
+
+</form>
+    <!--<a href="?c=user&a=add" class="btn btn-success">添加</a>-->
+
+    <div id="myTabContent" class="tab-content" style="margin-top:10px">
+        <!-- start 已上线 -->
+        <div class="table-responsive tab-pane fade in active" id="no2">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th >申请ID</th>
+                    <th >用户ID</th>
+                    <th >姓名</th>
+                    <th >手机号</th>
+                    <th >邀请用户数量</th>
+                    <th >好友邀请所得佣金</th>
+                    <th >好友投资总额</th>
+                    <th >操作</th>
+                </tr>
+                </tr>
+                </thead>
+                <tbody>
+                {if $lists && is_array($lists)}
+                {foreach $lists as $item}
+                <tr id="onlinetr_{$item.id}">
+                    <td>{$item.apply_id}</td>
+                    <td>{$item.auth_id}</td>
+                    <td>{$item.username}</td>
+                    <td>{$item.phone}</td>
+                    <td>{$item.invite_num}</td>
+                    <td>{$item.commission}</td>
+                    <td>{$item.total_inve_amount}</td>
+                    <td>
+                        {if $item.status ==0}
+                        <a href="javascript:void(0);"  class="btn btn-danger btn-xs status">通过</a>
+                        {else}
+                        <a href="javascript:void(0);"  class="btn btn-primary btn-xs status">拒绝</a>
+                        {/if}
+                        <a href="?c=promoter&a=del&id={$item.apply_id}"  class="btn btn-primary btn-xs status">删除</a>
+                    </td>
+                    
+                </tr>
+                {/foreach}
+                {/if}
+                </tbody>
+            </table>
+        </div>
+        <!-- end 已上线 -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <form class="form-inline" method="post" action="?c=user&a=edit_phone">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">修改手机号</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label ><span class="name_span">更改的手机号</span></label>
+                                <input type="text" class="form-control name"  name="new_phone" value="">
+                            </div>
+                            <input type="hidden" name="id" value="" id="uid">
+                            <input type="hidden" name="type" value="1">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit"  class="btn btn-default" >提交</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+</div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function(){
+        $(".status").click(function(){
+            var id=$(this).parent().parent().find('td:first').html();
+            var msg=$(this).html();
+            if(confirm('你确定要'+msg+"吗？")){
+                window.location.href="?c=promoter&a=check&id="+id;
+            }
+        });
+    })
+    $('.selectuser').click(function(){
+        var userId=$(this).parent().parent().find('td:first').html();
+        $.ajax({
+            //提交数据的类型 POST GET
+            type:"POST",
+            //提交的网址
+            url:"?c=user&a=setSearchUserId",
+            //提交的数据
+            data:{ id:userId},
+            //成功返回之后调用的函数
+            success:function(response){
+                response = $.parseJSON(response);
+                if(response.error==100) {
+                    throwExc(response.msg);
+                    return false;
+                }else if(response.error==200) {
+                    showSucc(response.msg);
+                    setTimeout("load()",1000);
+                }
+            }
+        });
+    })
+    function load(){
+        window.location.href="?c=user&a=index";
+    }
+    $('.edit_phone').click(function(){
+        $("#uid").val($(this).attr("data-id"));
+    })
+</script>
+{include file="footer.html"}
