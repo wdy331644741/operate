@@ -44,7 +44,7 @@ function index()
 			            echo "用户id：",$checkUserWithdraw['user_id'],"\n";
 			            echo "判断从",$reissueDate," 前15天 是否有提现","\n";
 			            if ($today > $start_time && $today < $end_time) {
-			                Common::jsonRpcApiCall((object)$checkUserWithdraw, 'checkUserWithdraw', config('RPC_API.passport'));
+			            	Common::jsonRpcApiCall((object)$checkUserWithdraw, 'checkUserWithdraw', config('RPC_API.passport'));
 			            }
 		        	}
 		            
