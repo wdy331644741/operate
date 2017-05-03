@@ -461,7 +461,7 @@ class AccountRpcImpl extends BaseRpcImpl
                         ),
                 6 => array(
                         'show_phone' => "130****1745",
-                        'earn'       => "852.64",
+                        'earn'       => "852.44",
                         ),
                 7 => array(
                         'show_phone' => "130****1745",
