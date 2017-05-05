@@ -1,0 +1,35 @@
+CREATE TABLE `marketing_experience` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '体验金ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `uuid` char(36) NOT NULL COMMENT '唯一标识',
+  `source_id` int(10) unsigned NOT NULL COMMENT '来源ID',
+  `source_name` varchar(100) NOT NULL COMMENT '体验金名称',
+  `amount` decimal(20,0) unsigned NOT NULL COMMENT '体验金金额',
+  `effective_start` datetime NOT NULL COMMENT '有效期开始时间',
+  `effective_end` datetime NOT NULL COMMENT '有效期结束时间',
+  `continuous_days` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '加息天数',
+  `limit_desc` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_valid` char(20) NOT NULL DEFAULT '1' COMMENT '1为有效，其他状态未无效',
+  `is_use` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否已使用',
+  `create_time` datetime NOT NULL COMMENT '发放时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uuid` (`uuid`) USING BTREE,
+  KEY `source_id` (`source_id`) USING BTREE,
+  KEY `user_id` (`user_id`) USING BTREE,
+  KEY `effective_end` (`effective_end`) USING BTREE,
+  KEY `effective_start` (`effective_start`) USING BTREE,
+  KEY `is_use` (`is_use`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='记录发放体验金';
+
+
+
+CREATE TABLE `award_node` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(30) NOT NULL COMMENT '标题',
+  `name` varchar(30) NOT NULL COMMENT '名称',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+

@@ -563,6 +563,147 @@ return array (
     ),
     'pk_name' => 'id',
   ),
+  'award_experience' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'title' => 
+    array (
+      'field' => 'title',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '64',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'amount_type' => 
+    array (
+      'field' => 'amount_type',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '1',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'amount' => 
+    array (
+      'field' => 'amount',
+      'key' => '',
+      'default' => '0',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'min_amount' => 
+    array (
+      'field' => 'min_amount',
+      'key' => '',
+      'default' => '0',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'max_amount' => 
+    array (
+      'field' => 'max_amount',
+      'key' => '',
+      'default' => '0',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'days' => 
+    array (
+      'field' => 'days',
+      'key' => '',
+      'default' => '0',
+      'lenght' => '5',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'effective_end' => 
+    array (
+      'field' => 'effective_end',
+      'key' => 'MUL',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'limit_desc' => 
+    array (
+      'field' => 'limit_desc',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '32',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'limit_node' => 
+    array (
+      'field' => 'limit_node',
+      'key' => 'MUL',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '4',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'is_del' => 
+    array (
+      'field' => 'is_del',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '4',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'repeat' => 
+    array (
+      'field' => 'repeat',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '4',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'pk_name' => 'id',
+  ),
   'award_node' => 
   array (
     'id' => 
@@ -1214,6 +1355,15 @@ return array (
       'default' => NULL,
       'type' => 'varchar',
       'lenght' => '32',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'is_valid' => 
+    array (
+      'field' => 'is_valid',
+      'key' => '',
+      'default' => '1',
+      'lenght' => '20',
       'unsigned' => false,
       'null' => true,
     ),

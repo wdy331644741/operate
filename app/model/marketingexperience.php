@@ -12,6 +12,16 @@ class MarketingExperience extends Model {
             $this->initArData($pkVal);
     }
 
+
+    public function isExist($userId,$sourceId){
+        $result = $this->fields("id", false)
+            ->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
+            ->orderby("id DESC")
+            ->get()
+            ->rowArr();
+        return $result['id'];
+    }
+
     //给用户添加记录
     public function addExperienceForUser($userId, $expInfo)
     {
