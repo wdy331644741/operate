@@ -10,6 +10,16 @@ class MarketingInterestcoupon extends Model {
             $this->initArData($pkVal);
     }
 
+    //是否存在该记录
+    public function isExist($userId,$sourceId){
+        $result = $this->fields("id", false)
+            ->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
+            ->orderby("id DESC")
+            ->get()
+            ->rowArr();
+        return $result['id'];
+    }
+
     //获取用户所有加息券
     public function getListByUserid($userId)
     {

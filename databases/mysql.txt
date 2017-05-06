@@ -9,7 +9,7 @@ CREATE TABLE `marketing_experience` (
   `effective_end` datetime NOT NULL COMMENT '有效期结束时间',
   `continuous_days` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '加息天数',
   `limit_desc` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `is_valid` char(20) NOT NULL DEFAULT '1' COMMENT '1为有效，其他状态未无效',
+  `is_activate` char(20) NOT NULL DEFAULT '0' COMMENT '默认为0  未激活',
   `is_use` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否已使用',
   `create_time` datetime NOT NULL COMMENT '发放时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -20,7 +20,8 @@ CREATE TABLE `marketing_experience` (
   KEY `effective_end` (`effective_end`) USING BTREE,
   KEY `effective_start` (`effective_start`) USING BTREE,
   KEY `is_use` (`is_use`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='记录发放体验金';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='记录发放体验金';
+
 
 
 
@@ -32,4 +33,45 @@ CREATE TABLE `award_node` (
   PRIMARY KEY (`id`),
   KEY `name` (`name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE `award_withdraw` (
+  `id` int(10) NOT NULL,
+  `title` varchar(50) NOT NULL COMMENT '提现劵名称',
+  `times` int(3) NOT NULL COMMENT '提现次数',
+  `effective_end` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '有效期结束时间',
+  `limit_node` tinyint(3) NOT NULL COMMENT '触发节点',
+  `limit_desc` varchar(100) DEFAULT NULL COMMENT '限制说明',
+  `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `update_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(3) NOT NULL DEFAULT '0' COMMENT '1启用  0禁用',
+  `is_del` tinyint(3) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='提现劵配置表';
+
+
+CREATE TABLE `marketing_withdrawcoupon` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '提现劵ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `uuid` char(36) NOT NULL COMMENT '唯一标识',
+  `source_id` int(10) unsigned NOT NULL COMMENT '来源ID',
+  `source_name` varchar(100) NOT NULL COMMENT '来源(活动名称)',
+  `effective_start` datetime NOT NULL COMMENT '有效期起始时间',
+  `effective_end` datetime NOT NULL COMMENT '有效期结束时间',
+  `order_id` varchar(64) DEFAULT NULL COMMENT '提现订单id',
+  `limit_desc` varchar(250) NOT NULL DEFAULT '' COMMENT '限制说明',
+  `is_activate` tinyint(3) NOT NULL DEFAULT '0' COMMENT '0 未激活  1激活',
+  `is_use` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否已使用 0未使用 1已使用',
+  `create_time` datetime NOT NULL COMMENT '发放时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uuid` (`uuid`) USING BTREE,
+  KEY `source_id` (`source_id`) USING BTREE,
+  KEY `user_id` (`user_id`) USING BTREE,
+  KEY `effective_end` (`effective_end`) USING BTREE,
+  KEY `effective_start` (`effective_start`) USING BTREE,
+  KEY `is_use` (`is_use`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='发放提现劵记录';
+
 

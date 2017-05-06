@@ -12,7 +12,16 @@ class MarketingExperience extends Model {
             $this->initArData($pkVal);
     }
 
+    //获取该天 所有预发放体验金的用户
+    public function getExpUserByTime($time){
+        $start_time = $time.' 00:00:00';
+        $end_time = $time.' 23:59:59';
+        return $this->fields('id,user_id',false)
+            ->where("`create_time` >= '{$start_time}' and `create_time` <= '{$end_time}' and `is_activate` = '0' and `is_use` = 0")
+            ->get()->resultArr();
+    }
 
+    //判断是否存在该条记录
     public function isExist($userId,$sourceId){
         $result = $this->fields("id", false)
             ->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
@@ -45,8 +54,8 @@ class MarketingExperience extends Model {
     //更新使用状态
     public function updateStatusOfUse($id)
     {
-        return $this->where("`id` = {$id} and `is_use` = 0")
-            ->upd(array('is_use' => 1, 'update_time' => date('Y-m-d H:i:s')));
+        return $this->where("`id` = {$id} and `is_use` = 0 and `is_activate` = 0 ")
+            ->upd(array('is_use' => 1, 'is_activate' => 1 ,'update_time' => date('Y-m-d H:i:s')));
     }
 
     //获取用户体验金列表
