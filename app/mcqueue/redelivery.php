@@ -34,12 +34,12 @@ function redeliveryExperience(){
             'endTime'    => $rechargeTime,
             'status'	 => 200,
         );
-	$rechargeTimes = Common::jsonRpcApiCall((object)$postParams, 'getRechargeRecords', config('RPC_API.passport'));
+	//$rechargeTimes = Common::jsonRpcApiCall((object)$postParams, 'getRechargeRecords', config('RPC_API.passport'));
 	$rechargeTimes = 2;
 	if($rechargeTimes == 2){
 		coupon($userId,$nodeId);
-		experience($userId,$nodeId,$rechargeAmount);
-		freeWithdraw($userId,$nodeId);
+		//experience($userId,$nodeId,$rechargeAmount);
+		// freeWithdraw($userId,$nodeId);
 	}
 }
 
@@ -66,14 +66,20 @@ function coupon($userId,$nodeId){
 		$addCouponRes = $operateCoupon -> addCouponForUser($userId,$couponInfo);
 		//***************************************************
 		//通知用户中心发放加息劵
-		var_export($addCouponRes);exit;
+		unset($addCouponRes['id']);
 		$proPost = [
-			'interestCoupon' => [
+			'interestCoupon' => $addCouponRes
+		];
+		$rs = Common::jsonRpcApiCall((object)$proPost, 'preSendInterestCouponToUser', config('RPC_API.passport'));
 
-			]
-		]
-		//Common::jsonRpcApiCall((object)$post, 'extendExperienceFromOperate', config('RPC_API.passport'));
-		//Common::jsonRpcApiCall((object)$post, 'extendExperienceFromOperate', config('RPC_API.passport'));
+		$activePost = [
+			'uuid' => $addCouponRes['uuid'],
+			'status' => 1,
+		];
+		$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
+		//update operate database  status
+		var_export($rpcRes);
+		return $rpcRes;
 		
    	}
 
@@ -102,13 +108,13 @@ function experience($userId,$nodeId,$amount){
 			'amount_type'=> $awardExpInfo['amount_type'],
 			);
 		$addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo);
+		unset($addCouponRes['id']);
 		//通知用户中心发放体验金 
 		if($addExperienceRes){
-			$post = array(
-				'status' => 'waiting', 
-				'data'   => $addExperienceRes,
+			$activePost = array(
+				'experienceCoupon'   => $addExperienceRes,
 				);
-			//Common::jsonRpcApiCall((object)$post, 'extendExperienceFromOperate', config('RPC_API.passport'));
+			//$resRpc = Common::jsonRpcApiCall((object)$activePost, 'preSendExperienceCouponToUser', config('RPC_API.passport'));
 		}
 		//****************************************************		
     }
@@ -135,7 +141,13 @@ function freeWithdraw($userId,$nodeId){
 			'limit_desc' => $awardWithdrawInfo['limit_desc'], 
 			);
 		$addWithdrawRes = $FreeWithdraw -> addWithdrawForUser($userId,$withdrawInfo);
+		unset($addWithdrawRes['id']);
 		//通知用户中心 发放提现劵
-		//Common::jsonRpcApiCall((object)$post, 'extendExperienceFromOperate', config('RPC_API.passport'));
+		if($addWithdrawRes){
+			$activePost = array(
+				'withdrawCoupon'   => $addWithdrawRes,
+				);
+			//Common::jsonRpcApiCall((object)$activePost, 'preSendWithdrawCouponToUser', config('RPC_API.passport'));
+		}
 	}
 }
