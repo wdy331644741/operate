@@ -66,7 +66,14 @@ function coupon($userId,$nodeId){
 		$addCouponRes = $operateCoupon -> addCouponForUser($userId,$couponInfo);
 		//***************************************************
 		//通知用户中心发放加息劵
-		// Common::jsonRpcApiCall((object)$post, 'extendExperienceFromOperate', config('RPC_API.passport'));
+		var_export($addCouponRes);exit;
+		$proPost = [
+			'interestCoupon' => [
+
+			]
+		]
+		//Common::jsonRpcApiCall((object)$post, 'extendExperienceFromOperate', config('RPC_API.passport'));
+		//Common::jsonRpcApiCall((object)$post, 'extendExperienceFromOperate', config('RPC_API.passport'));
 		
    	}
 
