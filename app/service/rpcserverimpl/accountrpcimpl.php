@@ -406,6 +406,9 @@ class AccountRpcImpl extends BaseRpcImpl
         $promoterModel = new \Model\PromoterList();
         //查询该用户是否已存在
         if(!($promoterModel -> getPromoterInfoById($userId) )){
+            //从用户中心获取用户基本信息
+            // $params = array();
+            // $userInfo = Common::jsonRpcApiCall((object)$params,'profile',config('RPC_API.passport'));
             $PromoterParams = [
                 'auth_id' => $userId,
                 'invite_num' => count($userInvestmentRecord['result']),  //邀请好友的数量
