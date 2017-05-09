@@ -37,9 +37,9 @@ function redeliveryExperience(){
 	//$rechargeTimes = Common::jsonRpcApiCall((object)$postParams, 'getRechargeRecords', config('RPC_API.passport'));
 	$rechargeTimes = 2;
 	if($rechargeTimes == 2){
-		coupon($userId,$nodeId);
-		//experience($userId,$nodeId,$rechargeAmount);
-		// freeWithdraw($userId,$nodeId);
+		// coupon($userId,$nodeId);
+		experience($userId,$nodeId,$rechargeAmount);
+		freeWithdraw($userId,$nodeId);
 	}
 }
 
@@ -78,8 +78,8 @@ function coupon($userId,$nodeId){
 		];
 		$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
 		//update operate database  status
-		var_export($rpcRes);
-		return $rpcRes;
+		logs($rpcRes,"activateInter");
+		return true;
 		
    	}
 
@@ -108,13 +108,13 @@ function experience($userId,$nodeId,$amount){
 			'amount_type'=> $awardExpInfo['amount_type'],
 			);
 		$addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo);
-		unset($addCouponRes['id']);
-		//通知用户中心发放体验金 
+		unset($addExperienceRes['id']);
+		//通知用户中心 预发放体验金 
 		if($addExperienceRes){
 			$activePost = array(
-				'experienceCoupon'   => $addExperienceRes,
+				'expAward'   => $addExperienceRes,
 				);
-			//$resRpc = Common::jsonRpcApiCall((object)$activePost, 'preSendExperienceCouponToUser', config('RPC_API.passport'));
+			$resRpc = Common::jsonRpcApiCall((object)$activePost, 'preSendExperienceGoldToUser', config('RPC_API.passport'));
 		}
 		//****************************************************		
     }
