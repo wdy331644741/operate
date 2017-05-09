@@ -39,6 +39,10 @@ function checkGiveWithdraw(){
 				//1、update operate withdrawcoupon 
 				$withdrawModel->updateStatusOfUse($value['id']);
 				//2、通知用户中心  激活提现劵
+				// $activePost = [
+				// 	'uuid' => $addCouponRes['uuid'],
+				// 	'status' => 1,
+				// ];
 				//Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
 			}
 		}

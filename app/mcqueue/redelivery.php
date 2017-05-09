@@ -37,7 +37,7 @@ function redeliveryExperience(){
 	//$rechargeTimes = Common::jsonRpcApiCall((object)$postParams, 'getRechargeRecords', config('RPC_API.passport'));
 	$rechargeTimes = 2;
 	if($rechargeTimes == 2){
-		// coupon($userId,$nodeId);
+		coupon($userId,$nodeId);
 		experience($userId,$nodeId,$rechargeAmount);
 		freeWithdraw($userId,$nodeId);
 	}
@@ -147,7 +147,7 @@ function freeWithdraw($userId,$nodeId){
 			$activePost = array(
 				'withdrawCoupon'   => $addWithdrawRes,
 				);
-			//Common::jsonRpcApiCall((object)$activePost, 'preSendWithdrawCouponToUser', config('RPC_API.passport'));
+			Common::jsonRpcApiCall((object)$activePost, 'preSendWithdrawCouponToUser', config('RPC_API.passport'));
 		}
 	}
 }

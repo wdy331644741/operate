@@ -274,6 +274,8 @@ class AccountRpcImpl extends BaseRpcImpl
         $userInvestmentRecord = Common::jsonRpcApiCall((object)$userInvestmentRecordPostParams, 'userInvestmentRecord', config('RPC_API.passport'));
 
         $marketingRevenueSharing = new \Model\MarketingRevenueSharing();
+
+        //0504修改不去产品 获取总资产（产品上带有利息）了改用  请求用户中心userInvestmentRecord 累加充值表
         $friendProperty = array();
         if($userInvestmentRecord['result']){
             $last_names = array_column($userInvestmentRecord['result'], 'id');
@@ -281,17 +283,20 @@ class AccountRpcImpl extends BaseRpcImpl
             $friendPropertyParams = [
                 'friend_users' => $last_names
             ];
-            $friendProperty = Common::jsonRpcApiCall((object)$friendPropertyParams, 'getUserAvaliableMargin', config('RPC_API.projects'));
+            // $friendProperty = Common::jsonRpcApiCall((object)$friendPropertyParams, 'getUserAvaliableMargin', config('RPC_API.projects'));
         }
-        // $friend_users = array();
+        // $friend_users = array();1
         // $unInvest_users = array();
         foreach ($userInvestmentRecord['result'] as $key => $value) {
             if ($value['recharge'] == true) {
+                $userInvestmentRecord['result'][$key]['invest'] = $userInvestmentRecord['result'][$key]['amount'];//0504修改好友总资产
                 $userInvestmentRecord['result'][$key]['amount'] = $marketingRevenueSharing->getSumByUserId($value['id']);
-                $userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
+
+                //$userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
             } else {
+                $userInvestmentRecord['result'][$key]['invest'] = 0;//0504修改好友总资产
                 $userInvestmentRecord['result'][$key]['amount'] = 0;
-                $userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
+                //$userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
                 
             }
         }
@@ -401,6 +406,9 @@ class AccountRpcImpl extends BaseRpcImpl
         $promoterModel = new \Model\PromoterList();
         //查询该用户是否已存在
         if(!($promoterModel -> getPromoterInfoById($userId) )){
+            //从用户中心获取用户基本信息
+            // $params = array();
+            // $userInfo = Common::jsonRpcApiCall((object)$params,'profile',config('RPC_API.passport'));
             $PromoterParams = [
                 'auth_id' => $userId,
                 'invite_num' => count($userInvestmentRecord['result']),  //邀请好友的数量
