@@ -283,20 +283,20 @@ class AccountRpcImpl extends BaseRpcImpl
             $friendPropertyParams = [
                 'friend_users' => $last_names
             ];
-            // $friendProperty = Common::jsonRpcApiCall((object)$friendPropertyParams, 'getUserAvaliableMargin', config('RPC_API.projects'));
+            $friendProperty = Common::jsonRpcApiCall((object)$friendPropertyParams, 'getUserAvaliableMargin', config('RPC_API.projects'));
         }
         // $friend_users = array();1
         // $unInvest_users = array();
         foreach ($userInvestmentRecord['result'] as $key => $value) {
             if ($value['recharge'] == true) {
-                $userInvestmentRecord['result'][$key]['invest'] = $userInvestmentRecord['result'][$key]['amount'];//0504修改好友总资产
+                // $userInvestmentRecord['result'][$key]['invest'] = $userInvestmentRecord['result'][$key]['amount'];//0504修改好友总资产
                 $userInvestmentRecord['result'][$key]['amount'] = $marketingRevenueSharing->getSumByUserId($value['id']);
 
-                //$userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
+                $userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
             } else {
-                $userInvestmentRecord['result'][$key]['invest'] = 0;//0504修改好友总资产
+                $userInvestmentRecord['result'][$key]['invest'] = 0;//0504修改好友总资产，0510修改：尽管未投资 体验金会产生利息，也不展示
                 $userInvestmentRecord['result'][$key]['amount'] = 0;
-                //$userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
+                // $userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
                 
             }
         }
