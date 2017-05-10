@@ -17,7 +17,7 @@ function index()
     	$Days = round(($d2-$d1)/3600/24) + 1;//补发体验金
     	for ($i=0; $i < $Days; $i++) {
     		$reissueDate = date("Y-m-d",strtotime("+{$i} day",strtotime($GLOBALS['cli_args'][0])));
-    		echo "------------------------模拟",$reissueDate."发放体验金（15天前所有首冲的用户）---------------------\n";
+    		echo "---------------------------",$reissueDate."发放体验金（15天前所有首冲的用户）---------------------\n";
     		$date = date('Y-m-d', strtotime('-15 day',strtotime($reissueDate)));//此次循环的日期 往前推15天
     		// echo $date."\n";
 		    $postParams = array(
@@ -43,10 +43,16 @@ function index()
 			            ];
 			            echo "用户id：",$checkUserWithdraw['user_id'],"\n";
 			            if ($today > $start_time && $today < $end_time) {
-			               $rpcRes = Common::jsonRpcApiCall((object)$checkUserWithdraw, 'checkUserWithdraw', config('RPC_API.passport'));
-			               // var_export($rpcRes);
-			               if($rpcRes['result']['data'] == false) echo "从",$reissueDate," 前15天 没有提现","\n";
-			               else echo "从",$reissueDate," 前15天 有提现","\n";
+			                $rpcRes = Common::jsonRpcApiCall((object)$checkUserWithdraw, 'checkUserWithdraw', config('RPC_API.passport'));
+			                // var_export($rpcRes);
+							if($rpcRes['result']['data']['withdraw'] == false){
+								echo "从",$reissueDate," 前15天 没有提现","\n";
+								if($rpcRes['result']['data']['addExp']['experience_amount'] != 0){
+									echo "发放体验金：".$rpcRes['result']['data']['addExp']['experience_amount']."\n";
+								}else{
+									echo "已发放"."\n";
+								}
+							}else echo "从",$reissueDate," 前15天 有提现","\n";
 			            }
 		        	// }
 		            
