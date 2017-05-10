@@ -1,0 +1,2 @@
+ALTER TABLE `promoter_list`
+MODIFY COLUMN `status`  tinyint(1) NOT NULL DEFAULT 0 COMMENT '0待审核，1通过,2不通过' AFTER `create_time`;
