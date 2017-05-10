@@ -48,6 +48,66 @@ function index()
     $framework->smarty->assign('lists',$results);
     $framework->smarty->display('promoter/index.html');
 }
+
+/**
+ * @pageroute
+ * 推广员审核通过
+ */
+function checkpass(){
+    $id = I('get.id/d',0);
+    $goto = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '?c=promoter&a=index';
+    if($id)
+    {
+        $promoterModel = new \Model\PromoterList();
+        $users = $promoterModel->where(['apply_id'=>$id])->get()->row();
+        if($users)
+        {
+            $data=['status'=>1];
+            if($promoterModel->where(['apply_id'=>$id])->upd($data)){
+                redirect($goto,'2',"成功");
+            }else{
+                redirect($goto,'2',"失败");
+            }
+        }else
+        {
+            redirect($goto,'2',"该推广员不存在");
+        }
+    }
+    else
+    {
+        redirect($goto, 2, '数据不合法');
+    }
+}
+/**
+ * @pageroute
+ * 推广员审核不通过
+ */
+function checkrefuse(){
+    $id = I('get.id/d',0);
+    $goto = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '?c=promoter&a=index';
+    if($id)
+    {
+        $promoterModel = new \Model\PromoterList();
+        $users = $promoterModel->where(['apply_id'=>$id])->get()->row();
+        if($users)
+        {
+            $data=['status'=>2];
+            if($promoterModel->where(['apply_id'=>$id])->upd($data)){
+                redirect($goto,'2',"成功");
+            }else{
+                redirect($goto,'2',"失败");
+            }
+        }else
+        {
+            redirect($goto,'2',"该推广员不存在");
+        }
+    }
+    else
+    {
+        redirect($goto, 2, '数据不合法');
+    }
+}
+
 /**
  * @pageroute
  * 推广员审核
