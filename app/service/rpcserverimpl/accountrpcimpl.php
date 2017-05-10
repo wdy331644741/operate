@@ -411,10 +411,14 @@ class AccountRpcImpl extends BaseRpcImpl
         //查询该用户是否已存在
         if(!($promoterModel -> getPromoterInfoById($userId) )){
             //从用户中心获取用户基本信息
-            // $params = array();
-            // $userInfo = Common::jsonRpcApiCall((object)$params,'profile',config('RPC_API.passport'));
+            $params = [
+                'userId' => $userId,
+            ];
+            $userInfo = Common::jsonRpcApiCall((object)$params,'getUserBaseInfo',config('RPC_API.passport'));
             $PromoterParams = [
                 'auth_id' => $userId,
+                'username' => $userInfo['result']['realname'],
+                'phone' => $userInfo['result']['phone'],
                 'invite_num' => count($userInvestmentRecord['result']),  //邀请好友的数量
                 'total_inve_amount' => $inve_amount,//好友投资总额
                 'commission' => $amount,  //从好友 获取累计获得收益

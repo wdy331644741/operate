@@ -38,8 +38,8 @@ class PromoterList extends Model
         //     $this->total_inve_amount = $data['total_inve_amount'];
         //     $this->commission = $data['commission'];
         // }
-        $data['username'] = '1';//从用户中心获取信息
-        $data['phone'] = '1';
+        // $data['username'] = '1';//从用户中心获取信息
+        // $data['phone'] = '1';
 
         if (!empty($data) && $this->add($data)) {
             return ture;
