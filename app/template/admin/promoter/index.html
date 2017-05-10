@@ -71,10 +71,12 @@
                     <td>
                         {if $item.status ==0}
                         <a href="javascript:void(0);"  class="btn btn-danger btn-xs status">通过</a>
-                        {else}
                         <a href="javascript:void(0);"  class="btn btn-primary btn-xs status">拒绝</a>
+                        {else if $item.status ==1}
+                            审核已通过
+                        {else if $item.status ==2}
+                            审核未通过
                         {/if}
-                        <a href="?c=promoter&a=del&id={$item.apply_id}"  class="btn btn-primary btn-xs status">删除</a>
                     </td>
                     
                 </tr>
