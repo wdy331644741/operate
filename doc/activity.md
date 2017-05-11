@@ -78,24 +78,46 @@
 
 	成功：
         {
-          "jsonrpc": "2.0",
-          "result": {
-            "code": 0,
-            "message": "success",
-            "data": [
-              {
-                "id": "1",              
-                "title": "元旦抽奖",
-                "img_url": "http://192.168.10.36:8001/enclosures/201607041604226826.png", //图片地址
-                "link_url": "https://www.wanglibao.com/activity/app_european_cup/",   //跳转地址
-                "desc": "这是title下面的描述内容",
-                "is_hot": "1"            //是否热门活动 1：是 0：否
-              },
-              ...
-            ]
-          },
-          "id": 1
-        }
+        "jsonrpc": "2.0",
+        "result": {
+          "code": 0,
+          "message": "success",
+          "data": [
+            {
+              "id": "1",
+              "title": "邀请好友得双重奖励 - 白拿10000元体验金及1%加息券",
+              "img_url": "126f3713441c43c2ec66615ebd18f016.jpg",
+              "link_url": "https:/test.wanglibao.com/wechat/share/index.html",
+              "start_time": "2017-02-01 00:00:00",
+              "end_time": "2017-06-23 11:50:00",
+              "desc": "",
+              "status": "1"   //正在進行中的活動
+            },
+            {
+              "id": "2",
+              "title": "oooooooooo",
+              "img_url": "b59d6295c11e335fb555211d8a0d96f3.jpg",
+              "link_url": "/Newinvite/newinvite.html",
+              "start_time": "2017-02-28 05:25:00",
+              "end_time": "2017-03-23 10:35:00",
+              "desc": "",
+              "status": "-1"  //过期的活动
+            },
+            {
+              "id": "3",
+              "title": "1",
+              "img_url": "126f3713441c43c2ec66615ebd18f016.jpg",
+              "link_url": "http://operate.wanglibao.com/admin.php?c=activity&a=add",
+              "start_time": "2017-03-01 10:50:00",
+              "end_time": "2017-03-09 10:50:00",
+              "desc": "",
+              "status": "-1"  //过期的活动
+            }
+          ],
+          "pagecounts": 1   //总页数
+        },
+        "id": 1
+      }
 
 错误信息 | 错误码 | 错误说明
 :--|:--|:--
