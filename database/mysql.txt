@@ -1,0 +1,10 @@
+CREATE TABLE `marketing_article_log` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL COMMENT '用户id',
+  `articel_id` int(10) NOT NULL COMMENT '公告id',
+  `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '第一次阅读时间',
+  `last_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '最后一次阅读时间',
+  `counts` int(20) DEFAULT '1' COMMENT '阅读次数',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='阅读公告日志表';

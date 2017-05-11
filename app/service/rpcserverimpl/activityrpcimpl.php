@@ -103,7 +103,7 @@ class ActivityRpcImpl extends BaseRpcImpl
         $acticleModel = new \Model\MarketingArticle();
         $noticeList = $acticleModel->noticeList($params->page);
         foreach ($noticeList as $key => $notice) {
-            $noticeList[$key]['content'] = htmlspecialchars_decode($noticeList[$key]['content']);
+            // $noticeList[$key]['content'] = htmlspecialchars_decode($noticeList[$key]['content']);
             $noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
         }
 
