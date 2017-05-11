@@ -23,16 +23,28 @@ function index()
     $end_time = $configEarningsData['end_time'];  //配置中结束时间
     $today = date('Y-m-d H:i:s', time());
 
-    if (count($message['result']['data']) != 0) {
-        foreach ($message['result']['data'] as $key => $item) {
+    if (count($message['result']['data']['is_frist']) != 0) {
+        foreach ($message['result']['data']['is_frist'] as $key => $item) {
             $checkUserWithdraw = [
                 'user_id' => $item['user_id'],
                 'date'    => date('Y-m-d', time()),
             ];
-
+            echo "用户id：",$checkUserWithdraw['user_id'],"\n";
             if ($today > $start_time && $today < $end_time) {
-                Common::jsonRpcApiCall((object)$checkUserWithdraw, 'checkUserWithdraw', config('RPC_API.passport'));
+                $rpcRes = Common::jsonRpcApiCall((object)$checkUserWithdraw, 'checkUserWithdraw', config('RPC_API.passport'));
+                // var_export($rpcRes);
+                if($rpcRes['result']['data']['withdraw'] == false){
+                    echo "从",$today," 前15天 没有提现","\n";
+                    if($rpcRes['result']['data']['addExp']['experience_amount'] != 0){
+                        echo "发放体验金：".$rpcRes['result']['data']['addExp']['experience_amount']."\n";
+                    }else{
+                        echo "已发放"."\n";
+                    }
+                }else echo "从",$today," 前15天 有提现","\n";
             }
+            // if ($today > $start_time && $today < $end_time) {
+            //     Common::jsonRpcApiCall((object)$checkUserWithdraw, 'checkUserWithdraw', config('RPC_API.passport'));
+            // }
         }
     }
 }
