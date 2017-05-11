@@ -64,8 +64,10 @@ function lst()
     $activityModel = new \Model\MarketingActivity();
     $list = $activityModel->get()->resultArr();
     $storage = new Storage\Storage();
-    foreach ($list as $index => $item)
+    foreach ($list as $index => $item){
         $list[$index]['img_url'] = $storage->getViewUrl($item['img_url']);
+        $list[$index]['link_url'] = config('RPC_API.wechat').$list[$index]['link_url'];
+    }
     $framework->smarty->assign('list', $list);
     $framework->smarty->display('activity/lst.html');
 }
