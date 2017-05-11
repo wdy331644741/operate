@@ -49,24 +49,36 @@ class ActivityRpcImpl extends BaseRpcImpl
         $activities = $activityModel->activityList($params->page);
 
         // var_export($activities);exit;
+        $pagecounts = ceil(count($activities)/5);
         foreach ($activities as $key => $activity) {
             $activities[$key]['img_url'] = $storage->getViewUrl($activity['img_url']);
             
             if($activity['start_time'] < $dateNow && $activity['end_time'] < $dateNow){
-                $activities[$key]['status'] = '-1';//not begin  //未开始
+                // $activities[$key]['status'] = '-1';//not begin  //已过期
+                $activity['status'] = '-1';
+                $pastAactivities[] = $activity;
             }elseif($activity['start_time'] > $dateNow && $activity['end_time'] > $dateNow){
-                $activities[$key]['status'] = '0';//past //已过期
+                //$activities[$key]['status'] = '0';//past //未开始
+                $activity['status'] = '0';
+                $unbeginAactivities[] = $activity;
+
             }elseif($activity['start_time'] < $dateNow && $activity['end_time'] > $dateNow){
-                $activities[$key]['status'] = '1';//正在进行的
+                // $activities[$key]['status'] = '1';//正在进行的
+                $activity['status'] = '1';
+                $ingAactivities[] = $activity;
             }
             
-            //正在进行
         }
-// var_export($activities);exit;
+        $res = array_merge($ingAactivities,$pastAactivities);
+
+        $arrayStart = ($params->page -1)*5;
+        $fin = array_slice($res,$arrayStart,5);
+
         return array(
             'code'    => 0,
             'message' => 'success',
-            'data'    => $activities
+            'data'    => $fin,
+            'pagecounts' => $pagecounts,
         );
     }
 
