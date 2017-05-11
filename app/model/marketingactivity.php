@@ -25,12 +25,12 @@ class MarketingActivity extends Model
 
     public function activityList($page)
     {
-        $start = intval(($page - 1) * C('PAGE_SIZE'));
+        // $start = intval(($page - 1) * C('PAGE_SIZE'));
         $nowtime = date("Y-m-d H:i:s");
         return $this->fields('id, title, img_url, link_url, start_time, end_time, desc')
             ->where("`is_del` = 0 and `status` = 1 ")
             ->orderby("sort DESC")
-            ->limit($start, C('PAGE_SIZE'))
+            // ->limit($start, C('PAGE_SIZE'))
             ->get()->resultArr();
     }
 }
