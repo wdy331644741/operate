@@ -38,6 +38,7 @@ class ActivityRpcImpl extends BaseRpcImpl
      */
     public function activities($params)
     {
+        $dateNow = date('Y-m-d H:i:s',time());
         //验证
         if (empty($params->page)) {
             throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
@@ -47,10 +48,21 @@ class ActivityRpcImpl extends BaseRpcImpl
         $activityModel = new \Model\MarketingActivity();
         $activities = $activityModel->activityList($params->page);
 
+        // var_export($activities);exit;
         foreach ($activities as $key => $activity) {
             $activities[$key]['img_url'] = $storage->getViewUrl($activity['img_url']);
+            
+            if($activity['start_time'] < $dateNow && $activity['end_time'] < $dateNow){
+                $activities[$key]['status'] = '-1';//not begin  //未开始
+            }elseif($activity['start_time'] > $dateNow && $activity['end_time'] > $dateNow){
+                $activities[$key]['status'] = '0';//past //已过期
+            }elseif($activity['start_time'] < $dateNow && $activity['end_time'] > $dateNow){
+                $activities[$key]['status'] = '1';//正在进行的
+            }
+            
+            //正在进行
         }
-
+// var_export($activities);exit;
         return array(
             'code'    => 0,
             'message' => 'success',
