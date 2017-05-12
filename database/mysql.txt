@@ -6,5 +6,8 @@ CREATE TABLE `marketing_article_log` (
   `last_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '最后一次阅读时间',
   `counts` int(20) DEFAULT '1' COMMENT '阅读次数',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`) USING BTREE,
+  KEY `artice_id` (`articel_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='阅读公告日志表';
+
