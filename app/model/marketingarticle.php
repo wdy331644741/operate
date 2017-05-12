@@ -31,9 +31,15 @@ class MarketingArticle extends Model
 
         return $this->fields('id, title, content')
             ->where("`is_del` = 0 and `status` = 1 and cate_node = {$noticeCate['id']}")
-            ->orderby("sort DESC")
+            ->orderby(array('sort'=>'DESC','create_time'=>'DESC'))
             ->limit($start, C('PAGE_SIZE'))
             ->get()->resultArr();
     }
 
+    public function getActicle($id){
+
+        return $this->fields('content')
+            ->where("`is_del` = 0 and `status` = 1 and id = {$id}")
+            ->get()->resultArr();
+    }
 }
