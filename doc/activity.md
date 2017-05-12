@@ -144,22 +144,36 @@
 
 	成功：
         {
-          "jsonrpc": "2.0",
-          "result": {
-            "code": 0,
-            "message": "success",
-            "data": [
-              {
-                "id": 3,
-                "title": "公告标题test4",
-                "content": "&lt;p&gt;dasdasdasdasfasdada&lt;/p&gt;",
-                "link": "https://php1.wanglibao.com/app/bulletin/detail/3"
-              },    
-              ...
-            ]
-          },
-          "id": 1
-        }
+        "jsonrpc": "2.0",
+        "result": {
+          "code": 0,
+          "message": "success",
+          "data": [
+            {
+              "id": "3",
+              "title": "按时打算向出租车",
+              "content": "afxzcvxcvdzsfgsdfgawefasdfsad阿萨德阿萨德sdf申请全文",
+              "link": "https://php1.wanglibao.com/app/bulletin/detail/3",
+              "readCounts": 0 //阅读次数(0代表没有阅读)
+            },
+            {
+              "id": "2",
+              "title": "国际学校2222222222222222222",
+              "content": "&lt;p&gt;国际学校国际学校国际学校国际学校国际学校国际学校国际学校国际学校国际学校&lt;/p&gt;",
+              "link": "https://php1.wanglibao.com/app/bulletin/detail/3",
+              "readCounts": 1
+            },
+            {
+              "id": "1",
+              "title": "111111111111111111",
+              "content": "&lt;p&gt;案例看电视剧福利卡萨家乐福看见爱上了咖啡姐阿斯利康都放假了卡死机付了款爱上发&lt;br/&gt;&lt;/p&gt;",
+              "link": "https://php1.wanglibao.com/app/bulletin/detail/3",
+              "readCounts": 9
+            }
+          ]
+        },
+        "id": 1
+      }
 
 错误信息 | 错误码 | 错误说明
 :--|:--|:--

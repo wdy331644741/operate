@@ -3,6 +3,7 @@
 namespace App\service\rpcserverimpl;
 
 use Storage\Storage;
+//use Lib\UserData;
 use App\service\exception\AllErrorException;
 
 class ActivityRpcImpl extends BaseRpcImpl
@@ -94,23 +95,78 @@ class ActivityRpcImpl extends BaseRpcImpl
      * @JsonRpcMethod
      */
     public function noticeList($params)
-    {
+    {   
+        //检查登录状态
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
         //验证是否有page;
         if (empty($params->page)) {
             throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
         }
 
         $acticleModel = new \Model\MarketingArticle();
+        $acticleLogModel = new \Model\MarketingArticleLog();
+
+        $isRead = $acticleLogModel->isReadByUser($this->userId);
+
+        
+        if(isset($isRead) && !empty($isRead)){
+            $readArray = array_column($isRead,'counts','article_id');
+        }
         $noticeList = $acticleModel->noticeList($params->page);
+        // var_export($readArray);
+        // var_export($noticeList);
+        // exit;
         foreach ($noticeList as $key => $notice) {
             // $noticeList[$key]['content'] = htmlspecialchars_decode($noticeList[$key]['content']);
             $noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
+            $noticeList[$key]['readCounts'] = isset($readArray[$notice['id']])?(int)$readArray[$notice['id']]:0;
         }
 
         return array(
             'code'    => 0,
             'message' => 'success',
             'data'    => $noticeList
+        );
+    }
+
+    /**
+     * 系统公告内容
+     *
+     * @JsonRpcMethod
+     */
+    public function noticeContent($params){
+        //验证
+        //检查登录状态
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+
+        if (empty($params->article_id)) {
+            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
+        }
+
+        $acticleLogModel = new \Model\MarketingArticleLog();
+        $acticleContentModel = new \Model\MarketingArticle();
+
+
+        $acticleContent = $acticleContentModel->getActicle($params->article_id);
+
+        $isRead = $acticleLogModel->isReadByUser($this->userId,$params->article_id);
+        // var_export($isRead);exit;
+        //添加一条阅读记录
+        //更新、累加记录
+        if(isset($isRead) && empty($isRead)){
+            $res = $acticleLogModel->addReadLog($params->article_id,$this->userId);
+        }else{
+            $acticleLogModel->updateReadLog($params->article_id,$this->userId,$isRead[0]['counts']);
+        }
+        return array(
+            'code'      => 0,
+            'data'   => $acticleContent,
+            'userid'    => $this->userId,
+            'message'   => 'success',
         );
     }
 }
