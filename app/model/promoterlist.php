@@ -12,16 +12,20 @@ class PromoterList extends Model
     /**
      * 根据用户查询用户是否存在
      * @param $auth_id
-     * @return bool
+     * @return status
      */
     public function getPromoterInfoById($auth_id)
     {
-        $promoterInfo = $this->where(array('auth_id'=>$auth_id))->get()->rowArr();
-        if($promoterInfo){
-            return $promoterInfo;
-        }else{
-            return false;
-        }
+        $promoterInfo = $this->fields('status,create_time')
+            ->where(array('auth_id'=>$auth_id))
+            ->orderby("create_time DESC")
+            ->get()->resultArr();
+        return $promoterInfo;
+        // if($promoterInfo){
+        //     return $promoterInfo;
+        // }else{
+        //     return false;
+        // }
 
     }
 

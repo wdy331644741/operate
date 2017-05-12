@@ -309,8 +309,10 @@ class AccountRpcImpl extends BaseRpcImpl
         $amount = $marketingRevenueSharing->getSumByUserIds(implode(',', array_column($userInvestmentRecord['result'], 'id')));
         //返回该用户的(推广员状态)
         $promoterModel = new \Model\PromoterList();
-        $res = $promoterModel -> getPromoterInfoById($userId);//var_dump($res['status']);exit;
-        $res = empty($res['status']) && $res['status'] != '0'?-1:$res['status'];
+        $res = $promoterModel -> getPromoterInfoById($userId);
+        // var_export($userId);
+        // var_dump($res);exit;
+        $res = empty($res[0]['status']) && $res[0]['status'] != '0'?-1:$res[0]['status'];
         return [
             'code'                   => 200,
             'experience_amount'      => $amountExperience['result']['count'],
