@@ -10,18 +10,35 @@ class PromoterList extends Model
     }
 
     /**
+     * 判断用户 是否有过待审核记录或是已通过
+     * @return [type] [description]
+     */
+    public function getIsExistByUser($auth_id){
+        $promoterInfo = $this->fields('status,create_time')
+            // ->where(array('auth_id'=>$auth_id,'status'))
+            ->where("`auth_id` = '{$auth_id}' AND `status` IN (0,1) ")
+            ->orderby("create_time DESC")
+            ->get()->resultArr();
+        return $promoterInfo;
+    }
+
+    /**
      * 根据用户查询用户是否存在
      * @param $auth_id
-     * @return bool
+     * @return status
      */
     public function getPromoterInfoById($auth_id)
     {
-        $promoterInfo = $this->where(array('auth_id'=>$auth_id))->get()->rowArr();
-        if($promoterInfo){
-            return $promoterInfo;
-        }else{
-            return false;
-        }
+        $promoterInfo = $this->fields('status,create_time')
+            ->where(array('auth_id'=>$auth_id))
+            ->orderby("create_time DESC")
+            ->get()->resultArr();
+        return $promoterInfo;
+        // if($promoterInfo){
+        //     return $promoterInfo;
+        // }else{
+        //     return false;
+        // }
 
     }
 
@@ -38,8 +55,8 @@ class PromoterList extends Model
         //     $this->total_inve_amount = $data['total_inve_amount'];
         //     $this->commission = $data['commission'];
         // }
-        $data['username'] = '1';//从用户中心获取信息
-        $data['phone'] = '1';
+        // $data['username'] = '1';//从用户中心获取信息
+        // $data['phone'] = '1';
 
         if (!empty($data) && $this->add($data)) {
             return ture;
