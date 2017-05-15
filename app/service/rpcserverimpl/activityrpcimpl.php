@@ -49,11 +49,11 @@ class ActivityRpcImpl extends BaseRpcImpl
         $activityModel = new \Model\MarketingActivity();
         $activities = $activityModel->activityList($params->page);
 
-        // var_export($activities);exit;
+        
         $pagecounts = ceil(count($activities)/5);
         foreach ($activities as $key => $activity) {
-            $activities[$key]['img_url'] = $storage->getViewUrl($activity['img_url']);
-            
+            $activity['img_url'] = $storage->getViewUrl($activity['img_url']);
+
             if($activity['start_time'] < $dateNow && $activity['end_time'] < $dateNow){
                 // $activities[$key]['status'] = '-1';//not begin  //已过期
                 $activity['status'] = '-1';
@@ -70,6 +70,7 @@ class ActivityRpcImpl extends BaseRpcImpl
             }
             
         }
+
         if(isset($pastAactivities) && !empty($pastAactivities)){
             $res = array_merge($ingAactivities,$pastAactivities);
         }elseif(isset($ingAactivities) && !empty($ingAactivities)){
