@@ -12,7 +12,7 @@ class PromoterList extends Model
     public function getIsExistByUser(){
         $promoterInfo = $this->fields('status,create_time')
             // ->where(array('auth_id'=>$auth_id,'status'))
-            ->where("`auth_id` = {$auth_id} AND `status` != 0")
+            ->where("`auth_id` = '{$auth_id}' AND `status` != 0")
             ->orderby("create_time DESC")
             ->get()->resultArr();
         return $promoterInfo;
