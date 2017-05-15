@@ -48,7 +48,8 @@
            "result": {
              "code": 0,
              "message": "success",
-             "amount": "6"          //体验金金额
+             "amount": "6",          //体验金金额
+             "continueDays":3       //连续签到天数
            },
            "id": 1
          }
