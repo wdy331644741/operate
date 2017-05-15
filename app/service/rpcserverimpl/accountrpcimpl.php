@@ -446,7 +446,7 @@ class AccountRpcImpl extends BaseRpcImpl
         $promoterModel = new \Model\PromoterList();
         $PromoterInfo  = $promoterModel -> getPromoterInfoById($userId);
 
-        $status = empty($PromoterInfo)?-1:$PromoterInfo['status'];
+        $status = empty($PromoterInfo)?-1:$PromoterInfo[0]['status'];
 
         $List = array(
                 0 => array(
