@@ -23,6 +23,19 @@ class PromoterList extends Model
     }
 
     /**
+     * 判断是否成为推广员
+     * @return [type] [description]
+     */
+    public function getToBePromoter($auth_id){
+        $promoterInfo = $this->fields('status,create_time')
+            ->where("`auth_id` = '{$auth_id}' AND `status` = 1")
+            ->get()->resultArr();
+
+        return empty($promoterInfo)?false:true;
+    }
+
+
+    /**
      * 根据用户查询用户是否存在
      * @param $auth_id
      * @return status
@@ -64,5 +77,30 @@ class PromoterList extends Model
             return false;
         }
 
+    }
+
+    /**
+     * 增加promoter 中好友投资总额
+     * @param [type] $promoter_id [description]
+     * @param [type] $recharge    [description]
+     */
+    public function addPromoterFriendRecharge($promoter_id,$recharge){
+        $data = array(
+            'total_inve_amount+' => $recharge
+            );
+        $where = array('auth_id' => $promoter_id);
+        $sql = "update promoter_list set total_inve_amount = total_inve_amount+{$recharge} where auth_id = {$promoter_id}";
+        $this->exec($sql);
+        // logs($this->getLastQuery(),"qqqqqqq");
+    }
+
+    /**
+     * 增加推广员的邀请好友数量+1
+     * @param  [type] $promoter_id [description]
+     * @return [type]              [description]
+     */
+    public function upPromoterFriendCounts($promoter_id){
+        $sql = "update promoter_list set invite_num = invite_num+1 where auth_id = {$promoter_id}";
+        $this->exec($sql);
     }
 }
