@@ -44,7 +44,7 @@ define('CHANNELSERVICEURL','http://wl_pay.dev.wanglibao.com/admin.php?c=paychann
 //支付银行卡白名单接口
 define('BANKCARDWHITE','http://wl_pay.dev.wanglibao.com/admin.php?c=bankcardwhiterpc');
 //文件服务器基础地址
-define("STORAGE_BASE_URL",'https://store0.wanglibao.com');
+define("STORAGE_BASE_URL",'https://store0.izhuanbei.com');
 //文件展示地址
 define('VIEWFILEURL','/storage.php?c=index&a=view');
 //银行图片展示地址
