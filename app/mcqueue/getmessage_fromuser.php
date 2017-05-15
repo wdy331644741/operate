@@ -43,3 +43,7 @@ function syncInviteToPromoter(){
 	}
 
 }
+
+function syncWithdrawToPromoter(){
+	logs('提现' . PHP_EOL . var_export($_POST,true),'syncPromoterWithdraw');
+}
