@@ -9,6 +9,15 @@ class PromoterList extends Model
             $this->initArData($pkVal);
     }
 
+    public function getIsExistByUser(){
+        $promoterInfo = $this->fields('status,create_time')
+            // ->where(array('auth_id'=>$auth_id,'status'))
+            ->where("`auth_id` = {$auth_id} AND `status` != 0")
+            ->orderby("create_time DESC")
+            ->get()->resultArr();
+        return $promoterInfo;
+    }
+
     /**
      * 根据用户查询用户是否存在
      * @param $auth_id
