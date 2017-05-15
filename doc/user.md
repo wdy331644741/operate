@@ -44,15 +44,15 @@
  
      成功：
          {
-           "jsonrpc": "2.0",
-           "result": {
-             "code": 0,
-             "message": "success",
-             "amount": "6",          //体验金金额
-             "continueDays":3       //连续签到天数
-           },
-           "id": 1
-         }
+          "jsonrpc": "2.0",
+          "result": {
+            "code": 0,
+            "message": "success",
+            "experience_amount": 70,
+            "amount": "1"
+          },
+          "id": 1
+        }
      
      失败:
      1,
