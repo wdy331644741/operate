@@ -406,8 +406,7 @@ class AccountRpcImpl extends BaseRpcImpl
         $amount = $marketingRevenueSharing->getSumByUserIds(implode(',', array_column($userInvestmentRecord['result'], 'id')));
 
         $promoterModel = new \Model\PromoterList();
-        //查询该用户是否已存在(有没有状态是0的)
-        
+        //查询该用户是否已存在(有没有状态是0的 或是1已通过的)
         if(empty($promoterModel -> getIsExistByUser($userId)) ){
             //从用户中心获取用户基本信息
             $params = [

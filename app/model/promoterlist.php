@@ -10,13 +10,13 @@ class PromoterList extends Model
     }
 
     /**
-     * 判断用户 是否有过待审核记录
+     * 判断用户 是否有过待审核记录或是已通过
      * @return [type] [description]
      */
     public function getIsExistByUser($auth_id){
         $promoterInfo = $this->fields('status,create_time')
             // ->where(array('auth_id'=>$auth_id,'status'))
-            ->where("`auth_id` = '{$auth_id}' AND `status` =0 ")
+            ->where("`auth_id` = '{$auth_id}' AND `status` IN (0,1) ")
             ->orderby("create_time DESC")
             ->get()->resultArr();
         return $promoterInfo;
