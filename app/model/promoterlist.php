@@ -23,7 +23,6 @@ class PromoterList extends Model
     }
 
     /**
-
      * 判断是否成为推广员
      * @return [type] [description]
      */
@@ -37,7 +36,6 @@ class PromoterList extends Model
 
 
     /**
-
      * 根据用户查询用户是否存在
      * @param $auth_id
      * @return status

@@ -25,3 +25,19 @@ CREATE TABLE `promoter_list` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0待审核，1通过,2不通过',
   PRIMARY KEY (`apply_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8 COMMENT='推广员申请表';
+
+
+
+
+ALTER TABLE `marketing_revenuesharing`
+ADD COLUMN `rate`  decimal(10,4) NOT NULL DEFAULT 100 COMMENT '收益比例，默认100%是基础收益' AFTER `update_time`;
+
+
+
+
+
+
+
+
+
+

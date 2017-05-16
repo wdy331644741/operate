@@ -32,7 +32,9 @@ class MarketingRevenueSharing extends Model
         if (empty($awardInfo['amount']) || empty($type) || empty($awardInfo['user_id'])) {
             return false;
         }
-
+        $promoterModel = new \Model\PromoterList();
+        $promoter = $promoterModel ->getToBePromoter($awardInfo['from_user_id']);
+        
         $data = array(
             'type'                  => $type,
             'user_id'               => $awardInfo['user_id'],
@@ -43,8 +45,9 @@ class MarketingRevenueSharing extends Model
             'start_time'            => $awardInfo['start_time'],
             'end_time'              => $awardInfo['end_time'],
             'status'                => '100',
-            'create_time'           => date('Y-m-d H:i:s', strtotime('-1 day')),
-            'update_time'           => date('Y-m-d H:i:s', strtotime('-1 day'))
+            'create_time'           => date('Y-m-d H:i:s'),
+            'update_time'           => date('Y-m-d H:i:s'),
+            'rate'                  => $promoter?200:100
         );
 
         $result = $this->fields('id')
@@ -112,8 +115,8 @@ class MarketingRevenueSharing extends Model
         $start_today = date("Y-m-d 00:00:00", strtotime("-1 day"));
         $end_today = date("Y-m-d 23:59:59", strtotime("-1 day"));
 
-        $result = $this->fields("id, user_id, from_user_id, amount, cash_total, interest_coupon_total, start_time,end_time,status,create_time,update_time", false)
-            ->where(" `create_time` > '{$start_today}' and `create_time` < '{$end_today}' ")
+        $result = $this->fields("id, user_id, from_user_id, amount, cash_total, interest_coupon_total, start_time,end_time,status,create_time,update_time,rate", false)
+            ->where(" `start_time` >= '{$start_today}' and `end_time` <= '{$end_today}' ")
             ->whereIn('status', $status)
             ->get()
             ->resultArr();
