@@ -125,6 +125,7 @@ class MarketingRevenueSharing extends Model
     }
 
     /**
+     * 同时更新promoter - total_inve_amount字段 好友邀请所得佣金
      * @param $id
      * @param $userId
      * @param $type 400/200
@@ -132,7 +133,12 @@ class MarketingRevenueSharing extends Model
     public function successExecute($id, $userId, $type)
     {
         $where = ['id' => $id, 'from_user_id' => $userId];
-        $this->where($where)->upd(['status' => $type]);
+        $res = $this->where($where)->upd(['status' => $type]);
+        if($res){
+            $addAmount = $this->info($id);
+            $promoterModel = new \Model\PromoterList();
+            $promoterModel->upPromoterShareAmount($userId,$addAmount['amount']* ((float)$addAmount['rate']/100));
+        }
     }
 
     public function getAccountCount($userId, $start_time, $end_time)
