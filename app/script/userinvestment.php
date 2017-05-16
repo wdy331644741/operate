@@ -68,7 +68,8 @@ function friendsShare()
 
         //判断给个用户的收益是否超过100元
         $sumamount = $marketingRevenueSharing->getSumByUserId($item['from_user_id']);
-        $total = $item['amount'];
+        // $total = $item['amount'];
+        $total = $item['amount'] * ((float)$item['rate']/100);
         $finallyAmount = ($sumamount + $total) < $maxAmount ? $total : ($maxAmount - $sumamount);
 
         if ($finallyAmount > 0) {
