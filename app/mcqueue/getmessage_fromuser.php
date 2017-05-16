@@ -34,17 +34,16 @@ function syncRechargeToPromoter(){
  * @pageroute
  */
 function syncInviteToPromoter(){
-	logs('注册' . PHP_EOL . var_export($_POST,true),'syncPromoterInvite');
-	$userId = I('post.userId', '', 'intval');//用户id
-	$from_user_id = I('post.from_userId', '', 'intval');
-	$from_channel = I('post.from_channel');//渠道
-	$promoterModel = new \Model\PromoterList();
-
-	$havePromoter = $promoterModel-> getToBePromoter($from_user_id);
-	//更新推广员好友数量
-	if($havePromoter){
-		$promoterModel->upPromoterFriendCounts($from_user_id);
-	}
+    logs('注册' . PHP_EOL . var_export($_POST,true),'syncPromoterInvite');
+    $userId = I('post.user_id', '', 'intval');//用户id
+    $from_user_id = I('post.from_user_id');
+    $from_channel = I('post.from_channel');//渠道
+    $promoterModel = new \Model\PromoterList();
+    $havePromoter = $promoterModel-> getToBePromoter($from_user_id);
+    //更新推广员好友数量
+    if($havePromoter){
+            $promoterModel->upPromoterFriendCounts($from_user_id);
+    }
 
 }
 
