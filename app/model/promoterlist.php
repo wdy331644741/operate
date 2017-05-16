@@ -103,4 +103,16 @@ class PromoterList extends Model
         $sql = "update promoter_list set invite_num = invite_num+1 where auth_id = {$promoter_id}";
         $this->exec($sql);
     }
+
+    /**
+     * 更新推广员-好友邀请所得佣金
+     * @param  [type] $promoter_id [description]
+     * @param  [type] $amount      [description]
+     * @return [type]              [description]
+     */
+    public function upPromoterShareAmount($promoter_id,$amount){
+        $sql = "update promoter_list set commission = commission+{$amount} where auth_id = {$promoter_id}";
+
+        $this->exec($sql);
+    }
 }
