@@ -20,7 +20,7 @@ function syncRechargeToPromoter(){
 	//得到邀请关系
 	$fromUser = $rechargeUserInfo['result']['from_user_id'];
 	// var_export($rechargeUserInfo['result']['from_user_id']);exit;
-	$havePromoter = $promoterModel-> getToBePromoter($fromUser);
+	$havePromoter = $promoterModel-> getPromoterInfoById($fromUser);
 	// var_dump($fromUser);exit;
 	// 更新邀请好友的投资金额
 	if($havePromoter){
@@ -39,7 +39,7 @@ function syncInviteToPromoter(){
     $from_user_id = I('post.from_user_id');
     $from_channel = I('post.from_channel');//渠道
     $promoterModel = new \Model\PromoterList();
-    $havePromoter = $promoterModel-> getToBePromoter($from_user_id);
+    $havePromoter = $promoterModel-> getPromoterInfoById($from_user_id);
     //更新推广员好友数量
     if($havePromoter){
             $promoterModel->upPromoterFriendCounts($from_user_id);
