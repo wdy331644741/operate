@@ -29,6 +29,10 @@ function syncRechargeToPromoter(){
 
 }
 
+/**
+ * 从用户中心 拿到注册行为
+ * @pageroute
+ */
 function syncInviteToPromoter(){
 	logs('注册' . PHP_EOL . var_export($_POST,true),'syncPromoterInvite');
 	$userId = I('post.userId', '', 'intval');//用户id
@@ -44,6 +48,10 @@ function syncInviteToPromoter(){
 
 }
 
+/**
+ * 从用户中心 拿到提现行为
+ * @pageroute
+ */
 function syncWithdrawToPromoter(){
 	logs('提现' . PHP_EOL . var_export($_POST,true),'syncPromoterWithdraw');
 }
