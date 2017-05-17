@@ -57,7 +57,10 @@ function syncWithdrawToPromoter(){
 
 
 
-
+/**
+ * 用户中心 推送綁卡行为
+ * @pageroute
+ */
 function syncBoundCard(){
 	logs('綁卡' . PHP_EOL . var_export($_POST,true),'syncBoundCard');
 }
