@@ -7,9 +7,10 @@ use App\service\exception\AllErrorException;
  */
 function syncRechargeToPromoter(){
 	logs('充值:' . PHP_EOL . var_export($_POST, true), 'syncPromoterRecharge');
-	$userId = I('post.userId', '', 'intval');//用户id
+	$userId = I('post.user_id', '', 'intval');//用户id
 	$rechargeTime = I('post.time');//充值时间
 	$rechargeAmount = I('post.amount');//充值金额
+	$userPhone = I('post.phone');//手机
 
 	$promoterModel = new \Model\PromoterList();
 	//从用户中心获取基本信息
@@ -19,7 +20,7 @@ function syncRechargeToPromoter(){
 	$rechargeUserInfo = Common::jsonRpcApiCall((object)$postParams, 'getUserBaseInfo', config('RPC_API.passport'));
 	//得到邀请关系
 	$fromUser = $rechargeUserInfo['result']['from_user_id'];
-	// var_export($rechargeUserInfo['result']['from_user_id']);exit;
+	logs($rechargeUserInfo);
 	$havePromoter = $promoterModel-> getPromoterInfoById($fromUser);
 	// var_dump($fromUser);exit;
 	// 更新邀请好友的投资金额
