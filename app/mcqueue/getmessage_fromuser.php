@@ -54,3 +54,10 @@ function syncInviteToPromoter(){
 function syncWithdrawToPromoter(){
 	logs('提现' . PHP_EOL . var_export($_POST,true),'syncPromoterWithdraw');
 }
+
+
+
+
+function syncBoundCard(){
+	logs('綁卡' . PHP_EOL . var_export($_POST,true),'syncBoundCard');
+}
