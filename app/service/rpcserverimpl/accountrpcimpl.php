@@ -281,9 +281,9 @@ class AccountRpcImpl extends BaseRpcImpl
             $friendPropertyParams = [
                 'friend_users' => $last_names
             ];
-            $friendProperty = Common::jsonRpcApiCall((object)$friendPropertyParams, 'getUserAvaliableMargin', config('RPC_API.projects'));
+            // $friendProperty = Common::jsonRpcApiCall((object)$friendPropertyParams, 'getUserAvaliableMargin', config('RPC_API.projects'));
         }
-        // $friend_users = array();
+        // $friend_users = array();1
         // $unInvest_users = array();
         foreach ($userInvestmentRecord['result'] as $key => $value) {
             if ($value['recharge'] == true) {
