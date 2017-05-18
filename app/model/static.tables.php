@@ -1088,6 +1088,14 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
+    'percent' => 
+    array (
+      'field' => 'percent',
+      'key' => '',
+      'default' => '0.00',
+      'unsigned' => false,
+      'null' => true,
+    ),
     'desc' => 
     array (
       'field' => 'desc',

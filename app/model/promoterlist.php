@@ -78,7 +78,8 @@ class PromoterList extends Model
         // }
         // $data['username'] = '1';//从用户中心获取信息
         // $data['phone'] = '1';
-
+        //默认收益id为7
+        $data['earnings_id'] = 7;
         if (!empty($data) && $this->add($data)) {
             return ture;
         } else {

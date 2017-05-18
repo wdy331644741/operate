@@ -10,6 +10,9 @@ function index()
     $sessionObj = new \Lib\Session();
     $framework = getFrameworkInstance();
     $promoterModel = new \Model\PromoterList();
+
+    $configEarnings = new \Model\ConfigEarnings();
+
     $results = [];
     $data['queryType'] = I('post.type');
     $data['queryValue'] = I('post.phone');
@@ -36,13 +39,13 @@ function index()
     }
     $sessionObj->set('userData.admin_user.serach.queryType',$data['queryType']);
     $sessionObj->set('userData.admin_user.serach.queryValue',$data['queryValue']);
-        
-    // if($results)
-    // {
-    //     $results = maskData($results);
-    // }else{
-    //     $sessionObj->set('userData.admin_user.serach.userId','');
-    // }
+ 
+    $earningNum = $configEarnings->getAllInfoById();
+    // var_dump($earningNum);
+    foreach ($results as & $value) {
+        @$value['percent'] = $earningNum[$value['earnings_id']];
+    }
+    // var_export($results);exit;
 
     $framework->smarty->assign('sessionObj',$sessionObj);
     $framework->smarty->assign('lists',$results);

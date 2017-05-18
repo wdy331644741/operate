@@ -36,8 +36,8 @@ ALTER TABLE `marketing_revenuesharing`
 ADD COLUMN `rate`  decimal(10,4) NOT NULL DEFAULT 100 COMMENT '收益比例，默认100%是基础收益' AFTER `update_time`;
 
 
-
-
+ALTER TABLE `promoter_list`
+MODIFY COLUMN `earnings`  int(10) NULL DEFAULT NULL COMMENT '共享收益比例' AFTER `level`;
 
 
 
