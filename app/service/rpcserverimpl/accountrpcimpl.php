@@ -498,12 +498,12 @@ class AccountRpcImpl extends BaseRpcImpl
     }
 
     /**
-     * 推广员数据
+     * 提供所有推广员数据
      * @JsonRpcMethod
      */
     public function getAllPromoters(){
         $promoterModel = new \Model\PromoterList();
-        $result = $promoterModel->allPromotersInfo($title);
+        $result = $promoterModel->allPromotersInfo();
         // return ['code' => 0, 'data' => $result];
         if(empty($result)){
             return ['code' => 1, 'message'=> "没有相关数据",'data' => $result];

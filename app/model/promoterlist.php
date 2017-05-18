@@ -13,9 +13,12 @@ class PromoterList extends Model
      * @return [type] [description]
      */
     public function allPromotersInfo(){
-        return $this->fields('auth_id,invite_num,level,earnings')
-            ->where("`status` = 1")
-            ->get()->resultArr();
+
+        $sql = "select a.auth_id,a.invite_num,a.level,b.percent from promoter_list as a left join config_earnings as b on a.earnings_id = b.id where a.status = 1";
+        return $this->query($sql)->resultArr();
+        // return $this->fields('auth_id,invite_num,level,earnings_id')
+        //     ->where("`status` = 1")
+        //     ->get()->resultArr();
     }
     /**
      * 判断用户 是否有过待审核记录或是已通过

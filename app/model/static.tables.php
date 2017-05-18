@@ -2163,11 +2163,13 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
-    'earnings' => 
+    'earnings_id' => 
     array (
-      'field' => 'earnings',
+      'field' => 'earnings_id',
       'key' => '',
-      'default' => '20.00',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
       'unsigned' => false,
       'null' => true,
     ),
