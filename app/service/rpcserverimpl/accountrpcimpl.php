@@ -497,4 +497,17 @@ class AccountRpcImpl extends BaseRpcImpl
         ];
     }
 
+    /**
+     * 推广员数据
+     * @JsonRpcMethod
+     */
+    public function getAllPromoters(){
+        $promoterModel = new \Model\PromoterList();
+        $result = $promoterModel->allPromotersInfo($title);
+        // return ['code' => 0, 'data' => $result];
+        if(empty($result)){
+            return ['code' => 1, 'message'=> "返回失败",'data' => $result];
+        }
+        return ['code' => 0, 'message'=> "返回成功",'data' => $result];
+    }
 }
