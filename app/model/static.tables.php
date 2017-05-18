@@ -897,6 +897,78 @@ return array (
       'field' => 'effective_end',
       'key' => '',
       'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'title' => 
+    array (
+      'field' => 'title',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '30',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'name' => 
+    array (
+      'field' => 'name',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '30',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'pk_name' => 'id',
+  ),
+  'award_withdraw' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'title' => 
+    array (
+      'field' => 'title',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '50',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'times' => 
+    array (
+      'field' => 'times',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '3',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'effective_end' => 
+    array (
+      'field' => 'effective_end',
+      'key' => '',
+      'default' => NULL,
       'unsigned' => false,
       'null' => false,
     ),
@@ -925,6 +997,34 @@ return array (
       'field' => 'create_time',
       'key' => '',
       'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'is_del' => 
+    array (
+      'field' => 'is_del',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '3',
       'unsigned' => false,
       'null' => false,
     ),
@@ -1298,9 +1398,10 @@ return array (
       'unsigned' => false,
       'null' => false,
     ),
-    'articel_id' => 
+
+    'article_id' => 
     array (
-      'field' => 'articel_id',
+      'field' => 'article_id',
       'key' => 'MUL',
       'default' => NULL,
       'type' => 'int',
@@ -1917,6 +2018,139 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
+    'rate' => 
+    array (
+      'field' => 'rate',
+      'key' => '',
+      'default' => '100.0000',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'pk_name' => 'id',
+  ),
+  'marketing_withdrawcoupon' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'user_id' => 
+    array (
+      'field' => 'user_id',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'uuid' => 
+    array (
+      'field' => 'uuid',
+      'key' => 'UNI',
+      'default' => NULL,
+      'lenght' => '36',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'source_id' => 
+    array (
+      'field' => 'source_id',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'source_name' => 
+    array (
+      'field' => 'source_name',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'effective_start' => 
+    array (
+      'field' => 'effective_start',
+      'key' => 'MUL',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'effective_end' => 
+    array (
+      'field' => 'effective_end',
+      'key' => 'MUL',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'order_id' => 
+    array (
+      'field' => 'order_id',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '64',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'limit_desc' => 
+    array (
+      'field' => 'limit_desc',
+      'key' => '',
+      'default' => '',
+      'type' => 'varchar',
+      'lenght' => '250',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'is_activate' => 
+    array (
+      'field' => 'is_activate',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'is_use' => 
+    array (
+      'field' => 'is_use',
+      'key' => 'MUL',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
     'pk_name' => 'id',
   ),
   'marketing_withdrawcoupon' => 
@@ -2136,6 +2370,24 @@ return array (
       'lenght' => '1',
       'unsigned' => false,
       'null' => false,
+    ),
+    'level' => 
+    array (
+      'field' => 'level',
+      'key' => '',
+      'default' => '1',
+      'type' => 'tinyint',
+      'lenght' => '2',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'earnings' => 
+    array (
+      'field' => 'earnings',
+      'key' => '',
+      'default' => '20.00',
+      'unsigned' => false,
+      'null' => true,
     ),
     'pk_name' => 'apply_id',
   ),

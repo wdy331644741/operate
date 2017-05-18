@@ -5,6 +5,7 @@ define('__WEBROOT__',__DIR__);
 define("__APP_ROOT_PATH__", dirname(__WEBROOT__));
 //define('__FRAMEWORK_PATH__','/home/liuqi/www/wl_framework');
 define('__FRAMEWORK_PATH__','/home/wwwroot/default/wanglibao/demand_operate/system');
+
 define("__PROJECT_NAME__", 'autotools');
 $argv = ['autotools', 'generatortable', 'run'];
 $argc = count($argv);

@@ -8,7 +8,6 @@ class MarketingArticleLog extends Model
         if ($pkVal)
             $this->initArData($pkVal);
     }
-
     //获取阅读记录
     public function isReadByUser($userId,$articleId = ''){
     	if(empty($articleId)){

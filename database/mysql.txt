@@ -23,9 +23,10 @@ CREATE TABLE `promoter_list` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0待审核，1通过,2不通过',
+  `level` tinyint(2) DEFAULT '1' COMMENT '等级',
+  `earnings` decimal(20,2) DEFAULT '20.00' COMMENT '共享收益比例',
   PRIMARY KEY (`apply_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8 COMMENT='推广员申请表';
-
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8 COMMENT='推广员申请表';
 
 
 
