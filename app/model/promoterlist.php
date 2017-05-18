@@ -8,7 +8,15 @@ class PromoterList extends Model
         if ($pkVal)
             $this->initArData($pkVal);
     }
-
+    /**
+     * 返回所有审核通过的推广员
+     * @return [type] [description]
+     */
+    public function allPromotersInfo(){
+        return $this->fields('auth_id,invite_num,level,earnings')
+            ->where("`status` = 1")
+            ->get()->resultArr();
+    }
     /**
      * 判断用户 是否有过待审核记录或是已通过
      * @return [type] [description]
