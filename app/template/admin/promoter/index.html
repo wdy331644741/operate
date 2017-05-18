@@ -53,6 +53,7 @@
                     <th >邀请用户数量</th>
                     <th >好友邀请所得佣金</th>
                     <th >好友投资总额</th>
+                    <th >收益比例</th>
                     <th >操作</th>
                 </tr>
                 </tr>
@@ -68,6 +69,7 @@
                     <td>{$item.invite_num}</td>
                     <td>{$item.commission}</td>
                     <td>{$item.total_inve_amount}</td>
+                    <td>{$item.percent}%</td>
                     <td>
                         {if $item.status ==0}
                         <a href="?c=promoter&a=checkpass&id={$item.apply_id}"  class="btn btn-danger btn-xs status">通过</a>

@@ -43,4 +43,15 @@ class ConfigEarnings extends Model
             ->rowArr();
         return $row;
     }
+
+    public function getAllInfoById()
+    {
+        $where = ['is_del'=>'0','status'=>1];
+        $row = $this->fields("id,title,amount,percent,head_count,start_time,end_time", false)
+            ->where($where)
+            ->get()
+            ->resultArr();
+        $row = array_column($row, 'percent','id');
+        return $row;
+    }
 }
