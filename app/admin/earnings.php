@@ -7,7 +7,7 @@ function add()
 
     if (IS_POST) {
         $title = $amount = $desc = $startTime = $endTime = $status = null;
-        $requireFields = ['title', 'amounts', 'desc', 'startTime', 'endTime', 'status', 'head_count'];
+        $requireFields = ['title', 'amounts','percent' ,'desc', 'startTime', 'endTime', 'status', 'head_count'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -15,6 +15,7 @@ function add()
         }
         $data['title'] = $title;
         $data['amount'] = I('post.amounts/d');
+        $data['percent'] = I('post.percent/d');
         $data['head_count'] = I('post.head_count/d');
         $data['desc'] = $desc;
         $data['start_time'] = $startTime;
@@ -24,8 +25,8 @@ function add()
         $data['update_time'] = date('Y-m-d H:i:s');//注册时间
 
         try {
-            $activityModel = new \Model\ConfigEarnings();
-            $userId = $activityModel->add($data);
+            $ConfigModel = new \Model\ConfigEarnings();
+            $userId = $ConfigModel->add($data);
             if (!$userId) throw new \Exception('添加收益配置失败', 4011);
             ajaxReturn(['error' => 0, 'message' => '添加收益配置成功']);
         } catch (\Exception $e) {
