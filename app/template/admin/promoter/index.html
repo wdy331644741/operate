@@ -54,6 +54,7 @@
                     <th >好友邀请所得佣金</th>
                     <th >好友投资总额</th>
                     <th >收益比例</th>
+                    <th >状态</th>
                     <th >操作</th>
                 </tr>
                 </tr>
@@ -72,12 +73,18 @@
                     <td>{$item.percent}%</td>
                     <td>
                         {if $item.status ==0}
+                        <span>待审核</span>
+                        {else if $item.status ==1}
+                        <span class="adminstatus adminonline">通过</span>
+                        {else if $item.status ==2}
+                        <span class="adminstatus adminoffline">未通过</span>
+                        {/if}
+                    </td>
+                    <td>
+                        {if $item.status ==0}
                         <a href="?c=promoter&a=checkpass&id={$item.apply_id}"  class="btn btn-danger btn-xs status">通过</a>
                         <a href="?c=promoter&a=checkrefuse&id={$item.apply_id}"  class="btn btn-primary btn-xs status">拒绝</a>
-                        {else if $item.status ==1}
-                            审核已通过
-                        {else if $item.status ==2}
-                            审核未通过
+                        
                         {/if}
                     </td>
                     
