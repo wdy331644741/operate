@@ -24,20 +24,14 @@ CREATE TABLE `promoter_list` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0待审核，1通过,2不通过',
   `level` tinyint(2) DEFAULT '1' COMMENT '等级',
-  `earnings` decimal(20,2) DEFAULT '20.00' COMMENT '共享收益比例',
+  `earnings_id` int(10) DEFAULT NULL COMMENT '共享收益比例',
   PRIMARY KEY (`apply_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8 COMMENT='推广员申请表';
-
-ALTER TABLE `promoter_list`
-CHANGE COLUMN `level` `level`  tinyint(2) NULL DEFAULT 1 COMMENT '等级' AFTER `status`,
-CHANGE COLUMN `earnings` `earnings`  decimal(20,2) NULL DEFAULT 20.00 COMMENT '共享收益比例' AFTER `level`;
 
 ALTER TABLE `marketing_revenuesharing`
 ADD COLUMN `rate`  decimal(10,4) NOT NULL DEFAULT 100 COMMENT '收益比例，默认100%是基础收益' AFTER `update_time`;
 
 
-ALTER TABLE `promoter_list`
-MODIFY COLUMN `earnings`  int(10) NULL DEFAULT NULL COMMENT '共享收益比例' AFTER `level`;
 
 ALTER TABLE `config_earnings`
 ADD COLUMN `percent`  decimal(20,2) NULL COMMENT '收益百分比' AFTER `amount`;
