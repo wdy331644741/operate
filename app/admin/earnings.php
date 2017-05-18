@@ -90,7 +90,7 @@ function upd()
     $id = I('get.id/d', 0);
     if (IS_POST) {
         $title = $amount = $desc = $startTime = $endTime = $status = null;
-        $requireFields = ['title', 'amounts', 'desc', 'startTime', 'endTime', 'status', 'head_count'];
+        $requireFields = ['title', 'amounts','percent' , 'desc', 'startTime', 'endTime', 'status', 'head_count'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -98,6 +98,7 @@ function upd()
         }
         $data['title'] = $title;
         $data['amount'] = I('post.amounts/d');
+        $data['percent'] = I('post.percent/d');
         $data['head_count'] = I('post.head_count/d');
         $data['desc'] = $desc;
         $data['start_time'] = $startTime;
