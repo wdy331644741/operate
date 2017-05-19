@@ -26,17 +26,17 @@
 说明：banner图列表（已排序）
 
 ##### 请求参数
-	{
-		"jsonrpc": "2.0",
-		"method": "banners",
-		"params": [],
-		"id": 1
-	}
+  {
+    "jsonrpc": "2.0",
+    "method": "banners",
+    "params": [],
+    "id": 1
+  }
 
 
 ##### 返回结果
 
-	成功：
+  成功：
         {
           "jsonrpc": "2.0",
           "result": {
@@ -77,7 +77,7 @@
 
 ##### 返回结果
 
-	成功：
+  成功：
         {
         "jsonrpc": "2.0",
         "result": {
@@ -129,21 +129,21 @@
 说明：系统公告列表
 
 ##### 请求参数
-	{
-		"jsonrpc": "2.0",
-		"method": "noticeList",
-		"params": [
+  {
+    "jsonrpc": "2.0",
+    "method": "noticeList",
+    "params": [
               {
                  "page": 1
               }
           ],
-		"id": 1
-	}
+    "id": 1
+  }
 
 
 ##### 返回结果
 
-	成功：
+  成功：
         {
         "jsonrpc": "2.0",
         "result": {
@@ -186,21 +186,21 @@
 说明：阅读公告后，用户阅读次数加1
 
 ##### 请求参数
-  {
+    {
       "jsonrpc": "2.0",
       "method": "noticeContent",
       "params": [
           {
-             "article_id": 1  //文章id
+             "article_id": 1 //公告id
           }
       ],
       "id": 1
-  }
+    }
 
 
 ##### 返回结果
 
-  成功：
+    成功：
         {
           "jsonrpc": "2.0",
           "result": {
