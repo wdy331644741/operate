@@ -12,12 +12,12 @@ class MarketingInterestcoupon extends Model {
 
     //是否存在该记录
     public function isExist($userId,$sourceId){
-        $result = $this->fields("id", false)
+        $result = $this->fields("id,uuid", false)
             ->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
             ->orderby("id DESC")
             ->get()
             ->rowArr();
-        return $result['id'];
+        return $result;
     }
 
     //获取用户所有加息券
@@ -67,5 +67,12 @@ class MarketingInterestcoupon extends Model {
     {
         return $this->where("`id` = {$id} and `is_use` = 0")
             ->upd(array('is_use' => 1, 'update_time' => date('Y-m-d H:i:s')));
+    }
+
+    //更新激活状态
+    public function updateActivate($uuid,$activate=1){
+        $ww = $this->where("`uuid` = '{$uuid}'")
+            ->upd(array('is_activate' => $activate, 'update_time' => date('Y-m-d H:i:s')));
+            logs($this->getLastQuery());
     }
 }

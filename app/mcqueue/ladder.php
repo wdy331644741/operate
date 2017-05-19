@@ -2,7 +2,7 @@
 use App\service\rpcserverimpl\Common;
 use App\service\exception\AllErrorException;
 /**
- * 阶梯加息
+ * 阶梯加息 - 充值
  * @pageroute
  */
 function ladderInterestcoupon(){
@@ -28,8 +28,47 @@ function ladderInterestcoupon(){
 }
 
 /**
- * 复投发加息劵
+ * 阶梯加息 - 提现
  * @pageroute
+ */
+function disLadderInterestcoupon(){
+	$userId = I('post.userId', '', 'intval');//用户id
+	$withdrawTime = I('post.time');//充值时间
+	$withdrawAmount = I('post.amount');//充值金额
+	// $rechargeAmountTotal = I('post.amount');//累计本金
+
+	$nodeName = 'ladder_percent_one';
+	$awardNode = new \Model\AwardNode();//活动节点
+	$nodeId = $awardNode->getNode($nodeName);//获取节点id
+	if(!empty($nodeId)){
+		//活动节点不存在
+	}
+
+	//查询operate_加息劵表中是否给该用户激活过加息劵
+	$awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
+	$operateCoupon = new \Model\MarketingInterestcoupon();
+	$awardCouponInfo = $awardCoupon->filterUsefulInterestCoupon($nodeId);
+	$isExistCoupon = $operateCoupon->isExist($userId, $awardCouponInfo['id']);
+	// var_export($isExistCoupon);exit;
+	logs($isExistCoupon);
+	if($isExistCoupon){
+		$operateCoupon->updateActivate($isExistCoupon['uuid'],0);
+		//停止计息  调取用户中心 接口
+		$disactivePost = [
+			// 'uuid' => $addCouponRes['uuid'],
+			// 'status' => 1,
+			'token' => $isExistCoupon['uuid'],
+			'status' => 0
+            // 'interestcouponId' => $coupon['id'],
+            // 'lostTime'  =>$params->lostTime,
+		];
+		$rs = Common::jsonRpcApiCall((object)$disactivePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
+		var_export($rs);
+	}
+}
+
+/**
+ * 阶梯发加息劵
  */
 function coupon($userId,$nodeId){
 	$awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
@@ -55,16 +94,21 @@ function coupon($userId,$nodeId){
 		$proPost = [
 			'interestCoupon' => $addCouponRes
 		];
-		echo json_encode($proPost);exit;
+		// echo json_encode($proPost);exit;
 		$rs = Common::jsonRpcApiCall((object)$proPost, 'preSendInterestCouponToUser', config('RPC_API.passport'));
 
 		$activePost = [
 			'uuid' => $addCouponRes['uuid'],
 			'status' => 1,
 		];
-		$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
+		$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateNewInterestCouponToUser', config('RPC_API.passport'));
 		//update operate database  status
 		logs($rpcRes,"ladder_percent_one");
+		if(isset($rpcRes['result']) && $rpcRes['result']){
+			//operate interestcpoupon 激活状态至为1
+			$operateCoupon->updateActivate($addCouponRes['uuid']);
+			logs("激活用户：".$addCouponRes['user_id'].PHP_EOL,"activate_ladder_percent_one");
+		}
 		return true;
 		
    	}
