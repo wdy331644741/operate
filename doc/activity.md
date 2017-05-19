@@ -26,12 +26,12 @@
 说明：banner图列表（已排序）
 
 ##### 请求参数
-  {
-    "jsonrpc": "2.0",
-    "method": "banners",
-    "params": [],
-    "id": 1
-  }
+    {
+      "jsonrpc": "2.0",
+      "method": "banners",
+      "params": [],
+      "id": 1
+    }
 
 
 ##### 返回结果
@@ -129,16 +129,16 @@
 说明：系统公告列表
 
 ##### 请求参数
-  {
-    "jsonrpc": "2.0",
-    "method": "noticeList",
-    "params": [
-              {
-                 "page": 1
-              }
-          ],
-    "id": 1
-  }
+    {
+      "jsonrpc": "2.0",
+      "method": "noticeList",
+      "params": [
+                {
+                   "page": 1
+                }
+            ],
+      "id": 1
+    }
 
 
 ##### 返回结果
