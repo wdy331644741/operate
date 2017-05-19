@@ -37,5 +37,12 @@ ALTER TABLE `config_earnings`
 ADD COLUMN `percent`  decimal(20,2) NULL COMMENT '收益百分比' AFTER `amount`;
 
 
-
-
+CREATE TABLE `promoter_statistics` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `date` date DEFAULT NULL COMMENT '日期',
+  `adds` int(10) DEFAULT '0' COMMENT '推广员每日新增',
+  `register_adds` int(10) DEFAULT '0' COMMENT '推广员渠道每日新增',
+  `recharge_adds` int(10) DEFAULT '0' COMMENT '推广员渠道每日充值',
+  `withdraw_adds` int(10) DEFAULT '0' COMMENT '推广员渠道每日提现',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='推广员相关数据统计';
