@@ -191,7 +191,7 @@
       "method": "noticeContent",
       "params": [
           {
-             "article_id": 1  //文章id
+             "article_id": 1
           }
       ],
       "id": 1
