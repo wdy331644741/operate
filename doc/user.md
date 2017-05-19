@@ -440,20 +440,24 @@
          "code" : 200,
          "experience_amount": "0.00",
          "revenue_sharing_amount": "998.0000000000",
+         "promoter_status":"1", //推广员状态 -1未申请  0申请待审核 1通过审核  2不通过
          "data": [
            {
              "recharge": false,
              "id": "11",
              "username": "18801301379",
              "display_name": "188******79",
-             "amount": 0
+             "amount": 0,  //该好友已获得到的收益
+             "invest": 0  //好友总资产
            },
            {
              "recharge": true,
              "amount": "998.0000000000",
              "id": "10",
              "username": "18646003680",
-             "display_name": "186******80"
+             "display_name": "186******80",
+             "amount": 0,
+             "invest": 0
            }
            ..........
          ]
