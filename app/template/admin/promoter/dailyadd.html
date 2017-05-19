@@ -30,11 +30,11 @@
                 {if $lists && is_array($lists)}
                 {foreach $lists as $item}
                 <tr id="onlinetr_{$item.id}">
-                    <td>{$item.apply_id}</td>
-                    <td>{$item.auth_id}</td>
-                    <td>{$item.invite_num}</td>
-                    <td>{$item.commission}</td>
-                    <td>{$item.total_inve_amount}</td>                   
+                    <td>{$item.date}</td>
+                    <td>{$item.adds}</td>
+                    <td>{$item.register_adds}</td>
+                    <td>{$item.recharge_adds}</td>
+                    <td>{$item.withdraw_adds}</td>                   
                 </tr>
                 {/foreach}
                 {/if}

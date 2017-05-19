@@ -151,7 +151,9 @@ function check(){
  */
 function dailyadd(){
     $framework = getFrameworkInstance();
-    $data = array();//展示数据
+    $statistics = new \Model\PromoterStatistics();
+    $data = $statistics->get()->resultArr();
+    // $data = array();//展示数据
     $framework->smarty->assign('lists',$data);
     $framework->smarty->display('promoter/dailyadd.html');
 }

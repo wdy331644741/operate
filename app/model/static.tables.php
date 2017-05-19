@@ -2401,6 +2401,68 @@ return array (
     ),
     'pk_name' => 'apply_id',
   ),
+  'promoter_statistics' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'date' => 
+    array (
+      'field' => 'date',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'adds' => 
+    array (
+      'field' => 'adds',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'register_adds' => 
+    array (
+      'field' => 'register_adds',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'recharge_adds' => 
+    array (
+      'field' => 'recharge_adds',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'withdraw_adds' => 
+    array (
+      'field' => 'withdraw_adds',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'pk_name' => 'id',
+  ),
   'sms_log' => 
   array (
     'id' => 
