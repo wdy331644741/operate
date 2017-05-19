@@ -178,3 +178,43 @@
 错误信息 | 错误码 | 错误说明
 :--|:--|:--
 缺少必要参数 | 1000 | 缺少接口所需参数
+
+
+## 阅读公告
+
+说明：阅读公告后，用户阅读次数加1
+
+##### 请求参数
+  {
+      "jsonrpc": "2.0",
+      "method": "noticeContent",
+      "params": [
+          {
+             "article_id": 1  //文章id
+          }
+      ],
+      "id": 1
+  }
+
+
+##### 返回结果
+
+  成功：
+        {
+          "jsonrpc": "2.0",
+          "result": {
+            "code": 0,
+            "data": [
+              {
+                "content": "&lt;p class=&quot;p&quot; style=&quot;white-space: normal;&quot;&gt;在春天里播种希望 王磊测试在春天里播种希望&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;white-space: normal;&quot;&gt;尊敬的用户：&lt;/p&gt;&lt;p class=&quot;p2&quot; style=&quot;white-space: normal;&quot;&gt;您好！&lt;/p&gt;&lt;p class=&quot;p3&quot; style=&quot;white-space: normal;&quot;&gt;搜狐韩娱讯 韩国演员具惠善为某时尚杂志拍摄的最新画报23日公开。具惠善完美消化了色彩淡雅的造型，展现出如春日女神般清新迷人的魅力，目光中尽显柔情暖意。具惠善完美消化了色彩淡雅的造型，展现出如春日女神般清新迷人的魅力，目光中尽显柔情暖意。图具惠善完美消化了色彩淡雅的造型，展现出如春日女神般清新迷人的魅力，目光中尽显柔情暖意。bnt新闻/供稿 王容/文Singles/图具惠善完美消化了色彩淡雅的造型，展现出如春日女神般清新迷人的魅力，目光中尽显柔情暖意。&lt;/p&gt;&lt;p class=&quot;p4&quot; style=&quot;white-space: normal;&quot;&gt;赚呗运营团队&lt;/p&gt;&lt;p class=&quot;p5&quot; style=&quot;white-space: normal;&quot;&gt;2017年3月28日&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;"
+              }
+            ],
+            "userid": "220",
+            "message": "success"
+          },
+          "id": 1
+        }
+
+错误信息 | 错误码 | 错误说明
+:--|:--|:--
+缺少必要参数 | 1000 | 缺少接口所需参数
