@@ -170,4 +170,27 @@ class ActivityRpcImpl extends BaseRpcImpl
             'message'   => 'success',
         );
     }
+
+    /**
+     * 检查用户是否有未读公告
+     *
+     * @JsonRpcMethod
+     */
+    public function haveNewNotice(){
+        //验证
+        //检查登录状态
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+        $articleModel = new \Model\MarketingArticle();
+
+
+        // return $articleModel->haveUnreadActicle($this->userId);
+        return array(
+            'code'    => 0,
+            'message' => 'success',
+            'data'    => $articleModel->haveUnreadActicle($this->userId)
+        );
+
+    }
 }

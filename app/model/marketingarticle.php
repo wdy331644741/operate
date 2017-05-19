@@ -42,4 +42,14 @@ class MarketingArticle extends Model
             ->where("`is_del` = 0 and `status` = 1 and id = {$id}")
             ->get()->resultArr();
     }
+
+    //返回用户是否有未读公告
+    //0没有   1有未读公告
+    public function haveUnreadActicle($userId){
+        $articleNode = new MarketingArticleNode();
+        $noticeCate = $articleNode->where("`name` = 'notice'")->get()->rowArr();
+        $sql = "select id from marketing_article where id not in (select article_id from marketing_article_log where user_id = {$userId}) and is_del = 0 and  status = 1 and cate_node = {$noticeCate['id']}";
+        $res = $this->query($sql)->resultArr();
+        return empty($res)?0:1;
+    }
 }
