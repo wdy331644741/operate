@@ -543,13 +543,13 @@ class AccountRpcImpl extends BaseRpcImpl
         if(empty($isHaveExperience)){
             $stepTwo = array(
                             'status' => 0, 
-                            'days'   => 5,
+                            'days'   => 10,
                         );
         }else{
             $days = (strtotime($dateNow) - strtotime($isHaveExperience['effective_start']) )/86400;
             $stepTwo = array(
                             'status' => $isHaveExperience['is_activate'], 
-                            'days'   => ($days>5 || $days < 0)?5:$days,
+                            'days'   => ($days>10 || $days < 0)?10:$days,
                         );
         }
 
@@ -563,13 +563,13 @@ class AccountRpcImpl extends BaseRpcImpl
         if(empty($isHaveWithdraw)){
             $stepThree = array(
                             'status' => 0, 
-                            'days'   => 10,
+                            'days'   => 15,
                         );
         }else{
             $days = (strtotime($dateNow) - strtotime($isHaveWithdraw['effective_start']) )/86400;
             $stepThree = array(
                             'status' => $isHaveWithdraw['is_activate'], 
-                            'days'   => ($days>5 || $days < 0)?5:$days,
+                            'days'   => ($days>15 || $days < 0)?15:$days,
                         );
         }
 
