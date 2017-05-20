@@ -76,7 +76,7 @@ function coupon($userId,$nodeId){
 			'uuid' => $addCouponRes['uuid'],
 			'status' => 1,
 		];
-		$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
+		// $rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
 		//update operate database  status
 		$operateCoupon->updateActivate($addCouponRes['uuid']);
 		logs($rpcRes,"activateInter");
@@ -108,7 +108,7 @@ function experience($userId,$nodeId,$amount){
 			'limit_desc' => $awardExpInfo['limit_desc'],
 			'amount_type'=> $awardExpInfo['amount_type'],
 			);
-		$addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo);
+		$addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo,10);
 		unset($addExperienceRes['id']);
 		//通知用户中心 预发放体验金 
 		if($addExperienceRes){
