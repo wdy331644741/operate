@@ -546,7 +546,7 @@ class AccountRpcImpl extends BaseRpcImpl
                             'days'   => 10,
                         );
         }else{
-            $days = (strtotime($dateNow) - strtotime($isHaveExperience['effective_start']) )/86400;
+            $days = (strtotime($isHaveExperience['effective_start']) - strtotime($dateNow) )/86400;
             $stepTwo = array(
                             'status' => $isHaveExperience['is_activate'], 
                             'days'   => ($days>10 || $days < 0)?10:$days,
@@ -566,7 +566,7 @@ class AccountRpcImpl extends BaseRpcImpl
                             'days'   => 15,
                         );
         }else{
-            $days = (strtotime($dateNow) - strtotime($isHaveWithdraw['effective_start']) )/86400;
+            $days = (strtotime($isHaveWithdraw['effective_start']) - strtotime($dateNow) )/86400;
             $stepThree = array(
                             'status' => $isHaveWithdraw['is_activate'], 
                             'days'   => ($days>15 || $days < 0)?15:$days,
