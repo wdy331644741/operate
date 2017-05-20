@@ -561,13 +561,13 @@ class AccountRpcImpl extends BaseRpcImpl
         $isHaveWithdraw = $marketingWithdrawModel->isExist($this->userId,$redeliveryWithdrawInfo['id']);
         
         if(empty($isHaveWithdraw)){
-            $stepTwo = array(
+            $stepThree = array(
                             'status' => 0, 
                             'days'   => 5,
                         );
         }else{
             $days = (strtotime($dateNow) - strtotime($isHaveWithdraw['effective_start']) )/86400;
-            $stepTwo = array(
+            $stepThree = array(
                             'status' => $isHaveWithdraw['is_activate'], 
                             'days'   => ($days>5 || $days < 0)?5:$days,
                         );
