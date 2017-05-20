@@ -72,13 +72,6 @@ function disLadderInterestcoupon(){
  */
 function coupon($userId,$nodeId){
 
-	$activePost = [
-			'token' => "5654D156-F85B-F00E-A777-EFFFF220E8EB",
-			'status' => 0,
-			'loseTime' => '2017-11-21 11:11:11',
-		];
-	$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
-return "1111111";
 	$awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
 	$operateCoupon = new \Model\MarketingInterestcoupon();
 
@@ -108,6 +101,7 @@ return "1111111";
 		$activePost = [
 			'uuid' => $addCouponRes['uuid'],
 			'status' => 1,
+			'type'   => 1,
 		];
 		$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateNewInterestCouponToUser', config('RPC_API.passport'));
 		//update operate database  status
