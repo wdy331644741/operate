@@ -529,15 +529,15 @@ class AccountRpcImpl extends BaseRpcImpl
 
 
         $data = array(
-                'weal_one'   => 0,  //第一个福利 是否获得 1获得  0未获得
+                'weal_one'   => 1,  //第一个福利 是否获得 1获得  0未获得
                 'weal_two'   => array(
                         'status' => 0,// 1获得 0没获得
-                        'days' => 0, //剩余留存3天
+                        'days' => 5, //剩余留存3天
                     ), 
 
                 'weal_three' => array(
                         'status' => 0,// 1获得 0没获得
-                        'days' => 8, //剩余留存3天
+                        'days' => 10, //剩余留存3天
                     ), 
             );
 
