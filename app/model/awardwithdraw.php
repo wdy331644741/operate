@@ -19,4 +19,9 @@ class AwardWithdraw extends Model
         
         return $res;
     }
+
+    public function getAwardWithdraByName($withdraw_name){
+        return $this->where("`withdraw_name` = '{$withdraw_name}'")
+            ->get()->rowArr();
+    }
 }
