@@ -491,4 +491,37 @@ class AccountRpcImpl extends BaseRpcImpl
         ];
     }
 
+    /**
+     * 复投数据
+     * @JsonRpcMethod
+     */
+    public function redelivery(){
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+        //用户是否复投？
+        $couponName = "redelivery_per_coupon";//复投活动卷的名称
+        $awardInterestcouponModel = new \Model\AwardInterestcoupon();
+        $couponInfo = $awardInterestcouponModel->getCouponIdByName($couponName);
+        
+        $interstCouponMarketing = new \Model\MarketingInterestcoupon();
+        $isHaveCoupon = $interstCouponMarketing->isExist($this->userId,$couponInfo['id']);
+        // var_export($isHaveCoupon);exit;
+
+
+        $data = array(
+                'weal_one'   => 0,  //第一个福利 是否获得 1获得  0未获得
+                'weal_two'   => array(
+                        'status' => 0,// 1获得 0没获得
+                        'days' => 0, //剩余留存3天
+                    ), 
+
+                'weal_three' => array(
+                        'status' => 0,// 1获得 0没获得
+                        'days' => 8, //剩余留存3天
+                    ), 
+            );
+
+        return ['code' => 0, 'message' => "是否参与过活动",'data' => $data];
+    }
 }

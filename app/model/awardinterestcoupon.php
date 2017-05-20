@@ -17,4 +17,10 @@ class AwardInterestcoupon extends Model
             ->orderby("id DESC")
             ->get()->rowArr();
     }
+
+    public function getCouponIdByName($coupon){
+        return $this->where("`coupon` = '{$coupon}'")
+            ->get()->rowArr();
+
+    }
 }
