@@ -149,6 +149,10 @@ class AllErrorException extends BasicException
     const BINDCARD_NOT_RECHARGE = 1673; //绑卡成功，充值失败
 
 
+    //运营 活动
+    const COUPON_UNDIFIND = 7001; //相关劵信息不存在
+
+
 
     protected static $errorArray = array(
         self::API_MIS_PARAMS => "缺少必要参数",
@@ -265,6 +269,9 @@ class AllErrorException extends BasicException
         self::RECHARGE_DEALING => "充值处理中",
         self::RECHARGE_CANCEL => "充值已取消",
         self::BINDCARD_NOT_RECHARGE => "信息校验完成，但充值未成功，请重新充值",
+
+        
+        self::COUPON_UNDIFIND => "相关劵信息不存在",
     );
 
     public function __construct($code, $data = array(), $message = "")
