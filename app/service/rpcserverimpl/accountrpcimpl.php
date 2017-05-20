@@ -509,6 +509,7 @@ class AccountRpcImpl extends BaseRpcImpl
             return ['code' => 1, 'message'=> "没有相关数据",'data' => $result];
         }
         return ['code' => 0, 'message'=> "返回成功",'data' => $result];
+    }
     /**
      * 复投数据
      * @JsonRpcMethod
