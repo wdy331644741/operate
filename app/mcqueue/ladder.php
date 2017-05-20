@@ -11,7 +11,7 @@ function ladderInterestcoupon(){
 	$userId = I('post.user_id', '', 'intval');//用户id
 	$rechargeTime = I('post.time');//充值时间
 	$rechargeAmount = I('post.amount');//充值金额
-	$rechargeAmountTotal = I('post.tolal_amount');//累计本金
+	$rechargeAmountTotal = I('post.total_amount');//累计本金
 	// $nodeName = I('post.node');//动作节点
 	$nodeName = 'ladder_percent_one';
 
