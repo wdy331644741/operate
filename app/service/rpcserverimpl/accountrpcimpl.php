@@ -563,7 +563,7 @@ class AccountRpcImpl extends BaseRpcImpl
         if(empty($isHaveWithdraw)){
             $stepThree = array(
                             'status' => 0, 
-                            'days'   => 5,
+                            'days'   => 10,
                         );
         }else{
             $days = (strtotime($dateNow) - strtotime($isHaveWithdraw['effective_start']) )/86400;
