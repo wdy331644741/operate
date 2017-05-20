@@ -576,7 +576,7 @@ class AccountRpcImpl extends BaseRpcImpl
 
 
         $data = array(
-                'weal_one'   => 1,  //第一个福利 是否获得 1获得  0未获得
+                'weal_one'   => $stepOne,  //第一个福利 是否获得 1获得  0未获得
                 'weal_two'   => $stepTwo,
                 'weal_three' => $stepThree,
             );
