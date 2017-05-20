@@ -17,9 +17,7 @@ function index()
     	$Days = round(($d2-$d1)/3600/24) + 1;//补发体验金
     	for ($i=0; $i < $Days; $i++) {
     		$reissueDate = date("Y-m-d",strtotime("+{$i} day",strtotime($GLOBALS['cli_args'][0])));
-
     		echo "---------------------------",$reissueDate."发放体验金（15天前所有首冲的用户）---------------------\n";
-
     		$date = date('Y-m-d', strtotime('-15 day',strtotime($reissueDate)));//此次循环的日期 往前推15天
     		// echo $date."\n";
 		    $postParams = array(
@@ -27,16 +25,13 @@ function index()
 		    );
 		    //获取所有本月签到时间
 		    $message = Common::jsonRpcApiCall((object)$postParams, 'getAllRechargeUser', config('RPC_API.passport'));
-
-		    //logs($message,"reissueExperience{$reissueDate}");
-		    // var_dump($message);
-
+		    logs($message,"reissueExperience{$reissueDate}");
+		    //var_dump($message['result']['data']);
 		    $earnings = new \Model\ConfigEarnings();
 		    $configEarningsData = $earnings->getInfoByTitle('revenueSharing');
 		    $start_time = $configEarningsData['start_time'];  //配置中的开始时间
 		    $end_time = $configEarningsData['end_time'];  //配置中结束时间
 		    $today = date('Y-m-d H:i:s', time());
-
 
 		    if (!empty($message['result']['data']['is_frist'])) {
 		        foreach ($message['result']['data']['is_frist'] as $key => $item) {
@@ -48,7 +43,6 @@ function index()
 			                'date'	  => $reissueDate,//此次循环的日期
 			            ];
 			            echo "用户id：",$checkUserWithdraw['user_id'],"\n";
-
 			            if ($today > $start_time && $today < $end_time) {
 			                $rpcRes = Common::jsonRpcApiCall((object)$checkUserWithdraw, 'checkUserWithdraw', config('RPC_API.passport'));
 							if($rpcRes['result']['data']['withdraw'] == false){
@@ -61,7 +55,6 @@ function index()
 							}else echo "从",$reissueDate," 前15天 有提现","\n";
 
 			            }
-		        	// }
 
 		            
 		        }

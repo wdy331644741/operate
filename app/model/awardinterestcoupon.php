@@ -9,7 +9,6 @@ class AwardInterestcoupon extends Model
             $this->initArData($pkVal);
     }
 
-
     public function filterUsefulInterestCoupon($nodeId)
     {
         $nowTime = date("Y-m-d H:i:s");
