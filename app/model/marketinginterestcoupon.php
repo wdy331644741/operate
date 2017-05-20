@@ -68,4 +68,10 @@ class MarketingInterestcoupon extends Model {
         return $this->where("`id` = {$id} and `is_use` = 0")
             ->upd(array('is_use' => 1, 'update_time' => date('Y-m-d H:i:s')));
     }
+
+    //激活状态
+    public function updateActivate($uuid){
+        return $this->where("`uuid` = '{$uuid}' and `is_use` = 0")
+            ->upd(array('is_activate' => 1, 'update_time' => date('Y-m-d H:i:s')));
+    }
 }
