@@ -988,6 +988,14 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
+    'percent' => 
+    array (
+      'field' => 'percent',
+      'key' => '',
+      'default' => '0.00',
+      'unsigned' => false,
+      'null' => true,
+    ),
     'desc' => 
     array (
       'field' => 'desc',
@@ -1273,6 +1281,76 @@ return array (
       'default' => NULL,
       'unsigned' => false,
       'null' => false,
+    ),
+    'pk_name' => 'id',
+  ),
+  'marketing_article_log' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'user_id' => 
+    array (
+      'field' => 'user_id',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'article_id' => 
+    array (
+      'field' => 'article_id',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'last_time' => 
+    array (
+      'field' => 'last_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'counts' => 
+    array (
+      'field' => 'counts',
+      'key' => '',
+      'default' => '1',
+      'type' => 'int',
+      'lenght' => '20',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'remark' => 
+    array (
+      'field' => 'remark',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '200',
+      'unsigned' => false,
+      'null' => true,
     ),
     'pk_name' => 'id',
   ),
@@ -1701,6 +1779,16 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
+    'is_activate' => 
+    array (
+      'field' => 'is_activate',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => false,
+      'null' => false,
+    ),
     'is_use' => 
     array (
       'field' => 'is_use',
@@ -1837,6 +1925,14 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
+    'rate' => 
+    array (
+      'field' => 'rate',
+      'key' => '',
+      'default' => '100.0000',
+      'unsigned' => false,
+      'null' => true,
+    ),
     'pk_name' => 'id',
   ),
   'marketing_withdrawcoupon' => 
@@ -1905,6 +2001,16 @@ return array (
       'default' => NULL,
       'unsigned' => false,
       'null' => false,
+    ),
+    'order_id' => 
+    array (
+      'field' => 'order_id',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '64',
+      'unsigned' => false,
+      'null' => true,
     ),
     'limit_desc' => 
     array (
@@ -1989,7 +2095,7 @@ return array (
     'phone' => 
     array (
       'field' => 'phone',
-      'key' => 'UNI',
+      'key' => '',
       'default' => NULL,
       'lenght' => '11',
       'unsigned' => false,
@@ -2047,7 +2153,89 @@ return array (
       'unsigned' => false,
       'null' => false,
     ),
+    'level' => 
+    array (
+      'field' => 'level',
+      'key' => '',
+      'default' => '1',
+      'type' => 'tinyint',
+      'lenght' => '2',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'earnings_id' => 
+    array (
+      'field' => 'earnings_id',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => true,
+    ),
     'pk_name' => 'apply_id',
+  ),
+  'promoter_statistics' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'date' => 
+    array (
+      'field' => 'date',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'adds' => 
+    array (
+      'field' => 'adds',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'register_adds' => 
+    array (
+      'field' => 'register_adds',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'recharge_adds' => 
+    array (
+      'field' => 'recharge_adds',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'withdraw_adds' => 
+    array (
+      'field' => 'withdraw_adds',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'pk_name' => 'id',
   ),
   'sms_log' => 
   array (
