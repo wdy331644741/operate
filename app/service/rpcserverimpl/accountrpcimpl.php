@@ -518,6 +518,7 @@ class AccountRpcImpl extends BaseRpcImpl
         if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
+        $dateNow = date("Y-m-d H:i:s");
         //用户是否复投？
         $interestCouponName = "redelivery_per_coupon";//复投活动卷的名称
         $awardInterestcouponModel = new \Model\AwardInterestcoupon();
@@ -532,21 +533,45 @@ class AccountRpcImpl extends BaseRpcImpl
         $stepOne = empty($isHaveCoupon)?0:1;
         // var_export($stepOne);exit;
 
-        // $marketingExperienceModel = new \Model\MarketingExperience();
+
+        $experienceName = "redelivery_experience";//复投体验金的名称
+        $awardExperienceModel = new \Model\AwardExperience();
+        $marketingExperienceModel = new \Model\MarketingExperience();
+        $redeliveryExperienceInfo = $awardExperienceModel->getAwardExperienceByName($experienceName);
+
+        $isHaveExperience = $marketingExperienceModel->isExist($this->userId,$redeliveryExperienceInfo['id']);
+
+
+        if(!empty($isHaveExperience) && $isHaveExperience['is_activate'] == 0){
+            $days = (strtotime($dateNow) - strtotime($isHaveExperience['effective_start']) )/86400;
+            $stepTwo = array(
+                            'status' => 0, 
+                            'days'   => $days,
+                        );
+        }
+
+        $withdrawName = "redelivery_withdraw";//复投提现劵的名称
+        $awardWithdrawModel = new \Model\AwardWithdraw();
+        $marketingWithdrawModel = new \Model\MarketingWithdrawcoupon();
+        $redeliveryWithdrawInfo = $awardWithdrawModel->getAwardWithdraByName($withdrawName);
+
+        $isHaveWithdraw = $marketingWithdrawModel->isExist($this->userId,$redeliveryWithdrawInfo['id']);
+        // var_export($isHaveWithdraw);exit;
+
+        if(!empty($isHaveWithdraw) && $isHaveWithdraw['is_activate'] == 0){
+            $days = (strtotime($dateNow) - strtotime($isHaveWithdraw['effective_start']) )/86400;
+            $stepThree = array(
+                            'status' => 0, 
+                            'days'   => $days,
+                        );
+        }
 
 
 
         $data = array(
                 'weal_one'   => 1,  //第一个福利 是否获得 1获得  0未获得
-                'weal_two'   => array(
-                        'status' => 1,// 1获得 0没获得
-                        'days' => 0, //剩余留存3天
-                    ), 
-
-                'weal_three' => array(
-                        'status' => 1,// 1获得 0没获得
-                        'days' => 0, //剩余留存3天
-                    ), 
+                'weal_two'   => $stepTwo,
+                'weal_three' => $stepThree,
             );
 
         return ['code' => 0, 'message' => "是否参与过活动",'data' => $data];

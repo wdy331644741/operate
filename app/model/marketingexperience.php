@@ -23,21 +23,25 @@ class MarketingExperience extends Model {
 
     //判断是否存在该条记录
     public function isExist($userId,$sourceId){
-        $result = $this->fields("id", false)
-            ->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
+        $result = $this->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
             ->orderby("id DESC")
             ->get()
             ->rowArr();
-        return $result['id'];
+        return $result;
     }
 
     //给用户添加记录
-    public function addExperienceForUser($userId, $expInfo)
+    public function addExperienceForUser($userId, $expInfo, $laterdays = '')
     {
         if (empty($expInfo)) {
             return false;
         }
-        $data = $this->getExperienceDataByType($expInfo);
+        if(empty($laterdays)){
+            $data = $this->getExperienceDataByType($expInfo);
+        }else{
+            $data = $this->getExperienceDataByTypeLater($expInfo,$laterdays);
+        }
+        
 
         $data['user_id'] = $userId;
 
@@ -99,4 +103,22 @@ class MarketingExperience extends Model {
         );
     }
 
+    protected function getExperienceDataByTypeLater($experienceInfo,$laterdays)
+    {
+        if ($experienceInfo['amount_type'] == self::TYPE_RANDOM) {
+            $experienceInfo['amount'] = mt_rand($experienceInfo['min_amount'], $experienceInfo['max_amount']);
+        }
+
+        return array(
+            'uuid'            => create_guid(),
+            'source_id'       => $experienceInfo['id'],
+            'source_name'     => $experienceInfo['title'],
+            'amount'          => $experienceInfo['amount'],
+            'effective_start' => date('Y-m-d H:i:s', time() + $laterdays * DAYS_SECONDS),
+            'effective_end'   => date('Y-m-d H:i:s', time() + ($laterdays+$experienceInfo['days']) * DAYS_SECONDS),
+            'continuous_days' => $experienceInfo['days'],
+            'limit_desc'      => $experienceInfo['limit_desc'],
+            'create_time'     => date('Y-m-d H:i:s')
+        );
+    }
 }

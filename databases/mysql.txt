@@ -76,3 +76,13 @@ CREATE TABLE `marketing_withdrawcoupon` (
 
 ALTER TABLE `marketing_interestcoupon`
 ADD COLUMN `is_activate`  tinyint(3) NOT NULL DEFAULT 0 COMMENT '0未激活 1激活' AFTER `limit_desc`;
+
+
+
+
+ALTER TABLE `award_experience`
+ADD COLUMN `experience_name`  varbinary(100) NULL COMMENT '体验卷名称' AFTER `repeat`;
+
+
+ALTER TABLE `award_withdraw`
+ADD COLUMN `withdraw_name`  varbinary(100) NULL COMMENT '提现劵名称' AFTER `is_del`;

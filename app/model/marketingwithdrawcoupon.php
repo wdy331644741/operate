@@ -26,13 +26,11 @@ class MarketingWithdrawcoupon extends Model
 
     //是否存在该记录
     public function isExist($userId,$sourceId){
-        $result = $this->fields("id", false)
-            ->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
+        $result = $this->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
             ->orderby("id DESC")
             ->get()
             ->rowArr();
-        logs($this->getLastQuery());
-        return $result['id'];
+        return $result;
     }
 
     //给用户添加记录

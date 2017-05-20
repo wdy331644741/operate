@@ -104,7 +104,7 @@ function experience($userId,$nodeId,$amount){
 			'id' 	     => $awardExpInfo['id'],
 			'title'      => $awardExpInfo['title'],
 			'amount'     => $amount,
-			'days'       => $awardExpInfo['days'],
+			'days'       => $awardExpInfo['days'],//10天后有效 +5天使用时间
 			'limit_desc' => $awardExpInfo['limit_desc'],
 			'amount_type'=> $awardExpInfo['amount_type'],
 			);

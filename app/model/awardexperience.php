@@ -15,7 +15,12 @@ class AwardExperience extends Model
         $res = $this->where("`limit_node` = {$nodeId} and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
             ->orderby("id DESC")
             ->get()->rowArr();
-        logs($this->getLastQuery());
         return $res;
+    }
+
+    public function getAwardExperienceByName($experience_name){
+        return $this->where("`experience_name` = '{$experience_name}'")
+            ->get()->rowArr();
+
     }
 }
