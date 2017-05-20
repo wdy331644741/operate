@@ -75,7 +75,7 @@ function coupon($userId,$nodeId){
 	$activePost = [
 			'token' => "5654D156-F85B-F00E-A777-EFFFF220E8EB",
 			'status' => 0,
-			'loseTime' => '2017-05-21 18:33:18',
+			'loseTime' => '2017-11-21 11:11:11',
 		];
 	$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
 return "1111111";
