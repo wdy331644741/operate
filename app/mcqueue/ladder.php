@@ -71,6 +71,14 @@ function disLadderInterestcoupon(){
  * 阶梯发加息劵
  */
 function coupon($userId,$nodeId){
+
+	$disactivePost = [
+			'token' => $isExistCoupon['uuid'],
+			'status' => 0,
+			'loseTime' => '2017-05-21 18:33:18',
+		];
+	$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
+return "1111111";
 	$awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
 	$operateCoupon = new \Model\MarketingInterestcoupon();
 
