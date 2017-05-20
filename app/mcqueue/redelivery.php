@@ -141,7 +141,7 @@ function freeWithdraw($userId,$nodeId){
 			// 'remain_times' => $awardWithdrawInfo['times'], 
 			'limit_desc' => $awardWithdrawInfo['limit_desc'], 
 			);
-		$addWithdrawRes = $FreeWithdraw -> addWithdrawForUser($userId,$withdrawInfo);
+		$addWithdrawRes = $FreeWithdraw -> addWithdrawForUser($userId,$withdrawInfo,15);
 		unset($addWithdrawRes['id']);
 		//通知用户中心 发放提现劵
 		if($addWithdrawRes){

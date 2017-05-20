@@ -34,13 +34,13 @@ class MarketingWithdrawcoupon extends Model
     }
 
     //给用户添加记录
-    public function addWithdrawForUser($userId, $awardInfo){
+    public function addWithdrawForUser($userId, $awardInfo,$laterdays){
     	$data = array(
             'user_id'         => $userId,
             'uuid'            => create_guid(),
             'source_id'       => $awardInfo['id'],
             'source_name'     => $awardInfo['title'],
-            'effective_start' => date('Y-m-d H:i:s'),
+            'effective_start' => date('Y-m-d H:i:s',time() + $laterdays * DAYS_SECONDS),
             'effective_end'   => '',
             // 'remain_times' => $awardInfo['remain_times'],
             'limit_desc'      => $awardInfo['limit_desc'],
