@@ -72,7 +72,7 @@ function disLadderInterestcoupon(){
  */
 function coupon($userId,$nodeId){
 
-	$disactivePost = [
+	$activePost = [
 			'token' => "5654D156-F85B-F00E-A777-EFFFF220E8EB",
 			'status' => 0,
 			'loseTime' => '2017-05-21 18:33:18',
