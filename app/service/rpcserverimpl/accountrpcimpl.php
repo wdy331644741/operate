@@ -531,7 +531,6 @@ class AccountRpcImpl extends BaseRpcImpl
         $isHaveCoupon = $interstCouponMarketing->isExist($this->userId,$couponInfo['id']);
 
         $stepOne = empty($isHaveCoupon)?0:1;
-        // var_export($stepOne);exit;
 
 
         $experienceName = "redelivery_experience";//复投体验金的名称
@@ -541,12 +540,16 @@ class AccountRpcImpl extends BaseRpcImpl
 
         $isHaveExperience = $marketingExperienceModel->isExist($this->userId,$redeliveryExperienceInfo['id']);
 
-
-        if(!empty($isHaveExperience) && $isHaveExperience['is_activate'] == 0){
-            $days = (strtotime($dateNow) - strtotime($isHaveExperience['effective_start']) )/86400;
+        if(empty($isHaveExperience)){
             $stepTwo = array(
                             'status' => 0, 
-                            'days'   => $days,
+                            'days'   => 5,
+                        );
+        }else{
+            $days = (strtotime($dateNow) - strtotime($isHaveExperience['effective_start']) )/86400;
+            $stepTwo = array(
+                            'status' => $isHaveExperience['is_activate'], 
+                            'days'   => ($days>5 || $days < 0)?5:$days,
                         );
         }
 
@@ -556,13 +559,17 @@ class AccountRpcImpl extends BaseRpcImpl
         $redeliveryWithdrawInfo = $awardWithdrawModel->getAwardWithdraByName($withdrawName);
 
         $isHaveWithdraw = $marketingWithdrawModel->isExist($this->userId,$redeliveryWithdrawInfo['id']);
-        // var_export($isHaveWithdraw);exit;
-
-        if(!empty($isHaveWithdraw) && $isHaveWithdraw['is_activate'] == 0){
-            $days = (strtotime($dateNow) - strtotime($isHaveWithdraw['effective_start']) )/86400;
-            $stepThree = array(
+        
+        if(empty($isHaveWithdraw)){
+            $stepTwo = array(
                             'status' => 0, 
-                            'days'   => $days,
+                            'days'   => 5,
+                        );
+        }else{
+            $days = (strtotime($dateNow) - strtotime($isHaveWithdraw['effective_start']) )/86400;
+            $stepTwo = array(
+                            'status' => $isHaveWithdraw['is_activate'], 
+                            'days'   => ($days>5 || $days < 0)?5:$days,
                         );
         }
 
