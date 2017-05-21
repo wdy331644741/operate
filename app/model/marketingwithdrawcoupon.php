@@ -34,7 +34,7 @@ class MarketingWithdrawcoupon extends Model
     }
 
     //给用户添加记录
-    public function addWithdrawForUser($userId, $awardInfo,$laterdays){
+    public function addWithdrawForUser($userId, $awardInfo,$laterdays=0){
     	$data = array(
             'user_id'         => $userId,
             'uuid'            => create_guid(),
