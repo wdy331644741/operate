@@ -46,3 +46,15 @@ CREATE TABLE `promoter_statistics` (
   `withdraw_adds` int(10) DEFAULT '0' COMMENT '推广员渠道每日提现',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='推广员相关数据统计';
+
+ALTER TABLE `award_interestcoupon`
+ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER `coupon`;
+
+
+ALTER TABLE `award_experience`
+ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER `experience_name`;
+
+
+ALTER TABLE `award_withdraw`
+ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER `withdraw_name`;
+
