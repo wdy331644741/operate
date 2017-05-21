@@ -156,11 +156,11 @@ function coupon($userId,$nodeId,$activate=true,$laterDays=0){
    		
    		$res = $operateCoupon->isOtherActivateExist($userId);
    		
-   		var_export($res);exit;
-   		if($res[$isExistCoupon['id']]['source_id'] == 10){//已有0.5加息券，现满足1%   数量大于2
+   		// var_export($res);exit;
+   		if(count($res) > 1 && $res[$isExistCoupon['id']]['source_id'] == 10){//已有0.5加息券，现满足1%   数量大于2
+   			// var_export($res);exit;
    			// echo "111111";
    			$disactiveCoupon = array_pop($res);
-   			// var_export($disactiveCoupon);
    			$updateCoupon = array_pop($res);
    			$operateCoupon->updateActivate($disactiveCoupon['uuid'],1,0,$disactiveCoupon['effective_start'],$dateNow);
 
@@ -171,7 +171,6 @@ function coupon($userId,$nodeId,$activate=true,$laterDays=0){
    		//停止该加息劵计息
    		// $operateCoupon->updateActivate($res[0]['uuid'],0,0);
 
-   		//3、把
    	}
 
 }
