@@ -581,6 +581,6 @@ class AccountRpcImpl extends BaseRpcImpl
                 'weal_three' => $stepThree,
             );
 
-        return ['code' => 0, 'message' => "是否参与过活动",'data' => $data];
+        return ['code' => 0, 'message' => $stepOne?"复投":"没有复投",'data' => $data];
     }
 }
