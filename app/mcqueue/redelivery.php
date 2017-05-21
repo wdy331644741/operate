@@ -79,7 +79,7 @@ function coupon($userId,$nodeId){
 		// $rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
 		//update operate database  status
 		$operateCoupon->updateActivate($addCouponRes['uuid']);
-		logs($rpcRes,"activateInter");
+		// logs($rpcRes,"activateInter");
 		return true;
 		
    	}
