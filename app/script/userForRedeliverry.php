@@ -8,8 +8,8 @@ use \App\service\rpcserverimpl\Common;
  * @pageroute
  */
 function index(){
-	checkGiveWithdraw();
 	checkGiveExpreience();
+	checkGiveWithdraw();
 }
 
 /**
@@ -23,10 +23,12 @@ function checkGiveWithdraw(){
 	$date = date('Y-m-d',strtotime('-15 day'));
 	$dateNow = date('Y-m-d H:i:s');
 	$alluser = $withdrawModel->getCouponUserByTime($date);
+	echo "----------------------复投活动 发放提现劵---------------------".PHP_EOL;
 
 	if(!empty($alluser)){
 		foreach ($alluser as $key => $value) {
 			# code...
+			echo "用户：".$value['user_id'].PHP_EOL;
 			$postParams = array(
 				'userId' => $value['user_id'], 
 				'startTime' => $date.' 00:00:00', 
@@ -35,15 +37,18 @@ function checkGiveWithdraw(){
 				);
 			// $withdrawTimes = Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
 			$withdrawTimes = 0;
+			echo "用户15天前提现次数：".$withdrawTimes.PHP_EOL;
 			if($withdrawTimes == 0){
-				//1、update operate withdrawcoupon 
-				$withdrawModel->updateStatusOfUse($value['id']);
-				//2、通知用户中心  激活提现劵
+				//1、通知用户中心  激活提现劵
 				// $activePost = [
 				// 	'uuid' => $addCouponRes['uuid'],
 				// 	'status' => 1,
 				// ];
-				//Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
+				//$resBack = Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
+				$resBack = true;
+				echo "用户中心返回激活结果：".$resBack.PHP_EOL;
+				//2、update operate withdrawcoupon 
+				$withdrawModel->updateStatusOfUse($value['id']);
 			}
 		}
 	}
@@ -63,12 +68,13 @@ function checkGiveExpreience(){
 	$date = date('Y-m-d',strtotime('-10 day'));
 	$dateNow = date('Y-m-d H:i:s');
 	$alluser = $expreienceModel->getExpUserByTime($date);
-	// var_export($alluser);exit;
+	echo "----------------------复投活动 发放体验金---------------------".PHP_EOL;
 
 	if(!empty($alluser)){
 		//获取该用户 在10天内是否提现
 		foreach ($alluser as $key => $value) {
 			# code...
+			echo "用户：".$value['user_id'].PHP_EOL;
 			$postParams = array(
 				'userId' => $value['user_id'], 
 				'startTime' => $date.' 00:00:00', 
@@ -77,11 +83,14 @@ function checkGiveExpreience(){
 				);
 			// $withdrawTimes = Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
 			$withdrawTimes = 0;
+			echo "用户10天前提现次数：".$withdrawTimes.PHP_EOL;
 			if($withdrawTimes == 0){
+				//通知用户中心 提现劵开始使用
+				// $resBack = Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
+				$resBack = true;
+				echo "用户中心返回激活结果：".$resBack.PHP_EOL;
 				//update operate MarketingExperience status
 				$expreienceModel->updateStatusOfUse($value['id']);
-				//通知用户中心 提现劵开始使用
-				// Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
 			}
 		
 		}
