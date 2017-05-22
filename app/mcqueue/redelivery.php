@@ -14,10 +14,10 @@ function redeliveryExperience(){
 	$rechargeAmount = I('post.amount');//充值金额
 	// $nodeName = I('post.node');//动作节点
 	$nodeName = 'recharge';
-	$activityName = 'redelivery';//复投活动名称
-	$activityModel = new \Model\MarketingActivity();
-	//获取活动开始、结束时间
-	$usefulTime = $activityModel->getUsefulTimeByName($activityName);
+	// $activityName = 'redelivery';//复投活动名称
+	// $activityModel = new \Model\MarketingActivity();
+	// //获取活动开始、结束时间
+	// $usefulTime = $activityModel->getUsefulTimeByName($activityName);
 
 	$awardNode = new \Model\AwardNode();//活动节点
 
@@ -38,6 +38,7 @@ function redeliveryExperience(){
 	// $rechargeTimes = 2;
 	if($rechargeTimes >= 2){
 		coupon($userId,$nodeId);
+		$rechargeAmount = floor($rechargeAmount);//向下取整
 		experience($userId,$nodeId,$rechargeAmount);
 		freeWithdraw($userId,$nodeId);
 	}
@@ -76,8 +77,9 @@ function coupon($userId,$nodeId){
 			'uuid' => $addCouponRes['uuid'],
 			'status' => 1,
 		];
-		// $rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
+		$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
 		//update operate database  status
+		if($rpcRes)
 		$operateCoupon->updateActivate($addCouponRes['uuid']);
 		// logs($rpcRes,"activateInter");
 		return true;
