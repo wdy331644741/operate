@@ -34,6 +34,12 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">有效天数</span></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="自发放加息券发放日期开始，加息券失效的天数。如为空则以过期时间为准" name="effective_days" id="effective_days" value="{$item.effective_days}">
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label"><span class="name_span">限制说明</span><i>*</i></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control name" placeholder="" name="limitDesc" id="limitDesc" value="{$item.limit_desc}">

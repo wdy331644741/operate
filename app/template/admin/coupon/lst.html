@@ -21,6 +21,7 @@
                     <th >利率</th>
                     <th >加息天数</th>
                     <th >失效时间</th>
+                    <th >有效天数</th>
                     <th >限制说明</th>
                     <th >适用节点</th>
                     <th >状态</th>
@@ -37,6 +38,7 @@
                     <td>{$item.rate}%</td>
                     <td>{$item.days}</td>
                     <td>{$item.effective_end}</td>
+                    <td>{$item.effective_days}</td>
                     <td>{$item.limit_desc}</td>
                     <td>{if isset($item.node_title)}{$item.node_title}{else}无{/if}</td>
                     <td>
