@@ -35,19 +35,20 @@ function checkGiveWithdraw(){
 				'endTime' => $dateNow, 
 				'status' => 200, 
 				);
-			// $withdrawTimes = Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
-			$withdrawTimes = 0;
+			$withdrawTimes = Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
+			// $withdrawTimes = 0;
 			echo "用户15天前提现次数：".$withdrawTimes.PHP_EOL;
 			if($withdrawTimes == 0){
 				//1、通知用户中心  激活提现劵
-				// $activePost = [
-				// 	'uuid' => $addCouponRes['uuid'],
-				// 	'status' => 1,
-				// ];
-				//$resBack = Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
-				$resBack = true;
+				$activePost = [
+					'uuid' => $value['uuid'],
+					'status' => 1,
+				];
+				$resBack = Common::jsonRpcApiCall((object)$activePost, 'activateSendWithdrawCouponToUser', config('RPC_API.passport'));
+				// $resBack = true;
 				echo "用户中心返回激活结果：".$resBack.PHP_EOL;
 				//2、update operate withdrawcoupon 
+				if($resBack)
 				$withdrawModel->updateStatusOfUse($value['id']);
 			}
 		}
@@ -81,15 +82,20 @@ function checkGiveExpreience(){
 				'endTime' => $dateNow, 
 				'status' => 200, 
 				);
-			// $withdrawTimes = Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
-			$withdrawTimes = 0;
+			$withdrawTimes = Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
+			// $withdrawTimes = 0;
 			echo "用户10天前提现次数：".$withdrawTimes.PHP_EOL;
 			if($withdrawTimes == 0){
 				//通知用户中心 提现劵开始使用
-				// $resBack = Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
-				$resBack = true;
+				$activePost = [
+					'uuid' => $value['uuid'],
+					'status' => 1,
+				];
+				$resBack = Common::jsonRpcApiCall((object)$activePost, 'activateSendExpreienceCouponToUser', config('RPC_API.passport'));
+				// $resBack = true;
 				echo "用户中心返回激活结果：".$resBack.PHP_EOL;
 				//update operate MarketingExperience status
+				if($resBack)
 				$expreienceModel->updateStatusOfUse($value['id']);
 			}
 		
