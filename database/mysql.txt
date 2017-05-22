@@ -58,3 +58,8 @@ ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER 
 ALTER TABLE `award_withdraw`
 ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER `withdraw_name`;
 
+
+
+ALTER TABLE `marketing_interestcoupon`
+ADD COLUMN `status`  tinyint(1) NULL DEFAULT 1 COMMENT '状态' AFTER `is_use`;
+

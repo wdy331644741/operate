@@ -10,9 +10,41 @@ class MarketingInterestcoupon extends Model {
             $this->initArData($pkVal);
     }
 
-    //是否存在该记录
+    //是否有其他 阶梯加息已经计息的加息劵
+    public function isOtherActivateExist($userId){
+        $result = $this->where("`user_id` = {$userId} and `source_id` in (10,11) and `status` = 1")
+        ->orderby("id DESC")
+        ->get()
+        ->resultArr();
+        $result = array_column($result,NULL,'id');
+        return $result;
+    }
+
+    //是否存已经计息的记录
+    //array中包含预发放的加息劵，
+    public function isActivateExist($userId,$sourceId){
+        if(is_array($sourceId)){
+            $sourceIdStr = implode(',', $sourceId);
+            $result = $this->fields("id,uuid,is_activate", false)
+            ->where("`user_id` = {$userId} and `source_id` in ({$sourceIdStr}) and `status` = 1")
+            ->orderby("id DESC")
+            ->get()
+            ->resultArr();
+        }else{
+            $result = $this->fields("id,uuid,is_activate", false)
+            ->where("`user_id` = {$userId} and `source_id` = {$sourceId} and `is_activate` = 1 and `status` = 1")
+            ->orderby("id DESC")
+            ->get()
+            ->rowArr();
+        }
+        
+        return $result;
+    }
+
+    //是否存在 预发送记录
     public function isExist($userId,$sourceId){
-        $result = $this->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
+        $result = $this->fields("id,uuid", false)
+            ->where("`user_id` = {$userId} and `source_id` = {$sourceId} and `status` = 1")
             ->orderby("id DESC")
             ->get()
             ->rowArr();
@@ -43,8 +75,8 @@ class MarketingInterestcoupon extends Model {
             'source_id'       => $awardInfo['id'],
             'source_name'     => $awardInfo['title'],
             'rate'            => $awardInfo['rate'],
-            'effective_start' => date('Y-m-d H:i:s'),
-            'effective_end'   => date('Y-m-d H:i:s', time() + $awardInfo['days'] * DAYS_SECONDS),
+            'effective_start' => date('Y-m-d H:i:s', time() + $awardInfo['laterDays'] * DAYS_SECONDS),
+            'effective_end'   => date('Y-m-d H:i:s', time() + ($awardInfo['days']+$awardInfo['laterDays']) * DAYS_SECONDS),
             'continuous_days' => $awardInfo['days'],
             'limit_desc'      => $awardInfo['limit_desc'],
             'create_time'     => date('Y-m-d H:i:s'),
@@ -68,10 +100,15 @@ class MarketingInterestcoupon extends Model {
             ->upd(array('is_use' => 1, 'update_time' => date('Y-m-d H:i:s')));
     }
 
-    //更新激活状态
-    public function updateActivate($uuid,$activate=1){
+    //更新激活状态及时间
+    public function updateActivate($uuid,$activate=1,$status=1,$effective_start='',$effective_end=''){
+        if(!empty($effective_start) && !empty($effective_end)){
+            $this->where("`uuid` = '{$uuid}'")
+            ->upd(array('is_activate' => $activate,'status' => $status,'effective_start'=>$effective_start,'effective_end'=>$effective_end, 'update_time' => date('Y-m-d H:i:s')));
+        }
         $ww = $this->where("`uuid` = '{$uuid}'")
-            ->upd(array('is_activate' => $activate, 'update_time' => date('Y-m-d H:i:s')));
-            logs($this->getLastQuery());
+            ->upd(array('is_activate' => $activate,'status' => $status, 'update_time' => date('Y-m-d H:i:s')));
     }
+
+    //更新状态
 }
