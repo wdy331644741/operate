@@ -148,7 +148,8 @@ class AllErrorException extends BasicException
     const RECHARGE_CANCEL = 1672; //充值已取消
     const BINDCARD_NOT_RECHARGE = 1673; //绑卡成功，充值失败
 
-
+    //运营
+    const ACTIVATE_NODE = 7111 //获取活动节点失败
 
     protected static $errorArray = array(
         self::API_MIS_PARAMS => "缺少必要参数",
