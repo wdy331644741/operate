@@ -119,7 +119,6 @@ function coupon($userId,$nodeId,$activate=true,$laterDays=0){
 	} catch (Exception $e) {
 		logs(['error' => $e->getCode(), 'message' => $e->getMessage()],"ladderScript");
 	}
-	
    	$isExistCoupon = $operateCoupon->isExist($userId, $awardCouponInfo['id']);
 
    	//不存在，添加一张加息劵
