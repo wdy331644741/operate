@@ -25,19 +25,21 @@ function ladderInterestcoupon(){
 	//单笔充值 小于1w 发放一张0.5阶梯加息劵 7天
 	//发放1%加息 结束时间=阶梯加息活动结束时间
 	if($rechargeAmountTotal >= 20000 || $rechargeAmount >= 10000){
-		try {
-			$nodeId = $awardNode->getNode($percentOne);
-			if(empty($nodeId)) throw new \Exception('获取活动节点失败', 7111);
-			coupon($userId,$nodeId);//ladder_percent_one_keep 1%的 发放并激活
-		} catch (Exception $e) {
-			logs(['error' => $e->getCode(), 'message' => $e->getMessage()],"ladderScript");
-		}
+		$nodeId = $awardNode->getNode($percentOne);
+		if(empty($nodeId)) 
+			throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
+		coupon($userId,$nodeId);//ladder_percent_one_keep 1%的 发放并激活
+		
 		
 	// }else if($rechargeAmount >= 10000 && $rechargeAmountTotal < 20000){
 	// 	coupon($userId, $awardNode->getNode($percentOne) ); //ladder_percent_one_keep 1%的 发放并激活
 	}else if($rechargeAmount < 10000){
-		coupon($userId, $awardNode->getNode($percentHalfKeep) ); //发一个7天 0.5的 发放并激活
-		coupon($userId, $awardNode->getNode($percentOne),false,7); //预发 一个1%的 发放
+		$half = $awardNode->getNode($percentHalfKeep);
+		$one = $awardNode->getNode($percentOne);
+		if(empty($half) || empty($one))
+			throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
+		coupon($userId, $half ); //发一个7天 0.5的 发放并激活
+		coupon($userId, $one,false,7); //预发 一个1%的 发放
 	}
 }
 
@@ -60,8 +62,8 @@ function disLadderInterestcoupon(){
 				$awardNode->getNode($ladderPercentOne),
 				$awardNode->getNode($percentHalfKeep)
 			);
-	if(!empty($nodeId)){
-		//活动节点不存在
+	if(empty($nodeId)){
+			throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
 	}
 
 	//查询operate_加息劵表中是否给该用户激活过加息劵

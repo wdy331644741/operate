@@ -153,6 +153,8 @@ class AllErrorException extends BasicException
     const COUPON_UNDIFIND = 7001; //相关劵信息不存在
 
 
+    //运营
+    const ACTIVATE_NODE = 7111 //获取活动节点失败
 
     protected static $errorArray = array(
         self::API_MIS_PARAMS => "缺少必要参数",
