@@ -30,7 +30,7 @@ function redeliveryExperience(){
 	//1 判断在此之前 充值次数
 	$postParams = array(
             'userId'     => $userId,
-            'startTime'  => $usefulTime,//活动开始时间
+            'startTime'  => '',//活动开始时间
             'endTime'    => $rechargeTime,
             'status'	 => 200,
         );
