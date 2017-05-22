@@ -44,6 +44,7 @@ function disLadderInterestcoupon(){
 	$withdrawAmount = I('post.amount');//充值金额
 	$withdrawAmountTotal = I('post.total_amount');//累计本金
 
+	if($withdrawAmountTotal >= 20000) return;
 	$ladderPercentOne = 'ladder_percent_one';
 	$percentHalfKeep = 'ladder_percent_half_keep';
 	$awardNode = new \Model\AwardNode();//活动节点
@@ -108,7 +109,7 @@ function coupon($userId,$nodeId,$activate=true,$laterDays=0){
 	$awardCouponInfo = $awardCoupon->filterUsefulInterestCoupon($nodeId);
 	
    	$isExistCoupon = $operateCoupon->isExist($userId, $awardCouponInfo['id']);
-// var_export($isExistCoupon);
+
    	//不存在，添加一张加息劵
    	if(empty($isExistCoupon)){
    		//*********************发放加息劵*********************
