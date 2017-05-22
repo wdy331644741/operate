@@ -24,4 +24,10 @@ class AwardInterestcoupon extends Model
         }
         
     }
+
+    public function getCouponIdByName($couponName){
+        $nowTime = date("Y-m-d H:i:s");
+        return $this->where("`coupon` = '{$couponName}' and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
+                ->get()->rowArr();
+    }
 }

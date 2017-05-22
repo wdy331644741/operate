@@ -111,4 +111,13 @@ class MarketingInterestcoupon extends Model {
     }
 
     //更新状态
+    
+    //获取一天内所有的数据
+    public function getAllDataByDay($date,$couponId){
+        $dateStartTime = $date." 00:00:00";
+        $dateEndTime = $date." 23:59:59";
+        $returnArr = $this->where("`effective_start` > '{$dateStartTime}' and `effective_start` < '{$dateEndTime}' and `status` = 1 and `is_activate` = 0 and `source_id` = {$couponId}")
+                ->get()->resultArr();
+        return $returnArr;
+    }
 }
