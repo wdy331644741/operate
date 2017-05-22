@@ -24,10 +24,17 @@ function ladderInterestcoupon(){
 	//单笔充值大于1w  或者 累计本金大于2w
 	//单笔充值 小于1w 发放一张0.5阶梯加息劵 7天
 	//发放1%加息 结束时间=阶梯加息活动结束时间
-	if($rechargeAmountTotal >= 20000 ){
-		coupon($userId,$awardNode->getNode($percentOne));//ladder_percent_one_keep 1%的 发放并激活
-	}else if($rechargeAmount >= 10000 && $rechargeAmountTotal < 20000){
-		coupon($userId, $awardNode->getNode($percentOne) ); //ladder_percent_one_keep 1%的 发放并激活
+	if($rechargeAmountTotal >= 20000 || $rechargeAmount >= 10000){
+		try {
+			$nodeId = $awardNode->getNode($percentOne);
+			if(empty($nodeId)) throw new \Exception('获取活动节点失败', 7111);
+			coupon($userId,$nodeId);//ladder_percent_one_keep 1%的 发放并激活
+		} catch (Exception $e) {
+			logs(['error' => $e->getCode(), 'message' => $e->getMessage()],"ladderScript");
+		}
+		
+	// }else if($rechargeAmount >= 10000 && $rechargeAmountTotal < 20000){
+	// 	coupon($userId, $awardNode->getNode($percentOne) ); //ladder_percent_one_keep 1%的 发放并激活
 	}else if($rechargeAmount < 10000){
 		coupon($userId, $awardNode->getNode($percentHalfKeep) ); //发一个7天 0.5的 发放并激活
 		coupon($userId, $awardNode->getNode($percentOne),false,7); //预发 一个1%的 发放
