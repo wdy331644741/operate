@@ -12,6 +12,7 @@ function add()
             if ('' === $$field)
                 ajaxReturn(['error' => 4000, 'message' => $field . '不能为空']);
         }
+        $data['activity_name'] = I('post.activity_name','trim');
         $data['title'] = $title;
         $data['img_url'] = $imgUrl;
         $data['link_url'] = $linkUrl;
@@ -107,6 +108,7 @@ function upd()
             if ('' === $$field)
                 ajaxReturn(['error' => 4000, 'message' => $field . '不能为空']);
         }
+        $data['activity_name'] = I('post.activity_name','trim');
         $data['title'] = $title;
         $data['img_url'] = $imgUrl;
         $data['link_url'] = $linkUrl;
