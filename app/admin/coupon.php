@@ -15,6 +15,7 @@ function add()
         }
 
         $data['coupon'] = I('post.coupon','','trim');
+        $data['effective_days'] = I('post.effective_days','','trim');
         $data['title'] = $title;
         $data['rate'] = $rate;
         $data['days'] = $days;
@@ -117,7 +118,8 @@ function upd()
                 ajaxReturn(['error' => 4000, 'message' => $$field . '不能为空']);
         }
 
-
+        $data['coupon'] = I('post.coupon','','trim');
+        $data['effective_days'] = I('post.effective_days','','trim');
         $data['title'] = $title;
         $data['rate'] = $rate;
         $data['days'] = $days;

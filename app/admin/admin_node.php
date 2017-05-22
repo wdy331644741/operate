@@ -81,9 +81,6 @@ function edit()
         if (empty($nodeModel->action = strtolower(I('post.action')))) {
             ajaxReturn(array('error' => $errno, 'msg' => 'action不能为空'));
         }
-        if (empty($nodeModel->url = I('post.url'))) {
-            ajaxReturn(array('error' => $errno, 'msg' => 'url不能为空'));
-        }
         if (empty($nodeModel->remark = I('post.remark'))) {
             ajaxReturn(array('error' => $errno, 'msg' => '描述不能为空'));
         }
