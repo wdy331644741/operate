@@ -14,3 +14,7 @@ ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER 
 
 ALTER TABLE `marketing_interestcoupon`
 ADD COLUMN `status`  tinyint(1) NULL DEFAULT 1 COMMENT '状态' AFTER `is_use`;
+
+
+ALTER TABLE `award_interestcoupon`
+ADD COLUMN `effective_days`  int(10) NULL COMMENT '有效天数' AFTER `days`;
