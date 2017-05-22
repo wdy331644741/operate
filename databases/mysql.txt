@@ -86,3 +86,9 @@ ADD COLUMN `experience_name`  varbinary(100) NULL COMMENT '体验卷名称' AFTE
 
 ALTER TABLE `award_withdraw`
 ADD COLUMN `withdraw_name`  varbinary(100) NULL COMMENT '提现劵名称' AFTER `is_del`;
+
+
+ALTER TABLE `marketing_activity`
+ADD COLUMN `activity_name`  varbinary(100) NULL COMMENT '活动名称' AFTER `create_time`;
+
+UPDATE marketing_activity SET activity_name='redelivery' where id=4
