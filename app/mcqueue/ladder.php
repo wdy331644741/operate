@@ -112,8 +112,13 @@ function coupon($userId,$nodeId,$activate=true,$laterDays=0){
 	$dateNow = date('Y-m-d H:i:s');
 	$awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
 	$operateCoupon = new \Model\MarketingInterestcoupon();
-
-	$awardCouponInfo = $awardCoupon->filterUsefulInterestCoupon($nodeId);
+	try {
+		$awardCouponInfo = $awardCoupon->filterUsefulInterestCoupon($nodeId);
+		if(empty($awardCouponInfo)) throw new Exception("相关加息券未配置", 7112);
+		
+	} catch (Exception $e) {
+		logs(['error' => $e->getCode(), 'message' => $e->getMessage()],"ladderScript");
+	}
 	
    	$isExistCoupon = $operateCoupon->isExist($userId, $awardCouponInfo['id']);
 
