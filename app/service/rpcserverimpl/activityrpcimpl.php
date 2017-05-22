@@ -71,11 +71,11 @@ class ActivityRpcImpl extends BaseRpcImpl
             
         }
 
-        if(isset($pastAactivities) && !empty($pastAactivities)){
+        if(!empty($pastAactivities && !empty($ingAactivities))){
             $res = array_merge($ingAactivities,$pastAactivities);
-        }elseif(isset($ingAactivities) && !empty($ingAactivities)){
+        }elseif(empty($ingAactivities) && !empty($pastAactivities)){
             $res = $pastAactivities;
-        }elseif(isset($pastAactivities) && !empty($pastAactivities)){
+        }elseif(empty($pastAactivities) && !empty($ingAactivities)){
             $res = $ingAactivities;
         }
 
