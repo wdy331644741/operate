@@ -14,12 +14,12 @@ function redeliveryExperience(){
 	$rechargeAmount = I('post.amount');//充值金额
 	// $nodeName = I('post.node');//动作节点
 	$nodeName = 'recharge';
+	$activityName = 'redelivery';//复投活动名称
+	$activityModel = new \Model\MarketingActivity();
+	//获取活动开始、结束时间
+	$usefulTime = $activityModel->getUsefulTimeByName($activityName);
 
-	// $operateExperience = new \Model\MarketingExperience();
-	// $operateCoupon = new \Model\MarketingInterestcoupon();
 	$awardNode = new \Model\AwardNode();//活动节点
-	// $awardExperience = new \Model\AwardExperience();//体验金配置
-	// $awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
 
 	$nodeId = $awardNode->getNode($nodeName);//获取节点id
 	if(!empty($nodeId)){
@@ -30,13 +30,13 @@ function redeliveryExperience(){
 	//1 判断在此之前 充值次数
 	$postParams = array(
             'userId'     => $userId,
-            'startTime'  => '',
+            'startTime'  => $usefulTime,//活动开始时间
             'endTime'    => $rechargeTime,
             'status'	 => 200,
         );
-	//$rechargeTimes = Common::jsonRpcApiCall((object)$postParams, 'getRechargeRecords', config('RPC_API.passport'));
-	$rechargeTimes = 2;
-	if($rechargeTimes == 2){
+	$rechargeTimes = Common::jsonRpcApiCall((object)$postParams, 'getRechargeRecords', config('RPC_API.passport'));
+	// $rechargeTimes = 2;
+	if($rechargeTimes >= 2){
 		coupon($userId,$nodeId);
 		experience($userId,$nodeId,$rechargeAmount);
 		freeWithdraw($userId,$nodeId);

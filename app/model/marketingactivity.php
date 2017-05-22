@@ -33,4 +33,10 @@ class MarketingActivity extends Model
             ->limit($start, C('PAGE_SIZE'))
             ->get()->resultArr();
     }
+
+    public function getUsefulTimeByName($name){
+        return $this->fields('start_time,end_time')
+            ->where("`is_del` = 0 and `status` = 1 and `activity_name` = '{$name}'")
+            ->get()->resultArr();
+    }
 }
