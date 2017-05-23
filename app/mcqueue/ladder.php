@@ -174,13 +174,39 @@ function coupon($userId,$nodeId,$activate=true,$laterDays=0){
    		if(count($res) > 1 && $res[$isExistCoupon['id']]['source_id'] == 10){//已有0.5加息券，现满足1%   数量大于2
    			// var_export($res);exit;
    			// echo "111111";
+   			//------------------更新0.5%的计息结束时间  及状态
    			$disactiveCoupon = array_pop($res);
+   			$updatePost = [
+				'uuid' => $addCouponRes['uuid'],
+				'status' => 1,
+				'activateTime' => '',
+				'loseTime' => $dateNow,
+			];
+   			$rpcRes = Common::jsonRpcApiCall((object)$updatePost, 'activateNewInterestCouponToUser', config('RPC_API.passport'));
+   			if($rpcRes){
+   				$operateCoupon->updateActivate($disactiveCoupon['uuid'],1,0,$disactiveCoupon['effective_start'],$dateNow);
+   			}else{
+				throw new AllErrorException(AllErrorException::PASSPORT_RETURN_ACTIVATE_HARF_FALSE, [], '用户中心返回激活失败0.5%');
+   			}
+   			//-------------------------------------------------------
+   			//-------------------更新1% 计息开始时间 及状态
    			$updateCoupon = array_pop($res);
-   			$operateCoupon->updateActivate($disactiveCoupon['uuid'],1,0,$disactiveCoupon['effective_start'],$dateNow);
-
-   			$operateCoupon->updateActivate($updateCoupon['uuid'],1,1,$dateNow,$updateCoupon['effective_end']);
+   			$updatePost = [
+				'uuid' => $addCouponRes['uuid'],
+				'status' => 1,
+				'activateTime' => $dateNow,
+				'loseTime' => '',
+			];
+   			$rpcRes = Common::jsonRpcApiCall((object)$updatePost, 'activateNewInterestCouponToUser', config('RPC_API.passport'));
+   			if($rpcRes){
+   				$operateCoupon->updateActivate($updateCoupon['uuid'],1,1,$dateNow,$updateCoupon['effective_end']);
+   			}else{
+				throw new AllErrorException(AllErrorException::PASSPORT_RETURN_ACTIVATE_ONE_FALSE, [], '用户中心返回激活失败1%');
+   			}
+   			//-------------------------------------------------------------
    		}
    		//2、通知用户中心更新状态
+
    		
    		//停止该加息劵计息
    		// $operateCoupon->updateActivate($res[0]['uuid'],0,0);
