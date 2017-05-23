@@ -483,4 +483,19 @@ class AccountRpcImpl extends BaseRpcImpl
         ];
     }
 
+    /**
+     * 用户阶梯加息的状态
+     * @return [type] [description]
+     * @JsonRpcMethod
+     */
+    public function ladderStatus(){
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+        $status = [
+            'status' => '0',
+            'desc'   => '基础加息',
+        ];
+        return ['code' => 0 ,'date' => $status];
+    }
 }
