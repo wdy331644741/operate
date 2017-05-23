@@ -67,16 +67,17 @@ class MarketingInterestcoupon extends Model {
     }
 
     //给用户添加记录
-    public function addCouponForUser($userId, $awardInfo)
-    {
+    public function addCouponForUser($userId, $awardInfo,$date='')
+    {   
+        $startDate = empty($date)?time():strtotime($date);
         $data = array(
             'user_id'         => $userId,
             'uuid'            => create_guid(),
             'source_id'       => $awardInfo['id'],
             'source_name'     => $awardInfo['title'],
             'rate'            => $awardInfo['rate'],
-            'effective_start' => date('Y-m-d H:i:s', time() + $awardInfo['laterDays'] * DAYS_SECONDS),
-            'effective_end'   => date('Y-m-d H:i:s', time() + ($awardInfo['days']+$awardInfo['laterDays']) * DAYS_SECONDS),
+            'effective_start' => date('Y-m-d H:i:s', $startDate + $awardInfo['laterDays'] * DAYS_SECONDS),
+            'effective_end'   => date('Y-m-d H:i:s', $startDate + ($awardInfo['days']+$awardInfo['laterDays']) * DAYS_SECONDS),
             'continuous_days' => $awardInfo['days'],
             'limit_desc'      => $awardInfo['limit_desc'],
             'create_time'     => date('Y-m-d H:i:s'),
