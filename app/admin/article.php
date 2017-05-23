@@ -65,7 +65,7 @@ function lst()
 {
     $framework = getFrameworkInstance();
     $articleUserModel = new \Model\MarketingArticle();
-    $list = $articleUserModel->get()->resultArr();
+    $list = $articleUserModel->orderby("sort ASC")->get()->resultArr();
 
     $nodeModel = new \Model\MarketingArticleNode();
     $nodeListQuery = $nodeModel->get()->resultArr();
