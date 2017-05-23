@@ -62,7 +62,7 @@ function lst()
 {
     $framework = getFrameworkInstance();
     $activityModel = new \Model\MarketingActivity();
-    $list = $activityModel->get()->resultArr();
+    $list = $activityModel->orderby("sort ASC")->get()->resultArr();
     $storage = new Storage\Storage();
     foreach ($list as $index => $item){
         $list[$index]['img_url'] = $storage->getViewUrl($item['img_url']);
