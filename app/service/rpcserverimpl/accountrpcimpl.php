@@ -601,7 +601,7 @@ class AccountRpcImpl extends BaseRpcImpl
         // var_export($couponData);exit;
 
         $status = [
-            'status' => empty($couponData)?0:($couponData[0]['rate'] == 0.5)?1:2,
+            'status' => empty($couponData)?0:(($couponData[0]['rate'] == 0.5)?1:2),
         ];
         return ['code' => 0 ,'date' => $status];
     }
