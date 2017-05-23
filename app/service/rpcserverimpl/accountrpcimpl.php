@@ -595,10 +595,14 @@ class AccountRpcImpl extends BaseRpcImpl
         }
 
         $MarketingInterestcouponModel = new \Model\MarketingInterestcoupon();
-        $res = $MarketingInterestcouponModel->getActivateAndStatusData($this->userId);
+        $couponData = $MarketingInterestcouponModel->getActivateAndStatusData($this->userId);
+        if(count($couponData) > 1)
+            throw new AllErrorException(AllErrorException::LADDER_DATA_EXCEPTION);
+        // var_export($couponData);exit;
+
         $status = [
-            'status' => '0',
-            'desc'   => '基础加息',
+            'status' => empty($couponData)?0:if($couponData[0]['rate'] == 0.5)?1:2,
+            'desc'   => '描述',
         ];
         return ['code' => 0 ,'date' => $status];
     }
