@@ -177,7 +177,7 @@ function coupon($userId,$nodeId,$activate=true,$laterDays=0){
    			//------------------更新0.5%的计息结束时间  及状态
    			$disactiveCoupon = array_pop($res);
    			$updatePost = [
-				'uuid' => $addCouponRes['uuid'],
+				'uuid' => $disactiveCoupon['uuid'],
 				'status' => 1,
 				'activateTime' => '',
 				'loseTime' => $dateNow,
@@ -192,7 +192,7 @@ function coupon($userId,$nodeId,$activate=true,$laterDays=0){
    			//-------------------更新1% 计息开始时间 及状态
    			$updateCoupon = array_pop($res);
    			$updatePost = [
-				'uuid' => $addCouponRes['uuid'],
+				'uuid' => $updateCoupon['uuid'],
 				'status' => 1,
 				'activateTime' => $dateNow,
 				'loseTime' => '',
