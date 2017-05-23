@@ -155,6 +155,8 @@ class AllErrorException extends BasicException
 
     //运营
     const ACTIVATE_NODE = 7111 //获取活动节点失败
+    const PASSPORT_RETURN_ACTIVATE_HARF_FALSE = 7112 //用户中心返回激活失败0.5%
+    const PASSPORT_RETURN_ACTIVATE_ONE_FALSE = 7113 //用户中心返回激活失败1%
 
     protected static $errorArray = array(
         self::API_MIS_PARAMS => "缺少必要参数",
@@ -272,8 +274,12 @@ class AllErrorException extends BasicException
         self::RECHARGE_CANCEL => "充值已取消",
         self::BINDCARD_NOT_RECHARGE => "信息校验完成，但充值未成功，请重新充值",
 
-        
+  
         self::COUPON_UNDIFIND => "相关劵信息不存在",
+        self::ACTIVATE_NODE => "获取活动节点失败",
+        self::PASSPORT_RETURN_ACTIVATE_HARF_FALSE => "用户中心返回激活失败0.5%",
+        self::PASSPORT_RETURN_ACTIVATE_ONE_FALSE => "用户中心返回激活失败1%",
+
     );
 
     public function __construct($code, $data = array(), $message = "")
