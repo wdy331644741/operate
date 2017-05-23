@@ -152,6 +152,7 @@ class AllErrorException extends BasicException
     const ACTIVATE_NODE = 7111; //获取活动节点失败
     const PASSPORT_RETURN_ACTIVATE_HARF_FALSE = 7112; //用户中心返回激活失败0.5%
     const PASSPORT_RETURN_ACTIVATE_ONE_FALSE = 7113; //用户中心返回激活失败1%
+    const LADDER_DATA_EXCEPTION = 7114 //阶梯加息数据异常
 
     protected static $errorArray = array(
         self::API_MIS_PARAMS => "缺少必要参数",
@@ -272,6 +273,7 @@ class AllErrorException extends BasicException
         self::ACTIVATE_NODE => "获取活动节点失败",
         self::PASSPORT_RETURN_ACTIVATE_HARF_FALSE => "用户中心返回激活失败0.5%",
         self::PASSPORT_RETURN_ACTIVATE_ONE_FALSE => "用户中心返回激活失败1%",
+        self::LADDER_DATA_EXCEPTION => "阶梯加息数据异常",
 
     );
 
