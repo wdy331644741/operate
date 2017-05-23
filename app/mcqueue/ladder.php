@@ -38,8 +38,8 @@ function ladderInterestcoupon(){
 		$one = $awardNode->getNode($percentOne);
 		if(empty($half) || empty($one))
 			throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
-		coupon($userId, $half ); //发一个7天 0.5的 发放并激活
-		coupon($userId, $one,false,7); //预发 一个1%的 发放
+		coupon($userId, $half, false,7); //发一个7天 0.5的 发放并激活
+		coupon($userId, $one,false,14); //预发 一个1%的 发放
 	}
 }
 
