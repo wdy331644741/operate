@@ -154,9 +154,9 @@ class AllErrorException extends BasicException
 
 
     //运营
-    const ACTIVATE_NODE = 7111 //获取活动节点失败
-    const PASSPORT_RETURN_ACTIVATE_HARF_FALSE = 7112 //用户中心返回激活失败0.5%
-    const PASSPORT_RETURN_ACTIVATE_ONE_FALSE = 7113 //用户中心返回激活失败1%
+    const ACTIVATE_NODE = 7111; //获取活动节点失败
+    const PASSPORT_RETURN_ACTIVATE_HARF_FALSE = 7112; //用户中心返回激活失败0.5%
+    const PASSPORT_RETURN_ACTIVATE_ONE_FALSE = 7113; //用户中心返回激活失败1%
 
     protected static $errorArray = array(
         self::API_MIS_PARAMS => "缺少必要参数",
