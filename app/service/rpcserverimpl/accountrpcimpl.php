@@ -593,6 +593,9 @@ class AccountRpcImpl extends BaseRpcImpl
         if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
+
+        $MarketingInterestcouponModel = new \Model\MarketingInterestcoupon();
+        $res = $MarketingInterestcouponModel->getActivateAndStatusData($this->userId);
         $status = [
             'status' => '0',
             'desc'   => '基础加息',

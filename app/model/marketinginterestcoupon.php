@@ -120,4 +120,9 @@ class MarketingInterestcoupon extends Model {
                 ->get()->resultArr();
         return $returnArr;
     }
+
+    public function getActivateAndStatusData($userId){
+        return $this->where("`user_id` = {$userId} and `status` = 1 and `is_activate` = 1 ")
+            ->get()->resultArr();
+    }
 }
