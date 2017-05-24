@@ -48,4 +48,12 @@ class PromoterList extends Model
         }
 
     }
+
+    public function getToBePromoter($auth_id){
+        $promoterInfo = $this->fields('status,create_time')
+            ->where("`auth_id` = '{$auth_id}' AND `status` = 1")
+            ->get()->resultArr();
+
+        return empty($promoterInfo)?false:true;
+    }
 }

@@ -21,15 +21,15 @@ class UserAccountRpcImpl extends BaseRpcImpl
      */
 	public function invitePrize(){
 		//检查登录状态 null === false
-        // if (($this->userId = $this->checkLoginStatus()) === false) {
-        //     throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
-        // }
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
 
         $params = array(
-            'userId' => 1,
+            'userId' => $this->userId,
         );
         $promoterModel = new \Model\PromoterList();
-        $earnings = '1';
+        $earnings = $promoterModel->getToBePromoter($this->userId)? 1:0;
         $message = Common::jsonRpcApiCall((object)$params, 'getUserMarginInfo', config('RPC_API.passport'));
 
 		$commission = $message['result']['refund']['amount'] + $message['result']['refund']['interest'] + $message['result']['refund']['exp_interest'];
@@ -42,7 +42,7 @@ class UserAccountRpcImpl extends BaseRpcImpl
         			'avaliable_amount' => $tmpMargin[$value['id']], 
         		);
         }
-		return ['code' => 200,'message' => '返回成功','data' => array('commission' => $commission, 'relation' =>$newArray)  ];
+		return ['code' => 200,'message' => '返回成功','data' => array('earnings' => $earnings,'commission' => $commission, 'relation' =>$newArray)  ];
 	}
 
 }
