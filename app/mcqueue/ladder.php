@@ -93,7 +93,8 @@ function disLadderInterestcoupon(){
 			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0);
 			echo "提现时间在1%加息时间段内";exit;
 		}else if($isExistCoupon[1]['effective_start'] > $withdrawTime){
-			//
+			//提现时间在加息之前
+			//把0.5  1的加息券全部都干掉
 			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],0,0);
 			$operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
 			echo "提现时间在加息之前";exit;
