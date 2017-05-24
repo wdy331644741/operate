@@ -121,4 +121,15 @@
                 'dataType': 'json',
                 'success': function (data){
                     if (data.error != 0) {
-                        layer.alert(
+                        layer.alert(data.message);
+                    } 
+                    else {
+                        window.location.href = '{U("admin.php",["c" => I("get.c/s","index"),"a"=>"index"])}';
+                    }
+                }
+
+            });
+        });
+    });
+</script>
+{include file="footer.html"}
