@@ -81,21 +81,22 @@ function disLadderInterestcoupon(){
 		var_export($isExistCoupon);
 		
 		if($isExistCoupon[1]['effective_start'] < $withdrawTime && $isExistCoupon[1]['effective_end'] > $withdrawTime ){
-			echo "提现时间在0.5加息时间段内";exit;
 			//提现时间在0.5加息时间段内
 			//更新0.5结束时间、并取消1%
 			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
 			$operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
+			echo "提现时间在0.5加息时间段内";exit;
 		}else if($isExistCoupon[0]['effective_start'] < $withdrawTime && $isExistCoupon[0]['effective_end'] > $withdrawTime){
 			//提现时间在1%加息时间段内
 			//更新1% 结束时间
-			echo "提现时间在1%加息时间段内";exit;
 			$operateCoupon->updateActivate($isExistCoupon[0]['uuid'],1,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
 			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0);
+			echo "提现时间在1%加息时间段内";exit;
 		}else if($isExistCoupon[1]['effective_start'] > $withdrawTime){
 			//
+			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],0,0);
+			$operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
 			echo "提现时间在加息之前";exit;
-			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0);
 		}
 		//停止计息  调取用户中心 接口
 		$disactivePost = [
