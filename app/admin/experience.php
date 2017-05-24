@@ -26,6 +26,7 @@ function add()
         }
         $data['title'] = $title;
         $data['days'] = $days;
+        $data['hours'] = I('post.hours','', 'trim');
         $data['effective_end'] = $effectiveEnd;
         $data['limit_desc'] = $limitDesc;
         $data['limit_node'] = $limitNode;
@@ -136,6 +137,7 @@ function upd()
         }
         $data['title'] = $title;
         $data['days'] = $days;
+        $data['hours'] = I('post.hours','', 'trim');
         $data['effective_end'] = $effectiveEnd;
         $data['limit_desc'] = $limitDesc;
         $data['limit_node'] = $limitNode;

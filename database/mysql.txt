@@ -18,3 +18,6 @@ ADD COLUMN `status`  tinyint(1) NULL DEFAULT 1 COMMENT '状态' AFTER `is_use`;
 
 ALTER TABLE `award_interestcoupon`
 ADD COLUMN `effective_days`  int(10) NULL COMMENT '有效天数' AFTER `days`;
+
+ALTER TABLE `award_experience`
+ADD COLUMN `hours`  smallint(5) NULL DEFAULT 0 COMMENT '加息小时' AFTER `days`;
