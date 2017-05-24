@@ -70,3 +70,5 @@ ADD COLUMN `effective_days`  int(10) NULL COMMENT '有效天数' AFTER `days`;
 ALTER TABLE `marketing_activity`
 ADD COLUMN `check_login`  tinyint(1) NULL DEFAULT 0 COMMENT '检查是否需要用户登录 0不需要 1需要' AFTER `is_del`;
 
+ALTER TABLE `award_experience`
+ADD COLUMN `hours`  smallint(5) NULL DEFAULT 0 COMMENT '加息小时' AFTER `days`;

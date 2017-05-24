@@ -22,6 +22,7 @@
                     <th >随机最小金额</th>
                     <th >随机最大金额</th>
                     <th >加息天数</th>
+                    <th >加息小时</th>
                     <th >失效时间</th>
                     <th >限制说明</th>
                     <th >适用节点</th>
@@ -40,6 +41,7 @@
                     <td>{$item.min_amount}</td>
                     <td>{$item.max_amount}</td>
                     <td>{$item.days}</td>
+                    <td>{$item.hours}</td>
                     <td>{$item.effective_end}</td>
                     <td>{$item.limit_desc}</td>
                     <td>{if isset($item.node_title)}{$item.node_title}{else}无{/if}</td>
