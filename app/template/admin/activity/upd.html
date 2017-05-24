@@ -50,8 +50,8 @@
         <div class="form-group">
             <label class="col-sm-2 control-label"><span class="name_span">是否需要用户登录</span></label>
             <div class="col-sm-7">
-                <input type="radio" name="check_login" id="check_login" value="1" checked> 是 
-                <input type="radio" name="check_login" id="check_login" value="0"> 否 
+                <input type="radio" name="check_login" id="check_login" value="1" {if $item.check_login == 1}checked{/if}> 是 
+                <input type="radio" name="check_login" id="check_login" value="0" {if $item.check_login == 0}checked{/if}> 否 
             </div>
         </div>
         <div class="form-group">
