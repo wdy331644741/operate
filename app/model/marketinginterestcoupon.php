@@ -25,14 +25,12 @@ class MarketingInterestcoupon extends Model {
     public function isActivateExist($userId,$sourceId){
         if(is_array($sourceId)){
             $sourceIdStr = implode(',', $sourceId);
-            $result = $this->fields("id,uuid,is_activate", false)
-            ->where("`user_id` = {$userId} and `source_id` in ({$sourceIdStr}) and `status` = 1")
+            $result = $this->where("`user_id` = {$userId} and `source_id` in ({$sourceIdStr}) and `status` = 1")
             ->orderby("id DESC")
             ->get()
             ->resultArr();
         }else{
-            $result = $this->fields("id,uuid,is_activate", false)
-            ->where("`user_id` = {$userId} and `source_id` = {$sourceId} and `is_activate` = 1 and `status` = 1")
+            $result = $this->where("`user_id` = {$userId} and `source_id` = {$sourceId} and `is_activate` = 1 and `status` = 1")
             ->orderby("id DESC")
             ->get()
             ->rowArr();

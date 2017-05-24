@@ -78,6 +78,25 @@ function disLadderInterestcoupon(){
 	$isExistCoupon = $operateCoupon->isActivateExist($userId, $awardCouponIds);
 	if(empty($isExistCoupon)) return true;
 	if(count($isExistCoupon)>1){
+		var_export($isExistCoupon);
+		
+		if($isExistCoupon[1]['effective_start'] < $withdrawTime && $isExistCoupon[1]['effective_end'] > $withdrawTime ){
+			echo "提现时间在0.5加息时间段内";exit;
+			//提现时间在0.5加息时间段内
+			//更新0.5结束时间、并取消1%
+			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
+			$operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
+		}else if($isExistCoupon[0]['effective_start'] < $withdrawTime && $isExistCoupon[0]['effective_end'] > $withdrawTime){
+			//提现时间在1%加息时间段内
+			//更新1% 结束时间
+			echo "提现时间在1%加息时间段内";exit;
+			$operateCoupon->updateActivate($isExistCoupon[0]['uuid'],1,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
+			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0);
+		}else if($isExistCoupon[1]['effective_start'] > $withdrawTime){
+			//
+			echo "提现时间在加息之前";exit;
+			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0);
+		}
 		//停止计息  调取用户中心 接口
 		$disactivePost = [
 			// 'uuid' => $addCouponRes['uuid'],
@@ -95,6 +114,7 @@ function disLadderInterestcoupon(){
 		}
 
 	}else{
+
 		//停止计息  调取用户中心 接口
 		$disactivePost = [
 			// 'uuid' => $addCouponRes['uuid'],
@@ -126,7 +146,6 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0){
 		logs(['error' => $e->getCode(), 'message' => $e->getMessage()],"ladderScript");
 	}
    	$isExistCoupon = $operateCoupon->isExist($userId, $awardCouponInfo['id']);
-	// var_export($isExistCoupon);exit;
 
    	//不存在，添加一张加息劵
    	if(empty($isExistCoupon)){
@@ -150,9 +169,9 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0){
 			'interestCoupon' => $addCouponRes
 		];
 
-		$rs = Common::jsonRpcApiCall((object)$proPost, 'preSendInterestCouponToUser', config('RPC_API.passport'));
-
-		if($activate){
+		// $rs = Common::jsonRpcApiCall((object)$proPost, 'preSendInterestCouponToUser', config('RPC_API.passport'));
+		$rs = true;
+		if($rs && $activate){
 			$activePost = [
 				'uuid' => $addCouponRes['uuid'],
 				'status' => 1,
