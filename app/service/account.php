@@ -13,6 +13,9 @@ function index()
     //活动相关
     $jsonRPCServer->addService(loadRpcImpl('ActivityRpcImpl'));
 
+    //用戶賬目
+    $jsonRPCServer->addService(loadRpcImpl('UserAccountRpcImpl'));
+
     $jsonRPCServer->processingRequests();
 }
 
