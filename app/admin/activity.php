@@ -12,6 +12,7 @@ function add()
             if ('' === $$field)
                 ajaxReturn(['error' => 4000, 'message' => $field . '不能为空']);
         }
+        $data['check_login'] = I('post.check_login', '','trim');
         $data['title'] = $title;
         $data['img_url'] = $imgUrl;
         $data['link_url'] = $linkUrl;
@@ -66,7 +67,8 @@ function lst()
     $storage = new Storage\Storage();
     foreach ($list as $index => $item){
         $list[$index]['img_url'] = $storage->getViewUrl($item['img_url']);
-        $list[$index]['link_url'] = config('RPC_API.wechat').$list[$index]['link_url'];
+        // $list[$index]['link_url'] = config('RPC_API.wechat').$list[$index]['link_url'];
+        $list[$index]['link_url'] = $list[$index]['link_url'];
     }
     $framework->smarty->assign('list', $list);
     $framework->smarty->display('activity/lst.html');
@@ -107,6 +109,7 @@ function upd()
             if ('' === $$field)
                 ajaxReturn(['error' => 4000, 'message' => $field . '不能为空']);
         }
+        $data['check_login'] = I('post.check_login', '','trim');
         $data['title'] = $title;
         $data['img_url'] = $imgUrl;
         $data['link_url'] = $linkUrl;
