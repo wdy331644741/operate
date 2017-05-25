@@ -39,10 +39,11 @@ class UserAccountRpcImpl extends BaseRpcImpl
         foreach ($message['result']['userId'] as $key => $value) {
         	$newArray[$key] = array(
         			'display_name' => $value['display_name'], 
-        			'avaliable_amount' => $tmpMargin[$value['id']], 
+                    'avaliable_amount' => $tmpMargin[$value['id']], //总资产
+        			'recharge' => 1, //是否投资
         		);
         }
-		return ['code' => 200,'message' => '返回成功','data' => array('earnings' => $earnings,'commission' => $commission, 'relation' =>$newArray)  ];
+		return ['code' => 200,'message' => '返回成功','data' => array('relation' =>$newArray),'earnings' => $earnings,'commission' => $commission ];
 	}
 
 }
