@@ -12,7 +12,7 @@ function register(){
 	$activity_name = 'new_bird'; //活动标示
 	$activityModel = new \Model\MarketingActivity();
 	$activityInfo = $activityModel->getUsefulActivityByName($activity_name);
-	if($activityInfo['start_time'] > $time || $activityInfo['end_time'] > $time) return true;
+	if($activityInfo['start_time'] > $time || $activityInfo['end_time'] < $time) return true;
     // $type = I('post.node_name', '', 'strval');
     $type = 'register';
     $nodeModel = new \Model\AwardNode();
@@ -34,25 +34,48 @@ function register(){
 
 /**
  * 新手活动 绑卡
- * @return [type] [description]
  * @pageroute
  */
 function bandcard(){
+	$userId = I('post.user_id', '', 'intval');
+	$time = I('post.time', '');
+	$node_name = I('post.node_name', '');//bindcard
+
+	//如果时间在活动之外
+	$activity_name = 'new_bird'; //活动标示
+	$activityModel = new \Model\MarketingActivity();
+	$activityInfo = $activityModel->getUsefulActivityByName($activity_name);
+	if($activityInfo['start_time'] > $time || $activityInfo['end_time'] < $time) return true;
+
+	$type = $node_name;
+    $nodeModel = new \Model\AwardNode();
+
+    $nodeId = $nodeModel->getNode($type);
+	try {
+
+        experience($userId, $nodeId);
+        //coupon($userId, $nodeId);
+        
+    } catch (\Exception $e) {
+        $msg = "用户ID: {$userId} 触发：{$type}，发放入账失败：" . PHP_EOL;
+        $msg .= "接口错误码：{$e->getCode()}, 错误信息：{$e->getMessage()}" . PHP_EOL;
+        logs($msg, 'trigger');
+
+        echo $msg;
+    }
 
 }
 
 /**
  * 新手活动 首投
- * @return [type] [description]
  * @pageroute
  */
 function recharge(){
-
+	
 }
 
 //发放体验金
 function experience($userId,$nodeId,$amount=0){
-
 	$awardExperience = new \Model\AwardExperience();//体验金配置
 	$operateExperience = new \Model\MarketingExperience();
 
