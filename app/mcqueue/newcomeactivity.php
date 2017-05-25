@@ -3,9 +3,8 @@ use App\service\rpcserverimpl\Common;
 
 /**
  * 新手活动触发
- *
  * @pageroute
- **/
+ */
 function register(){
 	$userId = I('post.user_id', '', 'intval');
 	$time = I('post.time', '');
@@ -29,4 +28,24 @@ function register(){
 
         echo $msg;
     }
+}
+
+
+
+function havaUsefulExperience($nodeId)
+{
+    $experience = new \Model\AwardExperience();
+    $awardInfo = $experience->filterUsefulExperience($nodeId);
+    if (empty($awardInfo)) {
+        return false;
+    }
+
+    return $awardInfo['id'];
+}
+
+function pushActivateExperienceRecord($userId, $expId)
+{
+    $params = array('user_id' => $userId, 'id' => $expId);
+    echo $userId,"----",$expId;
+
 }
