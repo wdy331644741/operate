@@ -29,7 +29,7 @@ class MarketingArticle extends Model
         $articleNode = new MarketingArticleNode();
         $noticeCate = $articleNode->where("`name` = 'notice'")->get()->rowArr();
 
-        return $this->fields('id, title, content')
+        return $this->fields('id, title, content,create_time')
             ->where("`is_del` = 0 and `status` = 1 and cate_node = {$noticeCate['id']}")
             ->orderby(array('sort'=>'DESC','create_time'=>'DESC'))
             ->limit($start, C('PAGE_SIZE'))
