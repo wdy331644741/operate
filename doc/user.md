@@ -523,7 +523,7 @@
 ##### 请求参数
        {
         "jsonrpc": "2.0",
-        "method": "checkTodaySignIn",
+        "method": "invitePrize",
         "params": [],
         "id": 1
        }
