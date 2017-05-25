@@ -2,12 +2,17 @@
 use App\service\rpcserverimpl\Common;
 
 /**
- * 新手活动触发
+ * 新手活动 注册触发
  * @pageroute
  */
 function register(){
 	$userId = I('post.user_id', '', 'intval');
 	$time = I('post.time', '');
+	//如果时间在活动之外
+	$activity_name = 'new_bird'; //活动标示
+	$activityModel = new \Model\MarketingActivity();
+	$activityInfo = $activityModel->getUsefulActivityByName($activity_name);
+	if($activityInfo['start_time'] > $time || $activityInfo['end_time'] > $time) return true;
     // $type = I('post.node_name', '', 'strval');
     $type = 'register';
     $nodeModel = new \Model\AwardNode();
@@ -16,7 +21,7 @@ function register(){
 	try {
 
         experience($userId, $nodeId);
-        coupon($userId, $nodeId);
+        //coupon($userId, $nodeId);
         
     } catch (\Exception $e) {
         $msg = "用户ID: {$userId} 触发：{$type}，发放入账失败：" . PHP_EOL;
@@ -27,34 +32,62 @@ function register(){
     }
 }
 
+/**
+ * 新手活动 绑卡
+ * @return [type] [description]
+ * @pageroute
+ */
+function bandcard(){
 
-//复用 复投发放体验金
+}
+
+/**
+ * 新手活动 首投
+ * @return [type] [description]
+ * @pageroute
+ */
+function recharge(){
+
+}
+
+//发放体验金
 function experience($userId,$nodeId,$amount=0){
 
 	$awardExperience = new \Model\AwardExperience();//体验金配置
 	$operateExperience = new \Model\MarketingExperience();
 
 	$awardExpInfo = $awardExperience->filterUsefulExperience($nodeId);
-	//复投体验金只能获得一次
+
     $isExistExperience = $operateExperience->isExist($userId, $awardExpInfo['id']);
+
     if(empty($isExistExperience)){
 	   	//***************发放体验金************************
 		$experienceInfo = array(
 			'id' 	     => $awardExpInfo['id'],
 			'title'      => $awardExpInfo['title'],
-			'amount'     => $amount,
-			'days'       => $awardExpInfo['days'],//10天后有效 +5天使用时间
+			'amount'     => $awardExpInfo['amount'],
+			'days'       => $awardExpInfo['days'],//计息时长
+			'hours'       => $awardExpInfo['hours'],
 			'limit_desc' => $awardExpInfo['limit_desc'],
 			'amount_type'=> $awardExpInfo['amount_type'],
 			);
-		$addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo,10);
+		$addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo);
+		$expId = $addExperienceRes['id'];
 		unset($addExperienceRes['id']);
 		//通知用户中心 预发放体验金 
 		if($addExperienceRes){
-			$activePost = array(
+			$preSend = array(
 				'expAward'   => $addExperienceRes,
 				);
-			$resRpc = Common::jsonRpcApiCall((object)$activePost, 'preSendExperienceGoldToUser', config('RPC_API.passport'));
+			// $resRpc = Common::jsonRpcApiCall((object)$preSend, 'preSendExperienceGoldToUser', config('RPC_API.passport'));
+			$resRpc = true;
+			if($resRpc){
+				$activePost = array(
+					'uuid' => $addExperienceRes['uuid'], 
+					);
+				// Common::jsonRpcApiCall((object)$activePost, 'activateExperienceGoldToUser', config('RPC_API.passport'));
+				$operateExperience->updateStatusOfUse($expId);
+			}
 		}
 		//****************************************************		
     }
