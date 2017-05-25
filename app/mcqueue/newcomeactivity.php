@@ -71,11 +71,18 @@ function bandcard(){
  * @pageroute
  */
 function recharge(){
-	
-}
 
+}
+/**
+ * 新手活动 提现  66体验金留存15天
+ * @pageroute
+ */
+function withdraw(){
+
+
+}
 //发放体验金
-function experience($userId,$nodeId,$amount=0){
+function experience($userId,$nodeId,$activate=true){
 	$awardExperience = new \Model\AwardExperience();//体验金配置
 	$operateExperience = new \Model\MarketingExperience();
 
@@ -117,6 +124,7 @@ function experience($userId,$nodeId,$amount=0){
 
 }
 
+//2017-05-25 新手活动 没有加息券
 function coupon($userId,$nodeId){
 	$awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
 	$operateCoupon = new \Model\MarketingInterestcoupon();
