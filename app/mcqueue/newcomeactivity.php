@@ -71,6 +71,37 @@ function bandcard(){
  * @pageroute
  */
 function recharge(){
+	$userId = I('post.userId', '', 'intval');//用户id
+	$rechargeTime = I('post.time');//充值时间
+	$rechargeAmount = I('post.amount');//充值金额
+	// $nodeName = I('post.node');//动作节点
+	
+	//如果时间在活动之外
+	$activity_name = 'new_bird'; //活动标示
+	$activityModel = new \Model\MarketingActivity();
+	$activityInfo = $activityModel->getUsefulActivityByName($activity_name);
+	if($activityInfo['start_time'] > $rechargeTime || $activityInfo['end_time'] < $rechargeTime) return true;
+
+	$frist_recharge = 'new_bird_frist_recharge';
+	$exp_66 = 'new_bird_frist_recharge_keep';
+
+	$nodeModel = new \Model\AwardNode();
+
+    $frist_rechargeNodeId = $nodeModel->getNode($frist_recharge);
+    $exp_66NodeId = $nodeModel->getNode($exp_66);
+    try {
+        experience($userId,$frist_rechargeNodeId);
+		experience($userId,$exp_66NodeId);
+        
+    } catch (\Exception $e) {
+        $msg = "用户ID: {$userId} 触发：{$type}，发放入账失败：" . PHP_EOL;
+        $msg .= "接口错误码：{$e->getCode()}, 错误信息：{$e->getMessage()}" . PHP_EOL;
+        logs($msg, 'trigger');
+
+        echo $msg;
+    }
+	
+
 
 }
 /**
@@ -83,6 +114,19 @@ function withdraw(){
 	$withdrawAmount = I('post.amount');//充值金额
 	$withdrawAmountTotal = I('post.total_amount');//累计本金
 	
+	//如果时间在活动之外
+	$activity_name = 'new_bird'; //活动标示
+	$activityModel = new \Model\MarketingActivity();
+	$activityInfo = $activityModel->getUsefulActivityByName($activity_name);
+	if($activityInfo['start_time'] > $rechargeTime || $activityInfo['end_time'] < $rechargeTime) return true;
+	
+	$frist_recharge = 'new_bird_frist_recharge';
+	$exp_66 = 'new_bird_frist_recharge_keep';
+	$awardExperience = new \Model\AwardExperience();//体验金配置
+	$operateExperience = new \Model\MarketingExperience();
+
+	$awardExpInfo = $awardExperience->filterUsefulExperience($nodeId);
+    $isExistExperience = $operateExperience->isExist($userId, $awardExpInfo['id']);
 
 }
 //发放体验金
@@ -91,9 +135,7 @@ function experience($userId,$nodeId,$activate=true){
 	$operateExperience = new \Model\MarketingExperience();
 
 	$awardExpInfo = $awardExperience->filterUsefulExperience($nodeId);
-
     $isExistExperience = $operateExperience->isExist($userId, $awardExpInfo['id']);
-
     if(empty($isExistExperience)){
 	   	//***************发放体验金************************
 		$experienceInfo = array(
