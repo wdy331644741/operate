@@ -78,7 +78,11 @@ function recharge(){
  * @pageroute
  */
 function withdraw(){
-
+	$userId = I('post.user_id', '', 'intval');//用户id
+	$withdrawTime = I('post.time');//充值时间
+	$withdrawAmount = I('post.amount');//充值金额
+	$withdrawAmountTotal = I('post.total_amount');//累计本金
+	
 
 }
 //发放体验金
