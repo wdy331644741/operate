@@ -165,7 +165,7 @@ class ActivityRpcImpl extends BaseRpcImpl
         }
         return array(
             'code'      => 0,
-            'data'   => $acticleContent['content'],
+            'data'   => $acticleContent[0]['content'],
             // 'userid'    => $this->userId,
             // 'message'   => 'success',
         );
