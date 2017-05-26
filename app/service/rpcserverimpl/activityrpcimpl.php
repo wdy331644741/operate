@@ -165,7 +165,7 @@ class ActivityRpcImpl extends BaseRpcImpl
         }
         $test = htmlspecialchars_decode($acticleContent[0]['content']);
         // return $test;
-        $test = strip_tags($test);
+        //$test = strip_tags($test);
         return array(
             'code'      => 0,
             // 'data'   => $acticleContent[0]['content'],
