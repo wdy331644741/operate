@@ -163,9 +163,13 @@ class ActivityRpcImpl extends BaseRpcImpl
         }else{
             $acticleLogModel->updateReadLog($params->article_id,$this->userId,$isRead[0]['counts']);
         }
+        $test = htmlspecialchars_decode($acticleContent[0]['content']);
+        // return $test;
+        $test = strip_tags($test);
         return array(
             'code'      => 0,
-            'data'   => $acticleContent[0]['content'],
+            // 'data'   => $acticleContent[0]['content'],
+            'data' => $test,
             // 'userid'    => $this->userId,
             // 'message'   => 'success',
         );
