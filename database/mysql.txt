@@ -72,3 +72,7 @@ ADD COLUMN `check_login`  tinyint(1) NULL DEFAULT 0 COMMENT '检查是否需要�
 
 ALTER TABLE `award_experience`
 ADD COLUMN `hours`  smallint(5) NULL DEFAULT 0 COMMENT '加息小时' AFTER `days`;
+
+ALTER TABLE `marketing_experience`
+ADD COLUMN `continuous_hours`  smallint(5) NOT NULL DEFAULT 0 COMMENT '按小时计息' AFTER `continuous_days`;
+

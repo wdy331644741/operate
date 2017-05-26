@@ -628,6 +628,15 @@ return array (
       'unsigned' => true,
       'null' => false,
     ),
+    'hours' => 
+    array (
+      'field' => 'hours',
+      'key' => '',
+      'default' => '0',
+      'lenght' => '5',
+      'unsigned' => false,
+      'null' => true,
+    ),
     'effective_end' => 
     array (
       'field' => 'effective_end',
@@ -702,6 +711,25 @@ return array (
       'unsigned' => false,
       'null' => false,
     ),
+    'experience_name' => 
+    array (
+      'field' => 'experience_name',
+      'key' => '',
+      'default' => NULL,
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'contact_activity' => 
+    array (
+      'field' => 'contact_activity',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => true,
+    ),
     'pk_name' => 'id',
   ),
   'award_interestcoupon' => 
@@ -742,6 +770,16 @@ return array (
       'lenght' => '5',
       'unsigned' => true,
       'null' => false,
+    ),
+    'effective_days' => 
+    array (
+      'field' => 'effective_days',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => true,
     ),
     'effective_end' => 
     array (
@@ -813,6 +851,16 @@ return array (
       'key' => '',
       'default' => NULL,
       'lenght' => '50',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'contact_activity' => 
+    array (
+      'field' => 'contact_activity',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '100',
       'unsigned' => false,
       'null' => true,
     ),
@@ -955,6 +1003,25 @@ return array (
       'lenght' => '3',
       'unsigned' => false,
       'null' => false,
+    ),
+    'withdraw_name' => 
+    array (
+      'field' => 'withdraw_name',
+      'key' => '',
+      'default' => NULL,
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'contact_activity' => 
+    array (
+      'field' => 'contact_activity',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => true,
     ),
     'pk_name' => 'id',
   ),
@@ -1158,6 +1225,16 @@ return array (
       'unsigned' => true,
       'null' => false,
     ),
+    'check_login' => 
+    array (
+      'field' => 'check_login',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '1',
+      'unsigned' => false,
+      'null' => true,
+    ),
     'status' => 
     array (
       'field' => 'status',
@@ -1183,6 +1260,15 @@ return array (
       'default' => NULL,
       'unsigned' => false,
       'null' => false,
+    ),
+    'activity_name' => 
+    array (
+      'field' => 'activity_name',
+      'key' => '',
+      'default' => NULL,
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => true,
     ),
     'pk_name' => 'id',
   ),
@@ -1254,6 +1340,66 @@ return array (
       'type' => 'tinyint',
       'lenght' => '3',
       'unsigned' => true,
+      'null' => false,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => 'MUL',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'pk_name' => 'id',
+  ),
+  'marketing_article_log' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'user_id' => 
+    array (
+      'field' => 'user_id',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'article_id' => 
+    array (
+      'field' => 'article_id',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
       'null' => false,
     ),
     'status' => 
@@ -1798,6 +1944,16 @@ return array (
       'lenght' => '3',
       'unsigned' => true,
       'null' => false,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => '',
+      'default' => '1',
+      'type' => 'tinyint',
+      'lenght' => '1',
+      'unsigned' => false,
+      'null' => true,
     ),
     'create_time' => 
     array (
