@@ -146,6 +146,7 @@ function experience($userId,$nodeId,$activate=true){
 			'hours'       => $awardExpInfo['hours'],
 			'limit_desc' => $awardExpInfo['limit_desc'],
 			'amount_type'=> $awardExpInfo['amount_type'],
+            'is_use'     => 1
 			);
 		$addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo);
 		$expId = $addExperienceRes['id'];

@@ -99,7 +99,8 @@ class MarketingExperience extends Model {
                 'effective_end'   => date('Y-m-d H:i:s', time() + $experienceInfo['days'] * DAYS_SECONDS),
                 'continuous_days' => $experienceInfo['days'],
                 'limit_desc'      => $experienceInfo['limit_desc'],
-                'create_time'     => date('Y-m-d H:i:s')
+                'create_time'     => date('Y-m-d H:i:s'),
+                'is_use'          => $experienceInfo['is_use']
             );
         }else if(!empty($experienceInfo['hours']) && $experienceInfo['days'] == 0){
             return array(
@@ -111,7 +112,8 @@ class MarketingExperience extends Model {
                 'effective_end'   => date('Y-m-d H:i:s', time() + $experienceInfo['hours'] * 3600),
                 'continuous_hours' => $experienceInfo['hours'],
                 'limit_desc'      => $experienceInfo['limit_desc'],
-                'create_time'     => date('Y-m-d H:i:s')
+                'create_time'     => date('Y-m-d H:i:s'),
+                'is_use'          => $experienceInfo['is_use']
             );
         }
     }
