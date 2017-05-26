@@ -34,12 +34,21 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label"><span class="name_span">加息时长</span><i>*</i></label>
+            <label class="col-sm-2 control-label"><span class="name_span">选择加息方式</span><i>*</i></label>
+            <label class="radio-inline">
+                <input type="radio" id="display_day" value="days" name = "type_interest" > 按天
+            </label>
+            <label class="radio-inline">
+                <input type="radio" id="display_hour" value="hours" name = "type_interest" > 按小时
+            </label>
+        </div>
+        <div id = "d_days" class="form-group dis" style="display: none;">
+            <label class="col-sm-2 control-label"><span class="name_span">加息天数</span><i>*</i></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control name" placeholder="天单位" name="days" id="days" value="">
             </div>
         </div>
-        <div class="form-group">
+        <div id = "d_hours" class="form-group dis" style="display: none;">
             <label class="col-sm-2 control-label"><span class="name_span">加息小时</span><i>*</i></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control name" placeholder="小时单位" name="hours" id="hours" value="">
@@ -97,6 +106,19 @@
         language:'zh-CN',
     });
 </script>
+
+<script type="text/javascript">
+    $(function(){
+        $('input[name="type_interest"]').click(function(){
+            // alert("您是..." + $(this).val());
+            // console.log($('#d_'+ $(this).val()))
+            $('.dis').hide();
+            $('#d_'+ $(this).val()).show();
+        });
+    });
+
+</script>
+
 <script>
     $(function () {
         //提交表单

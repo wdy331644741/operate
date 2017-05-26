@@ -5,8 +5,8 @@
 function add()
 {
     if (IS_POST) {
-        $title = $amount = $minAmount = $maxAmount = $days = $effectiveEnd = $limitDesc = $limitNode = $status = $repeat = null;
-        $requireFields = ['title', 'amount', 'minAmount', 'maxAmount', 'days', 'effectiveEnd', 'limitDesc', 'limitNode', 'status', 'repeat'];
+        $title = $amount = $minAmount = $maxAmount = $effectiveEnd = $limitDesc = $limitNode = $status = $repeat = null;
+        $requireFields = ['title', 'amount', 'minAmount', 'maxAmount', 'effectiveEnd', 'limitDesc', 'limitNode', 'status', 'repeat'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -25,7 +25,7 @@ function add()
             $data['amount_type'] = \Model\AwardExperience::TYPE_NORMAL;
         }
         $data['title'] = $title;
-        $data['days'] = $days;
+        $data['days'] = I('post.days','', 'trim');
         $data['hours'] = I('post.hours','', 'trim');
         $data['effective_end'] = $effectiveEnd;
         $data['limit_desc'] = $limitDesc;
@@ -116,8 +116,8 @@ function upd()
 {
     $id = I('get.id/d', 0);
     if (IS_POST) {
-        $title = $amount = $minAmount = $maxAmount = $days = $effectiveEnd = $limitDesc = $limitNode = $status = $repeat = null;
-        $requireFields = ['title', 'amount', 'minAmount', 'maxAmount', 'days', 'effectiveEnd', 'limitDesc', 'limitNode', 'status', 'repeat'];
+        $title = $amount = $minAmount = $maxAmount = $effectiveEnd = $limitDesc = $limitNode = $status = $repeat = null;
+        $requireFields = ['title', 'amount', 'minAmount', 'maxAmount', 'effectiveEnd', 'limitDesc', 'limitNode', 'status', 'repeat'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -136,7 +136,7 @@ function upd()
             $data['amount_type'] = \Model\AwardExperience::TYPE_NORMAL;
         }
         $data['title'] = $title;
-        $data['days'] = $days;
+        $data['days'] = I('post.days','', 'trim');
         $data['hours'] = I('post.hours','', 'trim');
         $data['effective_end'] = $effectiveEnd;
         $data['limit_desc'] = $limitDesc;
