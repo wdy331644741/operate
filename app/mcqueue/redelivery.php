@@ -77,7 +77,7 @@ function coupon($userId,$nodeId){
 		$activePost = [
 			'uuid' => $addCouponRes['uuid'],
 			'status' => 1,
-			'immediately' => true
+			'immediately' => FALSE
 		];
 		$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
 		//update operate database  status
