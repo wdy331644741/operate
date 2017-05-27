@@ -63,6 +63,7 @@ function coupon($userId,$nodeId){
 			'rate' => $awardCouponInfo['rate'],
 			'days' => $awardCouponInfo['days'],
 			'limit_desc' => $awardCouponInfo['limit_desc'],
+			'is_use'     => 1
 			);
 		$addCouponRes = $operateCoupon -> addCouponForUser($userId,$couponInfo);
 		//***************************************************
