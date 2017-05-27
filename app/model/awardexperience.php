@@ -37,6 +37,7 @@ class AwardExperience extends Model
             $status = self::STATUS_FALSE;
         else
             $status = self::STATUS_TRUE;
+    }
     
     public function getAwardExperienceByName($experience_name){
         return $this->where("`experience_name` = '{$experience_name}'")
