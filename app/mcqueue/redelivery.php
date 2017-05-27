@@ -9,7 +9,7 @@ use App\service\exception\AllErrorException;
 function redeliveryExperience(){
 
 	logs('记录复投发放体验金:' . PHP_EOL . var_export($_POST, true), 'redeliveryExperience');
-	$userId = I('post.userId', '', 'intval');//用户id
+	$userId = I('post.user_id', '', 'intval');//用户id
 	$rechargeTime = I('post.time');//充值时间
 	$rechargeAmount = I('post.amount');//充值金额
 	// $nodeName = I('post.node');//动作节点
