@@ -133,7 +133,8 @@ class MarketingExperience extends Model {
             'effective_end'   => date('Y-m-d H:i:s', time() + ($laterdays+$experienceInfo['days']) * DAYS_SECONDS),
             'continuous_days' => $experienceInfo['days'],
             'limit_desc'      => $experienceInfo['limit_desc'],
-            'create_time'     => date('Y-m-d H:i:s')
+            'create_time'     => date('Y-m-d H:i:s'),
+            'is_use'          => $experienceInfo['is_use']
         );
     }
 
