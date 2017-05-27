@@ -109,6 +109,7 @@ function experience($userId,$nodeId,$amount){
 			'days'       => $awardExpInfo['days'],//10天后有效 +5天使用时间
 			'limit_desc' => $awardExpInfo['limit_desc'],
 			'amount_type'=> $awardExpInfo['amount_type'],
+			'is_use'     => 1
 			);
 		$addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo,10);
 		unset($addExperienceRes['id']);

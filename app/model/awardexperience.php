@@ -18,6 +18,7 @@ class AwardExperience extends Model
         return $res;
     }
 
+    
     public function getAwardExperienceByName($experience_name){
         return $this->where("`experience_name` = '{$experience_name}'")
             ->get()->rowArr();
