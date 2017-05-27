@@ -36,7 +36,7 @@ function redeliveryExperience(){
         );
 	$rechargeTimes = Common::jsonRpcApiCall((object)$postParams, 'getRechargeRecords', config('RPC_API.passport'));
 	// $rechargeTimes = 2;
-	if($rechargeTimes >= 2){
+	if(count($rechargeTimes['result']) >= 2){
 		coupon($userId,$nodeId);
 		$rechargeAmount = floor($rechargeAmount);//向下取整
 		experience($userId,$nodeId,$rechargeAmount);
