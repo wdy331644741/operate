@@ -156,13 +156,14 @@ function experience($userId,$nodeId,$activate=true){
 			$preSend = array(
 				'expAward'   => $addExperienceRes,
 				);
-			// $resRpc = Common::jsonRpcApiCall((object)$preSend, 'preSendExperienceGoldToUser', config('RPC_API.passport'));
-			$resRpc = true;
+			$resRpc = Common::jsonRpcApiCall((object)$preSend, 'preSendExperienceGoldToUser', config('RPC_API.passport'));
+			//$resRpc = true;
 			if($resRpc){
 				$activePost = array(
-					'uuid' => $addExperienceRes['uuid'], 
+					'uuid' => $addExperienceRes['uuid'],
+					'status' => 1
 					);
-				// Common::jsonRpcApiCall((object)$activePost, 'activateExperienceGoldToUser', config('RPC_API.passport'));
+				Common::jsonRpcApiCall((object)$activePost, 'activateExperienceGoldToUser', config('RPC_API.passport'));
 				$operateExperience->updateStatusOfUse($expId);
 			}
 		}
