@@ -14,10 +14,11 @@ function redeliveryExperience(){
 	$rechargeAmount = I('post.amount');//充值金额
 	// $nodeName = I('post.node');//动作节点
 	$nodeName = 'recharge';
-	// $activityName = 'redelivery';//复投活动名称
-	// $activityModel = new \Model\MarketingActivity();
-	// //获取活动开始、结束时间
-	// $usefulTime = $activityModel->getUsefulTimeByName($activityName);
+	$activityName = 'redelivery';//复投活动名称
+	$activityModel = new \Model\MarketingActivity();
+	//获取活动开始、结束时间
+	$usefulTime = $activityModel->getUsefulTimeByName($activityName);
+	if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time']) return 1;
 
 	$awardNode = new \Model\AwardNode();//活动节点
 
