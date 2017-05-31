@@ -33,11 +33,11 @@ function checkGiveWithdraw(){
 				'userId' => $value['user_id'], 
 				'startTime' => $date.' 00:00:00', 
 				'endTime' => $dateNow, 
-				'status' => 200, 
+				'status' => 0, //获取提现所有的状态
 				);
 			$withdrawTimes = Common::jsonRpcApiCall((object)$postParams, 'getWithdrawRecords', config('RPC_API.passport'));
 			// $withdrawTimes = 0;
-			var_export($withdrawTimes);
+			$withdrawTimes = empty($withdrawTimes['result'])?0:count($withdrawTimes['result']);
 			echo "用户15天前提现次数：".$withdrawTimes.PHP_EOL;
 			if($withdrawTimes == 0){
 				//1、通知用户中心  激活提现劵
@@ -45,7 +45,7 @@ function checkGiveWithdraw(){
 					'uuid' => $value['uuid'],
 					'status' => 1,
 				];
-				$resBack = Common::jsonRpcApiCall((object)$activePost, 'activateSendWithdrawCouponToUser', config('RPC_API.passport'));
+				$resBack = Common::jsonRpcApiCall((object)$activePost, 'activateWithdrawCouponToUser', config('RPC_API.passport'));
 				// $resBack = true;
 				echo "用户中心返回激活结果：".$resBack.PHP_EOL;
 				//2、update operate withdrawcoupon 
