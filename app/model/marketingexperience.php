@@ -16,7 +16,7 @@ class MarketingExperience extends Model {
     public function getExpUserByTime($time){
         $start_time = $time.' 00:00:00';
         $end_time = $time.' 23:59:59';
-        return $this->fields('id,user_id',false)
+        return $this->fields('id,user_id,uuid',false)
             ->where("`create_time` >= '{$start_time}' and `create_time` <= '{$end_time}' and `is_activate` = '0' and `is_use` = 1")
             ->get()->resultArr();
     }
