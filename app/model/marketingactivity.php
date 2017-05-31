@@ -37,7 +37,7 @@ class MarketingActivity extends Model
     public function getUsefulTimeByName($name){
         return $this->fields('start_time,end_time')
             ->where("`is_del` = 0 and `status` = 1 and `activity_name` = '{$name}'")
-            ->get()->resultArr();
+            ->get()->rowArr();
     }
 
     public function getUsefulActivityByName($activity_name){
