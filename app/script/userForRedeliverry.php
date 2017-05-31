@@ -47,7 +47,7 @@ function checkGiveWithdraw(){
 				];
 				$resBack = Common::jsonRpcApiCall((object)$activePost, 'activateWithdrawCouponToUser', config('RPC_API.passport'));
 				// $resBack = true;
-				echo "用户中心返回激活结果：".$resBack.PHP_EOL;
+				echo "用户中心返回激活结果：".json_encode($resBack).PHP_EOL;
 				//2、update operate withdrawcoupon 
 				if($resBack)
 				$withdrawModel->updateStatusOfUse($value['id']);
@@ -95,7 +95,7 @@ function checkGiveExpreience(){
 				];
 				$resBack = Common::jsonRpcApiCall((object)$activePost, 'activateExperienceGoldToUser', config('RPC_API.passport'));
 				// $resBack = true;
-				echo "用户中心返回激活结果：".$resBack.PHP_EOL;
+				echo "用户中心返回激活结果：".json_encode($resBack).PHP_EOL;
 				//update operate MarketingExperience status
 				if($resBack)
 				$expreienceModel->updateStatusOfUse($value['id']);
