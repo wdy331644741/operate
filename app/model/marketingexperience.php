@@ -57,8 +57,8 @@ class MarketingExperience extends Model {
     //更新使用状态
     public function updateStatusOfUse($id)
     {
-        return $this->where("`id` = {$id} and `is_use` = 0 and `is_activate` = 0 ")
-            ->upd(array('is_use' => 1, 'is_activate' => 1 ,'update_time' => date('Y-m-d H:i:s')));
+        return $this->where("`id` = {$id} and `is_use` = 1 and `is_activate` = 0 ")
+            ->upd(array('is_activate' => 1 ,'update_time' => date('Y-m-d H:i:s')));
     }
 
     //获取用户体验金列表

@@ -49,7 +49,7 @@ function checkGiveWithdraw(){
 				// $resBack = true;
 				echo "用户中心返回激活结果：".json_encode($resBack).PHP_EOL;
 				//2、update operate withdrawcoupon 
-				if($resBack)
+				if(isset($resBack['result']) && $resBack['result'] == true)
 				$withdrawModel->updateStatusOfUse($value['id']);
 			}
 		}
@@ -97,7 +97,7 @@ function checkGiveExpreience(){
 				// $resBack = true;
 				echo "用户中心返回激活结果：".json_encode($resBack).PHP_EOL;
 				//update operate MarketingExperience status
-				if($resBack)
+				if(isset($resBack['result']) && $resBack['result'] == true)
 				$expreienceModel->updateStatusOfUse($value['id']);
 			}
 		
