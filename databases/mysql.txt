@@ -98,3 +98,9 @@ ALTER TABLE `marketing_interestcoupon`
 ADD COLUMN `usetime_start`  datetime NULL COMMENT '用户可以使用的开始时间' AFTER `source_name`,
 ADD COLUMN `usetime_end`  datetime NULL COMMENT '用户可以使用的结束时间' AFTER `usetime_start`;
 
+
+ALTER TABLE `award_interestcoupon`
+ADD COLUMN `effective_start`  datetime NULL COMMENT '有效期开始时间' AFTER `effective_days`;
+
+
+
