@@ -62,7 +62,8 @@ function coupon($userId,$nodeId){
 			'id' => $awardCouponInfo['id'], 
 			'title' => $awardCouponInfo['title'],
 			'rate' => $awardCouponInfo['rate'],
-			'days' => $awardCouponInfo['days'],
+			'days' => $awardCouponInfo['days'],//加息券加息天数
+			'effective_days' => $awardCouponInfo['effective_days'],//加息券有效天数
 			'limit_desc' => $awardCouponInfo['limit_desc'],
 			'is_use'     => 1
 			);

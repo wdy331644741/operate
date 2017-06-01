@@ -1784,6 +1784,15 @@ return array (
       'unsigned' => true,
       'null' => false,
     ),
+    'continuous_hours' => 
+    array (
+      'field' => 'continuous_hours',
+      'key' => '',
+      'default' => '0',
+      'lenght' => '5',
+      'unsigned' => false,
+      'null' => false,
+    ),
     'limit_desc' => 
     array (
       'field' => 'limit_desc',
@@ -1881,6 +1890,22 @@ return array (
       'lenght' => '100',
       'unsigned' => false,
       'null' => false,
+    ),
+    'usetime_start' => 
+    array (
+      'field' => 'usetime_start',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'usetime_end' => 
+    array (
+      'field' => 'usetime_end',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
     ),
     'rate' => 
     array (
