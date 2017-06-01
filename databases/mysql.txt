@@ -92,3 +92,9 @@ ALTER TABLE `marketing_activity`
 ADD COLUMN `activity_name`  varbinary(100) NULL COMMENT '活动名称' AFTER `create_time`;
 
 UPDATE marketing_activity SET activity_name='redelivery' where id=4
+
+
+ALTER TABLE `marketing_interestcoupon`
+ADD COLUMN `usetime_start`  datetime NULL COMMENT '用户可以使用的开始时间' AFTER `source_name`,
+ADD COLUMN `usetime_end`  datetime NULL COMMENT '用户可以使用的结束时间' AFTER `usetime_start`;
+
