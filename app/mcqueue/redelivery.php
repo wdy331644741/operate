@@ -64,6 +64,8 @@ function coupon($userId,$nodeId){
 			'rate' => $awardCouponInfo['rate'],
 			'days' => $awardCouponInfo['days'],//加息券加息天数
 			'effective_days' => $awardCouponInfo['effective_days'],//加息券有效天数
+			'effective_start' => $awardCouponInfo['effective_start'],//加息券有效开始时间
+			'effective_end' => $awardCouponInfo['effective_end'],//加息券有效结束时间
 			'limit_desc' => $awardCouponInfo['limit_desc'],
 			'is_use'     => 1
 			);
@@ -79,7 +81,9 @@ function coupon($userId,$nodeId){
 		$activePost = [
 			'uuid' => $addCouponRes['uuid'],
 			'status' => 1,
-			'immediately' => FALSE
+			'immediately' => FALSE//立即使用
+			// 'effective_start' =>  计息的开始时间
+			// 'effective_end'   =>  计息的结束时间
 		];
 		$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
 		//update operate database  status
