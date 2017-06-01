@@ -6,8 +6,8 @@ function add()
 {
     if (IS_POST) {
 
-        $title = $rate = $days = $effectiveEnd = $limitDesc = $limitNode = $status = null;
-        $requireFields = ['title', 'rate', 'days', 'effectiveEnd', 'limitDesc','limitNode', 'status'];
+        $title = $rate = $days = $limitDesc = $limitNode = $status = null;
+        $requireFields = ['title', 'rate', 'days', 'limitDesc','limitNode', 'status'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -15,11 +15,12 @@ function add()
         }
 
         $data['coupon'] = I('post.coupon','','trim');
+        $data['effective_start'] = I('post.effectiveStart','','trim');
+        $data['effective_end'] = I('post.effectiveEnd','','trim');
         $data['effective_days'] = I('post.effective_days','','trim');
         $data['title'] = $title;
         $data['rate'] = $rate;
         $data['days'] = $days;
-        $data['effective_end'] = $effectiveEnd;
         $data['limit_desc'] = $limitDesc;
         $data['limit_node'] = $limitNode;
         $data['status'] = $status;
@@ -110,8 +111,8 @@ function upd()
 {
     $id = I('get.id/d',0);
     if (IS_POST) {
-        $title = $rate = $days = $effectiveEnd = $limitDesc = $limitNode = $status = null;
-        $requireFields = ['title', 'rate', 'days', 'effectiveEnd', 'limitDesc','limitNode', 'status'];
+        $title = $rate = $days = $limitDesc = $limitNode = $status = null;
+        $requireFields = ['title', 'rate', 'days', 'limitDesc','limitNode', 'status'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -119,11 +120,12 @@ function upd()
         }
 
         $data['coupon'] = I('post.coupon','','trim');
+        $data['effective_start'] = I('post.effectiveStart','','trim');
+        $data['effective_end'] = I('post.effectiveEnd','','trim');
         $data['effective_days'] = I('post.effective_days','','trim');
         $data['title'] = $title;
         $data['rate'] = $rate;
         $data['days'] = $days;
-        $data['effective_end'] = $effectiveEnd;
         $data['limit_desc'] = $limitDesc;
         $data['limit_node'] = $limitNode;
         $data['status'] = $status;
