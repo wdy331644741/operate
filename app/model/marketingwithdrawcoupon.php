@@ -45,7 +45,8 @@ class MarketingWithdrawcoupon extends Model
             // 'remain_times' => $awardInfo['remain_times'],
             'limit_desc'      => $awardInfo['limit_desc'],
             'create_time'     => date('Y-m-d H:i:s'),
-            'update_time'     => date('Y-m-d H:i:s')
+            'update_time'     => date('Y-m-d H:i:s'),
+            'is_use'          => 1
         );
 
         $res = $this->add($data);
