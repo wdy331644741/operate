@@ -11,7 +11,7 @@ class MarketingWithdrawcoupon extends Model
 
     //更新用户提现劵状态
     public function updateStatusOfUse($id){
-        return $this->where("`id` = {$id} and `is_use` = 0 and `is_activate` = 0 ")
+        return $this->where("`id` = {$id} and `is_use` = 1 and `is_activate` = 0 ")
             ->upd(array('is_activate' => 1 ,'update_time' => date('Y-m-d H:i:s')));
     }
 
