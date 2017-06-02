@@ -78,8 +78,8 @@ class MarketingInterestcoupon extends Model {
             'usetime_start'   => date('Y-m-d H:i:s'),
             'usetime_end'     => date('Y-m-d H:i:s', time() + $awardInfo['effective_days'] * DAYS_SECONDS),//加息券可使用的有效天数（复投活动）
             'rate'            => $awardInfo['rate'],
-            'effective_start' => date('Y-m-d H:i:s', time() + $awardInfo['laterDays'] * DAYS_SECONDS),// 6月5号紧急使用，下一版需要调整
-            'effective_end'   => date('Y-m-d H:i:s', time() + ($awardInfo['days']+$awardInfo['laterDays']) * DAYS_SECONDS),// 6月5号紧急使用，下一版需要调整
+            'effective_start' => date('Y-m-d H:i:s'),// 6月5号紧急使用，下一版需要调整
+            'effective_end'   => date('Y-m-d H:i:s', time() + $awardInfo['effective_days'] * DAYS_SECONDS),// 6月5号紧急使用，下一版需要调整
             // 'effective_start' => '1970-01-01 00:00:00',
             // 'effective_end'   => '1970-01-01 00:00:00',
             'continuous_days' => $awardInfo['days'],
