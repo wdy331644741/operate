@@ -43,4 +43,10 @@ class AwardInterestcoupon extends Model
         return $this->where("`coupon` = '{$couponName}' and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
                 ->get()->rowArr();
     }
+
+    public function filterUsefulInterestCouponNotime($nodeId){
+        return $this->where()
+            ->orderby("id DESC")
+            ->get()->rowArr();
+    }
 }
