@@ -53,7 +53,7 @@ function coupon($userId,$nodeId){
 	$awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
 	$operateCoupon = new \Model\MarketingInterestcoupon();
 
-	$awardCouponInfo = $awardCoupon->filterUsefulInterestCoupon($nodeId);
+	$awardCouponInfo = $awardCoupon->filterUsefulInterestCouponNotime($nodeId);
 	//复投加息劵只能获得一次
    	$isExistCoupon = $operateCoupon->isExist($userId, $awardCouponInfo['id']);
    	if(empty($isExistCoupon)){

@@ -23,4 +23,10 @@ class AwardInterestcoupon extends Model
             ->get()->rowArr();
 
     }
+
+    public function filterUsefulInterestCouponNotime($nodeId){
+        return $this->where()
+            ->orderby("id DESC")
+            ->get()->rowArr();
+    }
 }
