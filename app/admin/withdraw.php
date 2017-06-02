@@ -6,8 +6,8 @@ function add()
 {
     if (IS_POST) {
 
-        $title = $rate = $days = $effectiveEnd = $limitDesc = $limitNode = $status = null;
-        $requireFields = ['title', 'effectiveEnd', 'limitDesc','limitNode', 'status'];
+        $title = $rate = $days = $limitDesc = $limitNode = $status = null;
+        $requireFields = ['title', 'limitDesc','limitNode', 'status'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -16,7 +16,7 @@ function add()
 
         $data['withdraw_name'] = I('post.withdrawCoupon','','trim');
         $data['title'] = $title;
-        $data['effective_end'] = $effectiveEnd;
+        $data['effective_end'] = I('post.effectiveEnd','','trim');
         $data['limit_desc'] = $limitDesc;
         $data['limit_node'] = $limitNode;
         $data['status'] = $status;
@@ -108,8 +108,8 @@ function upd()
 {
     $id = I('get.id/d',0);
     if (IS_POST) {
-        $title = $rate = $days = $effectiveEnd = $limitDesc = $limitNode = $status = null;
-        $requireFields = ['title', 'effectiveEnd', 'limitDesc','limitNode', 'status'];
+        $title = $rate = $days = $limitDesc = $limitNode = $status = null;
+        $requireFields = ['title', 'limitDesc','limitNode', 'status'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -118,7 +118,7 @@ function upd()
 
         $data['withdraw_name'] = I('post.withdrawCoupon','','trim');
         $data['title'] = $title;
-        $data['effective_end'] = $effectiveEnd;
+        $data['effective_end'] = I('post.effectiveEnd','','trim');
         $data['limit_desc'] = $limitDesc;
         $data['limit_node'] = $limitNode;
         $data['status'] = $status;
