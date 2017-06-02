@@ -38,10 +38,13 @@ class AwardInterestcoupon extends Model
         return $this->where($where)->upd(['status' => $status]);
     }
     
-    public function getCouponIdByName($couponName){
-        $nowTime = date("Y-m-d H:i:s");
-        return $this->where("`coupon` = '{$couponName}' and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
-                ->get()->rowArr();
+    public function getCouponIdByName($coupon,$noDate){
+        if($noDate)
+            return $this->where("`coupon` = '{$coupon}' status = 1 and is_del = 0")
+            ->get()->rowArr();
+        else
+            return $this->where("`coupon` = '{$coupon}' and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
+            ->get()->rowArr();
     }
 
     public function filterUsefulInterestCouponNotime($nodeId){
