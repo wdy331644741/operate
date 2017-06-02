@@ -18,10 +18,13 @@ class AwardInterestcoupon extends Model
             ->get()->rowArr();
     }
 
-    public function getCouponIdByName($coupon){
-        return $this->where("`coupon` = '{$coupon}'")
+    public function getCouponIdByName($coupon,$noDate){
+        if($noDate)
+            return $this->where("`coupon` = '{$coupon}' status = 1 and is_del = 0")
             ->get()->rowArr();
-
+        else
+            return $this->where("`coupon` = '{$coupon}' and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
+            ->get()->rowArr();
     }
 
     public function filterUsefulInterestCouponNotime($nodeId){
