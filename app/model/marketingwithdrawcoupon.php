@@ -41,7 +41,7 @@ class MarketingWithdrawcoupon extends Model
             'source_id'       => $awardInfo['id'],
             'source_name'     => $awardInfo['title'],
             'effective_start' => date('Y-m-d H:i:s',time() + $laterdays * DAYS_SECONDS),
-            'effective_end'   => '',
+            'effective_end'   => $awardInfo['effective_end'],
             // 'remain_times' => $awardInfo['remain_times'],
             'limit_desc'      => $awardInfo['limit_desc'],
             'create_time'     => date('Y-m-d H:i:s'),
