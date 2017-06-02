@@ -43,9 +43,10 @@ class MarketingInterestcoupon extends Model {
             'uuid'            => create_guid(),
             'source_id'       => $awardInfo['id'],
             'source_name'     => $awardInfo['title'],
-            'usetime_start'   => $awardInfo['effective_start'],
-            'usetime_end'     => $awardInfo['usetime_end'],
-            // 'usetime_end'     => date('Y-m-d H:i:s', time() + $awardInfo['effective_days'] * DAYS_SECONDS),//加息券可使用的有效天数（复投活动）
+            // 'usetime_start'   => $awardInfo['effective_start'],
+            // 'usetime_end'     => $awardInfo['usetime_end'],
+            'usetime_start'   => date('Y-m-d H:i:s'),
+            'usetime_end'     => date('Y-m-d H:i:s', time() + $awardInfo['effective_days'] * DAYS_SECONDS),//加息券可使用的有效天数（复投活动）
             'rate'            => $awardInfo['rate'],
             // 'effective_start' => date('Y-m-d H:i:s', time() + $awardInfo['laterDays'] * DAYS_SECONDS),
             // 'effective_end'   => date('Y-m-d H:i:s', time() + ($awardInfo['days']+$awardInfo['laterDays']) * DAYS_SECONDS),
