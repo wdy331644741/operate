@@ -45,7 +45,7 @@ class AwardInterestcoupon extends Model
     }
 
     public function filterUsefulInterestCouponNotime($nodeId){
-        return $this->where()
+        return $this->where("`limit_node` = {$nodeId} and status = 1 and is_del = 0")
             ->orderby("id DESC")
             ->get()->rowArr();
     }
