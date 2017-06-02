@@ -18,7 +18,7 @@ class AwardInterestcoupon extends Model
             ->get()->rowArr();
     }
 
-    public function getCouponIdByName($coupon,$noDate){
+    public function getCouponIdByName($coupon,$noDate = false){
         if($noDate)
             return $this->where("`coupon` = '{$coupon}' status = 1 and is_del = 0")
             ->get()->rowArr();
