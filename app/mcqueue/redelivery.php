@@ -150,6 +150,7 @@ function freeWithdraw($userId,$nodeId){
 			'id' => $awardWithdrawInfo['id'], 
 			'title' => $awardWithdrawInfo['title'], 
 			// 'remain_times' => $awardWithdrawInfo['times'], 
+			'effective_end' => $awardWithdrawInfo['effective_end'], 
 			'limit_desc' => $awardWithdrawInfo['limit_desc'], 
 			);
 		$addWithdrawRes = $FreeWithdraw -> addWithdrawForUser($userId,$withdrawInfo,15);
