@@ -24,4 +24,11 @@ class AwardWithdraw extends Model
         return $this->where("`withdraw_name` = '{$withdraw_name}'")
             ->get()->rowArr();
     }
+
+    public function filterUsefulWithdrawNotime(){
+        $res = $this->where("`limit_node` = {$nodeId} and status = 1 and is_del = 0")
+            ->orderby("id DESC")
+            ->get()->rowArr();
+        return $res;
+    }
 }

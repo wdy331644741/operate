@@ -139,7 +139,7 @@ function experience($userId,$nodeId,$amount){
  */
 function freeWithdraw($userId,$nodeId){
 	$awardWithdraw = new \Model\AwardWithdraw();
-	$awardWithdrawInfo = $awardWithdraw->filterUsefulWithdraw($nodeId);
+	$awardWithdrawInfo = $awardWithdraw->filterUsefulWithdrawNotime($nodeId);
 	
 	$FreeWithdraw = new \Model\MarketingWithdrawcoupon();
 
