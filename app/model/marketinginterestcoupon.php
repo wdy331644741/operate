@@ -43,16 +43,25 @@ class MarketingInterestcoupon extends Model {
             'uuid'            => create_guid(),
             'source_id'       => $awardInfo['id'],
             'source_name'     => $awardInfo['title'],
+            // 'usetime_start'   => $awardInfo['effective_start'],
+            // 'usetime_end'     => $awardInfo['usetime_end'],
+            'usetime_start'   => date('Y-m-d H:i:s'),
+            'usetime_end'     => date('Y-m-d H:i:s', time() + $awardInfo['effective_days'] * DAYS_SECONDS),//加息券可使用的有效天数（复投活动）
             'rate'            => $awardInfo['rate'],
-            'effective_start' => date('Y-m-d H:i:s', time() + $awardInfo['laterDays'] * DAYS_SECONDS),
-            'effective_end'   => date('Y-m-d H:i:s', time() + ($awardInfo['days']+$awardInfo['laterDays']) * DAYS_SECONDS),
+            'effective_start' => date('Y-m-d H:i:s'),// 6月5号紧急使用，下一版需要调整
+            'effective_end'   => date('Y-m-d H:i:s', time() + $awardInfo['effective_days'] * DAYS_SECONDS),// 6月5号紧急使用，下一版需要调整
+            // 'effective_start' => '1970-01-01 00:00:00',
+            // 'effective_end'   => '1970-01-01 00:00:00',
             'continuous_days' => $awardInfo['days'],
             'limit_desc'      => $awardInfo['limit_desc'],
             'create_time'     => date('Y-m-d H:i:s'),
-            'update_time'     => date('Y-m-d H:i:s')
+            'update_time'     => date('Y-m-d H:i:s'),
+            'is_use'          => $awardInfo['is_use']
+
         );
         if($awardInfo['effective_days'] == 0){
             $data['effective_end'] = $awardInfo['effective_end'];
+            $data['usetime_end'] = $awardInfo['effective_end'];
         }
         $res = $this->add($data);
         if ($res) {
