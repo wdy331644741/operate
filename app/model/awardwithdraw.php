@@ -24,7 +24,7 @@ class AwardWithdraw extends Model
             ->get()->rowArr();
     }
 
-    public function filterUsefulWithdrawNotime(){
+    public function filterUsefulWithdrawNotime($nodeId){
         $res = $this->where("`limit_node` = {$nodeId} and status = 1 and is_del = 0")
             ->orderby("id DESC")
             ->get()->rowArr();
