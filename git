@@ -1,0 +1,521 @@
+commit 953c6fb6d87484ea193502d68ee71885785d0d75
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Sat Jun 3 17:58:40 2017 +0800
+
+    新手活动 打开注册发放加息券
+
+commit a53604b3913c3ce7b7bafdadca9a75653fbee567
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Sat May 27 17:34:06 2017 +0800
+
+    注册、绑卡体验金
+
+commit ecd7ebd62224e9c2689c316bfe791097855c08f4
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Fri May 26 18:56:19 2017 +0800
+
+    添加体验金is_use
+
+commit d1c1686b502c60574e993cf21509ab1d672daca4
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Fri May 26 10:58:54 2017 +0800
+
+    按小时体验金、后台配置功能done
+
+commit 4e946ab41dd4d30a4989553f3684eaeb02aee517
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 21:58:08 2017 +0800
+
+    后台添加 js按天 按小时选中
+
+commit 9eba512ff307cadc30926259eb995a8c61f6d8f5
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 21:43:30 2017 +0800
+
+    新手活动 还有提现、激活
+
+commit 66de5d3645b5d46357e7a3ec530c7cf9cb3f60d6
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 20:00:26 2017 +0800
+
+    .
+
+commit fb3ad466a3de43fd31cd91d375cf9426a901af01
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 17:52:55 2017 +0800
+
+    新手活动 添加recharge withdraw方法名
+
+commit 206e32644c1c6cab412865c2223a31ec1a7e9108
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 17:24:54 2017 +0800
+
+    新手活动 绑卡done
+
+commit fb08e29dfc45bc0b03c9e63adebe10c826328f5d
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 16:58:16 2017 +0800
+
+    新手活动 注册done
+
+commit 809660a7f7fe6e3fe1f138ad740247c5244a6315
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 15:25:11 2017 +0800
+
+    复制复投model
+
+commit 9e4c5ca8b04915ac2472476d1a121f109084aa86
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 15:20:35 2017 +0800
+
+    新手活动发放体验金 复用复投发放
+
+commit b793226f3f52d9b7242c1c4e1672492fb7fe7dd7
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 15:12:40 2017 +0800
+
+    消息队列不支持大小写
+
+commit cfe6ea51d67c096f8cb0b3de8b0ad24447182d29
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 14:54:48 2017 +0800
+
+    新手活动按小时加息1.0
+
+commit 25c9e5cd669a8a5d433c4e9c6af767f2d4ab9939
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 14:30:41 2017 +0800
+
+    添加按小时计息体验金
+
+commit 27d4ae6c93ee3b191f46d9c150522f018d609449
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 25 11:09:26 2017 +0800
+
+    体验金按小时加息
+
+commit defeca601fc2e6f3bce54ad7d4c96953b26e95b9
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Tue May 23 17:09:16 2017 +0800
+
+    上线好友总资产
+
+commit 7e59b356d1ff415e2536e875071ad4ea718331f9
+Merge: 077e751 6527f68
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Wed May 17 15:36:03 2017 +0800
+
+    合并release0.9到master
+
+commit 077e751f34c0e3828322a7e3e08899032961226a
+Author: wangdongyang <wangdongyang@wanglibank.com>
+Date:   Mon May 15 21:26:57 2017 +0800
+
+    修改checkIn接口备注
+
+commit c8ce1df0eceab4e1a87d513881805ac4bfb4536a
+Author: wangdongyang <wangdongyang@wanglibank.com>
+Date:   Mon May 15 20:08:03 2017 +0800
+
+    checkin接口添加字段（连续签到天数）
+
+commit 8f35935b7d93e63397fd04eec9f4132849680488
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 11 21:17:12 2017 +0800
+
+    up doc
+
+commit 6527f6838821c2eb5879696b9c70198db78b9f32
+Merge: 3e711e8 cd258cc
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 11 17:07:44 2017 +0800
+
+    Merge branch '5888exp' into tmp
+    针对5888 bug更新到预发布 tag
+
+commit cd258ccb76c951c932a131e324a84003386c6670
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Wed May 10 16:10:26 2017 +0800
+
+    .
+
+commit de008183c8cdc5b877ecf55c7c1c30b5e72763fa
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Wed May 10 10:05:59 2017 +0800
+
+    debug
+
+commit 7ceeedbe93736d872de69bf0000260b6e38eedfe
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Tue May 9 21:35:53 2017 +0800
+
+    修改线上5888体验金bug
+
+commit 3e711e8b1dcd4b90ce5005ce2da3db35766c588a
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu May 4 14:29:30 2017 +0800
+
+    和project接口冲突
+
+commit 0613a0473bcd4db0cc1120be841af1ce8fe0dfae
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Wed May 3 10:57:13 2017 +0800
+
+    test +1
+
+commit 6cfb774a037b389941feb526cfa5192d77a5b8a6
+Merge: d3eabb0 11618d3
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Wed May 3 10:50:00 2017 +0800
+
+    Merge branch '5888exp' into wangdongyang
+
+commit 11618d32eff08337d64e4b0ea85d5e3295d68f1e
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu Apr 27 16:10:03 2017 +0800
+
+    基于operate.release-0.0.05添加 补发5888体验金
+
+commit 768b53f92ddbbb328589b7515258a54b79a03e5b
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu Apr 27 16:07:50 2017 +0800
+
+    基于operate.release-0.0.05添加 补发5888体验金
+
+commit 5df2c1dd842ac2140ef801517bd76f0a486abcf4
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Thu Apr 27 15:18:07 2017 +0800
+
+    添加补发5888体验金脚本
+
+commit ccbbe80d2acfd6d059f7a1e1031f2ac8713798ab
+Merge: 1329f7e d3eabb0
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Fri Apr 21 16:44:03 2017 +0800
+
+    Merge branch 'wangdongyang' into dev
+
+commit d3eabb03132dee534636bd526f0dcbdadf21194e
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Fri Apr 21 16:41:14 2017 +0800
+
+    promoterlist
+
+commit 1329f7ec4124f2eb21900b11d354c6855ea55cbf
+Merge: 0582897 d4f144e
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Fri Apr 21 16:09:02 2017 +0800
+
+    Merge branch 'wangdongyang' into dev
+    4.21 运营推广员
+
+commit d4f144ec6f03a6f3d1bad2a9726dc2de5c08d78a
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Fri Apr 21 16:02:05 2017 +0800
+
+    运营推广员4.21test
+
+commit 0c97a713f34677e352d4e4f8ddd5c54dbb452c84
+Author: IzhuangbeiWdy <wdy@izhuanbei.com>
+Date:   Fri Apr 14 15:40:36 2017 +0800
+
+    change title
+
+commit 058289759df826c64abb42f45b936c3d44d0ee8c
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Apr 6 18:33:06 2017 +0800
+
+    优化代码
+
+commit 30747683c47be20229ff38546e3b5c08aea50736
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Fri Mar 31 12:34:07 2017 +0800
+
+    bug 处理
+
+commit ca4db90fa2b0e49012756ef83ee8426b24b03838
+Merge: d861301 9cbac31
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 28 20:54:55 2017 +0800
+
+    修复session
+
+commit d86130184796b9e670e424793eebe77633ec958c
+Merge: 500a728 6450157
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 28 19:54:13 2017 +0800
+
+    修复session
+
+commit 9cbac317130a52cfde04c630310eb1f971d51add
+Merge: 500a728 6450157
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 28 19:49:06 2017 +0800
+
+    修复session
+
+commit 6450157fd034f27ee02a2b6959b6acd37d80648e
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 28 19:46:05 2017 +0800
+
+    修复session
+
+commit 500a7285e64d059889eef6eef8b98291d7255b89
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 28 17:03:06 2017 +0800
+
+    修复bug
+
+commit 1755fd7a231f2c9433ab93525d64e8f1b2938676
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Mon Mar 27 14:00:12 2017 +0800
+
+    过滤活动前邀请的好友
+
+commit 0c6db5373722f2997f8712ab74590c712bb98347
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Mon Mar 27 10:46:06 2017 +0800
+
+    判断活动期间邀请的好友
+
+commit 8f3db71818c71e7c5b18c043969fc6e2cb8747fd
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Fri Mar 24 18:02:01 2017 +0800
+
+    去掉多余的代码
+
+commit 82bbf3edfa21c0da9755275f6ea9dad0c231d1a4
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Fri Mar 24 10:07:04 2017 +0800
+
+    bug fix
+
+commit 7ff4bd783c635309c9d9eaa807aa7ca9f5d63f1c
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 23 21:24:35 2017 +0800
+
+    bug fix
+
+commit 45363be8d441b87ef74ad753ee1da25e75ded00d
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 23 11:37:39 2017 +0800
+
+    bug fix
+
+commit 9e37f22495c79ce485a9d93b99c8472affb3d4a0
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Wed Mar 22 21:25:21 2017 +0800
+
+    bug fix
+
+commit 3f2960272902871bb869164c48dfb37d12aff9e7
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Wed Mar 22 19:32:12 2017 +0800
+
+    update status
+
+commit 10c08bb138cb6295784ba473658c6497170a0370
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Wed Mar 22 15:58:32 2017 +0800
+
+    update status
+
+commit 1d155cc627605f9e8e4a1e171ec80f6b228ab955
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Wed Mar 22 10:11:25 2017 +0800
+
+    用户邀请配置完善
+
+commit bb2514031334421f5677558adc1f28bb9335478e
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 21 16:26:14 2017 +0800
+
+    优化推荐用户收益
+
+commit 92c279c54ae976a4ba03029da8fdaabcd12574e6
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Fri Mar 17 10:56:26 2017 +0800
+
+    所有session时间都改为一样
+
+commit 52d9b8818cb08419e5f442224acb2dc21db88bdf
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Fri Mar 17 10:05:48 2017 +0800
+
+    优化代码
+
+commit 6105f3843470225c164cfeb539a3b9b9490e286b
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 16 11:14:10 2017 +0800
+
+    添加判断用户当天是否签到
+
+commit 8411ee0d5621c48d2f3dcc61ffe392b209d3edae
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Wed Mar 15 15:30:58 2017 +0800
+
+    优化签到
+
+commit 31e9a41b9f34f6dcbb775c7a7a9bae9c30a895f3
+Merge: e954939 739ad69
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 14 15:02:42 2017 +0800
+
+    Merge branch 'kim' into dev
+
+commit 739ad69abcfc1e345975ef63872268d8afa50e2e
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 14 15:02:19 2017 +0800
+
+    添加签到说明文档
+
+commit e95493919a3f7d299ebf0010494d1de301eb8887
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 14 14:47:43 2017 +0800
+
+    完善签到规则
+
+commit 55a8c945a6c6af68018401db8d0224e6c66f8d06
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 14 14:04:01 2017 +0800
+
+    完善签到规则
+
+commit bec963a86f846f2b2dd590820b6ab4f9ca2f7964
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Fri Mar 10 18:19:05 2017 +0800
+
+    去除默认
+
+commit dfeed24201c9ebd23dc6502f8ff4fc4b0727e85d
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Fri Mar 10 09:49:55 2017 +0800
+
+    处理签到bug
+
+commit 4039f30f7b24275fac9cb6219ff6ec4a4c755585
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 9 18:28:25 2017 +0800
+
+    完善用户的签到记录相关接口
+
+commit bc314eb08e93ccb5392292197db6abdcf8d2d4dd
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 9 17:25:01 2017 +0800
+
+    完善用户的签到记录相关接口
+
+commit 9c79aa4d73032ea5df7cb4b5ecccb767a4a92cc1
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 9 16:30:34 2017 +0800
+
+    完善用户的签到记录相关接口
+
+commit 1b6a735dd2dd85164d3c3358a91aabb699df8900
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 9 16:01:25 2017 +0800
+
+    完善用户的签到记录相关接口
+
+commit 984d7b8b3d1b0e88161cb57a7070a280af523db3
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 9 15:53:17 2017 +0800
+
+    完善用户的签到记录相关接口
+
+commit e042d144fe9f4720afc33ba233c747763160c05a
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 9 15:04:44 2017 +0800
+
+    完善用户的签到记录相关接口
+
+commit d216995b15d4b7837bd2a0f0d9ec112fa88d4d76
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 9 11:24:20 2017 +0800
+
+    完善共享好友收益相关接口
+
+commit 1fe9f8113cb9c3a37aa8eaa50ef743cae6809c40
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 9 09:59:16 2017 +0800
+
+    完善共享好友收益相关接口
+
+commit d1bff986ed350e3af826aad7cbcbedc42232878c
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Wed Mar 8 16:42:37 2017 +0800
+
+    完善共享好友收益接口
+
+commit af57286438673a6799b2944aeb096ab017ba8a4c
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Wed Mar 8 11:56:27 2017 +0800
+
+    记录好友共享收益
+
+commit ab6345af872ed126fb8447a149d5f674572505ad
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 7 17:56:44 2017 +0800
+
+    用户补签到
+
+commit bd7ecf6649f56663d454851c84bdabce7c6f253f
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 7 17:53:58 2017 +0800
+
+    删除多余的models
+
+commit b767adc0ac8987812bf1287cc8fe3907676285b3
+Merge: edb34f6 4330de2
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 7 16:12:43 2017 +0800
+
+    Merge branch 'dev' of 192.168.20.240:demand/demand_operate into dev
+
+commit edb34f6621bb1bc8f9f00bf4b2a53f32f9389b63
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 7 16:11:05 2017 +0800
+
+    处理排版
+
+commit 4330de2b8b24359e9d467c5017eff99779ec1354
+Author: Yihen <liuyihen@wanglibank.com>
+Date:   Tue Mar 7 14:27:02 2017 +0800
+
+    delete test
+
+commit 279d564d330260b5cf77becca566031266cd4610
+Author: Yihen <liuyihen@wanglibank.com>
+Date:   Tue Mar 7 14:25:15 2017 +0800
+
+    test
+
+commit a39b3bcaeeef84a442a4470eb048382f0b9363dc
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Tue Mar 7 14:09:36 2017 +0800
+
+    合并文件
+
+commit 045f4c9870d0a83b5775ae47f7d98b2b36a8e954
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Mon Mar 6 10:03:54 2017 +0800
+
+    邀请好友并首投送体验金
+
+commit 16b6f4bd5e429d60f3a49e78c250b71b8d9c9c0d
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Thu Mar 2 18:36:27 2017 +0800
+
+    完善签到接口
+
+commit f870590e1cb3622df166a96e860d612920f662af
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Wed Mar 1 14:42:34 2017 +0800
+
+    活动,Banner,公告等后台管理和接口
+
+commit fba9cdeb881037179b87232e72d55d09dd1dcf7a
+Author: yangcuiwang <yangcuiwang@nxdai.com>
+Date:   Mon Feb 27 17:31:16 2017 +0800
+
+    init
