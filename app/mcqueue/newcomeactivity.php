@@ -187,6 +187,8 @@ function coupon($userId,$nodeId){
 			'title' => $awardCouponInfo['title'],
 			'rate' => $awardCouponInfo['rate'],
 			'days' => $awardCouponInfo['days'],
+			'effective_days' => $awardCouponInfo['effective_days'],
+			'effective_end' => $awardCouponInfo['effective_end'],
 			'limit_desc' => $awardCouponInfo['limit_desc'],
 			'is_use' => 1
 			);
