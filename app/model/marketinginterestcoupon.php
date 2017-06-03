@@ -90,6 +90,7 @@ class MarketingInterestcoupon extends Model {
         );
         if($awardInfo['effective_days'] == 0){
             $data['effective_end'] = $awardInfo['effective_end'];
+            $data['usetime_end'] = $awardInfo['effective_end'];
         }
         $res = $this->add($data);
         if ($res) {
