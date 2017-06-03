@@ -54,7 +54,7 @@ function bandcard(){
 	try {
 
         experience($userId, $nodeId);
-        //coupon($userId, $nodeId);
+        coupon($userId, $nodeId);
         
     } catch (\Exception $e) {
         $msg = "用户ID: {$userId} 触发：{$type}，发放入账失败：" . PHP_EOL;
