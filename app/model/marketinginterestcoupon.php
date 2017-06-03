@@ -51,7 +51,7 @@ class MarketingInterestcoupon extends Model {
             'create_time'     => date('Y-m-d H:i:s'),
             'update_time'     => date('Y-m-d H:i:s')
         );
-        if($awardInfo['days'] == 0){
+        if($awardInfo['effective_days'] == 0){
             $data['effective_end'] = $awardInfo['effective_end'];
         }
         $res = $this->add($data);
