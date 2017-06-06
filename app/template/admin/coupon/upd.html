@@ -1,0 +1,117 @@
+{include file="header.html"}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <form class="form-horizontal" id="form01">
+        <div class="top-title">
+            <h2 class="sub-header">修改加息券</h2>
+            <div class="top-tools">
+                <button type="button" class="btn btn-primary" id="submit">保存</button>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">名称</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="名称" name="title" id="title" value="{$item.title}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">利率</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="请写数值 如：2 ，代表 2%" name="rate" id="rate" value="{$item.rate}">%
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">加息时长</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="天单位" name="days" id="days" value="{$item.days}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">有效期开始时间</span></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="" name="effectiveStart" id="effectiveStart" value="{$item.effective_start}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">有效期结束时间</span></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="" name="effectiveEnd" id="effectiveEnd" value="{$item.effective_end}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">有效天数</span></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="自发放加息券发放日期开始，加息券失效的天数。如为空则以过期时间为准" name="effective_days" id="effective_days" value="{$item.effective_days}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">限制说明</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="" name="limitDesc" id="limitDesc" value="{$item.limit_desc}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">触发节点</span><i>*</i></label>
+            <div class="col-sm-7">
+                <select class="form-control" name="limitNode">
+                    <option value="0">无节点</option>
+                    {if $nodeList}
+                    {foreach $nodeList as $node}
+                    <option value="{$node.id}" {if ($node.id == $item.limit_node)}selected{/if}>{$node.title}</option>
+                    {/foreach}
+                    {/if}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">加息劵名称</span></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="" name="coupon" id="coupon" value="{$item.coupon}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">状态</span><i>*</i></label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="status_no" value="0" {if $item.status == 0}checked{/if}> 禁用
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="status_yes" value="1" {if $item.status == 1}checked{/if}> 启用
+            </label>
+        </div>
+    </form>
+</div>
+
+<script>
+    $("#effectiveEnd").datetimepicker({
+        language:'zh-CN',
+    });
+    $("#effectiveStart").datetimepicker({
+        language:'zh-CN',
+    });
+</script>
+<script>
+    $(function () {
+        //提交表单
+        $("#submit").click(function () {
+            $.ajax({
+                "url": "",
+                'type': 'POST',
+                'data': $('#form01').serialize(),
+                'dataType': 'json',
+                'success': function (data) {
+                    if (data.error != 0) {
+                        layer.alert(data.message);
+                    }
+                    else {
+                        window.location.href = '{U("admin.php",["c" => I("get.c/s","index")])}';
+                    }
+                }
+
+            });
+        });
+    });
+</script>
+{include file="footer.html"}
