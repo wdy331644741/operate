@@ -23,6 +23,7 @@
                     <th >排序</th>
                     <th >开始</th>
                     <th >结束</th>
+                    <th >是否需要用户登录</th>
                     <th >状态</th>
                     <th >创建</th>
                     <th >操作</th>
@@ -39,6 +40,13 @@
                     <td title="越大越靠前">{$item.sort}</td>
                     <td>{$item.start_time}</td>
                     <td>{$item.end_time}</td>
+                    <td>
+                        {if $item.check_login == 1}
+                        <span class="adminstatus adminonline">是</span>
+                        {else}
+                        <span class="adminstatus adminoffline">否</span>
+                        {/if}
+                    </td>
                     <td>
                         {if $item.status == 1}
                         <span class="adminstatus adminonline">启用</span>

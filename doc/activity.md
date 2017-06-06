@@ -86,22 +86,24 @@
             {
               "id": "1",
               "title": "邀请好友得双重奖励 - 白拿10000元体验金及1%加息券",
-              "img_url": "126f3713441c43c2ec66615ebd18f016.jpg",
-              "link_url": "https:/test.wanglibao.com/wechat/share/index.html",
+              "img_url": "https://store0.izhuanbei.com/storage.php?c=index&a=view&file=424711871b42a9cc348538b9edc45c5e.jpg&access_key=6498cb3b7f607dbfd14c703f2bbefe69&style=",
+              "link_url": "https://test.izhuanbei.com/wechat//Newinvite/newinvite.html",
               "start_time": "2017-02-01 00:00:00",
               "end_time": "2017-06-23 11:50:00",
+              "check_login": "1",//需要检查用户是否登录
               "desc": "",
-              "status": "1"   //正在進行中的活動
+              "status": "1" //1正在进行中的活动  -1过期的活动
             },
             {
               "id": "2",
-              "title": "oooooooooo",
-              "img_url": "b59d6295c11e335fb555211d8a0d96f3.jpg",
-              "link_url": "/Newinvite/newinvite.html",
+              "title": "阶梯加息",
+              "img_url": "https://store0.izhuanbei.com/storage.php?c=index&a=view&file=04d200daae452d916b72dad0dd39cee9.jpg&access_key=6498cb3b7f607dbfd14c703f2bbefe69&style=",
+              "link_url": "https://test.izhuanbei.com/wechat//Newinvite/newinvite.html",
               "start_time": "2017-02-28 05:25:00",
-              "end_time": "2017-03-23 10:35:00",
+              "end_time": "2017-07-31 23:55:00",
+              "check_login": "0",
               "desc": "",
-              "status": "-1"  //过期的活动
+              "status": "1"
             },
             {
               "id": "3",
@@ -110,6 +112,7 @@
               "link_url": "http://operate.wanglibao.com/admin.php?c=activity&a=add",
               "start_time": "2017-03-01 10:50:00",
               "end_time": "2017-03-09 10:50:00",
+              "check_login": "0",
               "desc": "",
               "status": "-1"  //过期的活动
             }
@@ -144,22 +147,36 @@
 
 	成功：
         {
-          "jsonrpc": "2.0",
-          "result": {
-            "code": 0,
-            "message": "success",
-            "data": [
-              {
-                "id": 3,
-                "title": "公告标题test4",
-                "content": "&lt;p&gt;dasdasdasdasfasdada&lt;/p&gt;",
-                "link": "https://php1.wanglibao.com/app/bulletin/detail/3"
-              },    
-              ...
-            ]
-          },
-          "id": 1
-        }
+        "jsonrpc": "2.0",
+        "result": {
+          "code": 0,
+          "message": "success",
+          "data": [
+            {
+              "id": "3",
+              "title": "按时打算向出租车",
+              "content": "afxzcvxcvdzsfgsdfgawefasdfsad阿萨德阿萨德sdf申请全文",
+              "link": "https://php1.wanglibao.com/app/bulletin/detail/3",
+              "readCounts": 0 //阅读次数(0代表没有阅读)
+            },
+            {
+              "id": "2",
+              "title": "国际学校2222222222222222222",
+              "content": "&lt;p&gt;国际学校国际学校国际学校国际学校国际学校国际学校国际学校国际学校国际学校&lt;/p&gt;",
+              "link": "https://php1.wanglibao.com/app/bulletin/detail/3",
+              "readCounts": 1
+            },
+            {
+              "id": "1",
+              "title": "111111111111111111",
+              "content": "&lt;p&gt;案例看电视剧福利卡萨家乐福看见爱上了咖啡姐阿斯利康都放假了卡死机付了款爱上发&lt;br/&gt;&lt;/p&gt;",
+              "link": "https://php1.wanglibao.com/app/bulletin/detail/3",
+              "readCounts": 9
+            }
+          ]
+        },
+        "id": 1
+      }
 
 错误信息 | 错误码 | 错误说明
 :--|:--|:--
