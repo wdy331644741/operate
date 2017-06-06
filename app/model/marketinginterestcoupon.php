@@ -37,7 +37,7 @@ class MarketingInterestcoupon extends Model {
 
     //给用户添加记录
     public function addCouponForUser($userId, $awardInfo)
-    {
+    {   
         $data = array(
             'user_id'         => $userId,
             'uuid'            => create_guid(),
@@ -59,7 +59,10 @@ class MarketingInterestcoupon extends Model {
             'is_use'          => $awardInfo['is_use']
 
         );
-
+        if($awardInfo['effective_days'] == 0){
+            $data['effective_end'] = $awardInfo['effective_end'];
+            $data['usetime_end'] = $awardInfo['effective_end'];
+        }
         $res = $this->add($data);
         if ($res) {
             $data['id'] = $res;

@@ -13,3 +13,5 @@ CREATE TABLE `marketing_article_log` (
 
 ALTER TABLE `marketing_activity`
 ADD COLUMN `check_login`  tinyint(1) NULL DEFAULT 0 COMMENT '检查是否需要用户登录 0不需要 1需要' AFTER `is_del`;
+ALTER TABLE `marketing_experience`
+ADD COLUMN `continuous_hours`  smallint(5) NOT NULL DEFAULT 0 COMMENT '按小时计息' AFTER `continuous_days`;

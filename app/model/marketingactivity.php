@@ -39,4 +39,9 @@ class MarketingActivity extends Model
             ->where("`is_del` = 0 and `status` = 1 and `activity_name` = '{$name}'")
             ->get()->rowArr();
     }
+    
+    public function getUsefulActivityByName($activity_name){
+        return $this->where("`is_del` = 0 and `status` = 1 and `activity_name` = '{$activity_name}'")
+            ->get()->rowArr();
+    }
 }
