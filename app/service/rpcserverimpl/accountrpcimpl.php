@@ -274,6 +274,8 @@ class AccountRpcImpl extends BaseRpcImpl
         $userInvestmentRecord = Common::jsonRpcApiCall((object)$userInvestmentRecordPostParams, 'userInvestmentRecord', config('RPC_API.passport'));
 
         $marketingRevenueSharing = new \Model\MarketingRevenueSharing();
+
+        //0504修改不去产品 获取总资产（产品上带有利息）了改用  请求用户中心userInvestmentRecord 累加充值表
         $friendProperty = array();
         if($userInvestmentRecord['result']){
             $last_names = array_column($userInvestmentRecord['result'], 'id');
@@ -287,11 +289,14 @@ class AccountRpcImpl extends BaseRpcImpl
         // $unInvest_users = array();
         foreach ($userInvestmentRecord['result'] as $key => $value) {
             if ($value['recharge'] == true) {
+                // $userInvestmentRecord['result'][$key]['invest'] = $userInvestmentRecord['result'][$key]['amount'];//0504修改好友总资产
                 $userInvestmentRecord['result'][$key]['amount'] = $marketingRevenueSharing->getSumByUserId($value['id']);
+
                 $userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
             } else {
+                $userInvestmentRecord['result'][$key]['invest'] = 0;//0504修改好友总资产，0510修改：尽管未投资 体验金会产生利息，也不展示
                 $userInvestmentRecord['result'][$key]['amount'] = 0;
-                $userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
+                // $userInvestmentRecord['result'][$key]['invest'] = empty($friendProperty['result']['data'][$value['id']])?0:$friendProperty['result']['data'][$value['id']];
                 
             }
         }
@@ -300,8 +305,10 @@ class AccountRpcImpl extends BaseRpcImpl
         $amount = $marketingRevenueSharing->getSumByUserIds(implode(',', array_column($userInvestmentRecord['result'], 'id')));
         //返回该用户的(推广员状态)
         $promoterModel = new \Model\PromoterList();
-        $res = $promoterModel -> getPromoterInfoById($userId);//var_dump($res['status']);exit;
-        $res = empty($res['status']) && $res['status'] != '0'?-1:$res['status'];
+        $res = $promoterModel -> getPromoterInfoById($userId);
+        // var_export($userId);
+        // var_dump($res);exit;
+        $res = empty($res[0]['status']) && $res[0]['status'] != '0'?-1:$res[0]['status'];
         return [
             'code'                   => 200,
             'experience_amount'      => $amountExperience['result']['count'],
@@ -399,10 +406,17 @@ class AccountRpcImpl extends BaseRpcImpl
         $amount = $marketingRevenueSharing->getSumByUserIds(implode(',', array_column($userInvestmentRecord['result'], 'id')));
 
         $promoterModel = new \Model\PromoterList();
-        //查询该用户是否已存在
-        if(!($promoterModel -> getPromoterInfoById($userId) )){
+        //查询该用户是否已存在(有没有状态是0的 或是1已通过的)
+        if(empty($promoterModel -> getIsExistByUser($userId)) ){
+            //从用户中心获取用户基本信息
+            $params = [
+                'userId' => $userId,
+            ];
+            $userInfo = Common::jsonRpcApiCall((object)$params,'getUserBaseInfo',config('RPC_API.passport'));
             $PromoterParams = [
                 'auth_id' => $userId,
+                'username' => $userInfo['result']['realname'],
+                'phone' => $userInfo['result']['phone'],
                 'invite_num' => count($userInvestmentRecord['result']),  //邀请好友的数量
                 'total_inve_amount' => $inve_amount,//好友投资总额
                 'commission' => $amount,  //从好友 获取累计获得收益
@@ -432,7 +446,7 @@ class AccountRpcImpl extends BaseRpcImpl
         $promoterModel = new \Model\PromoterList();
         $PromoterInfo  = $promoterModel -> getPromoterInfoById($userId);
 
-        $status = empty($PromoterInfo)?-1:$PromoterInfo['status'];
+        $status = empty($PromoterInfo)?-1:$PromoterInfo[0]['status'];
 
         $List = array(
                 0 => array(
@@ -461,7 +475,7 @@ class AccountRpcImpl extends BaseRpcImpl
                         ),
                 6 => array(
                         'show_phone' => "130****1745",
-                        'earn'       => "852.64",
+                        'earn'       => "852.44",
                         ),
                 7 => array(
                         'show_phone' => "130****1745",
@@ -483,4 +497,90 @@ class AccountRpcImpl extends BaseRpcImpl
         ];
     }
 
+    /**
+     * 提供所有推广员数据
+     * @JsonRpcMethod
+     */
+    public function getAllPromoters(){
+        $promoterModel = new \Model\PromoterList();
+        $result = $promoterModel->allPromotersInfo();
+        // return ['code' => 0, 'data' => $result];
+        if(empty($result)){
+            return ['code' => 1, 'message'=> "没有相关数据",'data' => $result];
+        }
+        return ['code' => 0, 'message'=> "返回成功",'data' => $result];
+    }
+    /**
+     * 复投数据
+     * @JsonRpcMethod
+     */
+    public function redelivery(){
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+        $dateNow = date("Y-m-d H:i:s");
+        //用户是否复投？
+        $interestCouponName = "redelivery_per_coupon";//复投活动卷的名称
+        $awardInterestcouponModel = new \Model\AwardInterestcoupon();
+        $couponInfo = $awardInterestcouponModel->getCouponIdByName($interestCouponName,$noDate=true);
+        
+        if(empty($couponInfo)){
+            throw new AllErrorException(AllErrorException::COUPON_UNDIFIND);
+        }
+        $interstCouponMarketing = new \Model\MarketingInterestcoupon();
+        $isHaveCoupon = $interstCouponMarketing->isExist($this->userId,$couponInfo['id']);
+
+        $stepOne = empty($isHaveCoupon)?0:1;
+
+
+        $experienceName = "redelivery_experience";//复投体验金的名称
+        $awardExperienceModel = new \Model\AwardExperience();
+        $marketingExperienceModel = new \Model\MarketingExperience();
+        $redeliveryExperienceInfo = $awardExperienceModel->getAwardExperienceByName($experienceName);
+
+        $isHaveExperience = $marketingExperienceModel->isExist($this->userId,$redeliveryExperienceInfo['id']);
+
+        if(empty($isHaveExperience)){
+            $stepTwo = array(
+                            'status' => 0, 
+                            'days'   => 10,
+                        );
+        }else{
+            $days = (strtotime($isHaveExperience['effective_start']) - strtotime($dateNow) )/86400;
+            $stepTwo = array(
+                            'status' => $isHaveExperience['is_activate'], 
+                            'days'   => ($days>10 || $days < 0)?10:intval($days),
+                        );
+        }
+
+        $withdrawName = "redelivery_withdraw";//复投提现劵的名称
+        $awardWithdrawModel = new \Model\AwardWithdraw();
+        $marketingWithdrawModel = new \Model\MarketingWithdrawcoupon();
+        $redeliveryWithdrawInfo = $awardWithdrawModel->getAwardWithdraByName($withdrawName);
+
+        $isHaveWithdraw = $marketingWithdrawModel->isExist($this->userId,$redeliveryWithdrawInfo['id']);
+        
+        if(empty($isHaveWithdraw)){
+            $stepThree = array(
+                            'status' => 0, 
+                            'days'   => 15,
+                        );
+        }else{
+            $days = (strtotime($isHaveWithdraw['effective_start']) - strtotime($dateNow) )/86400;
+            $stepThree = array(
+                            'status' => $isHaveWithdraw['is_activate'], 
+                            'days'   => ($days>15 || $days < 0)?15:intval($days),
+                        );
+        }
+
+
+
+        $data = array(
+                'weal_one'   => $stepOne,  //第一个福利 是否获得 1获得  0未获得
+                'weal_two'   => $stepTwo,
+                'weal_three' => $stepThree,
+            );
+
+        return ['code' => 0, 'message' => $stepOne?"复投":"没有复投",'data' => $data];
+    }
 }

@@ -10,6 +10,16 @@ class MarketingInterestcoupon extends Model {
             $this->initArData($pkVal);
     }
 
+    //是否存在该记录
+    public function isExist($userId,$sourceId){
+        $result = $this->fields("id", false)
+            ->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
+            ->orderby("id DESC")
+            ->get()
+            ->rowArr();
+        return $result['id'];
+    }
+
     //获取用户所有加息券
     public function getListByUserid($userId)
     {
@@ -33,13 +43,21 @@ class MarketingInterestcoupon extends Model {
             'uuid'            => create_guid(),
             'source_id'       => $awardInfo['id'],
             'source_name'     => $awardInfo['title'],
+            // 'usetime_start'   => $awardInfo['effective_start'],
+            // 'usetime_end'     => $awardInfo['usetime_end'],
+            'usetime_start'   => date('Y-m-d H:i:s'),
+            'usetime_end'     => date('Y-m-d H:i:s', time() + $awardInfo['effective_days'] * DAYS_SECONDS),//加息券可使用的有效天数（复投活动）
             'rate'            => $awardInfo['rate'],
-            'effective_start' => date('Y-m-d H:i:s'),
-            'effective_end'   => date('Y-m-d H:i:s', time() + $awardInfo['days'] * DAYS_SECONDS),
+            'effective_start' => date('Y-m-d H:i:s'),// 6月5号紧急使用，下一版需要调整
+            'effective_end'   => date('Y-m-d H:i:s', time() + $awardInfo['effective_days'] * DAYS_SECONDS),// 6月5号紧急使用，下一版需要调整
+            // 'effective_start' => '1970-01-01 00:00:00',
+            // 'effective_end'   => '1970-01-01 00:00:00',
             'continuous_days' => $awardInfo['days'],
             'limit_desc'      => $awardInfo['limit_desc'],
             'create_time'     => date('Y-m-d H:i:s'),
-            'update_time'     => date('Y-m-d H:i:s')
+            'update_time'     => date('Y-m-d H:i:s'),
+            'is_use'          => $awardInfo['is_use']
+
         );
 
         $res = $this->add($data);
@@ -57,5 +75,11 @@ class MarketingInterestcoupon extends Model {
     {
         return $this->where("`id` = {$id} and `is_use` = 0")
             ->upd(array('is_use' => 1, 'update_time' => date('Y-m-d H:i:s')));
+    }
+
+    //激活状态
+    public function updateActivate($uuid){
+        return $this->where("`uuid` = '{$uuid}' and `is_use` = 0")
+            ->upd(array('is_activate' => 1, 'update_time' => date('Y-m-d H:i:s')));
     }
 }

@@ -46,12 +46,18 @@
             <div class="col-sm-7">
                 <input type="text" class="form-control name" placeholder="结束时间" name="endTime" id="endTime" value="">
             </div>
-        </div>
         <div class="form-group">
             <label class="col-sm-2 control-label"><span class="name_span">是否需要用户登录</span></label>
             <div class="col-sm-7">
-                <input type="radio" name="check_login" id="check_login" value="1"> 是 
-                <input type="radio" name="check_login" id="check_login" value="0" checked> 否 
+                <input type="radio" name="check_login" id="check_login" value="1" {if $item.check_login == 1}checked{/if}> 是 
+                <input type="radio" name="check_login" id="check_login" value="0" {if $item.check_login == 0}checked{/if}> 否 
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">活动名称</span><i></i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="***" name="activity_name" id="activity_name" value="{$item.activity_name}">
+
             </div>
         </div>
         <div class="form-group">
