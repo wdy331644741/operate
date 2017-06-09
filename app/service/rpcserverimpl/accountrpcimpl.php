@@ -518,7 +518,7 @@ class AccountRpcImpl extends BaseRpcImpl
         if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
-        $dateNow = date("Y-m-d H:i:s");
+        $dateNow = date("Y-m-d");//2017-6-9日  改   展示时间忽略 时分秒
         //用户是否复投？
         $interestCouponName = "redelivery_per_coupon";//复投活动卷的名称
         $awardInterestcouponModel = new \Model\AwardInterestcoupon();
@@ -546,10 +546,10 @@ class AccountRpcImpl extends BaseRpcImpl
                             'days'   => 10,
                         );
         }else{
-            $days = (strtotime($isHaveExperience['effective_start']) - strtotime($dateNow) )/86400;
+            $days = (strtotime(date('Y-m-d',strtotime($isHaveExperience['effective_start'])) ) - strtotime($dateNow) )/86400;
             $stepTwo = array(
                             'status' => $isHaveExperience['is_activate'], 
-                            'days'   => ($days>10 || $days < 0)?10:intval($days),
+                            'days'   => ($days>10 || $days < 0)?10:ceil($days),
                         );
         }
 
@@ -566,10 +566,10 @@ class AccountRpcImpl extends BaseRpcImpl
                             'days'   => 15,
                         );
         }else{
-            $days = (strtotime($isHaveWithdraw['effective_start']) - strtotime($dateNow) )/86400;
+            $days = (strtotime(date('Y-m-d',strtotime($isHaveWithdraw['effective_start'])) ) - strtotime($dateNow) )/86400;
             $stepThree = array(
                             'status' => $isHaveWithdraw['is_activate'], 
-                            'days'   => ($days>15 || $days < 0)?15:intval($days),
+                            'days'   => ($days>15 || $days < 0)?15:ceil($days),
                         );
         }
 
