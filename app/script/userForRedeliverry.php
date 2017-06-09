@@ -31,7 +31,7 @@ function checkGiveWithdraw(){
 			echo "用户：".$value['user_id'].PHP_EOL;
 			$postParams = array(
 				'userId' => $value['user_id'], 
-				'startTime' => $date.' 00:00:00', 
+				'startTime' => $value['create_time'],
 				'endTime' => $dateNow, 
 				'status' => 0, //获取提现所有的状态
 				);
@@ -79,7 +79,7 @@ function checkGiveExpreience(){
 			echo "用户：".$value['user_id'].PHP_EOL;
 			$postParams = array(
 				'userId' => $value['user_id'], 
-				'startTime' => $date.' 00:00:00', 
+				'startTime' => $value['create_time'],
 				'endTime' => $dateNow, 
 				'status' => 0, //获取提现所有的状态
 				);

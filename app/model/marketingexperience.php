@@ -16,7 +16,7 @@ class MarketingExperience extends Model {
     public function getExpUserByTime($time){
         $start_time = $time.' 00:00:00';
         $end_time = $time.' 23:59:59';
-        return $this->fields('id,user_id,uuid',false)
+        return $this->fields('id,user_id,uuid,create_time',false)
             ->where("`create_time` >= '{$start_time}' and `create_time` <= '{$end_time}' and `is_activate` = '0' and `is_use` = 1")
             ->get()->resultArr();
     }
@@ -59,6 +59,8 @@ class MarketingExperience extends Model {
     {
         return $this->where("`id` = {$id} and `is_use` = 1 and `is_activate` = 0 ")
             ->upd(array('is_activate' => 1 ,'update_time' => date('Y-m-d H:i:s')));
+        // return $this->where("`id` = {$id} and `is_use` = 0 and `is_activate` = 0 ")
+        //     ->upd(array('is_use' => 1, 'is_activate' => 1 ,'update_time' => date('Y-m-d H:i:s')));
     }
 
     //获取用户体验金列表
