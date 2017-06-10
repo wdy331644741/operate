@@ -12,7 +12,7 @@ function recharge(){
 	if($rechargeAmount < 10000) return true;//充值金额需大于1w
 
 	//如果时间在活动之外
-	$activity_name = 'new_bird'; //活动标示
+	$activity_name = 'hunderd_six'; //活动标示
 	$activityModel = new \Model\MarketingActivity();
 	$activityInfo = $activityModel->getUsefulActivityByName($activity_name);
 	if($activityInfo['start_time'] > $rechargeTime || $activityInfo['end_time'] < $rechargeTime) return true;
