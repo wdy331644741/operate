@@ -585,7 +585,7 @@ class AccountRpcImpl extends BaseRpcImpl
     }
 
     /**
-     * 用户阶梯加息的状态
+     * 用户阶梯加息的状态###
      * @return [type] [description]
      * @JsonRpcMethod
      */
