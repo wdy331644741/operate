@@ -16,17 +16,24 @@ class AwardExperience extends Model
             $this->initArData($pkVal);
     }
 
-    public function getDetail($id)
-    {
-        return $this->where("`id` = {$id}")->get()->rowArr();
-    }
-
     public function filterUsefulExperience($nodeId)
     {
         $nowTime = date("Y-m-d H:i:s");
-        return $this->where("`limit_node` = {$nodeId} and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
+        $res = $this->where("`limit_node` = {$nodeId} and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
             ->orderby("id DESC")
             ->get()->rowArr();
+        return $res;
+    }
+
+    
+    public function getAwardExperienceByName($experience_name){
+        return $this->where("`experience_name` = '{$experience_name}'")
+            ->get()->rowArr();
+
+    }
+    public function getDetail($id)
+    {
+        return $this->where("`id` = {$id}")->get()->rowArr();
     }
 
     public function switchStausById($id)

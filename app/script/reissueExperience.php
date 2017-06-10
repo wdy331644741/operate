@@ -53,7 +53,6 @@ function index()
 									echo "已发放"."\n";
 								}
 							}else echo "从",$reissueDate," 前15天 有提现","\n";
-
 			            }
 
 		            

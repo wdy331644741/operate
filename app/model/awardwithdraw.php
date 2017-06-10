@@ -9,7 +9,6 @@ class AwardWithdraw extends Model
             $this->initArData($pkVal);
     }
 
-
     public function filterUsefulWithdraw($nodeId)
     {
         $nowTime = date("Y-m-d H:i:s");
