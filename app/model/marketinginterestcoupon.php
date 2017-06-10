@@ -11,6 +11,15 @@ class MarketingInterestcoupon extends Model {
     }
 
     //是否存在该记录
+    public function isExistArr($userId,$sourceId){
+        $result = $this->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
+            ->orderby("id DESC")
+            ->get()
+            ->resultArr();
+        return $result;
+    }
+
+    //是否存在该记录
     public function isExist($userId,$sourceId){
         $result = $this->fields("id", false)
             ->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
@@ -38,6 +47,7 @@ class MarketingInterestcoupon extends Model {
     //给用户添加记录
     public function addCouponForUser($userId, $awardInfo)
     {   
+        $awardInfo['later_days'] = isset($awardInfo['later_days'])?$awardInfo['later_days']:0;
         $data = array(
             'user_id'         => $userId,
             'uuid'            => create_guid(),
@@ -45,14 +55,14 @@ class MarketingInterestcoupon extends Model {
             'source_name'     => $awardInfo['title'],
             // 'usetime_start'   => $awardInfo['effective_start'],
             // 'usetime_end'     => $awardInfo['usetime_end'],
-            'usetime_start'   => date('Y-m-d H:i:s'),
-            'usetime_end'     => date('Y-m-d H:i:s', time() + $awardInfo['effective_days'] * DAYS_SECONDS),//加息券可使用的有效天数（复投活动）
+            'usetime_start'   => date('Y-m-d H:i:s',time() + $awardInfo['later_days'] * DAYS_SECONDS),
+            'usetime_end'     => date('Y-m-d H:i:s', time() + ($awardInfo['later_days']+$awardInfo['effective_days']) * DAYS_SECONDS),//加息券可使用的有效天数（复投活动）
             'rate'            => $awardInfo['rate'],
             'effective_start' => date('Y-m-d H:i:s'),// 6月5号紧急使用，下一版需要调整
             'effective_end'   => date('Y-m-d H:i:s', time() + $awardInfo['effective_days'] * DAYS_SECONDS),// 6月5号紧急使用，下一版需要调整
             // 'effective_start' => '1970-01-01 00:00:00',
             // 'effective_end'   => '1970-01-01 00:00:00',
-            'continuous_days' => $awardInfo['days'],
+            'continuous_days' => $awardInfo['days'],//加息天数
             'limit_desc'      => $awardInfo['limit_desc'],
             'create_time'     => date('Y-m-d H:i:s'),
             'update_time'     => date('Y-m-d H:i:s'),
