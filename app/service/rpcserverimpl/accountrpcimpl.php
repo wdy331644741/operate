@@ -583,4 +583,26 @@ class AccountRpcImpl extends BaseRpcImpl
 
         return ['code' => 0, 'message' => $stepOne?"复投":"没有复投",'data' => $data];
     }
+
+    /**
+     * 用户阶梯加息的状态###
+     * @return [type] [description]
+     * @JsonRpcMethod
+     */
+    public function ladderStatus(){
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+
+        $MarketingInterestcouponModel = new \Model\MarketingInterestcoupon();
+        $couponData = $MarketingInterestcouponModel->getActivateAndStatusData($this->userId);
+        if(count($couponData) > 1)
+            throw new AllErrorException(AllErrorException::LADDER_DATA_EXCEPTION);
+        // var_export($couponData);exit;
+
+        $status = [
+            'status' => empty($couponData)?0:(($couponData[0]['rate'] == 0.5)?1:2),
+        ];
+        return ['code' => 0 ,'data' => $status];
+    }
 }
