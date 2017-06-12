@@ -46,12 +46,6 @@ class AwardExperience extends Model
             $status = self::STATUS_TRUE;
     }
     
-    public function getAwardExperienceByName($experience_name){
-        return $this->where("`experience_name` = '{$experience_name}'")
-            ->get()->rowArr();
-
-        return $this->where($where)->upd(['status' => $status]);
-    }
 
     /**
      * 获取有效的体验金配置id
