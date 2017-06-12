@@ -73,6 +73,7 @@ class MarketingInterestcoupon extends Model {
             $data['effective_end'] = $awardInfo['effective_end'];
             $data['usetime_end'] = $awardInfo['effective_end'];
         }
+        $data['is_activate'] = isset($awardInfo['is_activate'])?$awardInfo['is_activate']:0;
         $res = $this->add($data);
         if ($res) {
             $data['id'] = $res;
@@ -92,7 +93,13 @@ class MarketingInterestcoupon extends Model {
 
     //激活状态
     public function updateActivate($uuid){
-        return $this->where("`uuid` = '{$uuid}' and `is_use` = 0")
+        return $this->where("`uuid` = '{$uuid}'")
             ->upd(array('is_activate' => 1, 'update_time' => date('Y-m-d H:i:s')));
+    }
+
+    //修改加息券is_use
+    public function updateUnused($uuid){
+        return $this->where("`uuid` = '{$uuid}'")
+            ->upd(array('is_use' => 0, 'update_time' => date('Y-m-d H:i:s')));
     }
 }
