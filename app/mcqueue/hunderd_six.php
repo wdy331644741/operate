@@ -110,8 +110,7 @@ function coupon($userId,$nodeId,$later = 0){
 			'effective_days' => $awardCouponInfo['effective_days'],
 			'effective_end' => $awardCouponInfo['effective_end'],
 			'limit_desc' => "百六加息，留存".(int)($later-1)."天后获得",
-			'is_use' => 1,
-			'is_activate' => 1
+			'is_use' => 1
 			);
 		$addCouponRes = $operateCoupon -> addCouponForUser($userId,$couponInfo);
 		//***************************************************
