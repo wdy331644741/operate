@@ -98,7 +98,7 @@ class MarketingInterestcoupon extends Model {
     }
 
     //修改加息券is_use
-    public function updateUnused($uuid){
+    public function updateUnused($uuid){ 
         return $this->where("`uuid` = '{$uuid}'")
             ->upd(array('is_use' => 0, 'update_time' => date('Y-m-d H:i:s')));
     }

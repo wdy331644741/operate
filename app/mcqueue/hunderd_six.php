@@ -20,7 +20,7 @@ function recharge(){
         );
 	$rechargeTimes = Common::jsonRpcApiCall((object)$postParams, 'getRechargeRecords', config('RPC_API.passport'));
 	// $rechargeTimes = 2;
-	if(count($rechargeTimes['result']) < 1) return true;// 需要是首投
+	if(count($rechargeTimes['result']) > 1) return true;// 需要是首投
 
 	//如果时间在活动之外
 	$activity_name = 'hunderd_six'; //活动标示
