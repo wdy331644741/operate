@@ -147,7 +147,7 @@ class MarketingInterestcoupon extends Model {
             ->get()->resultArr();
             // logs($this->getLastQuery(),'22222222');
         return $qq;
-
+    }
     // //激活状态
     // public function updateActivate($uuid){
     //     return $this->where("`uuid` = '{$uuid}'")
