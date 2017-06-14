@@ -9,7 +9,7 @@ function recharge(){
 	$userId = I('post.user_id', '', 'intval');//用户id
 	$rechargeTime = I('post.time');//充值时间
 	$rechargeAmount = I('post.amount');//充值金额
-	if($rechargeAmount < 10000) return true;//充值金额需大于1w
+	if($rechargeAmount < 10000) return "充值金额小于1w";//充值金额需大于1w
 
 	//1 判断在此之前 充值次数
 	$postParams = array(
@@ -20,7 +20,7 @@ function recharge(){
         );
 	$rechargeTimes = Common::jsonRpcApiCall((object)$postParams, 'getRechargeRecords', config('RPC_API.passport'));
 	// $rechargeTimes = 2;
-	if(count($rechargeTimes['result']) > 1) return true;// 需要是首投
+	if(count($rechargeTimes['result']) > 1) return "充值次数".count($rechargeTimes['result']);// 需要是首投
 
 	//如果时间在活动之外
 	$activity_name = 'hunderd_six'; //活动标示
@@ -33,19 +33,20 @@ function recharge(){
 
 	$nodeModel = new \Model\AwardNode();
 
-    $hunderdSixId = $nodeModel->getNode($nodeName);
     try {
-        coupon($userId,$hunderdSixId,8);
-        coupon($userId,$hunderdSixId,15);
-        coupon($userId,$hunderdSixId,22);
+    	$hunderdSixId = $nodeModel->getNode($nodeName);
+        $res_one = coupon($userId,$hunderdSixId,8);
+        $res_two = coupon($userId,$hunderdSixId,15);
+        $res_thr = coupon($userId,$hunderdSixId,22);
         
     } catch (\Exception $e) {
         $msg = "用户ID: {$userId} 触发：{$type}，发放入账失败：" . PHP_EOL;
         $msg .= "接口错误码：{$e->getCode()}, 错误信息：{$e->getMessage()}" . PHP_EOL;
-        logs($msg, 'trigger');
+        //logs($msg, 'trigger');
 
         echo $msg;
     }
+    return $res_one.$res_two.$res_thr;
 }
 
 
@@ -65,7 +66,7 @@ function withdraw(){
 	$activityInfo = $activityModel->getUsefulActivityByName($activity_name);
 	//在判断提现的时候，在活动结束时间的基础上再增加21天
 	$realEndTime = date("Y-m-d H:m:s", strtotime("+21 days", strtotime($activityInfo['end_time'])));
-	if($activityInfo['start_time'] > $withdrawTime || $realEndTime < $withdrawTime) return true;
+	if($activityInfo['start_time'] > $withdrawTime || $realEndTime < $withdrawTime) return "提现在活动时间之外";
 
 	$nodeName = 'hunderd_six_keep';
 	$nodeModel = new \Model\AwardNode();
@@ -75,9 +76,10 @@ function withdraw(){
 	$operateInterest = new \Model\MarketingInterestcoupon();
 
 	$awardExpInfo = $awardInterestCoupon->filterUsefulInterestCouponNotime($hunderdSixId);
-    $isExistExperience = $operateInterest->isExistArr($userId, $awardExpInfo['id']);
-
-    foreach ($isExistExperience as $key => $value) {
+    $isExistInterest = $operateInterest->isExistArr($userId, $awardExpInfo['id']);
+    if(empty($isExistInterest)) return "该用户没有百六加息券";
+    $returnStr = '';
+    foreach ($isExistInterest as $key => $value) {
     	# code...
     	if($value['usetime_start'] > $withdrawTime && $value['usetime_end'] > $withdrawTime){
     		//把改条加息券至为失效 发送到用户中心
@@ -89,8 +91,10 @@ function withdraw(){
 			//update operate database  status
 			if($rpcRes)
 			$operateInterest->updateUnused($value['uuid']);
+			$returnStr .= $activePost['token']."===";
     	}
     }
+    return $returnStr;
 }
 
 function coupon($userId,$nodeId,$later = 0){
@@ -132,7 +136,7 @@ function coupon($userId,$nodeId,$later = 0){
 		// if($rpcRes)
 		// $operateCoupon->updateActivate($addCouponRes['uuid']);
 		// logs($rpcRes,"activateInter");
-		return true;
+		return $addCouponRes;
 		
    	}
 
