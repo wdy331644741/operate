@@ -46,7 +46,7 @@ function recharge(){
 
         echo $msg;
     }
-    return $res_one.$res_two.$res_thr;
+    return $res_one."===".$res_two."===".$res_thr;
 }
 
 
@@ -89,9 +89,10 @@ function withdraw(){
     		];
     		$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'disableUnusedInterestCouponToUser', config('RPC_API.passport'));
 			//update operate database  status
-			if($rpcRes)
-			$operateInterest->updateUnused($value['uuid']);
-			$returnStr .= $activePost['token']."===";
+			if($rpcRes){
+				$operateInterest->updateUnused($value['uuid']);
+				$returnStr .= $activePost['token']."===";
+			}
     	}
     }
     return $returnStr;
@@ -136,7 +137,7 @@ function coupon($userId,$nodeId,$later = 0){
 		// if($rpcRes)
 		// $operateCoupon->updateActivate($addCouponRes['uuid']);
 		// logs($rpcRes,"activateInter");
-		return $addCouponRes;
+		return json_encode($addCouponRes);
 		
    	}
 
