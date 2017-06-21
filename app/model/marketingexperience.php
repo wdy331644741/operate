@@ -36,7 +36,7 @@ class MarketingExperience extends Model {
         if (empty($expInfo)) {
             return false;
         }
-        if(empty($laterdays)){
+        if(empty($laterdays) || $laterdays == 0){
             $data = $this->getExperienceDataByType($expInfo);
         }else{
             $data = $this->getExperienceDataByTypeLater($expInfo,$laterdays);
@@ -124,16 +124,34 @@ class MarketingExperience extends Model {
             $experienceInfo['amount'] = mt_rand($experienceInfo['min_amount'], $experienceInfo['max_amount']);
         }
 
-        return array(
-            'uuid'            => create_guid(),
-            'source_id'       => $experienceInfo['id'],
-            'source_name'     => $experienceInfo['title'],
-            'amount'          => $experienceInfo['amount'],
-            'effective_start' => date('Y-m-d H:i:s', time() + $laterdays * DAYS_SECONDS),
-            'effective_end'   => date('Y-m-d H:i:s', time() + ($laterdays+$experienceInfo['days']) * DAYS_SECONDS),
-            'continuous_days' => $experienceInfo['days'],
-            'limit_desc'      => $experienceInfo['limit_desc'],
-            'create_time'     => date('Y-m-d H:i:s')
-        );
+        if(isset($experienceInfo['days']) && !empty($experienceInfo['days']) ){
+
+            return array(
+                'uuid'            => create_guid(),
+                'source_id'       => $experienceInfo['id'],
+                'source_name'     => $experienceInfo['title'],
+                'amount'          => $experienceInfo['amount'],
+                'effective_start' => date('Y-m-d H:i:s', time() + $laterdays * DAYS_SECONDS),
+                'effective_end'   => date('Y-m-d H:i:s', time() + ($laterdays+$experienceInfo['days']) * DAYS_SECONDS),
+                'continuous_days' => $experienceInfo['days'],
+                'limit_desc'      => $experienceInfo['limit_desc'],
+                'create_time'     => date('Y-m-d H:i:s'),
+                'is_use'          => $experienceInfo['is_use']
+            );
+        }else if(!empty($experienceInfo['hours']) && $experienceInfo['days'] == 0){
+            return array(
+                'uuid'            => create_guid(),
+                'source_id'       => $experienceInfo['id'],
+                'source_name'     => $experienceInfo['title'],
+                'amount'          => $experienceInfo['amount'],
+                'effective_start' => date('Y-m-d H:i:s', time() + $laterdays * DAYS_SECONDS),
+                'effective_end'   => date('Y-m-d H:i:s', time() + $experienceInfo['hours'] * 3600 + $laterdays * DAYS_SECONDS),
+                'continuous_hours' => $experienceInfo['hours'],
+                'limit_desc'      => $experienceInfo['limit_desc'],
+                'create_time'     => date('Y-m-d H:i:s'),
+                'is_use'          => $experienceInfo['is_use']
+            );
+        }
+
     }
 }

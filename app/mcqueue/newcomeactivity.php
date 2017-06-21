@@ -71,7 +71,7 @@ function bandcard(){
  * @pageroute
  */
 function recharge(){
-	$userId = I('post.userId', '', 'intval');//用户id
+	$userId = I('post.user_id', '', 'intval');//用户id
 	$rechargeTime = I('post.time');//充值时间
 	$rechargeAmount = I('post.amount');//充值金额
 	// $nodeName = I('post.node');//动作节点
@@ -82,16 +82,27 @@ function recharge(){
 	$activityInfo = $activityModel->getUsefulActivityByName($activity_name);
 	if($activityInfo['start_time'] > $rechargeTime || $activityInfo['end_time'] < $rechargeTime) return true;
 
+	//1 判断在此之前 充值次数
+	$postParams = array(
+            'userId'     => $userId,
+            'startTime'  => '',//活动开始时间
+            'endTime'    => $rechargeTime,
+            'status'	 => 200,
+        );
+	//$rechargeTimes = Common::jsonRpcApiCall((object)$postParams, 'getRechargeRecords', config('RPC_API.passport'));
+	// $rechargeTimes = 2;
+	//if(count($rechargeTimes['result']) > 1) return "充值次数".count($rechargeTimes['result']);// 需要是首投
+
 	$frist_recharge = 'new_bird_frist_recharge';
-	$exp_66 = 'new_bird_frist_recharge_keep';
+	$exp_66 = 'new_bird_frist_recharge_365';
 
 	$nodeModel = new \Model\AwardNode();
 
     $frist_rechargeNodeId = $nodeModel->getNode($frist_recharge);
     $exp_66NodeId = $nodeModel->getNode($exp_66);
     try {
-        experience($userId,$frist_rechargeNodeId);
-		experience($userId,$exp_66NodeId);
+        experience($userId,$frist_rechargeNodeId,15);
+		experience($userId,$exp_66NodeId,15);
         
     } catch (\Exception $e) {
         $msg = "用户ID: {$userId} 触发：{$type}，发放入账失败：" . PHP_EOL;
@@ -130,7 +141,7 @@ function withdraw(){
 
 }
 //发放体验金
-function experience($userId,$nodeId,$activate=true){
+function experience($userId,$nodeId,$latter=0){
 	$awardExperience = new \Model\AwardExperience();//体验金配置
 	$operateExperience = new \Model\MarketingExperience();
 
@@ -148,7 +159,7 @@ function experience($userId,$nodeId,$activate=true){
 			'amount_type'=> $awardExpInfo['amount_type'],
             'is_use'     => 1
 			);
-		$addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo);
+		$addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo,$latter);
 		$expId = $addExperienceRes['id'];
 		unset($addExperienceRes['id']);
 		//通知用户中心 预发放体验金 
