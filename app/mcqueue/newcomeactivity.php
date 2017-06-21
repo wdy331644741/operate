@@ -158,7 +158,7 @@ function experience($userId,$nodeId,$activate=true){
 				);
 			$resRpc = Common::jsonRpcApiCall((object)$preSend, 'preSendExperienceGoldToUser', config('RPC_API.passport'));
 			//$resRpc = true;
-			if($resRpc){
+			if($resRpc['result']){
 				$activePost = array(
 					'uuid' => $addExperienceRes['uuid'],
 					'status' => 1
