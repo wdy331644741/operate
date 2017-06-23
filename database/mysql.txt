@@ -1,77 +1,11 @@
-CREATE TABLE `marketing_article_log` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) NOT NULL COMMENT '用户id',
-  `articel_id` int(10) NOT NULL COMMENT '公告id',
-  `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '第一次阅读时间',
-  `last_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '最后一次阅读时间',
-  `counts` int(20) DEFAULT '1' COMMENT '阅读次数',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+CREATE TABLE `award_extend` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user` varchar(255) NOT NULL DEFAULT '' COMMENT '发放人手机号/用户id',
+  `award_type` tinyint(2) unsigned NOT NULL COMMENT '奖品类型  1:体验金 2：加息券 3:提现券',
+  `award_id` int(10) unsigned NOT NULL COMMENT '奖品id',
+  `remark` varchar(50) NOT NULL DEFAULT '' COMMENT '发放备注',
+  `send_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发送人数',
+  `send_status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0 发送中 1发送成功',
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`) USING BTREE,
-  KEY `artice_id` (`articel_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='阅读公告日志表';
-
-CREATE TABLE `promoter_list` (
-  `apply_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '申请id',
-  `auth_id` int(10) NOT NULL COMMENT '用户id',
-  `username` varchar(30) NOT NULL COMMENT '用户姓名',
-  `phone` char(11) NOT NULL COMMENT '电话',
-  `invite_num` int(5) NOT NULL COMMENT '邀请用户数量',
-  `total_inve_amount` decimal(20,2) NOT NULL COMMENT '好友投资总额',
-  `commission` decimal(20,2) NOT NULL COMMENT '好友邀请所得佣金',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0待审核，1通过,2不通过',
-  `level` tinyint(2) DEFAULT '1' COMMENT '等级',
-  `earnings_id` int(10) DEFAULT NULL COMMENT '共享收益比例',
-  PRIMARY KEY (`apply_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8 COMMENT='推广员申请表';
-
-ALTER TABLE `marketing_revenuesharing`
-ADD COLUMN `rate`  decimal(10,4) NOT NULL DEFAULT 100 COMMENT '收益比例，默认100%是基础收益' AFTER `update_time`;
-
-
-
-ALTER TABLE `config_earnings`
-ADD COLUMN `percent`  decimal(20,2) NULL COMMENT '收益百分比' AFTER `amount`;
-
-
-CREATE TABLE `promoter_statistics` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `date` date DEFAULT NULL COMMENT '日期',
-  `adds` int(10) DEFAULT '0' COMMENT '推广员每日新增',
-  `register_adds` int(10) DEFAULT '0' COMMENT '推广员渠道每日新增',
-  `recharge_adds` int(10) DEFAULT '0' COMMENT '推广员渠道每日充值',
-  `withdraw_adds` int(10) DEFAULT '0' COMMENT '推广员渠道每日提现',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='推广员相关数据统计';
-
-ALTER TABLE `award_interestcoupon`
-ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER `coupon`;
-
-
-ALTER TABLE `award_experience`
-ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER `experience_name`;
-
-
-ALTER TABLE `award_withdraw`
-ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER `withdraw_name`;
-
-
-
-ALTER TABLE `marketing_interestcoupon`
-ADD COLUMN `status`  tinyint(1) NULL DEFAULT 1 COMMENT '状态' AFTER `is_use`;
-
-
-ALTER TABLE `award_interestcoupon`
-ADD COLUMN `effective_days`  int(10) NULL COMMENT '有效天数' AFTER `days`;
-
-ALTER TABLE `marketing_activity`
-ADD COLUMN `check_login`  tinyint(1) NULL DEFAULT 0 COMMENT '检查是否需要用户登录 0不需要 1需要' AFTER `is_del`;
-
-ALTER TABLE `award_experience`
-ADD COLUMN `hours`  smallint(5) NULL DEFAULT 0 COMMENT '加息小时' AFTER `days`;
-
-ALTER TABLE `marketing_experience`
-ADD COLUMN `continuous_hours`  smallint(5) NOT NULL DEFAULT 0 COMMENT '按小时计息' AFTER `continuous_days`;
-
