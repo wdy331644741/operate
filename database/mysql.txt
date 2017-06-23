@@ -1,17 +1,13 @@
-CREATE TABLE `marketing_article_log` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) NOT NULL COMMENT '用户id',
-  `articel_id` int(10) NOT NULL COMMENT '公告id',
-  `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '第一次阅读时间',
-  `last_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '最后一次阅读时间',
-  `counts` int(20) DEFAULT '1' COMMENT '阅读次数',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+CREATE TABLE `award_extend` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user` varchar(255) NOT NULL DEFAULT '' COMMENT '发放人手机号/用户id',
+  `award_type` tinyint(2) unsigned NOT NULL COMMENT '奖品类型  1:体验金 2：加息券 3:提现券',
+  `award_id` int(10) unsigned NOT NULL COMMENT '奖品id',
+  `remark` varchar(50) NOT NULL DEFAULT '' COMMENT '发放备注',
+  `send_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发送人数',
+  `send_status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0 发送中 1发送成功',
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`) USING BTREE,
-  KEY `artice_id` (`articel_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='阅读公告日志表';
-
-ALTER TABLE `marketing_activity`
-ADD COLUMN `check_login`  tinyint(1) NULL DEFAULT 0 COMMENT '检查是否需要用户登录 0不需要 1需要' AFTER `is_del`;
-ALTER TABLE `marketing_experience`
-ADD COLUMN `continuous_hours`  smallint(5) NOT NULL DEFAULT 0 COMMENT '按小时计息' AFTER `continuous_days`;
+  KEY `normal_send_status` (`send_status`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='手动发放奖品表';
