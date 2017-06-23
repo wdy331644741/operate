@@ -168,3 +168,20 @@ function filterAndMapPhoneToUserIds($user)
     //去重，同样的用户只发一次
     return array_unique($result);
 }
+
+function ifUserExistsAndReturnUserId($userMark)
+{
+    $userModel = new \Model\AuthUser();
+    if (preg_match('/^1[0-9]{10}$/', $userMark)) {
+        $userInfo = $userModel->getUserInfoByName($userMark);
+        if (!empty($userInfo)) {
+            return $userInfo->id;
+        }
+    }
+
+    if ($userModel->getUserName($userMark)) {
+        return $userMark;
+    }
+
+    return false;
+}
