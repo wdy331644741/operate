@@ -151,3 +151,22 @@ function pushToBeActivatedInterestCoupon($userId, $couponId)
     // Common::localApiCall((object) $params, 'pushToBeActivatedInterestCoupon', 'InsideRpcImpl');
     Common::jsonRpcApiCall((object)$params, 'pushToBeActivatedInterestCoupon', config('RPC_API.passport'));
 }
+
+
+
+function filterAndMapPhoneToUserIds($user)
+{
+    $result = [];
+    if (is_string($user)) {
+        $user = explode(',', $user);
+    }
+
+    foreach ($user as $item) {
+        if ($userId = ifUserExistsAndReturnUserId($item)) {
+            $result[] = $userId;
+        }
+    }
+
+    //去重，同样的用户只发一次
+    return array_unique($result);
+}
