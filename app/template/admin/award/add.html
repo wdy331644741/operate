@@ -114,9 +114,10 @@
                    }
                   $("#tablename").html(tablename);
                   $("#tableValue").html(tableValue);
+                  $("#myTabContent").show();
                   $(".status").on("click",function(){
-                    $("$award_id")
-                    console.log($(this).parent().parent().find("td:first").html())
+                    $("#award_id").val($(this).parent().parent().find("td:first").html());
+                    $("#myTabContent").hide();
                   })
                 }
             }
