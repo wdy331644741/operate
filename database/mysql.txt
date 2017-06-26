@@ -21,3 +21,7 @@ ADD COLUMN `effective_days`  int(10) NULL COMMENT '有效天数' AFTER `days`;
 
 ALTER TABLE `award_experience`
 ADD COLUMN `hours`  smallint(5) NULL DEFAULT 0 COMMENT '加息小时' AFTER `days`;
+
+
+ALTER TABLE `marketing_interestcoupon`
+ADD COLUMN `type`  tinyint(3) NOT NULL DEFAULT 1 COMMENT '加息券类型 1普通加息券、2特殊加息券（阶梯）' AFTER `update_time`;
