@@ -1,5 +1,6 @@
 {include file="header.html"}
-
+<script src="admin/ckeditor/ckeditor.js"></script>
+<script src="admin/ckeditor/adapters/jquery.js"></script>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <form class="form-horizontal" id="form01">
         <div class="top-title">
@@ -38,8 +39,11 @@
         <div class="form-group">
             <label class="col-sm-2 control-label"><span class="name_span">内容</span><i>*</i></label>
             <div class="col-sm-7">
-                <input type="hidden" class="form-control" name="content" id="content" value="">
-                <script type="text/plain" id="myEditor" style="width:750px;height:240px;"></script>
+                <!-- <input type="hidden" class="form-control" name="content" id="content" value="">
+                <script type="text/plain" id="myEditor" style="width:750px;height:240px;"></script> -->
+                <textarea name="editor1" id="editor1" rows="10" cols="801">
+                
+                </textarea>
             </div>
         </div>
         <div class="form-group">
@@ -61,15 +65,18 @@
 </div>
 
 <script type="text/javascript">
-    var ue  = UE.getEditor('myEditor', {
-                toolbars: [
-                    ['fullscreen', 'source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'backcolor', 'fontsize', 'fontfamily', 'justifyleft', 'justifyright', 'justifycenter', 'justifyjustify', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', 'link', 'unlink', 'emotion']
-                ],
-            }
-    );
-    ue.ready(function() {
-        ue.setContent('');
-    });
+    // var ue  = UE.getEditor('myEditor', {
+    //             toolbars: [
+    //                 ['fullscreen', 'source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'backcolor', 'fontsize', 'fontfamily', 'justifyleft', 'justifyright', 'justifycenter', 'justifyjustify', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', 'link', 'unlink', 'emotion']
+    //             ],
+    //         }
+    // );
+    // ue.ready(function() {
+    //     ue.setContent('');
+    // });
+    $(document).ready(function(){  
+        $('textarea#editor1').ckeditor();  
+    });  
 </script>
 
 <script type="text/javascript">
