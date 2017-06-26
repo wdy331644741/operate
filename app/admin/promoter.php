@@ -3,7 +3,7 @@ defined("__FRAMEWORKNAME__") or die("No permission to access!");
  
 /**
  * @pageroute
- * 推广员列表
+ * 推广员列表1
  */
 function index()
 {
