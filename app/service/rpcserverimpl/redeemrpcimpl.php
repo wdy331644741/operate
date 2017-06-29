@@ -16,17 +16,20 @@ class RedeemRpcImpl extends BaseRpcImpl
     {
 
         if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+            return ['error' => ['code' => AllErrorException::ACCOUNT_TRADE_FROZEN,
+                'message' => '用户未登录',
+
+            ]];
         }
         $redeemModel = new  \Model\RedeemCode();
 
         $verifyRes = $redeemModel->verifyCode($this->userId, $params->code);
 
         if (!$verifyRes['is_ok']){
-            return [
-                'code'=>AllErrorException::VALID_CAPTCHA_FAIL,
-                'msg' => $verifyRes['msg'],
-            ];
+            return ['error'=>[
+                    'code'=>AllErrorException::VALID_CAPTCHA_FAIL,
+                    'message' => $verifyRes['msg'],
+            ]];
         }
 
         $redeemData = $verifyRes['redeem_data'];
@@ -35,18 +38,18 @@ class RedeemRpcImpl extends BaseRpcImpl
             $this->userId, $redeemData['map_id']);
         if ($res){
             if ($redeemModel->updateStatus($params->code, $this->userId)){
-                return [
-                    'code'=>0,
-                    'msg' => '兑换成功',
-                ];
+                return ['result' => [
+                    'code' => 0,
+                    'message' => '兑换成功',
+                ]];
             }
 
         }
 
-        return [
+        return ['error'=>[
             'code'=>AllErrorException::VALID_CAPTCHA_FAIL,
-            'msg' => '兑换失败',
-        ];
+            'message' => '兑换失败',
+        ]];
 
     }
 
