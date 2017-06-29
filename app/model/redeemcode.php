@@ -61,6 +61,10 @@ class RedeemCode extends Model
             return ['msg'=>'已超过最高可得次数','is_ok'=>false];
         }
 
+        if (!$this->verifyAble($redeemMeta['type'],$redeemMeta['map_id'])){
+            return ['msg'=>'活动兑换码已禁用','is_ok'=>false];
+        }
+
         return ['msg' => '', 'is_ok' => true, 'redeem_data'=>$redeemCode];
 
 
