@@ -720,16 +720,6 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
-    'contact_activity' => 
-    array (
-      'field' => 'contact_activity',
-      'key' => '',
-      'default' => NULL,
-      'type' => 'varchar',
-      'lenght' => '100',
-      'unsigned' => false,
-      'null' => true,
-    ),
     'pk_name' => 'id',
   ),
   'award_interestcoupon' => 
@@ -859,16 +849,6 @@ return array (
       'key' => '',
       'default' => NULL,
       'lenght' => '50',
-      'unsigned' => false,
-      'null' => true,
-    ),
-    'contact_activity' => 
-    array (
-      'field' => 'contact_activity',
-      'key' => '',
-      'default' => NULL,
-      'type' => 'varchar',
-      'lenght' => '100',
       'unsigned' => false,
       'null' => true,
     ),
@@ -1021,16 +1001,6 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
-    'contact_activity' => 
-    array (
-      'field' => 'contact_activity',
-      'key' => '',
-      'default' => NULL,
-      'type' => 'varchar',
-      'lenght' => '100',
-      'unsigned' => false,
-      'null' => true,
-    ),
     'pk_name' => 'id',
   ),
   'config_earnings' => 
@@ -1067,7 +1037,7 @@ return array (
     array (
       'field' => 'percent',
       'key' => '',
-      'default' => '0.00',
+      'default' => NULL,
       'unsigned' => false,
       'null' => true,
     ),
@@ -2363,6 +2333,219 @@ return array (
       'lenght' => '10',
       'unsigned' => false,
       'null' => true,
+    ),
+    'pk_name' => 'id',
+  ),
+  'redeem_code' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'lenght' => '20',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'user_id' => 
+    array (
+      'field' => 'user_id',
+      'key' => '',
+      'default' => '0',
+      'lenght' => '20',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'code' => 
+    array (
+      'field' => 'code',
+      'key' => 'UNI',
+      'default' => '',
+      'type' => 'varchar',
+      'lenght' => '32',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'redeem_time' => 
+    array (
+      'field' => 'redeem_time',
+      'key' => '',
+      'default' => '0000-00-00 00:00:00',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'ctime' => 
+    array (
+      'field' => 'ctime',
+      'key' => '',
+      'default' => 'CURRENT_TIMESTAMP',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'type' => 
+    array (
+      'field' => 'type',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '4',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'map_id' => 
+    array (
+      'field' => 'map_id',
+      'key' => '',
+      'default' => '0',
+      'lenght' => '20',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '4',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'is_del' => 
+    array (
+      'field' => 'is_del',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '4',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'redeem_sn' => 
+    array (
+      'field' => 'redeem_sn',
+      'key' => '',
+      'default' => '',
+      'type' => 'varchar',
+      'lenght' => '255',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'meta_id' => 
+    array (
+      'field' => 'meta_id',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '11',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'pk_name' => 'id',
+  ),
+  'redeem_code_meta' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '11',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'name' => 
+    array (
+      'field' => 'name',
+      'key' => '',
+      'default' => '',
+      'type' => 'varchar',
+      'lenght' => '255',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'map_id' => 
+    array (
+      'field' => 'map_id',
+      'key' => '',
+      'default' => '0',
+      'lenght' => '20',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'type' => 
+    array (
+      'field' => 'type',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '4',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'total' => 
+    array (
+      'field' => 'total',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '11',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'user_max_get' => 
+    array (
+      'field' => 'user_max_get',
+      'key' => '',
+      'default' => '0',
+      'lenght' => '6',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'start_time' => 
+    array (
+      'field' => 'start_time',
+      'key' => '',
+      'default' => '0000-00-00 00:00:00',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'end_time' => 
+    array (
+      'field' => 'end_time',
+      'key' => '',
+      'default' => '0000-00-00 00:00:00',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => '',
+      'default' => '1',
+      'type' => 'tinyint',
+      'lenght' => '4',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'ctime' => 
+    array (
+      'field' => 'ctime',
+      'key' => '',
+      'default' => 'CURRENT_TIMESTAMP',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'is_del' => 
+    array (
+      'field' => 'is_del',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '4',
+      'unsigned' => false,
+      'null' => false,
     ),
     'pk_name' => 'id',
   ),
