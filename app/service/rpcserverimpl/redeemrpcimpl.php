@@ -38,11 +38,18 @@ class RedeemRpcImpl extends BaseRpcImpl
         }
 
         $redeemData = $verifyRes['redeem_data'];
+        $status = $redeemModel->updateStatus($params->code, $this->userId);
 
+        if (empty($status)){
+            return [
+                'code'=>AllErrorException::VALID_CAPTCHA_FAIL,
+                'message' => '兑换失败',
+            ];
+        }
         $res = (new SendCouponRpcImpl)->sendAction($redeemData['type'],
             $this->userId, $redeemData['map_id']);
         if ($res){
-            if ($redeemModel->updateStatus($params->code, $this->userId)){
+            if ($status){
                 return [
                     'code' => 0,
                     'type' => $redeemData['type'],
