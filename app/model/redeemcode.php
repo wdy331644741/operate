@@ -94,7 +94,7 @@ class RedeemCode extends Model
     {
         $this->tableName = $this->typeToTable[$type];
         $nowTime = date("Y-m-d H:i:s");
-        return $this->where("`id` = {$id} and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
+        return $this->where("`id` = {$id} and status = 1 and is_del = 0")
             ->get()->rowArr();
 
     }
