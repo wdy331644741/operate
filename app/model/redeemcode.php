@@ -12,7 +12,7 @@ class RedeemCode extends Model
 
     ];
 
-    public $typeArr = [1=>'加息卷',2=>'体验金',3=>'提现卷'];
+    public $typeArr = [1=>'加息券',2=>'体验金',3=>'提现券'];
 
     const RANDOM_STR = 'S62ksVov';
     const STATUS_TRUE = 1;
@@ -23,12 +23,16 @@ class RedeemCode extends Model
 
         $this->tableName = 'redeem_code';
         $redeemCode = $this->where(
-            ['code' => $code, 'user_id'=>0,'is_del'=>0,'status'=>0])
+            ['code' => $code, 'is_del'=>0])
             ->get()->rowArr();
 
         //不存在或已使用
         if (!$redeemCode){
-            return ['msg'=>'不存在或已使用','is_ok'=>false];
+            return ['msg'=>'兑换码不存在','is_ok'=>false];
+        }
+
+        if ($redeemCode['status']==1) {
+            return ['msg'=>'兑换码已兑换','is_ok'=>false];
         }
 
         $redeemUserCount = $this->
@@ -38,20 +42,43 @@ class RedeemCode extends Model
 
         //切换库
         $this->tableName = 'redeem_code_meta';
-        $redeemMeta = $this->where(['id' => $redeemCode['meta_id'],'status'=>1,'is_del'=>0])->get()->rowArr();
+        $redeemMeta = $this->where(['id' => $redeemCode['meta_id'],'is_del'=>0])->get()->rowArr();
 
         $time = time();
-        if ($time<strtotime($redeemMeta['start_time']) || $time>strtotime($redeemMeta['end_time'])){
-            return ['msg' => '已过期或未开始', 'is_ok' => false];
+        if ($time<strtotime($redeemMeta['start_time'])){
+            return ['msg' => '活动兑换码未开始', 'is_ok' => false];
         }
-        if (!$redeemMeta) {
-            return ['msg'=>'不存在或已禁用','is_ok'=>false];
+
+        if ($time>strtotime($redeemMeta['end_time'])){
+            return ['msg' => '活动兑换码已过期', 'is_ok' => false];
+        }
+
+        if ($redeemMeta['status']==0) {
+            return ['msg'=>'活动兑换码已禁用','is_ok'=>false];
         }
 
         if ($redeemUserCount >= $redeemMeta['user_max_get']){
-            return ['msg'=>'已超出使用次数','is_ok'=>false];
+            return ['msg'=>'已超过最高可得次数','is_ok'=>false];
         }
 
+        if (!$this->verifyAble($redeemMeta['type'],$redeemMeta['map_id'])){
+            return ['msg'=>'活动兑换码已禁用','is_ok'=>false];
+        }
+
+
+        $prizeInfo = $this->getPrizeInfo($redeemMeta['map_id'],$redeemMeta['type']);
+
+        $pinfo = '';
+
+        if ($redeemMeta['type']==1){
+            $pinfo = $prizeInfo['rate'];
+        }elseif ($redeemMeta['type']==2){
+            $pinfo = $prizeInfo['amount'];
+        }elseif ($redeemMeta['type']==3){
+            $pinfo = $prizeInfo['times'];
+        }
+
+        $redeemCode['prize_info'] = $pinfo;
         return ['msg' => '', 'is_ok' => true, 'redeem_data'=>$redeemCode];
 
 
@@ -59,10 +86,9 @@ class RedeemCode extends Model
     }
     public function verifyAble($type, $mapId)
     {
-        $nowTime = date('Y-m-d H:i:s');
         $this->tableName = $this->typeToTable[$type];
 
-        $res = $this->where("`id` = '{$mapId}' and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
+        $res = $this->where("`id` = '{$mapId}' and status = 1 and is_del = 0")
             ->get()->rowArr();
         if (empty($res)) return false;
         return true;
@@ -78,8 +104,8 @@ class RedeemCode extends Model
     public function getPrizeInfo($id, $type)
     {
         $this->tableName = $this->typeToTable[$type];
-        $nowTime = date("Y-m-d H:i:s");
-        return $this->where("`id` = {$id} and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
+
+        return $this->where("`id` = {$id} and status = 1 and is_del = 0")
             ->get()->rowArr();
 
     }
@@ -240,6 +266,7 @@ class RedeemCode extends Model
         }
         return $count;
     }
+
 
     /**
      * 更新兑换码
