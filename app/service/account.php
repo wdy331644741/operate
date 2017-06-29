@@ -16,6 +16,9 @@ function index()
     //用戶賬目
     $jsonRPCServer->addService(loadRpcImpl('UserAccountRpcImpl'));
 
+
+    //兑换码
+    $jsonRPCServer->addService(loadRpcImpl('RedeemRpcImpl'));
     $jsonRPCServer->processingRequests();
 }
 
