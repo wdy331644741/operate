@@ -40,7 +40,8 @@ class RedeemRpcImpl extends BaseRpcImpl
             if ($redeemModel->updateStatus($params->code, $this->userId)){
                 return [
                     'code' => 0,
-                    'message' => $redeemData['suss_msg'],
+                    'type' => $redeemData['type'],
+                    'message' => $redeemData['prize_info'],
                 ];
             }
 

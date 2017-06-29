@@ -66,8 +66,19 @@ class RedeemCode extends Model
         }
 
 
-        $prizeInfo = $this->getPrizeDetail($redeemMeta['type'],$redeemMeta['map_id']);
-        $redeemCode['suss_msg'] = $this->typeArr[$redeemMeta['type']] . ":" . $prizeInfo;
+        $prizeInfo = $this->getPrizeInfo($redeemMeta['map_id'],$redeemMeta['type']);
+
+        $pinfo = '';
+
+        if ($redeemMeta['type']==1){
+            $pinfo = $prizeInfo['rate'];
+        }elseif ($redeemMeta['type']==2){
+            $pinfo = $prizeInfo['amount'];
+        }elseif ($redeemMeta['type']==3){
+            $pinfo = $prizeInfo['times'];
+        }
+
+        $redeemCode['prize_info'] = $pinfo;
         return ['msg' => '', 'is_ok' => true, 'redeem_data'=>$redeemCode];
 
 
@@ -93,7 +104,7 @@ class RedeemCode extends Model
     public function getPrizeInfo($id, $type)
     {
         $this->tableName = $this->typeToTable[$type];
-        $nowTime = date("Y-m-d H:i:s");
+
         return $this->where("`id` = {$id} and status = 1 and is_del = 0")
             ->get()->rowArr();
 
