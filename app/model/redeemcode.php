@@ -22,9 +22,10 @@ class RedeemCode extends Model
     {
 
         $this->tableName = 'redeem_code';
-        $redeemCode = $this->where(
-            ['code' => $code, 'is_del'=>0])
-            ->get()->rowArr();
+
+        $sql = "select * from redeem_code where code='{$code}' and is_del=0 for update";
+        $res = $this->query($sql);
+        $redeemCode = $res[0];
 
         //不存在或已使用
         if (!$redeemCode){
