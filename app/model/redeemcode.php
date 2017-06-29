@@ -65,6 +65,9 @@ class RedeemCode extends Model
             return ['msg'=>'活动兑换码已禁用','is_ok'=>false];
         }
 
+
+        $prizeInfo = $this->getPrizeDetail($redeemMeta['type'],$redeemMeta['map_id']);
+        $redeemCode['suss_msg'] = $this->typeArr[$redeemMeta['type']] . ":" . $prizeInfo;
         return ['msg' => '', 'is_ok' => true, 'redeem_data'=>$redeemCode];
 
 
