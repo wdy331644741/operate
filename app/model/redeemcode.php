@@ -278,7 +278,7 @@ class RedeemCode extends Model
     {
         $this->tableName = 'redeem_code';
         return $this->update(['user_id' => $userId,'status'=>1,
-            'redeem_time' => date("Y-m-d H:i:s")], ['code' => $code]);
+            'redeem_time' => date("Y-m-d H:i:s")], ['code' => $code, 'status'=>0]);
     }
 
 
