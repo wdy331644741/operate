@@ -49,7 +49,7 @@ class RedeemCode extends Model
             return ['msg' => '活动兑换码未开始', 'is_ok' => false];
         }
 
-        if ($time>strtotime($redeemMeta['start_time'])){
+        if ($time>strtotime($redeemMeta['end_time'])){
             return ['msg' => '活动兑换码已过期', 'is_ok' => false];
         }
 
@@ -252,6 +252,7 @@ class RedeemCode extends Model
         }
         return $count;
     }
+
 
     /**
      * 更新兑换码
