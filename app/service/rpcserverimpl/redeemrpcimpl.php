@@ -24,7 +24,12 @@ class RedeemRpcImpl extends BaseRpcImpl
         $redeemModel = new  \Model\RedeemCode();
 
         $verifyRes = $redeemModel->verifyCode($this->userId, $params->code);
-
+        if (!preg_match('/\w{4,}/',$params->code)){
+            return [
+                'code'=>AllErrorException::VALID_CAPTCHA_FAIL,
+                'message' => '兑换码格式错误',
+            ];
+        }
         if (!$verifyRes['is_ok']){
             return [
                     'code'=>AllErrorException::VALID_CAPTCHA_FAIL,
