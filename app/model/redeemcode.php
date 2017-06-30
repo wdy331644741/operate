@@ -276,9 +276,13 @@ class RedeemCode extends Model
      */
     public function updateStatus($code, $userId)
     {
-        $this->tableName = 'redeem_code';
-        return $this->update(['user_id' => $userId,'status'=>1,
-            'redeem_time' => date("Y-m-d H:i:s")], ['code' => $code, 'status'=>0]);
+        $now =date("Y-m-d H:i:s");
+//        $this->tableName = 'redeem_code';
+        $sql = "update redeem_code set `status` =1 ,`redeem_time` = '{$now}', `user_id` = $userId where `code`='{$code}' and `status`=0";
+
+        return $this->exec($sql);
+//        return $this->update(['user_id' => $userId,'status'=>1,
+//            'redeem_time' => date("Y-m-d H:i:s")], ['code' => $code, 'status'=>0]);
     }
 
 
