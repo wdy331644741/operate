@@ -251,20 +251,50 @@ class RedeemCode extends Model
      */
     public function generateCode($meatId, $data)
     {
-        $this->tableName = 'redeem_code';
-        $redeemSn = $meatId."-".$data['type']."-";
-        $count = 0;//计数器
-        for ($i=0;$i<$data['total'];$i++){
-            $subData['redeem_sn'] = $redeemSn.$i;
-            $subData['code'] = self::hashEncode($redeemSn . $i);
-            $subData['type'] = $data['type'];
-            $subData['map_id'] = $data['map_id'];
-            $subData['meta_id'] = $meatId;
-            if (parent::add($subData)){
-                $count++;
+        set_time_limit(0);
+        ini_set('memory_limit', '512M');
+        $redeemSn = $meatId . "-" . $data['type'] . "-";
+        $count = 1;//计数器
+        $total = 0;
+        $limit = 1000;
+        for ($i = 0; $i < $data['total']; $i++) {
+            $subData[$i]['redeem_sn'] = "'" . $redeemSn . $i . "'";
+            $subData[$i]['code'] = "'" . self::hashEncode($redeemSn . $i) . "'";
+            $subData[$i]['type'] = $data['type'];
+            $subData[$i]['map_id'] = $data['map_id'];
+            $subData[$i]['meta_id'] = $meatId;
+            if ($count == $limit) {
+                $insertNum = $this->exec(self::spellInsertSql($subData));
+                $total += $insertNum;
+                $subData = [];
+                $count = 1;
+            } elseif (($i + 1) == $data['total'] && !empty($subData)) {
+                $insertNum = $this->exec(self::spellInsertSql($subData));
+                $total += $insertNum;
             }
+            $count++;
         }
-        return $count;
+        return $total;
+    }
+
+    /**
+     * 拼接sql
+     * @param array $sqlArr
+     * @return string
+     */
+    private static function spellInsertSql(array $sqlArr)
+    {
+        $sqlArr = array_values($sqlArr);
+        $sql = "insert ignore into redeem_code ";
+        $fieldArr = array_keys($sqlArr[0]);
+
+        $fieldStr = "( " . implode(",", $fieldArr) . ")";
+
+        $dataSql = " values ";
+        foreach ($sqlArr as $value) {
+            $dataSql .= "(" . implode(",", $value) . ")" . ",";
+        }
+        return $sql . $fieldStr . trim($dataSql, ",");
     }
 
 
@@ -290,10 +320,15 @@ class RedeemCode extends Model
      * @param $str
      * @return string
      */
-    private static function hashEncode($str){
-        $str1 = sprintf("%u",crc32(crypt($str,self::RANDOM_STR)));
-
-        return base_convert($str1, 10, 32);
+    private static function hashEncode($str)
+    {
+        $str1 = sprintf("%u", crc32(sha1($str)));
+        $randStr = '23456789qweertyupasdfghjklzxcvbnm';
+        $str =  base_convert($str1, 10, 32);
+        if (($difNum = 8 - strlen($str)) > 0){
+            $str = $str . substr(str_shuffle($randStr),0,$difNum);
+        }
+        return $str;
     }
 
 }
