@@ -2,31 +2,32 @@
 
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-    <h2 class="sub-header">网利宝用户后台</h2>
+    <h2 class="sub-header">运营中心后台</h2>
     <div class="row-fluid">
 
         <div class="responsive col-sm-6">
 
             <div class="dashboard-stat blue">
-                <div class="visual">
-                    <i class="glyphicon glyphicon-user"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        <span id="total_user" class="fixnumber">&nbsp;</span><span class="small">{$userNum} 个用户</span>
-                    </div>
-                    <div class="desc">
-                        今天创建了
-                        <!-- 今天有 个用户投资了月利宝 -->
-                    </div>
+                <div class="remind">
+                {if $tipArray}
+                {foreach $tipArray as $k=>$item}
+                    <ul>
+                        {if $item}
+                        {foreach $item as $key=>$vaule}
+                        <li><a href="admin.php?c={$k}&a=upd&id={$vaule['id']}">{$vaule['title']}{$k}-还有{$vaule['remind']}天失效</a></li>
+                        {/foreach}
+                        {/if}
+                    </ul>
+                {/foreach}
+                {/if}
                 </div>
                 <a href="#" class="more">
-                    更多 <i class="m-icon-swapright m-icon-white"></i>
+                    配置<i class="m-icon-swapright m-icon-white"></i>
                 </a>
             </div>
         </div>
 
-        <div class="responsive col-sm-6">
+        <!-- <div class="responsive col-sm-6">
             <div class="dashboard-stat green">
                 <div class="visual">
                     <i class="glyphicon glyphicon-send"></i>
@@ -43,7 +44,7 @@
 
             </div>
 
-        </div>
+        </div> -->
 
       <!--  <div class="responsive col-sm-6 fix-offset">
 
