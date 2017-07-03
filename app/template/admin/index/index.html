@@ -9,6 +9,7 @@
 
             <div class="dashboard-stat blue">
                 <div class="remind">
+                即将失效的配置：
                 {if $tipArray}
                 {foreach $tipArray as $k=>$item}
                     <ul>
@@ -19,8 +20,6 @@
                         {/if}
                     </ul>
                 {/foreach}
-                {else}
-                无
                 {/if}
                 </div>
                 <a href="#" class="more">
