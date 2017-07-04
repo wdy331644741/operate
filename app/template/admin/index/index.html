@@ -22,89 +22,79 @@
                 {/foreach}
                 {/if}
                 </div>
-                <a href="#" class="more">
+                <!-- <a href="#" class="more" data-target="#confModal">
                     配置<i class="m-icon-swapright m-icon-white"></i>
-                </a>
+                </a> -->
+                <button style="float: right" type="button" class="" data-toggle="modal" data-target="#confModal">
+                    参数配置
+                </button>
+                <div class="modal fade" id="confModal" tabindex="-1" role="dialog" aria-labelledby="confModalLabel" style="display: none;">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="confModalLabel">参数配置</h4>
+                            </div>
+                            <div class="modal-body">
+
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="redeem-name" class="col-sm-3 control-label"><i>*</i>选项:</label>
+                                        <div class="col-sm-8">
+                                        {if $conf}
+                                        <select class="form-control" id="prize-type">
+                                            {foreach $conf as $k => $v}
+                                                <option value="{$k}">{$k}</option>
+                                            {/foreach}
+                                        </select>
+                                        {else}
+                                            <input type="text" class="form-control" id="prize-type" placeholder="" value="">
+                                        {/if}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="redeem-name" class="col-sm-3 control-label">show:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="redeem-show" placeholder="" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="redeem-name" class="col-sm-3 control-label">desc:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="redeem-desc" placeholder="" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="redeem-name" class="col-sm-3 control-label">table:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="redeem-table" placeholder="" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="redeem-name" class="col-sm-3 control-label">filed:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="redeem-filed" placeholder="" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="redeem-name" class="col-sm-3 control-label">remindDays:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="redeem-remindDays" placeholder="" value="">
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="save-new">新建</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-redeem">取消</button>
+                                <button type="button" class="btn btn-primary" id="save-redeem">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- <div class="responsive col-sm-6">
-            <div class="dashboard-stat green">
-                <div class="visual">
-                    <i class="glyphicon glyphicon-send"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        <span id="total_project" class="fixnumber">&nbsp;</span><span class="small">{$userNum}个</span>
-                    </div>
-                    <div class="desc">网利宝用户</div>
-                </div>
-                <a href="#" class="more">
-                    View more <i class="m-icon-swapright m-icon-white"></i>
-                </a>
-
-            </div>
-
-        </div> -->
-
-      <!--  <div class="responsive col-sm-6 fix-offset">
-
-            <div class="dashboard-stat purple">
-
-                <div class="visual">
-
-                    <i class="glyphicon glyphicon-signal"></i>
-
-                </div>
-
-                <div class="details">
-
-                    <div class="number">
-                        <span id="total_percent" class="fixnumber">&nbsp;</span><span class="small">%</span>
-                    </div>
-
-                    <div class="desc">更多</div>
-
-                </div>
-                <a href="#" class="more">
-
-                    View more <i class="m-icon-swapright m-icon-white"></i>
-
-                </a>
-
-            </div>
-
-        </div>-->
-
-       <!-- <div  class="responsive col-sm-6">
-
-            <div class="dashboard-stat yellow">
-
-                <div class="visual">
-
-                    <i class="glyphicon glyphicon-yen"></i>
-
-                </div>
-
-                <div class="details">
-
-                    <div class="number">
-                        <span id="total_amount" class="fixnumber">&nbsp;</span><span class="small">元</span>
-                    </div>
-
-                    <div class="desc">总人数</div>
-
-                </div>
-
-                <a href="#" class="more">
-
-                    View more <i class="m-icon-swapright m-icon-white"></i>
-
-                </a>
-
-            </div>
-
-        </div>-->
 
     </div>
 
@@ -112,4 +102,46 @@
 </div>
 </div>
 </div>
+
+<script type="text/javascript">
+    // $('#prize-type').click(function(){
+    //     console.log( $(this).val())
+    // });
+    var conf = {$jsconf};
+    
+    $(function(){
+        putHtml();
+    });
+
+    function putHtml(){
+        var te = $('#prize-type').val();
+        $.each(conf[te], function(idx, obj) {
+            //$('.form-horizontal').append('<div class="form-group"><label for="redeem-'+idx+'" class="col-sm-3 control-label">'+idx+':</label><div class="col-sm-8"><input type="text" class="form-control" id="redeem-'+idx+'" placeholder="" value="'+obj+'"></div></div>');
+            $('#redeem-'+idx+'').val(obj);
+        });
+    }
+
+    $('#prize-type').change(function(){
+        putHtml();
+    });
+
+    $('#save-redeem').click(function(){
+        var postObj = {};
+        postObj.name = $('#prize-type').val();
+        postObj.show = $('#redeem-show').val();
+        postObj.desc = $('#redeem-desc').val();
+        postObj.table = $('#redeem-table').val();
+        postObj.filed = $('#redeem-filed').val();
+        postObj.remindDays = $('#redeem-remindDays').val();
+        $.post("?c=index&a=upd",postObj,function(result){
+            console.log(result)
+        });
+    });
+
+    $('#save-new').click(function(){
+        $('#prize-type').parent().html('<input type="text" class="form-control" id="prize-type" placeholder="" value="">');
+        $('.form-horizontal')[0].reset();
+    });
+
+</script>
 {include file="footer.html"}
