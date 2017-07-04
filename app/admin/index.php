@@ -14,13 +14,14 @@ function index(){
     //$awardTable = ['award_interestcoupon','award_experience','config_earnings','marketing_activity'];
     //$remindDays = 7;
     $redis = getReidsInstance();
-    $remindInfo = $redis->hgetall('operate_exceed');
+    $remindInfo = $redis->hgetall('operate_exceed_conf');
 
     foreach ($remindInfo as & $value) {
     	# code...
     	$value = json_decode($value,true);
     	unset($value['name']);
     }
+    unset($value);
     // var_export($remindInfo);exit;
 
 	// $remindInfo = array(
@@ -61,7 +62,7 @@ function index(){
 		// echo $sql;
 		$tipArray[$key] = $userModel->query($sql)->resultArr();
 	}
-	// var_export($tipArray);
+	
 	$framework->smarty->assign('conf',$remindInfo);
 	$framework->smarty->assign('jsconf',json_encode($remindInfo));
 	$framework->smarty->assign('tipArray',$tipArray);
@@ -75,7 +76,7 @@ function index(){
  */
 function upd(){
 	$redis = getReidsInstance();
-	$redis->hset('operate_exceed',$_POST['name'],json_encode($_POST));
+	$redis->hset('operate_exceed_conf',$_POST['name'],json_encode($_POST));
 	$redis->close();
 	echo json_encode($_POST);
 }

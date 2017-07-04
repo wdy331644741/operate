@@ -40,11 +40,15 @@
                                     <div class="form-group">
                                         <label for="redeem-name" class="col-sm-3 control-label"><i>*</i>选项:</label>
                                         <div class="col-sm-8">
+                                        {if $conf}
                                         <select class="form-control" id="prize-type">
                                             {foreach $conf as $k => $v}
                                                 <option value="{$k}">{$k}</option>
                                             {/foreach}
                                         </select>
+                                        {else}
+                                            <input type="text" class="form-control" id="prize-type" placeholder="" value="">
+                                        {/if}
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -82,7 +86,7 @@
 
                             </div>
                             <div class="modal-footer">
-
+                            <button type="button" class="btn btn-primary" id="save-new">新建</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-redeem">取消</button>
                                 <button type="button" class="btn btn-primary" id="save-redeem">保存</button>
                             </div>
@@ -132,7 +136,12 @@
         $.post("?c=index&a=upd",postObj,function(result){
             console.log(result)
         });
-    })
+    });
+
+    $('#save-new').click(function(){
+        $('#prize-type').parent().html('<input type="text" class="form-control" id="prize-type" placeholder="" value="">');
+        $('.form-horizontal')[0].reset();
+    });
 
 </script>
 {include file="footer.html"}
