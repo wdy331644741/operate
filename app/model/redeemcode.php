@@ -344,7 +344,7 @@ class RedeemCode extends Model
         $pdo = self::getPDO();
         $pdo->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
         $sql = "SELECT `id`,`code`,`user_id`,`redeem_time`,`type`,`status` 
-                FROM redeem_code where meta_id={$metaId} and is_del=0";
+                FROM redeem_code WHERE meta_id={$metaId} AND is_del=0";
         $res = $pdo->prepare($sql);
         $res->execute();
         if ($res) {
