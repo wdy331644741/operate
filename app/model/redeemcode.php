@@ -362,6 +362,7 @@ class RedeemCode extends Model
                 yield $row;
             }
         }
+        $res->closeCursor();
 
     }
 
