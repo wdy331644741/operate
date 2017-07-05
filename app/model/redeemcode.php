@@ -113,12 +113,21 @@ class RedeemCode extends Model
 
     }
 
-    public function getMetaList()
+    /**
+     * 元信息列表
+     * @param int $start
+     * @param int $offset
+     * @return bool
+     */
+    public function getMetaList($start=0, $offset=20)
     {
         $this->tableName = 'redeem_code_meta';
-        $res = $this->where('is_del =0')->get()->resultArr();
+        $res = $this->where('is_del =0')
+            ->orderby("ctime DESC")
+            ->limit($start, $offset)->get()->resultArr();
+
         if (!$res) return false;
-        foreach ($res as $k=>$v){
+        foreach ($res as $k => $v) {
             $res[$k]['type'] = $this->typeArr[$v['type']];
             $res[$k]['total'] = $this->getTotal($v['id']);
             $res[$k]['used'] = $this->getUseNum($v['id']);
@@ -127,6 +136,7 @@ class RedeemCode extends Model
 
         return $res;
     }
+
     public function switchStausById($id)
     {
         $this->tableName = 'redeem_code_meta';
@@ -420,6 +430,12 @@ class RedeemCode extends Model
             return false;
         }
         return true;
+    }
+
+    public function getRedeemMetaCount()
+    {
+        $this->tableName = 'redeem_code_meta';
+        return $this->countNums();
     }
 
 }

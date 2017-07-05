@@ -8,12 +8,23 @@ function index()
 {
     $fw = getFrameworkInstance();
     $model = new  \Model\RedeemCode();
+    $total = $model->getRedeemMetaCount();
+    $config = [
+        "baseurl" => U('admin.php', ['c' => 'redeem_code',
+            'a' => 'index',
+        ]),
+        'total' => $total,    //设置记录总数
+        'pagesize' => C('PAGE_SIZE'),       //设置每页数量
+        'current_page' => I('get.p/d', 1), //设置当前页码
+    ];
 
-    $list = $model->getMetaList();
+    $pagination = new Lib\Pagination($config);//分页类
+    $fw->smarty->assign("pagination_link", $pagination->createLink());
+
+    $list = $model->getMetaList($pagination->start, $pagination->offset);
     $fw->smarty->assign('typeArr', $model->typeArr);
     $fw->smarty->assign('list', $list);
     $fw->smarty->display('redeem_code/index.html');
-
 }
 
 /**
