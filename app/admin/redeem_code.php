@@ -77,10 +77,8 @@ function detail()
  */
 function export()
 {
-
-    $model = new  \Model\RedeemCode();
+    set_time_limit(0);
     $id = I('id', 0, 'intval');
-    $total = I('total', 0, 'intval');
     $fileName = "批次为————" . $id . ".csv";
     $now = gmdate("D, d M Y H:i:s");
 
@@ -102,17 +100,30 @@ function export()
     foreach ($heads as $k => $v) {
         $heads[$k] = iconv('utf-8', 'gbk', $v);
     }
-    $list = $model->getListRedeemDtail($id, 0, $total);
+
     fputcsv($fp, $heads);
-    foreach ($list as $vv) {
+
+    $limit = 10000;
+    $count = 0;
+    $model = new  \Model\RedeemCode();
+    $isUsed = [0 => '未使用', 1 => '已使用'];
+    foreach ($model->export($id) as $vv){
         $row = [];
         $row[] = $vv['id'];
         $row[] = $vv['code'];
         $row[] = $vv['user_id'];
         $row[] = $vv['redeem_time'];
-        $row[] = iconv('utf-8', 'gbk', $vv['type']);
-        $row[] = iconv('utf-8', 'gbk', $vv['status']);
+        $row[] = iconv('utf-8', 'gbk', $model->typeArr[$vv['type']]);
+
+        $row[] = iconv('utf-8', 'gbk', $isUsed[$vv['status']]);
         fputcsv($fp, $row);
+        $count++;
+        if ($count==$limit){
+            ob_flush();
+            flush();
+            $count = 0;
+        }
+
     }
     fclose($fp);
     die();

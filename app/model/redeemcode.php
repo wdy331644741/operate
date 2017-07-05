@@ -1,7 +1,7 @@
 <?php
 
 namespace Model;
-
+use \PDO;
 class RedeemCode extends Model
 {
 
@@ -20,6 +20,9 @@ class RedeemCode extends Model
 
     public function verifyCode($userId, $code)
     {
+        if (!$this->limitUserFlow($userId)){
+            return ['msg' => '操作太频繁', 'is_ok' => false];
+        }
 
         $this->tableName = 'redeem_code';
         $redeemCode = $this->where(
@@ -329,6 +332,94 @@ class RedeemCode extends Model
             $str = $str . substr(str_shuffle($randStr),0,$difNum);
         }
         return $str;
+    }
+
+    /**
+     * pdo游标导出
+     * @param $metaId
+     * @return \Generator
+     */
+    public function export($metaId)
+    {
+        $pdo = self::getPDO();
+        $pdo->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+        $sql = "SELECT `id`,`code`,`user_id`,`redeem_time`,`type`,`status` 
+                FROM redeem_code where meta_id={$metaId} and is_del=0";
+        $res = $pdo->prepare($sql);
+        $res->execute();
+        if ($res) {
+            while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
+                yield $row;
+            }
+        }
+
+    }
+
+    /**
+     * 获取一个原生的pdo
+     * @return bool|PDO
+     */
+    private static function getPDO()
+    {
+        $config = [
+            'host' => C("DB_HOST"),
+            'port' => C("DB_PORT"),
+            'username' => C("DB_USERNAME"),
+            'password' => C("DB_PASSWORD"),
+            'dbname' => C("DB_NAME"),
+            'dbprefix' => C("DB_PREFIX"),
+
+            'pconnect' => C("DB_PCONNECT"),
+            'db_debug' => C("DB_DEBUG"),
+            'charset' => C("DB_CHARSET"),
+        ];
+
+        $dsn = 'mysql:host=' . $config['host'];
+
+        if (isset($config['dbname'])) {
+            $dsn .= ';dbname=' . $config['dbname'];
+        }
+
+        if (isset($config['dbname'])) {
+            $dsn .= ';port=' . $config['port'];
+        }
+
+        try {
+            //连接
+            $conn = new PDO($dsn, $config['username'], $config['password']);
+            //设置编码
+            $conn->query("SET NAMES '{$config['charset']}'");
+            //设置错误模式
+            $conn->setAttribute(PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            //设置长连接
+            $conn->setAttribute(PDO::ATTR_PERSISTENT, $config['pconnect']);
+        } catch (PDOException $e) {
+
+            return false;
+        }
+        return $conn;
+    }
+
+    /**
+     * 限制用户请求数量
+     * @param $userId
+     * @return bool
+     */
+    private function limitUserFlow($userId)
+    {
+        $redis = getReidsInstance();
+        $limit = $redis->get($userId);
+        if (false === $limit){
+            return $redis->setex($userId, 10, 3);
+        }
+        if ($limit <= 0){
+            return false;
+        }
+
+        if ($redis->decr($userId) < 0){
+            return false;
+        }
+        return true;
     }
 
 }
