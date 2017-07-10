@@ -97,9 +97,11 @@ class ActivityRpcImpl extends BaseRpcImpl
      */
     public function noticeList($params)
     {   
-        //检查登录状态
-        if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        if($params->tiao != 'pc'){
+            //检查登录状态
+            if (($this->userId = $this->checkLoginStatus()) === false) {
+                throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+            }
         }
         //验证是否有page;
         if (empty($params->page)) {
