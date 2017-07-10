@@ -140,10 +140,12 @@ class ActivityRpcImpl extends BaseRpcImpl
      * @JsonRpcMethod
      */
     public function noticeContent($params){
-        //验证
-        //检查登录状态
-        if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        if($params->tiao != 'pc'){
+            //验证
+            //检查登录状态
+            if (($this->userId = $this->checkLoginStatus()) === false) {
+                throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+            }
         }
 
         if (empty($params->article_id)) {
