@@ -62,10 +62,13 @@ function index()
  * @pageroute
  */
 function lst()
-{
+{   
+    $type = I('get.type', 'notice', 'trim');
     $framework = getFrameworkInstance();
     $articleUserModel = new \Model\MarketingArticle();
-    $list = $articleUserModel->get()->resultArr();
+    $articleNode = new \Model\MarketingArticleNode();
+    $noticeCate = $articleNode->where("`name` = '{$type}'")->get()->rowArr();
+    $list = $articleUserModel->where("`cate_node` = {$noticeCate['id']}")->get()->resultArr();
 
     $nodeModel = new \Model\MarketingArticleNode();
     $nodeListQuery = $nodeModel->get()->resultArr();

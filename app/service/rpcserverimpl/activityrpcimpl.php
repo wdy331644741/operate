@@ -121,7 +121,7 @@ class ActivityRpcImpl extends BaseRpcImpl
         // exit;
         foreach ($noticeList as $key => $notice) {
             // $noticeList[$key]['content'] = htmlspecialchars_decode($noticeList[$key]['content']);
-            $noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
+            //$noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
             $noticeList[$key]['readCounts'] = isset($readArray[$notice['id']])?(int)$readArray[$notice['id']]:0;
         }
 
