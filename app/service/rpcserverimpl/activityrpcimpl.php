@@ -160,12 +160,14 @@ class ActivityRpcImpl extends BaseRpcImpl
 
         $isRead = $acticleLogModel->isReadByUser($this->userId,$params->article_id);
         // var_export($isRead);exit;
-        //添加一条阅读记录
-        //更新、累加记录
-        if(isset($isRead) && empty($isRead)){
-            $res = $acticleLogModel->addReadLog($params->article_id,$this->userId);
-        }else{
-            $acticleLogModel->updateReadLog($params->article_id,$this->userId,$isRead[0]['counts']);
+        if($params->tiao != 'pc'){
+            //添加一条阅读记录
+            //更新、累加记录
+            if(isset($isRead) && empty($isRead)){
+                $res = $acticleLogModel->addReadLog($params->article_id,$this->userId);
+            }else{
+                $acticleLogModel->updateReadLog($params->article_id,$this->userId,$isRead[0]['counts']);
+            }
         }
         $test = htmlspecialchars_decode($acticleContent[0]['content']);
         // return $test;
