@@ -10,3 +10,4 @@ CREATE TABLE `award_extend` (
   `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
 1
+INSERT INTO `marketing_article_node` (`title`, `name`) VALUES ('文章', 'article')

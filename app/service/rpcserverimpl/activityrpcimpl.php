@@ -97,9 +97,11 @@ class ActivityRpcImpl extends BaseRpcImpl
      */
     public function noticeList($params)
     {   
-        //检查登录状态
-        if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        if($params->tiao != 'pc'){
+            //检查登录状态
+            if (($this->userId = $this->checkLoginStatus()) === false) {
+                throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+            }
         }
         //验证是否有page;
         if (empty($params->page)) {
@@ -121,7 +123,7 @@ class ActivityRpcImpl extends BaseRpcImpl
         // exit;
         foreach ($noticeList as $key => $notice) {
             // $noticeList[$key]['content'] = htmlspecialchars_decode($noticeList[$key]['content']);
-            $noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
+            //$noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
             $noticeList[$key]['readCounts'] = isset($readArray[$notice['id']])?(int)$readArray[$notice['id']]:0;
         }
 
