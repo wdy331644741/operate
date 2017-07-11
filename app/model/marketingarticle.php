@@ -25,10 +25,10 @@ class MarketingArticle extends Model
     public function rowcounts(){
         $articleNode = new MarketingArticleNode();
         $noticeCate = $articleNode->where("`name` = 'notice'")->get()->rowArr();
+        $sql = "select count(*) as num from {$this->tableName} where is_del = 0 and status = 1 and cate_node = {$noticeCate['id']}";
 
-        return $this->fields('count(*)')
-            ->where("`is_del` = 0 and `status` = 1 and cate_node = {$noticeCate['id']}")
-            ->get()->row();
+        $re = $this->query($sql)->resultArr();
+        return $re['num'];
     }
 
     public function noticeList($page)
