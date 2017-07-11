@@ -28,7 +28,7 @@ class MarketingArticle extends Model
         $sql = "select count(*) as num from {$this->tableName} where is_del = 0 and status = 1 and cate_node = {$noticeCate['id']}";
 
         $re = $this->query($sql)->resultArr();
-        return $re['num'];
+        return $re[0]['num'];
     }
 
     public function noticeList($page)
