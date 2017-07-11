@@ -117,6 +117,8 @@ class ActivityRpcImpl extends BaseRpcImpl
         if(isset($isRead) && !empty($isRead)){
             $readArray = array_column($isRead,'counts','article_id');
         }
+
+        $datacounts = $acticleModel->rowcounts();
         $noticeList = $acticleModel->noticeList($params->page);
         // var_export($readArray);
         // var_export($noticeList);
@@ -130,7 +132,8 @@ class ActivityRpcImpl extends BaseRpcImpl
         return array(
             'code'    => 0,
             'message' => 'success',
-            'data'    => $noticeList
+            'data'    => $noticeList,
+            'pagecounts' =>$datacounts
         );
     }
 
