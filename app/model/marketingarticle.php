@@ -25,7 +25,7 @@ class MarketingArticle extends Model
     public function rowcounts(){
         $articleNode = new MarketingArticleNode();
         $noticeCate = $articleNode->where("`name` = 'notice'")->get()->rowArr();
-        $sql = "select count(*) as num from {$this->tableName} where `is_del` = 0 and `status` = 1 and cate_node = {$noticeCate['id']}";
+        $sql = "select count(*) as num from {$this->tableName} where is_del = 0 and status = 1 and cate_node = {$noticeCate['id']}";
 
         $re = $this->query($sql)->get()->row();
         logs($this->getLastQuery(),"1111111");
