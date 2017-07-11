@@ -133,7 +133,7 @@ class ActivityRpcImpl extends BaseRpcImpl
             'code'    => 0,
             'message' => 'success',
             'data'    => $noticeList,
-            'pagecounts' =>$datacounts
+            'pagecounts' =>ceil($datacounts/10)
         );
     }
 
