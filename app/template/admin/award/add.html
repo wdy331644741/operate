@@ -21,6 +21,7 @@
                 <select class="form-control" id="award_type" name="award_type">
                     <option value="1">体验金</option>
                     <option value="2">加息劵</option>
+                    <option value="3">提现劵</option>
                 </select>
             </div>
         </div>
@@ -48,7 +49,7 @@
                 </tr>
                 </thead>
                 <tbody id="tableValue">
-                
+
                 </tbody>
             </table>
         </div>
@@ -72,60 +73,60 @@
                 else {
                     var tablename = "";
                     var tableValue = "";
-                   if(awardType ==2)
-                   {    
+                    if(awardType ==2)
+                    {
                         tablename += "<th >id</th><th >名称</th><th >加息值</th><th >加息时长</th><th >限制说明</th><th >状态</th><th >操作</th>";
-                       $.each(data.message,function(key,value){
-                           tableValue += "<tr><td>"+value.id+"</td>";
-                           tableValue += "<td>"+value.title+"</td>";
-                           tableValue += "<td>"+value.rate+"</td>";
-                           tableValue += "<td>"+value.days+"</td>";
-                           tableValue += "<td>"+value.limit_desc+"</td>";
-                           if(value.status ==1){
-                               tableValue += "<td>启用</td><td><a href=\"javascript:void(0);\"  class=\"btn btn-primary btn-xs status\">选择</a></td></tr>";
-                           }else{
-                               tableValue += "<td>未启用</td><td>&nbsp;</td></tr>";
-                           }
-                           //tableValue += '<td><a href="javascript:void(0);"  class="btn btn-primary btn-xs status">选择</a></td></tr>';
-                       });
+                        $.each(data.message,function(key,value){
+                            tableValue += "<tr><td>"+value.id+"</td>";
+                            tableValue += "<td>"+value.title+"</td>";
+                            tableValue += "<td>"+value.rate+"</td>";
+                            tableValue += "<td>"+value.days+"</td>";
+                            tableValue += "<td>"+value.limit_desc+"</td>";
+                            if(value.status ==1){
+                                tableValue += "<td>启用</td><td><a href=\"javascript:void(0);\"  class=\"btn btn-primary btn-xs status\">选择</a></td></tr>";
+                            }else{
+                                tableValue += "<td>未启用</td><td>&nbsp;</td></tr>";
+                            }
+                            //tableValue += '<td><a href="javascript:void(0);"  class="btn btn-primary btn-xs status">选择</a></td></tr>';
+                        });
 
-                   }else
-                   {   
-                       tablename += "<th >id</th><th >体验金类型</th><th >体验金金额</th><th >加息天数</th><th >限制说明</th><th >状态</th><th >操作</th>";
+                    }else
+                    {
+                        tablename += "<th >id</th><th >体验金类型</th><th >体验金金额</th><th >加息天数</th><th >限制说明</th><th >状态</th><th >操作</th>";
 
-                       $.each(data.message,function(key,value){
-                           tableValue += "<tr id = ><td>"+value.id+"</td>";
-                           if(value.amount_type==0){
-                               tableValue += "<td>普通</td>";
-                           }else{
-                               tableValue += "<td>随机金额类型</td>";
-                           }
+                        $.each(data.message,function(key,value){
+                            tableValue += "<tr id = ><td>"+value.id+"</td>";
+                            if(value.amount_type==0){
+                                tableValue += "<td>普通</td>";
+                            }else{
+                                tableValue += "<td>随机金额类型</td>";
+                            }
 
-                           tableValue += "<td>"+value.amount+"</td>";
-                           tableValue += "<td>"+value.days+"</td>";
-                           tableValue += "<td>"+value.limit_desc+"</td>";
-                           if(value.status ==1){
-                               tableValue += "<td>启用</td><td><a href='javascript:void(0);'  class='btn btn-primary btn-xs status'>选择</a></td></tr>";
-                           }else{
-                               tableValue += "<td>未启用</td><td>&nbsp;</td></tr>";
-                           }
-                           //tableValue += '<td><a href="javascript:void(0);"  class="btn btn-primary btn-xs status">选择</a></td></tr>';
-                       });
-                   }
-                  $("#tablename").html(tablename);
-                  $("#tableValue").html(tableValue);
-                  $("#myTabContent").show();
-                  $(".status").on("click",function(){
-                    $("#award_id").val($(this).parent().parent().find("td:first").html());
-                    $("#myTabContent").hide();
-                  })
+                            tableValue += "<td>"+value.amount+"</td>";
+                            tableValue += "<td>"+value.days+"</td>";
+                            tableValue += "<td>"+value.limit_desc+"</td>";
+                            if(value.status ==1){
+                                tableValue += "<td>启用</td><td><a href='javascript:void(0);'  class='btn btn-primary btn-xs status'>选择</a></td></tr>";
+                            }else{
+                                tableValue += "<td>未启用</td><td>&nbsp;</td></tr>";
+                            }
+                            //tableValue += '<td><a href="javascript:void(0);"  class="btn btn-primary btn-xs status">选择</a></td></tr>';
+                        });
+                    }
+                    $("#tablename").html(tablename);
+                    $("#tableValue").html(tableValue);
+                    $("#myTabContent").show();
+                    $(".status").on("click",function(){
+                        $("#award_id").val($(this).parent().parent().find("td:first").html());
+                        $("#myTabContent").hide();
+                    })
                 }
             }
 
         });
     })
 </script>
-<script>        
+<script>
     $(function () {
         //提交表单
         $("#submit").click(function () {
