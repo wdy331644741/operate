@@ -2799,6 +2799,80 @@ return array (
                     'unsigned' => false,
                     'null' => false,
                 ),
-            ),
-    'pk_name' => 'id',
+            'user_id' =>
+                array (
+                    'field' => 'user_id',
+                    'key' => '',
+                    'default' => '0',
+                    'lenght' => '20',
+                    'unsigned' => false,
+                    'null' => false,
+                ),
+            'award_extend_id' =>
+                array (
+                    'field' => 'award_extend_id',
+                    'key' => 'MUL',
+                    'default' => '0',
+                    'type' => 'int',
+                    'lenght' => '11',
+                    'unsigned' => false,
+                    'null' => false,
+                ),
+            'status' =>
+                array (
+                    'field' => 'status',
+                    'key' => '',
+                    'default' => '0',
+                    'type' => 'tinyint',
+                    'lenght' => '4',
+                    'unsigned' => false,
+                    'null' => false,
+                ),
+            'mark' =>
+                array (
+                    'field' => 'mark',
+                    'key' => '',
+                    'default' => '',
+                    'type' => 'varchar',
+                    'lenght' => '100',
+                    'unsigned' => false,
+                    'null' => true,
+                ),
+            'ctime' =>
+                array (
+                    'field' => 'ctime',
+                    'key' => '',
+                    'default' => '0000-00-00 00:00:00',
+                    'unsigned' => false,
+                    'null' => true,
+                ),
+            'utime' =>
+                array (
+                    'field' => 'utime',
+                    'key' => '',
+                    'default' => '0000-00-00 00:00:00',
+                    'unsigned' => false,
+                    'null' => true,
+                ),
+            'award_type' =>
+                array (
+                    'field' => 'award_type',
+                    'key' => '',
+                    'default' => '0',
+                    'type' => 'tinyint',
+                    'lenght' => '4',
+                    'unsigned' => false,
+                    'null' => false,
+                ),
+            'award_id' =>
+                array (
+                    'field' => 'award_id',
+                    'key' => '',
+                    'default' => '0',
+                    'lenght' => '20',
+                    'unsigned' => false,
+                    'null' => false,
+                ),
+            'pk_name' => 'id',
+        ),
 );
