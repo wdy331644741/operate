@@ -49,15 +49,17 @@ class RedeemRpcImpl extends BaseRpcImpl
         }
         $res = (new SendCouponRpcImpl)->sendAction($redeemData['type'],
             $this->userId, $redeemData['map_id']);
-        if ($res){
-            if ($status){
-                return [
-                    'code' => 0,
-                    'type' => $redeemData['type'],
-                    'message' => $redeemData['prize_info'],
-                ];
-            }
-
+        if ($res['is_ok'] && $status ){
+            return [
+                'code' => 0,
+                'type' => $redeemData['type'],
+                'message' => $redeemData['prize_info'],
+            ];
+        }elseif(false == $res['is_ok']){
+            return [
+                'code' => AllErrorException::VALID_CAPTCHA_FAIL,
+                'message' => $res['msg'],
+            ];
         }
 
         return [
