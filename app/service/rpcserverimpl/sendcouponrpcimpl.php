@@ -116,7 +116,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
             'status' => 1,
         ], 'activateExperienceGoldToUser');
 
-        if (is_array($actRes)) return $preRes;
+        if (is_array($actRes)) return $actRes;
 
         $operateExperience->updateStatusOfUse($expId);
 
@@ -156,7 +156,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
             'status' => 1,
         ], 'activateWithdrawCouponToUser');
 
-        if (is_array($actRes)) return $preRes;
+        if (is_array($actRes)) return $actRes;
 
         $FreeWithdraw->updateStatusOfUse($upId);
         return ['is_ok' => true, 'msg'=>''];
