@@ -77,5 +77,4 @@ class AwardExtend extends Model
     }
 
 
-
 }

@@ -12,7 +12,8 @@ function index()
 
     //活动相关
     $jsonRPCServer->addService(loadRpcImpl('ActivityRpcImpl'));
-
+    //兑换码
+    $jsonRPCServer->addService(loadRpcImpl('RedeemRpcImpl'));
     $jsonRPCServer->processingRequests();
 }
 

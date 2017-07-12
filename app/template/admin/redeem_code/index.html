@@ -1,0 +1,292 @@
+{include file="header.html"}
+<style>
+    .adminstatus { cursor:pointer;}
+</style>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+    <h2 class="sub-header">兑换码配置</h2>
+
+
+    <div class="input-group col-md-3">
+        <input type="text" class="form-control" id="search-content" placeholder="输入兑换码进行查询">
+        <span class="input-group-btn">
+            <button class="btn btn-search btn-primary" id="search-submit">查询</button>
+        </span>
+    </div>
+
+    <button style="float: right" type="button" class="btn btn-primary" data-toggle="modal" data-target="#confModal">
+        奖券配置
+    </button>
+
+
+    <!-- 奖券配置 -->
+    <div class="modal fade" id="confModal" tabindex="-1" role="dialog" aria-labelledby="confModalLabel" data-backdrop='static'>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="confModalLabel">奖券配置</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="redeem-name" class="col-sm-3 control-label"><i>*</i>名称:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="redeem-name" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prize-type" class="col-sm-3 control-label"><i>*</i>奖品类型:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="prize-type">
+
+                                    {foreach from=$typeArr item=v key=k}
+                                    <option value="{$k}">{$v}</option>
+                                    {/foreach}
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prize-id" class="col-sm-3 control-label"><i>*</i>奖品ID:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="prize-id" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prize-num" class="col-sm-3 control-label"><i>*</i>生成数量:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="prize-num" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="max-user-num" class="col-sm-3 control-label"><i>*</i>用户最多可得:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="max-user-num" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="start-time" class="col-sm-3 control-label"><i>*</i>开始时间:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="" id="start-time" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="end-time" class="col-sm-3 control-label"><i>*</i>结束时间:</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control name" placeholder="" name="end-time" id="end-time" value="">
+                            </div>
+                        </div>
+
+
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-redeem">取消</button>
+                    <button type="button" class="btn btn-primary" id="save-redeem">生成</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="clear:both; padding-top: 10px"></div>
+    <div id="myTabContent" class="tab-content">
+        <!-- start 已上线 -->
+        <div class="table-responsive tab-pane fade in active" id="no2">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th >批次</th>
+                    <th >类型</th>
+                    <th >生成数量</th>
+                    <th >已使用数量</th>
+                    <th >未使用数量</th>
+                    <th >用户最多可得</th>
+                    <th >有效期起始时间</th>
+                    <th >有效期结束时间</th>
+                    <th >状态</th>
+                    <th >操作</th>
+                    <th >生成文件</th>
+                </tr>
+                </thead>
+                <tbody>
+                {if isset($list)}
+                {foreach $list as $item}
+                <tr id="onlinetr_{$item.id}">
+                    <td class="id">{$item.id}</td>
+                    <td>{$item.type}</td>
+                    <td>{$item.total}</td>
+                    <td>{$item.used}</td>
+                    <td>{$item.un_used}</td>
+                    <td>{$item.user_max_get}</td>
+                    <td>{$item.start_time}</td>
+                    <td>{$item.end_time}</td>
+                    <td>
+                        {if $item.status == 1}
+                        <span class="adminstatus adminonline">启用</span>
+                        {else}
+                        <span class="adminstatus adminoffline">禁用</span>
+                        {/if}
+                    </td>
+
+                    <td>
+                        {if $item.status ==1}
+                        <a href="javascript:void(0);"  class="btn btn-danger btn-xs status" data-id = "{$item.id}">禁用</a>
+                        {else}
+                        <a href="javascript:void(0);"  class="btn btn-primary btn-xs status" data-id = "{$item.id}">启用</a>
+                        {/if}
+                        <a href="?c=redeem_code&a=detail&id={$item.id}&type={$item.type}&total={$item.total}&used={$item.used}&un_used={$item.un_used}"  class="btn btn-primary btn-xs">查看</a>
+
+
+                    </td>
+
+                    <td>
+                        <a href="?c=redeem_code&a=export&id={$item.id}&total={$item.total}"  class="btn btn-info btn-xs export">生成文件</a>
+                    </td>
+                </tr>
+                {/foreach}
+                {/if}
+                </tbody>
+            </table>
+        </div>
+        {if isset($pagination_link)}<div>{$pagination_link}</div>{/if}
+    </div>
+
+</div>
+</div>
+</div>
+</body>
+<script>
+    $("#start-time").datetimepicker({
+        language:'zh-CN',
+        autoclose:true,
+    });
+    $("#end-time").datetimepicker({
+        language:'zh-CN',
+        autoclose:true,
+
+    });
+
+    function initLoading(){
+        $("body").append("<!-- loading -->" +
+            "<div class='modal fade' id='loading' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop='static'>" +
+            "<div class='modal-dialog' role='document'>" +
+            "<div class='modal-content'>" +
+            "<div class='modal-header'>" +
+            "<h4 class='modal-title' id='myModalLabel'>提示</h4>" +
+            "</div>" +
+            "<div id='loadingText' class='modal-body'>" +
+            "<span class='glyphicon glyphicon-refresh' aria-hidden='true'>1</span>" +
+            "处理中，请稍候。。。" +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "</div>"
+        );
+    }
+    function showLoading(text){
+        $("#loadingText").html(text);
+        $("#loading").modal("show");
+    }
+    function hideLoading(){
+        $("#loading").modal("hide");
+    }
+
+</script>
+<script>
+
+    $("#cancel-redeem").click(function () {
+        location.reload();
+    })
+
+    $("#save-redeem").click(function () {
+        var post_obj = {};
+        post_obj.redeem_name = $("#redeem-name").val();
+        post_obj.prize_type = $("#prize-type").val();
+        post_obj.prize_id = $("#prize-id").val();
+        post_obj.prize_num = $("#prize-num").val();
+        post_obj.max_user_num = $("#max-user-num").val();
+        post_obj.start_time = $("#start-time").val();
+        post_obj.end_time = $("#end-time").val();
+        console.log(post_obj);
+        if($.trim(post_obj.redeem_name)=='' ||
+            $.trim(post_obj.prize_type)=='' ||
+            $.trim(post_obj.prize_id) ==''  ||
+            $.trim(post_obj.prize_num)==''  ||
+            $.trim(post_obj.max_user_num)==''||
+            $.trim(post_obj.start_time)=='' ||
+            $.trim(post_obj.end_time)==''
+
+        ){
+            throwExc('所有字段都必须填写');
+            return false;
+        }
+
+        initLoading();
+        showLoading('处理中, 请稍候');
+        $("#confModal").modal("hide");
+        $.post("?c=redeem_code&a=add",
+            post_obj,
+            function( response ){
+                if(response.error==100) {
+                    alert(response.msg);
+                    hideLoading();
+                    location.reload();
+                    return false;
+                }else if(response.error==200) {
+                    alert(response.msg);
+                    hideLoading();
+                    location.reload();
+                }
+            },
+            "json"
+        );
+
+//        hideLoading();
+
+
+    })
+    $(function(){
+        $(".status").click(function(){
+            var id=$(this).attr('data-id');
+            var msg=$(this).html();
+            if(confirm('你确定要'+msg+"吗？")){
+                $.get("?c=redeem_code&a=status&id="+id,
+                    function (res) {
+                        if(res.error==100) {
+                            throwExc(res.msg);
+                            return false;
+                        }else if(res.error==200) {
+                            showSucc(res.msg);
+                            location.reload();
+                        }
+
+                    },
+                    "json"
+                )
+            }
+        });
+
+    })
+
+    $("#search-submit").click(function () {
+        var search = $("#search-content").val();
+        if ($.trim(search)=='') {
+            throwExc('搜索内容为空');
+            return false;
+        }
+        window.location.href = "?c=redeem_code&a=search&content="+search
+    })
+
+
+</script>
+{include file="footer.html"}
