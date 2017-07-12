@@ -37,11 +37,9 @@
                 <td>{$item.create_time}</td>
                 <td>{$item.update_time}</td>
                 <td>
-                    {if $item.send_status ==0}
-                    <a href="javascript:void(0);" sid={$item.id} class="btn btn-primary btn-xs status">取消发送</a>
-                    {else}无{/if}
+                    <a href="javascript:void(0);" data-id={$item.id} class="btn btn-primary btn-xs send-detail">查看详情</a>
                 </td>
-              </tr>
+            </tr>
             {/foreach}
             {/if}
             </tbody>
@@ -50,17 +48,9 @@
     <div>{if isset($pageNum)}{$pageNum}{/if}</div>
     {include file="footer.html"}
     <script type="text/javascript">
-        $(function(){
-            $(".status").click(function(){
-                var send_id =  $(this).attr("sid");
-                if(confirm('你确定要取消发送吗？')){
-                    window.location.href="?c=award&a=unsendAward&sid="+send_id;
-                }
-            });
+
+        $('.send-detail').click(function () {
+            var id = $(this).attr('data-id');
+            window.location.href = "?c=award&a=detail&id="+id;
         })
-        function tr_show(data){
-            var show= $('.show'+data);
-            $("#tr"+data).toggleClass('expander');
-            show.toggle();
-        }
     </script>

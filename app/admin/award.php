@@ -22,7 +22,6 @@ function lst()
  */
 function unsendAward()
 {
-    $framework = getFrameworkInstance();
     $sendId = I('get.sid');
     $authUserModel = new \Model\AwardExtend($sendId);
     if(empty($authUserModel)){
@@ -42,12 +41,6 @@ function add()
     if(IS_POST)
     {
         $awardModel = new \Model\AwardExtend();
-        $awards = $awardModel->getUnsendRecords();
-        logs(count($awards),'tmp-data');
-        if(!empty($awards)){
-            ajaxReturn(['error' => 4000, 'message' => '请先处理待发送状态记录']);
-        }
-
         $user = $award_type = $award_id = $remark = null;
         $requireFields = ['user', 'award_type','award_id'];
         foreach ($requireFields as $field) {
@@ -61,20 +54,14 @@ function add()
         $data['remark'] = I('post.remark', '', 'trim');
         $data['send_status'] = 0;
         $data['create_time'] = date("Y-m-d H:i:s");
-        if($awardModel->add($data))
+        if($id = $awardModel->add($data))
         {
-            $obj = new App\service\rpcserverimpl\Common();
-            $obj::messageBroadcast('manualPrize',$data);
+            $awardModel->dealRecord($id);
             ajaxReturn(['error' => 0, 'message' => '发放成功']);
-        }
-        else
-        {
+        } else {
             ajaxReturn(['error' => 0, 'message' => '发放失败']);
         }
-
-
-    }else
-    {
+    }else {
         $framework->smarty->display('award/add.html');
     }
 }
@@ -88,13 +75,50 @@ function awardType()
     $type = I('post.type');
     if(!$type)
         ajaxReturn(['error' => 4000, 'message' => '奖品类型不能为空']);
-    //类型1为体验金 2为加息劵
-    if($type ==1)
+    //类型1为体验金 2为加息劵 3 提现次数
+    if($type ==1) {
         $awardModel = new \Model\AwardExperience();
-    else
+    } elseif($type==2){
         $awardModel = new \Model\AwardInterestcoupon();
+    } elseif ($type==3){
+        $awardModel = new \Model\AwardWithdraw();
+    }
 
-    $list = $awardModel->get()->resultArr();
+    $list = $awardModel->where(['status'=>1])->get()->resultArr();
 
     ajaxReturn(['error' => 0, 'message'=>$list]);
+}
+/**
+ * @pageroute
+ */
+function detail()
+{
+    $id = I('get.id',0,'intval');
+    $model = new \Model\AwardHandRecord();
+    $list = $model->getListByAwardId($id);
+    $framework = getFrameworkInstance();
+
+    $framework->smarty->assign('list',$list);
+    $framework->smarty->assign('total',count($list));
+    $framework->smarty->display('award/detail.html');
+}
+/**
+ * @pageroute
+ */
+function retry()
+{
+    $id = I('get.id',0,'intval');
+    $awardHandModel = new \Model\AwardHandRecord();
+    $awardModel = new \Model\AwardExtend();
+    $record = $awardHandModel->where(['id'=>$id])->get()->rowArr();
+    $res = $awardModel->send(
+        $record['award_type'],
+        $record['user_id'],
+        $record['award_id']);
+    if ($res['is_ok']){
+        $awardHandModel->update(['status' => 1], ['id' => $id]);
+        ajaxReturn(['error' => 200, 'msg'=>'重试成功']);
+    }else{
+        ajaxReturn(['error' => 100, 'msg'=>$res['msg']]);
+    }
 }

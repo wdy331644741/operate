@@ -2594,4 +2594,18 @@ return array (
     ),
     'pk_name' => 'id',
   ),
+    'award_hand_record' =>
+        array (
+            'id' =>
+                array (
+                    'field' => 'id',
+                    'key' => 'PRI',
+                    'default' => NULL,
+                    'type' => 'int',
+                    'lenght' => '11',
+                    'unsigned' => false,
+                    'null' => false,
+                ),
+            ),
+    'pk_name' => 'id',
 );
