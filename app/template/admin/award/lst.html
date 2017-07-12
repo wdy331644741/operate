@@ -33,7 +33,7 @@
                 <td>{$item.award_id}</td>
                 <td>{$item.remark}</td>
                 <td>{$item.send_count}</td>
-                <td>{if $item.send_status ==0}发送中{else if $item.send_status==1}发放成功{else}取消发送{/if}</td>
+                <td>{if $item.send_status ==0}未执行{else if $item.send_status==1}已执行{else}取消发送{/if}</td>
                 <td>{$item.create_time}</td>
                 <td>{$item.update_time}</td>
                 <td>
