@@ -40,7 +40,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
         $operateCoupon = new \Model\MarketingInterestcoupon();
         $redeemModel = new \Model\RedeemCode();
         $awardCouponInfo = $redeemModel->getPrizeInfo($nodeId,$type);
-        if (empty($awardExpInfo)) return ['is_ok' => false, 'msg'=>'奖品不可用'];
+        if (empty($awardCouponInfo)) return ['is_ok' => false, 'msg'=>'奖品不可用'];
 
         $couponInfo = array(
             'id' => $awardCouponInfo['id'],
