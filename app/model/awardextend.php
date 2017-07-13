@@ -53,6 +53,7 @@ class AwardExtend extends Model
             $data['ctime'] = date("Y-m-d H:i:s");
             $data['award_type'] = $record['award_type'];
             $data['award_id'] = $record['award_id'];
+            $data['mark'] = '';
             if (!$res['is_ok']){
                 $data['status'] = 0;
                 $data['mark'] = $res['msg'];
