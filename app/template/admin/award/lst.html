@@ -29,7 +29,7 @@
             <tr>
                 <td>{$item.id}</td>
                 <td style="width:20%;word-break:break-all;">{$item.user}</td>
-                <td>{if $item.award_type ==1}体验金{else}加息劵{/if}</td>
+                <td>{if $item.award_type ==1}体验金{else if $item.award_type ==2}加息劵{else}提现券{/if}</td>
                 <td>{$item.award_id}</td>
                 <td>{$item.remark}</td>
                 <td>{$item.send_count}</td>
