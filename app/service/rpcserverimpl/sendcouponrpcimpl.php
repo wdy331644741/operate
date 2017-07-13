@@ -40,7 +40,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
         $operateCoupon = new \Model\MarketingInterestcoupon();
         $redeemModel = new \Model\RedeemCode();
         $awardCouponInfo = $redeemModel->getPrizeInfo($nodeId,$type);
-        if (empty($awardExpInfo)) return ['is_ok' => false, '奖品不可用'];
+        if (empty($awardExpInfo)) return ['is_ok' => false, 'msg'=>'奖品不可用'];
 
         $couponInfo = array(
             'id' => $awardCouponInfo['id'],
@@ -85,7 +85,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
         $redeemModel = new \Model\RedeemCode();
         $awardExpInfo = $redeemModel->getPrizeInfo($nodeId, $type);
 
-        if (empty($awardExpInfo)) return ['is_ok' => false, '奖品不可用'];
+        if (empty($awardExpInfo)) return ['is_ok' => false, 'msg'=>'奖品不可用'];
 
         $amount = $awardExpInfo['amount'];
         if ($awardExpInfo['amount_type']==1){
@@ -103,7 +103,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
         );
 
         $addExperienceRes = $operateExperience->addExperienceForUser($userId,$experienceInfo);
-        if (empty($addExperienceRes)) return ['is_ok' => false, '添加记录失败'];
+        if (empty($addExperienceRes)) return ['is_ok' => false, 'msg'=>'添加记录失败'];
         //后使用
         $expId = $addExperienceRes['id'];
         unset($addExperienceRes['id']);
@@ -132,7 +132,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
         $awardWithdrawInfo = $redeemModel->getPrizeInfo($nodeId,$type);
         $FreeWithdraw = new \Model\MarketingWithdrawcoupon();
 
-        if (empty($awardWithdrawInfo)) return ['is_ok' => false, '奖品不可用'];
+        if (empty($awardWithdrawInfo)) return ['is_ok' => false, 'msg'=>'奖品不可用'];
 
         $withdrawInfo = array(
             'id' => $awardWithdrawInfo['id'],
@@ -146,7 +146,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
         $upId = $addWithdrawRes['id'];
         unset($addWithdrawRes['id']);
         //通知用户中心 发放提现劵
-        if (empty($addWithdrawRes)) return ['is_ok' => false, '添加记录失败'];
+        if (empty($addWithdrawRes)) return ['is_ok' => false, 'msg'=>'添加记录失败'];
 
         $preRes = self::commCall(['withdrawCoupon'   => $addWithdrawRes], 'preSendWithdrawCouponToUser');
 
