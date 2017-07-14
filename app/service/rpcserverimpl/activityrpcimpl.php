@@ -96,7 +96,7 @@ class ActivityRpcImpl extends BaseRpcImpl
      * @JsonRpcMethod
      */
     public function noticeList($params)
-    {   
+    {
         if($params->tiao != 'pc'){
             //检查登录状态
             if (($this->userId = $this->checkLoginStatus()) === false) {
@@ -108,6 +108,8 @@ class ActivityRpcImpl extends BaseRpcImpl
             throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
         }
 
+        $articleType = isset($params->type) ? $params->type : 'notice';
+
         $acticleModel = new \Model\MarketingArticle();
         $acticleLogModel = new \Model\MarketingArticleLog();
 
@@ -118,8 +120,8 @@ class ActivityRpcImpl extends BaseRpcImpl
             $readArray = array_column($isRead,'counts','article_id');
         }
 
-        $datacounts = $acticleModel->rowcounts();
-        $noticeList = $acticleModel->noticeList($params->page);
+        $datacounts = $acticleModel->getCount($articleType);
+        $noticeList = $acticleModel->noticeList($params->page,$articleType);
         // var_export($readArray);
         // var_export($noticeList);
         // exit;
@@ -128,12 +130,17 @@ class ActivityRpcImpl extends BaseRpcImpl
             //$noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
             $noticeList[$key]['readCounts'] = isset($readArray[$notice['id']])?(int)$readArray[$notice['id']]:0;
         }
+        $pageCount = ceil($datacounts / 10);
+        if($articleType=='article'){
+            $pageCount = ceil($datacounts / 5);
+        }
+
 
         return array(
             'code'    => 0,
             'message' => 'success',
             'data'    => $noticeList,
-            'pagecounts' =>ceil($datacounts/10)
+            'pagecounts' =>$pageCount
         );
     }
 
