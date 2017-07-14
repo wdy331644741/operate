@@ -35,7 +35,10 @@ class MarketingArticle extends Model
     {
         $start = intval(($page - 1) * 10);
         $offset = 10;
-        if ($nodeType=='article') $offset = 5;
+        if ($nodeType=='article') {
+            $offset = 5;
+            $start = intval(($page - 1) * 5);
+        }
         $articleNode = new MarketingArticleNode();
         $noticeCate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
 
