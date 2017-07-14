@@ -130,12 +130,17 @@ class ActivityRpcImpl extends BaseRpcImpl
             //$noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
             $noticeList[$key]['readCounts'] = isset($readArray[$notice['id']])?(int)$readArray[$notice['id']]:0;
         }
+        $pageCount = ceil($datacounts / 10);
+        if($articleType=='article'){
+            $pageCount = ceil($datacounts / 5);
+        }
+
 
         return array(
             'code'    => 0,
             'message' => 'success',
             'data'    => $noticeList,
-            'pagecounts' =>ceil($datacounts/10)
+            'pagecounts' =>$pageCount
         );
     }
 
