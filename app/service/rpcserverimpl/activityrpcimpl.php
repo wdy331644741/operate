@@ -125,9 +125,11 @@ class ActivityRpcImpl extends BaseRpcImpl
         // var_export($readArray);
         // var_export($noticeList);
         // exit;
+        $storage = new Storage();
         foreach ($noticeList as $key => $notice) {
             // $noticeList[$key]['content'] = htmlspecialchars_decode($noticeList[$key]['content']);
             //$noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
+            $noticeList[$key]['img_url'] = $storage->getViewUrl($notice['img_url']);
             $noticeList[$key]['readCounts'] = isset($readArray[$notice['id']])?(int)$readArray[$notice['id']]:0;
         }
 
