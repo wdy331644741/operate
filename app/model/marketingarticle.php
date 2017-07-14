@@ -34,6 +34,7 @@ class MarketingArticle extends Model
     public function noticeList($page,$nodeType)
     {
         $start = intval(($page - 1) * 10);
+        if ($nodeType=='article') $start = intval(($page - 1) * 5);
         $articleNode = new MarketingArticleNode();
         $noticeCate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
 
