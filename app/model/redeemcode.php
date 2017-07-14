@@ -1,7 +1,7 @@
 <?php
 
 namespace Model;
-
+use \PDO;
 class RedeemCode extends Model
 {
 
@@ -20,6 +20,9 @@ class RedeemCode extends Model
 
     public function verifyCode($userId, $code)
     {
+        if (!$this->limitUserFlow($userId)){
+            return ['msg' => '操作太频繁', 'is_ok' => false];
+        }
 
         $this->tableName = 'redeem_code';
         $redeemCode = $this->where(
@@ -65,6 +68,20 @@ class RedeemCode extends Model
             return ['msg'=>'活动兑换码已禁用','is_ok'=>false];
         }
 
+
+        $prizeInfo = $this->getPrizeInfo($redeemMeta['map_id'],$redeemMeta['type']);
+
+        $pinfo = '';
+
+        if ($redeemMeta['type']==1){
+            $pinfo = $prizeInfo['rate'];
+        }elseif ($redeemMeta['type']==2){
+            $pinfo = $prizeInfo['amount'];
+        }elseif ($redeemMeta['type']==3){
+            $pinfo = $prizeInfo['times'];
+        }
+
+        $redeemCode['prize_info'] = $pinfo;
         return ['msg' => '', 'is_ok' => true, 'redeem_data'=>$redeemCode];
 
 
@@ -90,18 +107,27 @@ class RedeemCode extends Model
     public function getPrizeInfo($id, $type)
     {
         $this->tableName = $this->typeToTable[$type];
-        $nowTime = date("Y-m-d H:i:s");
-        return $this->where("`id` = {$id} and `effective_end` > '{$nowTime}' and status = 1 and is_del = 0")
+
+        return $this->where("`id` = {$id} and status = 1 and is_del = 0")
             ->get()->rowArr();
 
     }
 
-    public function getMetaList()
+    /**
+     * 元信息列表
+     * @param int $start
+     * @param int $offset
+     * @return bool
+     */
+    public function getMetaList($start=0, $offset=20)
     {
         $this->tableName = 'redeem_code_meta';
-        $res = $this->where('is_del =0')->get()->resultArr();
+        $res = $this->where('is_del =0')
+            ->orderby("ctime DESC")
+            ->limit($start, $offset)->get()->resultArr();
+
         if (!$res) return false;
-        foreach ($res as $k=>$v){
+        foreach ($res as $k => $v) {
             $res[$k]['type'] = $this->typeArr[$v['type']];
             $res[$k]['total'] = $this->getTotal($v['id']);
             $res[$k]['used'] = $this->getUseNum($v['id']);
@@ -110,6 +136,7 @@ class RedeemCode extends Model
 
         return $res;
     }
+
     public function switchStausById($id)
     {
         $this->tableName = 'redeem_code_meta';
@@ -237,20 +264,50 @@ class RedeemCode extends Model
      */
     public function generateCode($meatId, $data)
     {
-        $this->tableName = 'redeem_code';
-        $redeemSn = $meatId."-".$data['type']."-";
-        $count = 0;//计数器
-        for ($i=0;$i<$data['total'];$i++){
-            $subData['redeem_sn'] = $redeemSn.$i;
-            $subData['code'] = self::hashEncode($redeemSn . $i);
-            $subData['type'] = $data['type'];
-            $subData['map_id'] = $data['map_id'];
-            $subData['meta_id'] = $meatId;
-            if (parent::add($subData)){
-                $count++;
+        set_time_limit(0);
+        ini_set('memory_limit', '512M');
+        $redeemSn = $meatId . "-" . $data['type'] . "-";
+        $count = 1;//计数器
+        $total = 0;
+        $limit = 1000;
+        for ($i = 0; $i < $data['total']; $i++) {
+            $subData[$i]['redeem_sn'] = "'" . $redeemSn . $i . "'";
+            $subData[$i]['code'] = "'" . self::hashEncode($redeemSn . $i) . "'";
+            $subData[$i]['type'] = $data['type'];
+            $subData[$i]['map_id'] = $data['map_id'];
+            $subData[$i]['meta_id'] = $meatId;
+            if ($count == $limit) {
+                $insertNum = $this->exec(self::spellInsertSql($subData));
+                $total += $insertNum;
+                $subData = [];
+                $count = 1;
+            } elseif (($i + 1) == $data['total'] && !empty($subData)) {
+                $insertNum = $this->exec(self::spellInsertSql($subData));
+                $total += $insertNum;
             }
+            $count++;
         }
-        return $count;
+        return $total;
+    }
+
+    /**
+     * 拼接sql
+     * @param array $sqlArr
+     * @return string
+     */
+    private static function spellInsertSql(array $sqlArr)
+    {
+        $sqlArr = array_values($sqlArr);
+        $sql = "insert ignore into redeem_code ";
+        $fieldArr = array_keys($sqlArr[0]);
+
+        $fieldStr = "( " . implode(",", $fieldArr) . ")";
+
+        $dataSql = " values ";
+        foreach ($sqlArr as $value) {
+            $dataSql .= "(" . implode(",", $value) . ")" . ",";
+        }
+        return $sql . $fieldStr . trim($dataSql, ",");
     }
 
 
@@ -260,11 +317,15 @@ class RedeemCode extends Model
      * @param $userId
      * @return mixed
      */
-    public function updateStatus($code, $userId)
+    public function updateStatus($id, $userId)
     {
-        $this->tableName = 'redeem_code';
-        return $this->update(['user_id' => $userId,'status'=>1,
-            'redeem_time' => date("Y-m-d H:i:s")], ['code' => $code]);
+        $now =date("Y-m-d H:i:s");
+//        $this->tableName = 'redeem_code';
+        $sql = "update redeem_code set `status` =1 ,`redeem_time` = '{$now}', `user_id` = $userId where `code`=$id and `status`=0";
+
+        return $this->exec($sql);
+//        return $this->update(['user_id' => $userId,'status'=>1,
+//            'redeem_time' => date("Y-m-d H:i:s")], ['code' => $code, 'status'=>0]);
     }
 
 
@@ -272,10 +333,110 @@ class RedeemCode extends Model
      * @param $str
      * @return string
      */
-    private static function hashEncode($str){
-        $str1 = sprintf("%u",crc32(crypt($str,self::RANDOM_STR)));
+    private static function hashEncode($str)
+    {
+        $str1 = sprintf("%u", crc32(sha1($str)));
+        $randStr = '23456789qweertyupasdfghjklzxcvbnm';
+        $str =  base_convert($str1, 10, 32);
+        if (($difNum = 8 - strlen($str)) > 0){
+            $str = $str . substr(str_shuffle($randStr),0,$difNum);
+        }
+        return $str;
+    }
 
-        return base_convert($str1, 10, 32);
+    /**
+     * pdo游标导出
+     * @param $metaId
+     * @return \Generator
+     */
+    public function export($metaId)
+    {
+        $pdo = self::getPDO();
+        $pdo->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+        $sql = "SELECT `id`,`code`,`user_id`,`redeem_time`,`type`,`status` 
+                FROM redeem_code WHERE meta_id={$metaId} AND is_del=0";
+        $res = $pdo->prepare($sql);
+        $res->execute();
+        if ($res) {
+            while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
+                yield $row;
+            }
+        }
+        $res->closeCursor();
+
+    }
+
+    /**
+     * 获取一个原生的pdo
+     * @return bool|PDO
+     */
+    private static function getPDO()
+    {
+        $config = [
+            'host' => C("DB_HOST"),
+            'port' => C("DB_PORT"),
+            'username' => C("DB_USERNAME"),
+            'password' => C("DB_PASSWORD"),
+            'dbname' => C("DB_NAME"),
+            'dbprefix' => C("DB_PREFIX"),
+
+            'pconnect' => C("DB_PCONNECT"),
+            'db_debug' => C("DB_DEBUG"),
+            'charset' => C("DB_CHARSET"),
+        ];
+
+        $dsn = 'mysql:host=' . $config['host'];
+
+        if (isset($config['dbname'])) {
+            $dsn .= ';dbname=' . $config['dbname'];
+        }
+
+        if (isset($config['dbname'])) {
+            $dsn .= ';port=' . $config['port'];
+        }
+
+        try {
+            //连接
+            $conn = new PDO($dsn, $config['username'], $config['password']);
+            //设置编码
+            $conn->query("SET NAMES '{$config['charset']}'");
+            //设置错误模式
+            $conn->setAttribute(PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            //设置长连接
+            $conn->setAttribute(PDO::ATTR_PERSISTENT, $config['pconnect']);
+        } catch (PDOException $e) {
+
+            return false;
+        }
+        return $conn;
+    }
+
+    /**
+     * 限制用户请求数量
+     * @param $userId
+     * @return bool
+     */
+    private function limitUserFlow($userId)
+    {
+        $redis = getReidsInstance();
+        $limit = $redis->get($userId);
+        if (false === $limit){
+            return $redis->setex($userId, 10, 3);
+        }
+        if ($limit <= 0){
+            return false;
+        }
+
+        if ($redis->decr($userId) < 0){
+            return false;
+        }
+        return true;
+    }
+
+    public function getRedeemMetaCount()
+    {
+        $this->tableName = 'redeem_code_meta';
+        return $this->countNums();
     }
 
 }

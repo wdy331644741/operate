@@ -21,8 +21,14 @@ class RedeemRpcImpl extends BaseRpcImpl
 
             ];
         }
-        $redeemModel = new  \Model\RedeemCode();
+        if (!preg_match('/\w{4,}/',$params->code)){
+            return [
+                'code'=>AllErrorException::VALID_CAPTCHA_FAIL,
+                'message' => '兑换码格式错误',
+            ];
+        }
 
+        $redeemModel = new  \Model\RedeemCode();
         $verifyRes = $redeemModel->verifyCode($this->userId, $params->code);
 
         if (!$verifyRes['is_ok']){
@@ -33,17 +39,27 @@ class RedeemRpcImpl extends BaseRpcImpl
         }
 
         $redeemData = $verifyRes['redeem_data'];
+        $status = $redeemModel->updateStatus($redeemData['id'], $this->userId);
 
+        if (empty($status)){
+            return [
+                'code'=>AllErrorException::VALID_CAPTCHA_FAIL,
+                'message' => '兑换失败',
+            ];
+        }
         $res = (new SendCouponRpcImpl)->sendAction($redeemData['type'],
             $this->userId, $redeemData['map_id']);
-        if ($res){
-            if ($redeemModel->updateStatus($params->code, $this->userId)){
-                return [
-                    'code' => 0,
-                    'message' => '兑换成功',
-                ];
-            }
-
+        if ($res['is_ok'] && $status ){
+            return [
+                'code' => 0,
+                'type' => $redeemData['type'],
+                'message' => $redeemData['prize_info'],
+            ];
+        }elseif(false == $res['is_ok']){
+            return [
+                'code' => AllErrorException::VALID_CAPTCHA_FAIL,
+                'message' => $res['msg'],
+            ];
         }
 
         return [

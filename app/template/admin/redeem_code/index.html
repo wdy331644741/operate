@@ -20,7 +20,7 @@
 
 
     <!-- 奖券配置 -->
-    <div class="modal fade" id="confModal" tabindex="-1" role="dialog" aria-labelledby="confModalLabel">
+    <div class="modal fade" id="confModal" tabindex="-1" role="dialog" aria-labelledby="confModalLabel" data-backdrop='static'>
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -110,6 +110,7 @@
                     <th >生成数量</th>
                     <th >已使用数量</th>
                     <th >未使用数量</th>
+                    <th >用户最多可得</th>
                     <th >有效期起始时间</th>
                     <th >有效期结束时间</th>
                     <th >状态</th>
@@ -126,6 +127,7 @@
                     <td>{$item.total}</td>
                     <td>{$item.used}</td>
                     <td>{$item.un_used}</td>
+                    <td>{$item.user_max_get}</td>
                     <td>{$item.start_time}</td>
                     <td>{$item.end_time}</td>
                     <td>
@@ -156,6 +158,7 @@
                 </tbody>
             </table>
         </div>
+        {if isset($pagination_link)}<div>{$pagination_link}</div>{/if}
     </div>
 
 </div>

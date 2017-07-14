@@ -29,19 +29,17 @@
             <tr>
                 <td>{$item.id}</td>
                 <td style="width:20%;word-break:break-all;">{$item.user}</td>
-                <td>{if $item.award_type ==1}体验金{else}加息劵{/if}</td>
+                <td>{if $item.award_type ==1}体验金{else if $item.award_type ==2}加息劵{else}提现券{/if}</td>
                 <td>{$item.award_id}</td>
                 <td>{$item.remark}</td>
                 <td>{$item.send_count}</td>
-                <td>{if $item.send_status ==0}发送中{else if $item.send_status==1}发放成功{else}取消发送{/if}</td>
+                <td>{if $item.send_status ==0}未执行{else if $item.send_status==1}已执行{else}取消发送{/if}</td>
                 <td>{$item.create_time}</td>
                 <td>{$item.update_time}</td>
                 <td>
-                    {if $item.send_status ==0}
-                    <a href="javascript:void(0);" sid={$item.id} class="btn btn-primary btn-xs status">取消发送</a>
-                    {else}无{/if}
+                    <a href="javascript:void(0);" data-id={$item.id} class="btn btn-primary btn-xs send-detail">查看详情</a>
                 </td>
-              </tr>
+            </tr>
             {/foreach}
             {/if}
             </tbody>
@@ -50,17 +48,9 @@
     <div>{if isset($pageNum)}{$pageNum}{/if}</div>
     {include file="footer.html"}
     <script type="text/javascript">
-        $(function(){
-            $(".status").click(function(){
-                var send_id =  $(this).attr("sid");
-                if(confirm('你确定要取消发送吗？')){
-                    window.location.href="?c=award&a=unsendAward&sid="+send_id;
-                }
-            });
+
+        $('.send-detail').click(function () {
+            var id = $(this).attr('data-id');
+            window.location.href = "?c=award&a=detail&id="+id;
         })
-        function tr_show(data){
-            var show= $('.show'+data);
-            $("#tr"+data).toggleClass('expander');
-            show.toggle();
-        }
     </script>
