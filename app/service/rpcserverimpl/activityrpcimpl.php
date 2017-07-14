@@ -120,7 +120,7 @@ class ActivityRpcImpl extends BaseRpcImpl
             $readArray = array_column($isRead,'counts','article_id');
         }
 
-        $datacounts = $acticleModel->rowcounts();
+        $datacounts = $acticleModel->getCount($articleType);
         $noticeList = $acticleModel->noticeList($params->page,$articleType);
         // var_export($readArray);
         // var_export($noticeList);
