@@ -60,4 +60,14 @@ class MarketingArticle extends Model
         $res = $this->query($sql)->resultArr();
         return empty($res)?0:1;
     }
+
+    public function getCount($nodeType)
+    {
+        $articleNode = new MarketingArticleNode();
+        $Cate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
+        $sql = "select count(*) as sum from marketing_article where cate_node={$Cate['id']}";
+        $res = $this->query($sql)->rowArr();
+        return isset($res['sum']) ? $res['sum'] : 0;
+
+    }
 }
