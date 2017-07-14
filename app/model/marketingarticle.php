@@ -34,14 +34,15 @@ class MarketingArticle extends Model
     public function noticeList($page,$nodeType)
     {
         $start = intval(($page - 1) * 10);
-        if ($nodeType=='article') $start = intval(($page - 1) * 5);
+        $offset = 10;
+        if ($nodeType=='article') $offset = 5;
         $articleNode = new MarketingArticleNode();
         $noticeCate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
 
         return $this->fields('id, title, content,create_time,res_name,res_url')
             ->where("`is_del` = 0 and `status` = 1 and cate_node = {$noticeCate['id']}")
             ->orderby(array('sort'=>'DESC','create_time'=>'DESC'))
-            ->limit($start, 10)
+            ->limit($start, $offset)
             ->get()->resultArr();
     }
 
