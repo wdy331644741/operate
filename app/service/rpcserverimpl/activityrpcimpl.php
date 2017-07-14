@@ -96,7 +96,7 @@ class ActivityRpcImpl extends BaseRpcImpl
      * @JsonRpcMethod
      */
     public function noticeList($params)
-    {   
+    {
         if($params->tiao != 'pc'){
             //检查登录状态
             if (($this->userId = $this->checkLoginStatus()) === false) {
@@ -107,6 +107,8 @@ class ActivityRpcImpl extends BaseRpcImpl
         if (empty($params->page)) {
             throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
         }
+
+        $articleType = isset($params->type) ? $params->type : 'notice';
 
         $acticleModel = new \Model\MarketingArticle();
         $acticleLogModel = new \Model\MarketingArticleLog();
@@ -119,7 +121,7 @@ class ActivityRpcImpl extends BaseRpcImpl
         }
 
         $datacounts = $acticleModel->rowcounts();
-        $noticeList = $acticleModel->noticeList($params->page);
+        $noticeList = $acticleModel->noticeList($params->page,$articleType);
         // var_export($readArray);
         // var_export($noticeList);
         // exit;

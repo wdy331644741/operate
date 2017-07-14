@@ -14,7 +14,7 @@ function add()
         }
 
         $data['title'] = $title;
-        $data['img_url'] = $imgUrl;
+        $data['img_url'] = $imgUrl?:'';
         $data['cate_node'] = $cateNode;
         $data['content'] = htmlspecialchars($content);
         $data['sort'] = $sort;

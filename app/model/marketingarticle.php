@@ -31,13 +31,13 @@ class MarketingArticle extends Model
         return $re[0]['num'];
     }
 
-    public function noticeList($page)
+    public function noticeList($page,$nodeType)
     {
         $start = intval(($page - 1) * 10);
         $articleNode = new MarketingArticleNode();
-        $noticeCate = $articleNode->where("`name` = 'notice'")->get()->rowArr();
+        $noticeCate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
 
-        return $this->fields('id, title, content,create_time')
+        return $this->fields('id, title, content,create_time,res_name,res_url')
             ->where("`is_del` = 0 and `status` = 1 and cate_node = {$noticeCate['id']}")
             ->orderby(array('sort'=>'DESC','create_time'=>'DESC'))
             ->limit($start, 10)
