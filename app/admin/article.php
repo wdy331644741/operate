@@ -92,6 +92,7 @@ function lst()
         }
     }
     $framework->smarty->assign('list', $list);
+    $framework->smarty->assign('type', $type);
     $framework->smarty->assign('nodeList', $nodeList);
     $framework->smarty->display('article/lst.html');
 }
