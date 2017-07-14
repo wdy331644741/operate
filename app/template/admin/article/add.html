@@ -19,15 +19,33 @@
         <div class="form-group">
             <label class="col-sm-2 control-label"><span class="name_span">分类</span><i>*</i></label>
             <div class="col-sm-7">
-                <select class="form-control" name="cateNode">
+                <select class="form-control" name="cateNode" id="change">
                     {if $nodeList}
                     {foreach $nodeList as $node}
-                    <option value="{$node.id}">{$node.title}</option>
+                    <option value="{$node.id}" >{$node.title}</option>
                     {/foreach}
                     {/if}
                 </select>
             </div>
         </div>
+        <div id="article-input" style="display: none">
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span>来源名称</span><i>*</i></label>
+                <div class="col-sm-7">
+                    <input type="input" class="form-control" name="resource_name" value="">
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span>来源URL</span><i>*</i></label>
+                <div class="col-sm-7">
+                    <input type="input" class="form-control" name="resource_url" value="">
+                </div>
+
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label"><span class="name_span">图片</span><i>*</i></label>
             <div class="col-sm-7">
@@ -83,10 +101,8 @@
     $(function () {
         $('#img').uploadify({
             'buttonText': '选择图片',
-
             'fileObjName': 'filename',
             'swf': 'admin/uploadify/uploadify.swf',
-
             'uploader': "{$url}",
             'onUploadSuccess': function (file, data, response) {
                 var data = JSON.parse(data);
@@ -108,26 +124,35 @@
     });
 </script>
 <script>
-    $(function () {
-        //提交表单
-        $("#submit").click(function () {
-            //$("#content").val(window.ue.getContent());
-            $.ajax({
-                "url": "",
-                'type': 'POST',
-                'data': $('#form01').serialize(),
-                'dataType': 'json',
-                'success': function (data) {
-                    if (data.error != 0) {
-                        layer.alert(data.message);
-                    }
-                    else {
-                        window.location.href = '{U("admin.php",["c" => I("get.c/s","index"),"a"=>"index"])}';
-                    }
-                }
 
-            });
+    $("#change").change(function () {
+        var nodeType =$(this).val();
+        if (nodeType==3){
+            $("#article-input").show();
+        }else {
+            $("#article-input").hide();
+        }
+    })
+
+    //提交表单
+    $("#submit").click(function () {
+        //$("#content").val(window.ue.getContent());
+        $.ajax({
+            "url": "",
+            'type': 'POST',
+            'data': $('#form01').serialize(),
+            'dataType': 'json',
+            'success': function (data) {
+                if (data.error != 0) {
+                    layer.alert(data.message);
+                }
+                else {
+                    window.location.href = '{U("admin.php",["c" => I("get.c/s","index"),"a"=>"index"])}';
+                }
+            }
+
         });
     });
+
 </script>
 {include file="footer.html"}

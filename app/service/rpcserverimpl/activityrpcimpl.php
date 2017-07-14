@@ -96,15 +96,19 @@ class ActivityRpcImpl extends BaseRpcImpl
      * @JsonRpcMethod
      */
     public function noticeList($params)
-    {   
-        //检查登录状态
-        if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+    {
+        if($params->tiao != 'pc'){
+            //检查登录状态
+            if (($this->userId = $this->checkLoginStatus()) === false) {
+                throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+            }
         }
         //验证是否有page;
         if (empty($params->page)) {
             throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
         }
+
+        $articleType = isset($params->type) ? $params->type : 'notice';
 
         $acticleModel = new \Model\MarketingArticle();
         $acticleLogModel = new \Model\MarketingArticleLog();
@@ -115,20 +119,23 @@ class ActivityRpcImpl extends BaseRpcImpl
         if(isset($isRead) && !empty($isRead)){
             $readArray = array_column($isRead,'counts','article_id');
         }
-        $noticeList = $acticleModel->noticeList($params->page);
+
+        $datacounts = $acticleModel->rowcounts();
+        $noticeList = $acticleModel->noticeList($params->page,$articleType);
         // var_export($readArray);
         // var_export($noticeList);
         // exit;
         foreach ($noticeList as $key => $notice) {
             // $noticeList[$key]['content'] = htmlspecialchars_decode($noticeList[$key]['content']);
-            $noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
+            //$noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
             $noticeList[$key]['readCounts'] = isset($readArray[$notice['id']])?(int)$readArray[$notice['id']]:0;
         }
 
         return array(
             'code'    => 0,
             'message' => 'success',
-            'data'    => $noticeList
+            'data'    => $noticeList,
+            'pagecounts' =>ceil($datacounts/10)
         );
     }
 
@@ -138,10 +145,12 @@ class ActivityRpcImpl extends BaseRpcImpl
      * @JsonRpcMethod
      */
     public function noticeContent($params){
-        //验证
-        //检查登录状态
-        if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        if($params->tiao != 'pc'){
+            //验证
+            //检查登录状态
+            if (($this->userId = $this->checkLoginStatus()) === false) {
+                throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+            }
         }
 
         if (empty($params->article_id)) {
@@ -156,12 +165,14 @@ class ActivityRpcImpl extends BaseRpcImpl
 
         $isRead = $acticleLogModel->isReadByUser($this->userId,$params->article_id);
         // var_export($isRead);exit;
-        //添加一条阅读记录
-        //更新、累加记录
-        if(isset($isRead) && empty($isRead)){
-            $res = $acticleLogModel->addReadLog($params->article_id,$this->userId);
-        }else{
-            $acticleLogModel->updateReadLog($params->article_id,$this->userId,$isRead[0]['counts']);
+        if($params->tiao != 'pc'){
+            //添加一条阅读记录
+            //更新、累加记录
+            if(isset($isRead) && empty($isRead)){
+                $res = $acticleLogModel->addReadLog($params->article_id,$this->userId);
+            }else{
+                $acticleLogModel->updateReadLog($params->article_id,$this->userId,$isRead[0]['counts']);
+            }
         }
         $test = htmlspecialchars_decode($acticleContent[0]['content']);
         // return $test;

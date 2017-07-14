@@ -22,17 +22,25 @@ class MarketingArticle extends Model
             $status = self::STATUS_TRUE;
         return $this->where($where)->upd(['status' => $status]);
     }
-
-    public function noticeList($page)
-    {
-        $start = intval(($page - 1) * C('PAGE_SIZE'));
+    public function rowcounts(){
         $articleNode = new MarketingArticleNode();
         $noticeCate = $articleNode->where("`name` = 'notice'")->get()->rowArr();
+        $sql = "select count(*) as num from {$this->tableName} where is_del = 0 and status = 1 and cate_node = {$noticeCate['id']}";
 
-        return $this->fields('id, title, content,create_time')
+        $re = $this->query($sql)->resultArr();
+        return $re[0]['num'];
+    }
+
+    public function noticeList($page,$nodeType)
+    {
+        $start = intval(($page - 1) * 10);
+        $articleNode = new MarketingArticleNode();
+        $noticeCate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
+
+        return $this->fields('id, title, content,create_time,res_name,res_url')
             ->where("`is_del` = 0 and `status` = 1 and cate_node = {$noticeCate['id']}")
             ->orderby(array('sort'=>'DESC','create_time'=>'DESC'))
-            ->limit($start, C('PAGE_SIZE'))
+            ->limit($start, 10)
             ->get()->resultArr();
     }
 

@@ -1,3 +1,4 @@
+
 CREATE TABLE `award_extend` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user` varchar(255) NOT NULL DEFAULT '' COMMENT '发放人手机号/用户id',
@@ -9,4 +10,4 @@ CREATE TABLE `award_extend` (
   `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-1
+
