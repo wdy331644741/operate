@@ -27,6 +27,9 @@ function add()
         $data['title'] = $title;
         $data['days'] = I('post.days','', 'trim');
         $data['hours'] = I('post.hours','', 'trim');
+        if($data['hours'] == 0 && $data['days'] == 0){
+            ajaxReturn(['error' => 4000, 'message' => '加息时长不能为空']);
+        }
         $data['effective_end'] = $effectiveEnd;
         $data['limit_desc'] = $limitDesc;
         $data['limit_node'] = $limitNode;
