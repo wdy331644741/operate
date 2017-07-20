@@ -42,7 +42,7 @@ class MarketingArticle extends Model
         $articleNode = new MarketingArticleNode();
         $noticeCate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
 
-        return $this->fields('id, title, content,create_time,res_name,res_url')
+        return $this->fields('id, title, img_url,content,create_time,res_name,res_url')
             ->where("`is_del` = 0 and `status` = 1 and cate_node = {$noticeCate['id']}")
             ->orderby(array('sort'=>'DESC','create_time'=>'DESC'))
             ->limit($start, $offset)
@@ -69,8 +69,10 @@ class MarketingArticle extends Model
     public function getCount($nodeType)
     {
         $articleNode = new MarketingArticleNode();
-        $Cate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
-        $sql = "select count(*) as sum from marketing_article where cate_node={$Cate['id']}";
+        $cate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
+        if (empty($cate)) return 0;
+
+        $sql = "select count(*) as sum from marketing_article where cate_node={$cate['id']}";
         $res = $this->query($sql)->rowArr();
         return isset($res['sum']) ? $res['sum'] : 0;
 
