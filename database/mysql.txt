@@ -1,17 +1,1 @@
-CREATE TABLE `marketing_article_log` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) NOT NULL COMMENT '用户id',
-  `articel_id` int(10) NOT NULL COMMENT '公告id',
-  `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '第一次阅读时间',
-  `last_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '最后一次阅读时间',
-  `counts` int(20) DEFAULT '1' COMMENT '阅读次数',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`) USING BTREE,
-  KEY `artice_id` (`articel_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='阅读公告日志表';
-
-ALTER TABLE `marketing_activity`
-ADD COLUMN `check_login`  tinyint(1) NULL DEFAULT 0 COMMENT '检查是否需要用户登录 0不需要 1需要' AFTER `is_del`;
-ALTER TABLE `marketing_experience`
-ADD COLUMN `continuous_hours`  smallint(5) NOT NULL DEFAULT 0 COMMENT '按小时计息' AFTER `continuous_days`;
+INSERT INTO `marketing_article_node` (`title`, `name`) VALUES ('文章', 'article')

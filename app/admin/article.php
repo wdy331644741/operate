@@ -14,12 +14,14 @@ function add()
         }
 
         $data['title'] = $title;
-        $data['img_url'] = $imgUrl;
+        $data['img_url'] = $imgUrl?:'';
         $data['cate_node'] = $cateNode;
         $data['content'] = htmlspecialchars($content);
         $data['sort'] = $sort;
         $data['status'] = $status;
         $data['create_time'] = date('Y-m-d H:i:s');//注册时间
+        $data['res_name'] = I('post.resource_name', '', 'trim');
+        $data['res_url'] = I('post.resource_url', '', 'trim');
 
         try {
             $articleModel = new \Model\MarketingArticle();
@@ -62,10 +64,13 @@ function index()
  * @pageroute
  */
 function lst()
-{
+{   
+    $type = I('get.type', 'notice', 'trim');
     $framework = getFrameworkInstance();
     $articleUserModel = new \Model\MarketingArticle();
-    $list = $articleUserModel->get()->resultArr();
+    $articleNode = new \Model\MarketingArticleNode();
+    $noticeCate = $articleNode->where("`name` = '{$type}'")->get()->rowArr();
+    $list = $articleUserModel->where("`cate_node` = {$noticeCate['id']}")->get()->resultArr();
 
     $nodeModel = new \Model\MarketingArticleNode();
     $nodeListQuery = $nodeModel->get()->resultArr();
@@ -87,6 +92,7 @@ function lst()
         }
     }
     $framework->smarty->assign('list', $list);
+    $framework->smarty->assign('type', $type);
     $framework->smarty->assign('nodeList', $nodeList);
     $framework->smarty->display('article/lst.html');
 }

@@ -22,17 +22,30 @@ class MarketingArticle extends Model
             $status = self::STATUS_TRUE;
         return $this->where($where)->upd(['status' => $status]);
     }
-
-    public function noticeList($page)
-    {
-        $start = intval(($page - 1) * C('PAGE_SIZE'));
+    public function rowcounts(){
         $articleNode = new MarketingArticleNode();
         $noticeCate = $articleNode->where("`name` = 'notice'")->get()->rowArr();
+        $sql = "select count(*) as num from {$this->tableName} where is_del = 0 and status = 1 and cate_node = {$noticeCate['id']}";
 
-        return $this->fields('id, title, content,create_time')
+        $re = $this->query($sql)->resultArr();
+        return $re[0]['num'];
+    }
+
+    public function noticeList($page,$nodeType)
+    {
+        $start = intval(($page - 1) * 10);
+        $offset = 10;
+        if ($nodeType=='article') {
+            $offset = 5;
+            $start = intval(($page - 1) * 5);
+        }
+        $articleNode = new MarketingArticleNode();
+        $noticeCate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
+
+        return $this->fields('id, title, content,create_time,res_name,res_url')
             ->where("`is_del` = 0 and `status` = 1 and cate_node = {$noticeCate['id']}")
             ->orderby(array('sort'=>'DESC','create_time'=>'DESC'))
-            ->limit($start, C('PAGE_SIZE'))
+            ->limit($start, $offset)
             ->get()->resultArr();
     }
 
@@ -51,5 +64,15 @@ class MarketingArticle extends Model
         $sql = "select id from marketing_article where id not in (select article_id from marketing_article_log where user_id = {$userId}) and is_del = 0 and  status = 1 and cate_node = {$noticeCate['id']}";
         $res = $this->query($sql)->resultArr();
         return empty($res)?0:1;
+    }
+
+    public function getCount($nodeType)
+    {
+        $articleNode = new MarketingArticleNode();
+        $Cate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
+        $sql = "select count(*) as sum from marketing_article where cate_node={$Cate['id']}";
+        $res = $this->query($sql)->rowArr();
+        return isset($res['sum']) ? $res['sum'] : 0;
+
     }
 }

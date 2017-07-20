@@ -4,12 +4,21 @@
 </style>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <div class="top-title">
-        <h2 class="sub-header">Article列表</h2>
+        <h2 class="sub-header">Notice列表</h2>
         <div class="top-tools">
-            <a href="?c=article&a=add"class="btn btn-primary">增加Article</a>
+            <a href="?c=article&a=add" class="btn btn-primary add-content">增加Notice</a>
         </div>
     </div>
+    
     <div style="clear:both"></div>
+    <ul id="myTab" class="nav nav-tabs">
+        <li active="form01" class=""><a href="?c=article&a=lst&type=notice">
+            公告列表</a>
+        </li>
+        <li active="form03" class=""><a href="?c=article&a=lst&type=article">
+            pc文章列表</a>
+        </li>
+    </ul>
     <div id="myTabContent" class="tab-content" style="margin-top:10px">
         <!-- start 已上线 -->
         <div class="table-responsive tab-pane fade in active" id="no2">
@@ -75,5 +84,10 @@
             }
         });
     })
+    var type = "{$type}";
+    if (type=='article'){
+        $(".sub-header").text("文章列表");
+        $(".add-content").text("添加文章");
+    }
 </script>
 {include file="footer.html"}
