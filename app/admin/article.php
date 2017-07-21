@@ -139,6 +139,8 @@ function upd()
         $data['sort'] = $sort;
         $data['status'] = $status;
         $data['update_time'] = date('Y-m-d H:i:s');//注册时间
+        $data['res_name'] = I('post.resource_name', '', 'trim');
+        $data['res_url'] = I('post.resource_url', '', 'trim');
 
         try {
             $articleModel = new \Model\MarketingArticle();
