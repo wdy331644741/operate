@@ -8,8 +8,10 @@ use \App\service\rpcserverimpl\Common;
  * @pageroute
  */
 function index(){
-	checkGiveExpreience();
-	checkGiveWithdraw();
+
+	$setDate = isset($GLOBALS['cli_args'][0])?$GLOBALS['cli_args'][0]:'';
+	checkGiveExpreience($setDate);
+	checkGiveWithdraw($setDate);
 }
 
 /**
@@ -17,13 +19,21 @@ function index(){
  * 15天内不提现即可获得。
  * @pageroute
  */
-function checkGiveWithdraw(){
+function checkGiveWithdraw($setDate=''){
 	$withdrawModel = new \Model\MarketingWithdrawcoupon();
 	//检测15天前 是否有提现 行为
-	$date = date('Y-m-d',strtotime('-15 day'));
-	$dateNow = date('Y-m-d H:i:s');
+	if(empty($setDate)){
+		$date = date('Y-m-d',strtotime('-15 day'));
+		$dateNow = date('Y-m-d H:i:s');
+	}else{
+		$day_diff = diffBetweenTwoDays($setDate,date('Y-m-d'));
+		$debug_day = $day_diff+15;
+		$date = date('Y-m-d',strtotime("-{$debug_day} day" , time()) );
+		$dateNow = $setDate." 00:00:00";
+	}
+	
 	$alluser = $withdrawModel->getCouponUserByTime($date);
-	echo "----------------------复投活动 发放提现劵---------------------".PHP_EOL;
+	echo "----------------------".$dateNow."复投活动 发放提现劵---------------------".PHP_EOL;
 
 	if(!empty($alluser)){
 		foreach ($alluser as $key => $value) {
@@ -64,13 +74,20 @@ function checkGiveWithdraw(){
  * 10天内不提现自动计息。
  * @pageroute
  */
-function checkGiveExpreience(){
+function checkGiveExpreience($setDate=''){
 	$expreienceModel = new \Model\MarketingExperience();
 	//检测10天前 复投的用户是否有提现行为
-	$date = date('Y-m-d',strtotime('-10 day'));
-	$dateNow = date('Y-m-d H:i:s');
+	if(empty($setDate)){
+		$date = date('Y-m-d',strtotime('-10 day'));
+		$dateNow = date('Y-m-d H:i:s');
+	}else{
+		$day_diff = diffBetweenTwoDays($setDate,date('Y-m-d'));
+		$debug_day = $day_diff+10;
+		$date = date('Y-m-d',strtotime("-{$debug_day} day" , time()) );
+		$dateNow = $setDate." 00:00:00";
+	}
 	$alluser = $expreienceModel->getExpUserByTime($date);
-	echo "----------------------复投活动 发放体验金---------------------".PHP_EOL;
+	echo "----------------------".$dateNow."复投活动 发放体验金---------------------".PHP_EOL;
 
 	if(!empty($alluser)){
 		//获取该用户 在10天内是否提现
@@ -103,4 +120,25 @@ function checkGiveExpreience(){
 		
 		}
 	}
+}
+
+
+/**
+ * 求两个日期之间相差的天数
+ * (针对1970年1月1日之后，求之前可以采用泰勒公式)
+ * @param string $day1
+ * @param string $day2
+ * @return number
+ */
+function diffBetweenTwoDays($day1, $day2)
+{
+  $second1 = strtotime($day1);
+  $second2 = strtotime($day2);
+    
+  if ($second1 < $second2) {
+    $tmp = $second2;
+    $second2 = $second1;
+    $second1 = $tmp;
+  }
+  return ($second1 - $second2) / 86400;
 }

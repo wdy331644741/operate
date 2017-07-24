@@ -72,7 +72,7 @@ class MarketingArticle extends Model
         $cate = $articleNode->where(['name'=>$nodeType])->get()->rowArr();
         if (empty($cate)) return 0;
 
-        $sql = "select count(*) as sum from marketing_article where cate_node={$cate['id']}";
+        $sql = "select count(*) as sum from marketing_article where cate_node={$cate['id']} and is_del = 0 and status = 1";
         $res = $this->query($sql)->rowArr();
         return isset($res['sum']) ? $res['sum'] : 0;
 
