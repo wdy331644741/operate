@@ -65,7 +65,7 @@ function withdraw(){
 	$activityModel = new \Model\MarketingActivity();
 	$activityInfo = $activityModel->getUsefulActivityByName($activity_name);
 	//在判断提现的时候，在活动结束时间的基础上再增加21天
-	$realEndTime = date("Y-m-d H:m:s", strtotime("+21 days", strtotime($activityInfo['end_time'])));
+	$realEndTime = date("Y-m-d H:i:s", strtotime("+21 days", strtotime($activityInfo['end_time'])));
 	if($activityInfo['start_time'] > $withdrawTime || $realEndTime < $withdrawTime) return "提现在活动时间之外";
 
 	$nodeName = 'hunderd_six_keep';
