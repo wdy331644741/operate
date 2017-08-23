@@ -65,7 +65,7 @@ class MarketingInterestcoupon extends Model {
     }
 
     //给用户添加记录
-    public function addCouponForUser($userId, $awardInfo,$date='')
+    public function addLadderCouponForUser($userId, $awardInfo,$date='')
     {   
         $startDate = empty($date)?time():strtotime($date);
         $data = array(
