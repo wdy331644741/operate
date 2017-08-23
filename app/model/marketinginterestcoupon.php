@@ -40,6 +40,16 @@ class MarketingInterestcoupon extends Model {
     }
 
     //是否存在 预发送记录
+    //是否存在该记录
+    public function isExistArr($userId,$sourceId){
+        $result = $this->where("`user_id` = {$userId} and `source_id` = {$sourceId}")
+            ->orderby("id DESC")
+            ->get()
+            ->resultArr();
+        return $result;
+    }
+
+    //是否存在该记录
     public function isExist($userId,$sourceId){
         $result = $this->fields("id,uuid", false)
             ->where("`user_id` = {$userId} and `source_id` = {$sourceId} and `status` = 1")
@@ -119,7 +129,9 @@ class MarketingInterestcoupon extends Model {
             'continuous_days' => $awardInfo['days'], 
             'limit_desc'      => $awardInfo['limit_desc'], 
             'create_time'     => date('Y-m-d H:i:s'), 
-            'update_time'     => date('Y-m-d H:i:s') 
+            'update_time'     => date('Y-m-d H:i:s'),
+            'is_ues'          => 1,
+            'is_activate'     => 0,
         ); 
  
         $res = $this->add($data); 
@@ -165,5 +177,17 @@ class MarketingInterestcoupon extends Model {
             ->get()->resultArr();
             // logs($this->getLastQuery(),'22222222');
         return $qq;
+    }
+    // //激活状态
+    // public function updateActivate($uuid){
+    //     return $this->where("`uuid` = '{$uuid}'")
+    //         ->upd(array('is_activate' => 1, 'update_time' => date('Y-m-d H:i:s')));
+
+    // }
+
+    //修改加息券is_use
+    public function updateUnused($uuid){ 
+        return $this->where("`uuid` = '{$uuid}'")
+            ->upd(array('is_use' => 0, 'update_time' => date('Y-m-d H:i:s')));
     }
 }
