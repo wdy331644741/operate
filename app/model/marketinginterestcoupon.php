@@ -108,29 +108,29 @@ class MarketingInterestcoupon extends Model {
     public function addLadderCouponForUser($userId, $awardInfo,$date='')
     {   
         $startDate = empty($date)?time():strtotime($date); 
-        $data = array(
-            'user_id'         => $userId,
-            'uuid'            => create_guid(),
-            'source_id'       => $awardInfo['id'],
-            'source_name'     => $awardInfo['title'],
-            'rate'            => $awardInfo['rate'],
-            'effective_start' => date('Y-m-d H:i:s', $startDate + $awardInfo['laterDays'] * DAYS_SECONDS),
-            'effective_end'   => date('Y-m-d H:i:s', $startDate + ($awardInfo['days']+$awardInfo['laterDays']) * DAYS_SECONDS),
-            'continuous_days' => $awardInfo['days'],
-            'limit_desc'      => $awardInfo['limit_desc'],
-            'create_time'     => date('Y-m-d H:i:s'),
-            'update_time'     => date('Y-m-d H:i:s')
-        );
-
-        $res = $this->add($data);
-        if ($res) {
-            $data['id'] = $res;
-
-            return $data;
-        }
-
-        return false;
-    }
+        $data = array( 
+            'user_id'         => $userId, 
+            'uuid'            => create_guid(), 
+            'source_id'       => $awardInfo['id'], 
+            'source_name'     => $awardInfo['title'], 
+            'rate'            => $awardInfo['rate'], 
+            'effective_start' => date('Y-m-d H:i:s', $startDate + $awardInfo['laterDays'] * DAYS_SECONDS), 
+            'effective_end'   => date('Y-m-d H:i:s', $startDate + ($awardInfo['days']+$awardInfo['laterDays']) * DAYS_SECONDS), 
+            'continuous_days' => $awardInfo['days'], 
+            'limit_desc'      => $awardInfo['limit_desc'], 
+            'create_time'     => date('Y-m-d H:i:s'), 
+            'update_time'     => date('Y-m-d H:i:s') 
+        ); 
+ 
+        $res = $this->add($data); 
+        if ($res) { 
+            $data['id'] = $res; 
+ 
+            return $data; 
+        } 
+ 
+        return false; 
+    } 
 
     //更新使用状态
     public function updateStatusOfUse($id)
