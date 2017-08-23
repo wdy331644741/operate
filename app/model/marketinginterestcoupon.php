@@ -76,6 +76,7 @@ class MarketingInterestcoupon extends Model {
 
     //给用户添加记录
     public function addCouponForUser($userId, $awardInfo)
+
     {   
         $awardInfo['later_days'] = isset($awardInfo['later_days'])?$awardInfo['later_days']:0;
         $data = array(

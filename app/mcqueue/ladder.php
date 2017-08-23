@@ -163,7 +163,7 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0){
 			'limit_desc' => $awardCouponInfo['limit_desc'],
 			);
 
-		$addCouponRes = $operateCoupon -> addCouponForUser($userId,$couponInfo,$dateNow );
+		$addCouponRes = $operateCoupon -> addLadderCouponForUser($userId,$couponInfo,$dateNow );
 		//***************************************************
 		//通知用户中心发放加息劵
 		unset($addCouponRes['id']);
