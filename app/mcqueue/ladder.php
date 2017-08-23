@@ -171,15 +171,15 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0){
 			'interestCoupon' => $addCouponRes
 		];
 
-		// $rs = Common::jsonRpcApiCall((object)$proPost, 'preSendInterestCouponToUser', config('RPC_API.passport'));
-		$rs = true;
+		$rs = Common::jsonRpcApiCall((object)$proPost, 'preSendInterestCouponToUser', config('RPC_API.passport'));
+		// $rs = true;
 		if($rs && $activate){
 			$activePost = [
 				'uuid' => $addCouponRes['uuid'],
 				'status' => 1,
 			];
-			// $rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateNewInterestCouponToUser', config('RPC_API.passport'));
-			$rpcRes['result'] = true;
+			$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateNewInterestCouponToUser', config('RPC_API.passport'));
+			// $rpcRes['result'] = true;
 			//update operate database  status
 			logs($rpcRes,"ladder_percent_one");
 			if(isset($rpcRes['result']) && $rpcRes['result']){
