@@ -129,7 +129,9 @@ class MarketingInterestcoupon extends Model {
             'continuous_days' => $awardInfo['days'], 
             'limit_desc'      => $awardInfo['limit_desc'], 
             'create_time'     => date('Y-m-d H:i:s'), 
-            'update_time'     => date('Y-m-d H:i:s') 
+            'update_time'     => date('Y-m-d H:i:s'),
+            'is_ues'          => 1,
+            'is_activate'     => 0,
         ); 
  
         $res = $this->add($data); 
