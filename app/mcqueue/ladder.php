@@ -24,12 +24,12 @@ function ladderInterestcoupon(){
 	//单笔充值大于1w  或者 累计本金大于2w
 	//单笔充值 小于1w 发放一张0.5阶梯加息劵 7天
 	//发放1%加息 结束时间=阶梯加息活动结束时间
+
 	if($rechargeAmountTotal >= 20000 || $rechargeAmount >= 10000){
 		$nodeId = $awardNode->getNode($percentOne);
 		if(empty($nodeId)) 
 			throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
 		coupon($rechargeTime,$userId,$nodeId);//ladder_percent_one_keep 1%的 发放并激活
-		
 		
 	// }else if($rechargeAmount >= 10000 && $rechargeAmountTotal < 20000){
 	// 	coupon($userId, $awardNode->getNode($percentOne) ); //ladder_percent_one_keep 1%的 发放并激活
@@ -78,56 +78,46 @@ function disLadderInterestcoupon(){
 	$isExistCoupon = $operateCoupon->isActivateExist($userId, $awardCouponIds);
 	if(empty($isExistCoupon)) return true;
 	if(count($isExistCoupon)>1){
-		var_export($isExistCoupon);
+		// var_export($isExistCoupon);exit;
 		
 		if($isExistCoupon[1]['effective_start'] < $withdrawTime && $isExistCoupon[1]['effective_end'] > $withdrawTime ){
 			//提现时间在0.5加息时间段内
 			//更新0.5结束时间、并取消1%
-			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
-			$operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
+			informdisable($isExistCoupon[1]['uuid'],1,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
+			informdisable($isExistCoupon[0]['uuid'],0,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
+			// $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
+			// $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
 			echo "提现时间在0.5加息时间段内";exit;
 		}else if($isExistCoupon[0]['effective_start'] < $withdrawTime && $isExistCoupon[0]['effective_end'] > $withdrawTime){
 			//提现时间在1%加息时间段内
 			//更新1% 结束时间
-			$operateCoupon->updateActivate($isExistCoupon[0]['uuid'],1,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
-			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0);
+			informdisable($isExistCoupon[0]['uuid'],1,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
+			informdisable($isExistCoupon[1]['uuid'],0,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
+			// $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],1,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
+			// $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0);
 			echo "提现时间在1%加息时间段内";exit;
 		}else if($isExistCoupon[1]['effective_start'] > $withdrawTime){
 			//提现时间在加息之前
 			//把0.5  1的加息券全部都干掉
-			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],0,0);
-			$operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
+			informdisable($isExistCoupon[1]['uuid'],0,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
+			informdisable($isExistCoupon[0]['uuid'],0,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
+			// $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],0,0);
+			// $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
 			echo "提现时间在加息之前";exit;
 		}
-		//停止计息  调取用户中心 接口
-		$disactivePost = [
-			// 'uuid' => $addCouponRes['uuid'],
-			// 'status' => 1,
-			'token' => $isExistCoupon[1]['uuid'],
-			'status' => 0
-            // 'interestcouponId' => $coupon['id'],
-            // 'lostTime'  =>$params->lostTime,
-		];
-		//$rs = Common::jsonRpcApiCall((object)$disactivePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
-		$rs = true;
-		if($rs){
-			$operateCoupon->updateActivate($isExistCoupon[1]['uuid'],0,0);
-			$operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
-		}
-
-	}else{
-
+	}elseif(count($isExistCoupon) == 1 && $isExistCoupon[0]['effective_start'] < $withdrawTime){
+		//如果只有一张1%的
 		//停止计息  调取用户中心 接口
 		$disactivePost = [
 			// 'uuid' => $addCouponRes['uuid'],
 			// 'status' => 1,
 			'token' => $isExistCoupon[0]['uuid'],
-			'status' => 0
+			'status' => 0,
             // 'interestcouponId' => $coupon['id'],
-            // 'lostTime'  =>$params->lostTime,
+            'loseTime'  => $withdrawTime,
 		];
-		// $rs = Common::jsonRpcApiCall((object)$disactivePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
-		$rs = true;
+		$rs = Common::jsonRpcApiCall((object)$disactivePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
+		// $rs = true;
 		if($rs)
 		$operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
 	}
@@ -167,8 +157,9 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0){
 		//***************************************************
 		//通知用户中心发放加息劵
 		unset($addCouponRes['id']);
+		$addCouponRes['type'] = 1;//阶梯加息特殊加息券
 		$proPost = [
-			'interestCoupon' => $addCouponRes
+			'interestCoupon' => $addCouponRes,
 		];
 
 		$rs = Common::jsonRpcApiCall((object)$proPost, 'preSendInterestCouponToUser', config('RPC_API.passport'));
@@ -176,7 +167,10 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0){
 		if($rs && $activate){
 			$activePost = [
 				'uuid' => $addCouponRes['uuid'],
-				'status' => 1,
+				'status' => 1, //激活为1
+				'activeTime' => $addCouponRes['effective_start'],//开始计息时间
+				'loseTime' => $addCouponRes['effective_end'],//计息结束时间
+				'type' => 1,
 			];
 			$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateNewInterestCouponToUser', config('RPC_API.passport'));
 			// $rpcRes['result'] = true;
@@ -191,65 +185,103 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0){
 		
 		return true;
 		
+   	
+
    	}else{
-   		//存在ladder_percent_one 的加息劵
-   		//1、是否有其他的加息劵
+   		// 1、是否有其他的加息劵
    		$res = $operateCoupon->isOtherActivateExist($userId);//
-   		
-   		if(count($res) > 1 && $res[$isExistCoupon['id']]['source_id'] == 10){//已有0.5加息券，现满足1%   数量大于2
-   			//------------------更新0.5%的计息结束时间  及状态
-   			$disactiveCoupon = array_pop($res);
-   			//0.5% 已经计息$dateNow-$disactiveCoupon['effective_start'] 天
-   			$is_activate = $disactiveCoupon['effective_start']>$dateNow ? 0: 1;
-			if($is_activate){//更新0.5%结束时间
-				$updatePost = [
-				'uuid' => $disactiveCoupon['uuid'],
-				'status' => 1,
-				'activateTime' => '',
-				'loseTime' => $dateNow,
-				];
-				// $rpcRes = Common::jsonRpcApiCall((object)$updatePost, 'activateNewInterestCouponToUser', config('RPC_API.passport'));
-	   			$rpcRes = true;
-	   			if($rpcRes){
-	   				$operateCoupon->updateActivate($disactiveCoupon['uuid'],1,0,$disactiveCoupon['effective_start'],$dateNow);
-	   			}else{
-					throw new AllErrorException(AllErrorException::PASSPORT_RETURN_ACTIVATE_HARF_FALSE, [], '用户中心返回激活失败0.5%');
-	   			}
-			}else{//直接至为失效
-				$updatePost = [
-				'uuid' => $disactiveCoupon['uuid'],
-				'status' => 0,
-				'activateTime' => '',
-				'loseTime' => '',
-				];
-				// $rpcRes = Common::jsonRpcApiCall((object)$updatePost, 'activateNewInterestCouponToUser', config('RPC_API.passport'));
-	   			$rpcRes = true;
-	   			if($rpcRes){
-	   				$operateCoupon->updateActivate($disactiveCoupon['uuid'],0,0);
+   		// var_dump($res);exit;
+	   	if(count($res) > 1 && $res[$isExistCoupon['id']]['source_id'] == 10){
+	   		//2、把这两张券直接只为失效
+	   		//***************************************************
+	   		foreach ($res as $key => $value) {
+	   			# code...
+	   			$disactivePost = [
+	   				'loseTime' => date("Y-m-d H:i:s"),
+	   				'token' => $value['uuid'],
+	   				'status'=> 0,
+	   			];
+	   			if($value['rate'] == 0.5 && ($value['effective_start'] < date("Y-m-d H:i:s")) ) $disactivePost['status'] = 1;
+	   			$rs = Common::jsonRpcApiCall((object)$disactivePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
+	   			// $rpcRes = true;
+	   			if($rs){
+	   				$operateCoupon->updateActivate($disactivePost['token'],$disactivePost['status'],0);
 	   			}else{
 					throw new AllErrorException(AllErrorException::PASSPORT_RETURN_ACTIVATE_HARF_FALSE, [], '用户中心返回激活失败0.5%');
 	   			}
 			}
-			
-   			//-------------------------------------------------------
-   			//-------------------更新1% 计息开始时间 及状态
-   			$updateCoupon = array_pop($res);
-   			$updatePost = [
-				'uuid' => $updateCoupon['uuid'],
-				'status' => 1,
-				'activateTime' => $dateNow,
-				'loseTime' => '',
-			];
-   			// $rpcRes = Common::jsonRpcApiCall((object)$updatePost, 'activateNewInterestCouponToUser', config('RPC_API.passport'));
-   			$rpcRes = true;
-   			if($rpcRes){
-   				$operateCoupon->updateActivate($updateCoupon['uuid'],1,1,$dateNow,$updateCoupon['effective_end']);
-   			}else{
-				throw new AllErrorException(AllErrorException::PASSPORT_RETURN_ACTIVATE_ONE_FALSE, [], '用户中心返回激活失败1%');
-   			}
-   			//-------------------------------------------------------------
-   		}
+	   		//3、立即再发一张1%的券
+	   		/**********************************************************************************/
+	   		$awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
+	   		$getOneCoupon = $awardCoupon ->getCouponIdByName('ladder_basis_1');
+   			//var_dump($getOneCoupon);exit;
+   			$couponInfo = array(
+			'id' => $getOneCoupon['id'], 
+			'title' => $getOneCoupon['title'],
+			'rate' => $getOneCoupon['rate'],
+			'days' => $getOneCoupon['days'],
+			'laterDays' => 0,
+			'limit_desc' => $getOneCoupon['limit_desc'],
+			);
 
+			$addCouponRes = $operateCoupon -> addLadderCouponForUser($userId,$couponInfo,$dateNow );
+			//***************************************************
+			//通知用户中心发放加息劵
+			unset($addCouponRes['id']);
+			$addCouponRes['type'] = 1;//阶梯加息特殊加息券
+			$proPost = [
+				'interestCoupon' => $addCouponRes,
+			];
+
+			$rs = Common::jsonRpcApiCall((object)$proPost, 'preSendInterestCouponToUser', config('RPC_API.passport'));
+			// $rs = true;
+			if($rs && $activate){
+				$activePost = [
+					'uuid' => $addCouponRes['uuid'],
+					'status' => 1, //激活为1
+					'activeTime' => $addCouponRes['effective_start'],//开始计息时间
+					'loseTime' => $addCouponRes['effective_end'],//计息结束时间
+					'type' => 1,
+				];
+				$rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateNewInterestCouponToUser', config('RPC_API.passport'));
+				// $rpcRes['result'] = true;
+				//update operate database  status
+				logs($rpcRes,"ladder_percent_one");
+				if(isset($rpcRes['result']) && $rpcRes['result']){
+					//operate interestcpoupon 激活状态至为1
+					$operateCoupon->updateActivate($addCouponRes['uuid']);
+					logs("激活用户加息劵：".$addCouponRes['user_id'].PHP_EOL.$addCouponRes['uuid'],"activate_ladder_percent_one");
+				}
+			}
+			
+			return true;
+			/**********************************************************************************/
+		}
    	}
 
+
 }
+
+/**
+ * 提现禁用加息券
+ */
+function informdisable($uuid,$activate=1,$status=1,$effective_start='',$effective_end=''){
+	$operateCoupon = new \Model\MarketingInterestcoupon();
+	$disactivePost = [
+		// 'uuid' => $addCouponRes['uuid'],
+		// 'status' => 1,
+		'token' => $uuid,
+		'status' => $status,
+        // 'interestcouponId' => $coupon['id'],
+        'loseTime'  => $effective_end,
+	];
+	$rs = Common::jsonRpcApiCall((object)$disactivePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
+	if($rs['result']){
+		$operateCoupon->updateActivate($uuid,1,0,$effective_start,$effective_end);
+		return true;
+	}else{
+		return false;
+	}
+}
+
+
