@@ -11,7 +11,7 @@ function ladderInterestcoupon(){
     $userId = I('post.user_id', '', 'intval');//用户id
     $rechargeTime = I('post.time');//充值时间
     $rechargeAmount = I('post.amount');//充值金额
-    $rechargeAmountTotal = I('post.total_amount');//累计本金
+    $rechargeAmountTotal = I('post.total');//累计本金
     // $nodeName = I('post.node');//动作节点
     $percentOne = 'ladder_percent_one';
     $percentHalfKeep = 'ladder_percent_half_keep';
@@ -88,12 +88,16 @@ function disLadderInterestcoupon(){
             informdisable($isExistCoupon[0]['uuid'],0,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
             // $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
             // $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
+            coupon($withdrawTime,$userId, 21, true,7); //发一个7天 0.5的 发放并激活
+            coupon($withdrawTime,$userId, 20,true,14); //预发 一个1%的 发放
             echo "提现时间在0.5加息时间段内";exit;
         }else if($isExistCoupon[0]['effective_start'] < $withdrawTime && $isExistCoupon[0]['effective_end'] > $withdrawTime){
             //提现时间在1%加息时间段内
             //更新1% 结束时间
             informdisable($isExistCoupon[0]['uuid'],1,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
             informdisable($isExistCoupon[1]['uuid'],0,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
+            coupon($withdrawTime,$userId, 21, true,7); //发一个7天 0.5的 发放并激活
+            coupon($withdrawTime,$userId, 20,true,14); //预发 一个1%的 发放
             // $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],1,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
             // $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0);
             echo "提现时间在1%加息时间段内";exit;
@@ -102,6 +106,8 @@ function disLadderInterestcoupon(){
             //把0.5  1的加息券全部都干掉
             informdisable($isExistCoupon[1]['uuid'],0,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
             informdisable($isExistCoupon[0]['uuid'],0,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
+            coupon($withdrawTime,$userId, 21, true,7); //发一个7天 0.5的 发放并激活
+            coupon($withdrawTime,$userId, 20,true,14); //预发 一个1%的 发放
             // $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],0,0);
             // $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
             echo "提现时间在加息之前";exit;
@@ -119,8 +125,11 @@ function disLadderInterestcoupon(){
         ];
         $rs = Common::jsonRpcApiCall((object)$disactivePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
         // $rs = true;
-        if($rs)
+        if($rs){
             $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
+            coupon($withdrawTime,$userId, 21, true,7); //发一个7天 0.5的 发放并激活
+            coupon($withdrawTime,$userId, 20,true,14); //预发 一个1%的 发放
+        }
     }
 }
 
