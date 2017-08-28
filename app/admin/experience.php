@@ -5,8 +5,8 @@
 function add()
 {
     if (IS_POST) {
-        $title = $amount = $minAmount = $maxAmount = $effectiveEnd = $limitDesc = $limitNode = $status = $repeat = null;
-        $requireFields = ['title', 'amount', 'minAmount', 'maxAmount', 'effectiveEnd', 'limitDesc', 'limitNode', 'status', 'repeat'];
+        $title = $amount = $minAmount = $maxAmount = $days = $effectiveEnd = $limitDesc = $limitNode = $status = $repeat = null;
+        $requireFields = ['title', 'amount', 'minAmount', 'maxAmount', 'days', 'effectiveEnd', 'limitDesc', 'limitNode', 'status', 'repeat'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)

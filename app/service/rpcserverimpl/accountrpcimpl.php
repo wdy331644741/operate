@@ -518,11 +518,11 @@ class AccountRpcImpl extends BaseRpcImpl
         if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
-        $dateNow = date("Y-m-d");//2017-6-9日  改   展示时间忽略 时分秒
+        $dateNow = date("Y-m-d H:i:s");
         //用户是否复投？
         $interestCouponName = "redelivery_per_coupon";//复投活动卷的名称
         $awardInterestcouponModel = new \Model\AwardInterestcoupon();
-        $couponInfo = $awardInterestcouponModel->getCouponIdByName($interestCouponName,$noDate=true);
+        $couponInfo = $awardInterestcouponModel->getCouponIdByName($interestCouponName);
         
         if(empty($couponInfo)){
             throw new AllErrorException(AllErrorException::COUPON_UNDIFIND);
@@ -582,5 +582,27 @@ class AccountRpcImpl extends BaseRpcImpl
             );
 
         return ['code' => 0, 'message' => $stepOne?"复投":"没有复投",'data' => $data];
+    }
+
+    /**
+     * 用户阶梯加息的状态###
+     * @return [type] [description]
+     * @JsonRpcMethod
+     */
+    public function ladderStatus(){
+        if (($this->userId = $this->checkLoginStatus()) === false) {
+            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
+        }
+
+        $MarketingInterestcouponModel = new \Model\MarketingInterestcoupon();
+        $couponData = $MarketingInterestcouponModel->getActivateAndStatusData($this->userId);
+        if(count($couponData) > 1)
+            throw new AllErrorException(AllErrorException::LADDER_DATA_EXCEPTION);
+        // var_export($couponData);exit;
+
+        $status = [
+            'status' => empty($couponData)?0:(($couponData[0]['rate'] == 0.5)?1:2),
+        ];
+        return ['code' => 0 ,'data' => $status];
     }
 }
