@@ -147,7 +147,12 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0){
     } catch (Exception $e) {
         logs(['error' => $e->getCode(), 'message' => $e->getMessage()],"ladderScript");
     }
-    $isExistCoupon = $operateCoupon->isExist($userId, $awardCouponInfo['id']);
+    try{
+        $isExistCoupon = $operateCoupon->isExist($userId, $awardCouponInfo['id']);
+        if(empty($awardCouponInfo)) throw new Exception("没有该用户的阶梯加息数据", 7112);
+    } catch(Exception $e) {
+        logs(['userId' => $userId, 'coupon' => $awardCouponInfo],"ladderScript");
+    }
 
     //不存在，添加一张加息劵
     if(empty($isExistCoupon)){
