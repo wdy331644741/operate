@@ -36,7 +36,10 @@ function ladderInterestcoupon(){
     }else if($rechargeAmount < 200){
         //判断是否已经发放加息劵
         $operateCoupon = new \Model\MarketingInterestcoupon();
-        $alreadyGave = $operateCoupon->getActivateAndStatusData($userId);
+        $sourceOne = getInfo('sourceId','ladder_percent_one');
+        $sourceHarf = getInfo('sourceId','ladder_percent_half_keep');
+        $whereStr = $sourceOne.",".$sourceHarf;
+        $alreadyGave = $operateCoupon->getActivateAndStatusDataStr($userId,$whereStr);
         if($alreadyGave) return true;
         $half = $awardNode->getNode($percentHalfKeep);
         $one = $awardNode->getNode($percentOne);
