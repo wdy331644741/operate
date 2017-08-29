@@ -62,6 +62,8 @@ function disLadderInterestcoupon(){
     $percentHalfKeep = 'ladder_percent_half_keep';
     $awardNode = new \Model\AwardNode();//活动节点
     // $nodeId = $awardNode->getNode($ladderPercentOne);//获取节点id
+    $harfNodeId = $awardNode->getNode($percentHalfKeep);//21 test
+    $oneNodeId = $awardNode->getNode($ladderPercentOne);//20 test 
     $nodeId = array(
         $awardNode->getNode($ladderPercentOne),
         $awardNode->getNode($percentHalfKeep)
@@ -88,16 +90,16 @@ function disLadderInterestcoupon(){
             informdisable($isExistCoupon[0]['uuid'],0,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
             // $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
             // $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
-            coupon($withdrawTime,$userId, 21, true,7); //发一个7天 0.5的 发放并激活
-            coupon($withdrawTime,$userId, 20,true,14); //预发 一个1%的 发放
+            coupon($withdrawTime,$userId, $harfNodeId, true,7); //发一个7天 0.5的 发放并激活
+            coupon($withdrawTime,$userId, $oneNodeId,true,14); //预发 一个1%的 发放
             echo "提现时间在0.5加息时间段内";exit;
         }else if($isExistCoupon[0]['effective_start'] < $withdrawTime && $isExistCoupon[0]['effective_end'] > $withdrawTime){
             //提现时间在1%加息时间段内
             //更新1% 结束时间
             informdisable($isExistCoupon[0]['uuid'],1,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
             informdisable($isExistCoupon[1]['uuid'],0,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
-            coupon($withdrawTime,$userId, 21, true,7); //发一个7天 0.5的 发放并激活
-            coupon($withdrawTime,$userId, 20,true,14); //预发 一个1%的 发放
+            coupon($withdrawTime,$userId, $harfNodeId, true,7); //发一个7天 0.5的 发放并激活
+            coupon($withdrawTime,$userId, $oneNodeId,true,14); //预发 一个1%的 发放
             // $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],1,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
             // $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0);
             echo "提现时间在1%加息时间段内";exit;
@@ -106,8 +108,8 @@ function disLadderInterestcoupon(){
             //把0.5  1的加息券全部都干掉
             informdisable($isExistCoupon[1]['uuid'],0,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
             informdisable($isExistCoupon[0]['uuid'],0,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
-            coupon($withdrawTime,$userId, 21, true,7); //发一个7天 0.5的 发放并激活
-            coupon($withdrawTime,$userId, 20,true,14); //预发 一个1%的 发放
+            coupon($withdrawTime,$userId, $harfNodeId, true,7); //发一个7天 0.5的 发放并激活
+            coupon($withdrawTime,$userId, $oneNodeId,true,14); //预发 一个1%的 发放
             // $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],0,0);
             // $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
             echo "提现时间在加息之前";exit;
@@ -127,8 +129,8 @@ function disLadderInterestcoupon(){
         // $rs = true;
         if($rs){
             $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
-            coupon($withdrawTime,$userId, 21, true,7); //发一个7天 0.5的 发放并激活
-            coupon($withdrawTime,$userId, 20,true,14); //预发 一个1%的 发放
+            coupon($withdrawTime,$userId, $harfNodeId, true,7); //发一个7天 0.5的 发放并激活
+            coupon($withdrawTime,$userId, $oneNodeId,true,14); //预发 一个1%的 发放
         }
     }
 }
@@ -157,7 +159,8 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0){
     //不存在，添加一张加息劵
     if(empty($isExistCoupon)){
         //*********************发放加息劵*********************
-        $top = $operateCoupon->isExist($userId,10);//存在1%的阶梯加息
+        $oneSourceId = getInfo('sourceId','ladder_percent_one');
+        $top = $operateCoupon->isExist($userId,$oneSourceId);//存在1%的阶梯加息
         if($top) return true;//1%封顶
         $couponInfo = array(
             'id' => $awardCouponInfo['id'],
@@ -206,7 +209,8 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0){
         // 1、是否有其他的加息劵
         $res = $operateCoupon->isOtherActivateExist($userId);//
         // var_dump($res);exit;
-        if(count($res) > 1 && $res[$isExistCoupon['id']]['source_id'] == 10){
+        $oneSourceId = getInfo('sourceId','ladder_percent_one');
+        if(count($res) > 1 && $res[$isExistCoupon['id']]['source_id'] == $oneSourceId){
             //2、把这两张券直接只为失效
             //***************************************************
             foreach ($res as $key => $value) {
@@ -297,6 +301,35 @@ function informdisable($uuid,$activate=1,$status=1,$effective_start='',$effectiv
     }else{
         return false;
     }
+}
+
+/**
+ * 获取相关配置数据
+ * getInfo('sourceId','ladder_percent_one')
+ * getInfo('sourceId','ladder_percent_half_keep')
+ **/
+function getInfo($search,$data){
+    //search:nodeId,sourceId
+    if(empty($search) && empty($data) ){
+        throw new Exception("获取相关数据时，参数异常", 7112);
+    }
+    $awardNode = new \Model\AwardNode();//活动节点
+    $awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
+
+    $resNodeId = $awardNode->getNode($data);
+    if(empty($resNodeId))
+        throw new Exception("未获取到活动节点id", 7112);
+
+    $resSourceId = $awardCoupon->filterUsefulInterestCoupon($resNodeId);
+    if(empty($resSourceId))
+        throw new Exception("未获取到sourceId", 7112);
+
+    if($search == "nodeId"){
+        return $resNodeId;
+    }elseif($search == "sourceId"){
+        return $resSourceId;
+    }
+
 }
 
 

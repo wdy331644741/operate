@@ -172,11 +172,12 @@ class MarketingInterestcoupon extends Model {
         return $returnArr;
     }
 
-    public function getActivateAndStatusData($userId){
-        $qq = $this->where("`user_id` = {$userId} and `status` = 1 and `is_activate` = 1 and `source_id` in (10,11)")
+    //$sourceId  string
+    public function getActivateAndStatusData($userId,$sourceId){
+        $res = $this->where("`user_id` = {$userId} and `status` = 1 and `is_activate` = 1 and `source_id` in ({$sourceId}) and effective_start < Now() and effective_end > Now()")
             ->get()->resultArr();
             // logs($this->getLastQuery(),'22222222');
-        return $qq;
+        return $res;
     }
     // //激活状态 old on dev
     // public function updateActivate($uuid){
