@@ -327,7 +327,7 @@ function getInfo($search,$data){
     if($search == "nodeId"){
         return $resNodeId;
     }elseif($search == "sourceId"){
-        return $resSourceId;
+        return $resSourceId['id'];
     }
 
 }

@@ -598,9 +598,13 @@ class AccountRpcImpl extends BaseRpcImpl
 
         $awardNode = new \Model\AwardNode();//活动节点
         $awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
-        $roneNodeId = $awardNode->getNode('ladder_percent_one');
+        $oneNodeId = $awardNode->getNode('ladder_percent_one');
         $harfNodeId = $awardNode->getNode('ladder_percent_half_keep');
-        $sourceId = $roneNodeId.",".$harfNodeId;
+
+        $oneSourceId = $awardCoupon->filterUsefulInterestCoupon($oneNodeId);
+        $harfSourceId = $awardCoupon->filterUsefulInterestCoupon($harfNodeId);
+
+        $sourceId = $oneSourceId['id'].",".$harfSourceId['id'];
 
         $couponData = $MarketingInterestcouponModel->getActivateAndStatusData($this->userId,$sourceId);
         if(count($couponData) > 1)
