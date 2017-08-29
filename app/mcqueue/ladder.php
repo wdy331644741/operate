@@ -142,7 +142,6 @@ function disLadderInterestcoupon(){
  * 阶梯发加息劵
  */
 function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0,$amount=''){
-    if($amount<200) return;
     $dateNow = $rechargeTime;
     $awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
     $operateCoupon = new \Model\MarketingInterestcoupon();
@@ -216,6 +215,8 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0,$amoun
         $oneSourceId = getInfo('sourceId','ladder_percent_one');
         if(count($res) > 1 && $res[$isExistCoupon['id']]['source_id'] == $oneSourceId){
             //2、把这两张券直接只为失效
+            //场景：全额提现后 再充值一次小于1w时，不作操作
+            if($amount<200) return;
             //***************************************************
             foreach ($res as $key => $value) {
                 # code...
