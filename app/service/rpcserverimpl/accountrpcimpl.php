@@ -606,7 +606,7 @@ class AccountRpcImpl extends BaseRpcImpl
 
         $sourceId = $oneSourceId['id'].",".$harfSourceId['id'];
 
-        $couponData = $MarketingInterestcouponModel->getActivateAndStatusData($this->userId,$sourceId);
+        $couponData = $MarketingInterestcouponModel->getActivateAndStatusDataStr($this->userId,$sourceId);
         if(count($couponData) > 1)
             throw new AllErrorException(AllErrorException::LADDER_DATA_EXCEPTION);
         // var_export($couponData);exit;

@@ -25,15 +25,15 @@ function ladderInterestcoupon(){
     //单笔充值 小于1w 发放一张0.5阶梯加息劵 7天
     //发放1%加息 结束时间=阶梯加息活动结束时间
 
-    if($rechargeAmountTotal >= 20000 || $rechargeAmount >= 10000){
+    if($rechargeAmountTotal >= 300 || $rechargeAmount >= 200){
         $nodeId = $awardNode->getNode($percentOne);
         if(empty($nodeId))
             throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
         coupon($rechargeTime,$userId,$nodeId);//ladder_percent_one_keep 1%的 发放并激活
 
-        // }else if($rechargeAmount >= 10000 && $rechargeAmountTotal < 20000){
+        // }else if($rechargeAmount >= 200 && $rechargeAmountTotal < 300){
         // 	coupon($userId, $awardNode->getNode($percentOne) ); //ladder_percent_one_keep 1%的 发放并激活
-    }else if($rechargeAmount < 10000){
+    }else if($rechargeAmount < 200){
         //判断是否已经发放加息劵
         $operateCoupon = new \Model\MarketingInterestcoupon();
         $alreadyGave = $operateCoupon->getActivateAndStatusData($userId);
@@ -57,7 +57,7 @@ function disLadderInterestcoupon(){
     $withdrawAmount = I('post.amount');//充值金额
     $withdrawAmountTotal = I('post.total_amount');//累计本金
 
-    if($withdrawAmountTotal >= 20000) return true;
+    if($withdrawAmountTotal >= 300) return true;
     $ladderPercentOne = 'ladder_percent_one';
     $percentHalfKeep = 'ladder_percent_half_keep';
     $awardNode = new \Model\AwardNode();//活动节点
