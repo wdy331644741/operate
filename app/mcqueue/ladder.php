@@ -16,6 +16,13 @@ function ladderInterestcoupon(){
     $percentOne = 'ladder_percent_one';
     $percentHalfKeep = 'ladder_percent_half_keep';
 
+    $activityName = 'ladder';//复投活动名称
+    $activityModel = new \Model\MarketingActivity();
+    //获取活动开始、结束时间
+    $usefulTime = $activityModel->getUsefulTimeByName($activityName);
+    if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time']) return 1;
+
+
     $awardNode = new \Model\AwardNode();//活动节点
     $nodeId = $awardNode->getNode($percentOne);//获取节点id
     if(!empty($nodeId)){
@@ -59,6 +66,12 @@ function disLadderInterestcoupon(){
     $withdrawTime = I('post.datetime');//充值时间
     $withdrawAmount = I('post.amount');//充值金额
     $withdrawAmountTotal = I('post.total_amount');//累计本金
+
+    $activityName = 'ladder';//复投活动名称
+    $activityModel = new \Model\MarketingActivity();
+    //获取活动开始、结束时间
+    $usefulTime = $activityModel->getUsefulTimeByName($activityName);
+    if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time']) return 1;
 
     if($withdrawAmountTotal >= 20000) return true;
     $ladderPercentOne = 'ladder_percent_one';
