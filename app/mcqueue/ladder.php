@@ -45,8 +45,8 @@ function ladderInterestcoupon(){
         $one = $awardNode->getNode($percentOne);
         if(empty($half) || empty($one))
             throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
-        coupon($rechargeTime,$userId, $half, true,7); //发一个7天 0.5的 发放并激活
-        coupon($rechargeTime,$userId, $one,true,14); //预发 一个1%的 发放
+        coupon($rechargeTime,$userId, $half, true,7,$rechargeAmount); //发一个7天 0.5的 发放并激活
+        coupon($rechargeTime,$userId, $one,true,14,$rechargeAmount); //预发 一个1%的 发放
     }
 }
 
@@ -141,7 +141,8 @@ function disLadderInterestcoupon(){
 /**
  * 阶梯发加息劵
  */
-function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0){
+function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0,$amount=''){
+    if($amount<200) return;
     $dateNow = $rechargeTime;
     $awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
     $operateCoupon = new \Model\MarketingInterestcoupon();
