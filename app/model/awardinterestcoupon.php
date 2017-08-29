@@ -36,6 +36,7 @@ class AwardInterestcoupon extends Model
                 ->orderby("id DESC")
                 ->get()->rowArr();
         }
+    }
     public function filterUsefulInterestCoupon($nodeId)
     {
         $nowTime = date("Y-m-d H:i:s");
