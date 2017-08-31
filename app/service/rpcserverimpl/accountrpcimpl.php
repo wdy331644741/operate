@@ -518,7 +518,7 @@ class AccountRpcImpl extends BaseRpcImpl
         if (($this->userId = $this->checkLoginStatus()) === false) {
             throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
         }
-        $dateNow = date("Y-m-d H:i:s");
+        $dateNow = date("Y-m-d");
         //用户是否复投？
         $interestCouponName = "redelivery_per_coupon";//复投活动卷的名称
         $awardInterestcouponModel = new \Model\AwardInterestcoupon();
