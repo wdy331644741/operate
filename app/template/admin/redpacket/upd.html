@@ -16,18 +16,27 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">选择金额类型</span><i>*</i></label>
+            <label class="radio-inline">
+                <input type="radio" name="amount_type" id="amount_type_fixed" value="1" {if $item.amount != 0}checked{/if}> 固定金额
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="amount_type" id="amount_type_rand" value="0"> 随机金额
+            </label>
+        </div>
+        <div id="fixed" class="form-group" style="display: {if $item.amount == 0}none{/if};">
             <label class="col-sm-2 control-label"><span class="name_span">金额</span></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control name" placeholder="固定金额时填写" name="amount" id="amount" value="{$item.amount}">
             </div>
         </div>
-        <div class="form-group">
+        <div id="rand_min" class="form-group" style="display: {if $item.min_amount == 0}none{/if};">
             <label class="col-sm-2 control-label"><span class="name_span">最小金额</span></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control name" placeholder="随机金额时填写" name="min_amount" id="min_amount" value="{$item.min_amount}">
             </div>
         </div>
-        <div class="form-group">
+        <div id="rand_max" class="form-group" style="display: {if $item.max_amount == 0}none{/if};">
             <label class="col-sm-2 control-label"><span class="name_span">最大金额</span></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control name" placeholder="随机金额时填写" name="max_amount" id="max_amount" value="{$item.max_amount}">
@@ -126,6 +135,23 @@
             }else{
                 $("#day_repeat").hide();
                 $("#max_c").hide();
+            }
+        });
+    });
+    $(function(){
+        $('input[name="amount_type"]').click(function(){
+            if($(this).val() == 1){
+                $("#fixed").show();
+                $("#rand_min").hide();
+                $("#rand_max").hide();
+                $('input[name="min_amount"]').val("");
+                $('input[name="max_amount"]').val("");
+            }else{
+                $("#fixed").hide();
+                $("#rand_min").show();
+                $("#rand_max").show();
+                $('input[name="amount"]').val("");
+
             }
         });
     });

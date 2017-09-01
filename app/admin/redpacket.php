@@ -138,6 +138,8 @@ function upd()
             $data['max_amount'] = 0;
         } else {
             $data['amount'] = 0;
+            if($min_amount>=$max_amount)
+                ajaxReturn(['error' => 4000, 'message' => '随机最小金额不得大于最大金额']);
             $data['min_amount'] = $min_amount;
             $data['max_amount'] = $max_amount;
         }
