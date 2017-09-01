@@ -1,27 +1,51 @@
-ALTER TABLE `award_interestcoupon`
-ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER `coupon`;
+CREATE TABLE `award_redpacket` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(32) NOT NULL COMMENT '红包名称',
+  `redpacketet_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '红包类型',
+  `amount` decimal(5,2) DEFAULT NULL COMMENT '红包固定金额',
+  `min_amount` decimal(5,2) DEFAULT NULL COMMENT '红包最小金额',
+  `max_amount` decimal(5,2) DEFAULT NULL COMMENT '红包最大金额',
+  `max_split` int(3) DEFAULT NULL COMMENT '红包最大拆分数量（可以有多少人领取）',
+  `usetime_start` datetime NOT NULL COMMENT '开始使用时间',
+  `usetime_end` datetime NOT NULL COMMENT '结束使用时间',
+  `limit_desc` varchar(32) DEFAULT NULL COMMENT '描述',
+  `limit_node` tinyint(3) NOT NULL COMMENT '触发活动节点',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `status` tinyint(2) NOT NULL COMMENT '状态：1启用，0禁用',
+  `is_del` tinyint(2) NOT NULL COMMENT '是否删除 0未删除，1删除',
+  `repeat` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否允许重复领取 1可以，0不可以',
+  `day_repeat` tinyint(1) NOT NULL DEFAULT '1' COMMENT '当天是否可以重复领取（一天可以领几次）',
+  `max_counts` tinyint(2) NOT NULL COMMENT '最大领取次数',
+  `redpacket_name` varbinary(100) DEFAULT NULL COMMENT '红包code',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='红包配置'
 
 
-ALTER TABLE `award_experience`
-ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER `experience_name`;
 
+CREATE TABLE `marketing_redpactek` (
+  `id` int(10) NOT NULL,
+  `accept_userid` int(10) NOT NULL COMMENT '领取红包user_id',
+  `uuid` char(36) NOT NULL COMMENT '唯一标示',
+  `source_id` int(10) NOT NULL COMMENT '关联红包配置id',
+  `source_name` varchar(32) NOT NULL COMMENT '关联红包title',
+  `amount` decimal(5,2) NOT NULL COMMENT '领取金额',
+  `usetime_start` datetime NOT NULL COMMENT '开始使用时间',
+  `usetime_end` datetime NOT NULL COMMENT '结束使用时间',
+  `limit_desc` varchar(32) NOT NULL COMMENT '关联红包描述',
+  `type` tinyint(2) NOT NULL COMMENT '关联红包类型',
+  `effective_start` datetime NOT NULL COMMENT '开始生效时间',
+  `is_activate` tinyint(1) NOT NULL COMMENT '用户是否激活',
+  `is_used` tinyint(1) NOT NULL COMMENT '是否使用',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uuid` (`uuid`) USING BTREE,
+  KEY `source_id` (`source_id`) USING BTREE,
+  KEY `user_id` (`accept_userid`) USING BTREE,
+  KEY `create_time` (`create_time`) USING BTREE,
+  KEY `update_time` (`update_time`) USING BTREE,
+  KEY `is_activate` (`is_activate`) USING BTREE,
+  KEY `is_use` (`is_used`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='红包发放记录'
 
-ALTER TABLE `award_withdraw`
-ADD COLUMN `contact_activity`  varchar(100) NULL COMMENT '关联活动id' AFTER `withdraw_name`;
-
-
-
-
-ALTER TABLE `marketing_interestcoupon`
-ADD COLUMN `status`  tinyint(1) NULL DEFAULT 1 COMMENT '状态' AFTER `is_use`;
-
-
-ALTER TABLE `award_interestcoupon`
-ADD COLUMN `effective_days`  int(10) NULL COMMENT '有效天数' AFTER `days`;
-
-ALTER TABLE `award_experience`
-ADD COLUMN `hours`  smallint(5) NULL DEFAULT 0 COMMENT '加息小时' AFTER `days`;
-
-
-ALTER TABLE `marketing_interestcoupon`
-ADD COLUMN `type`  tinyint(3) NOT NULL DEFAULT 1 COMMENT '加息券类型 1普通加息券、2特殊加息券（阶梯）' AFTER `update_time`;
