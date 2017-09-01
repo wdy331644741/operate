@@ -26,6 +26,7 @@ function add()
             $data['max_amount'] = $max_amount;
         }
         $data['title'] = $title;
+        $data['max_split'] = $max_split;
         $data['usetime_start'] = $usetime_start;
         $data['usetime_end'] = $usetime_end;
         $data['limit_desc'] = $limitDesc;
