@@ -54,6 +54,12 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">活动配置</span><i></i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="json字符串" name="conf_json" id="conf_json" value="{$item.conf_json}">
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label"><span class="name_span">是否需要用户登录</span></label>
             <div class="col-sm-7">
                 <input type="radio" name="check_login" id="check_login" value="1" {if $item.check_login == 1}checked{/if}> 是 

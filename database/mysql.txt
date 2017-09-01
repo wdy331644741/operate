@@ -49,3 +49,9 @@ CREATE TABLE `marketing_redpactek` (
   KEY `is_use` (`is_used`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='红包发放记录'
 
+
+
+ALTER TABLE `wlcoperate`.`marketing_activity` ADD COLUMN `conf_json` varchar(100) COMMENT '活动相关配置' AFTER `activity_name`;
+
+
+

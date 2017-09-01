@@ -2,16 +2,16 @@
 use App\service\rpcserverimpl\Common;
 use App\service\exception\AllErrorException;
 /**
- * 阶梯加息 - 充值
+ * 新好友邀请活动
  * @pageroute
  */
-function ladderInterestcoupon(){
+function inviteredpacket(){
 
     // logs('记录复投发放体验金:' . PHP_EOL . var_export($_POST, true), 'redeliveryExperience');
-    $userId = I('post.user_id', '', 'intval');//用户id
+    $userId = I('post.user_id', '', 'intval');//充值定期用户id
     $rechargeTime = I('post.time');//充值时间
     $rechargeAmount = I('post.amount');//充值金额
-    $rechargeAmountTotal = I('post.total');//累计本金
+    $fromUserid = I('post.from_id');//邀请该用户的id
     // $nodeName = I('post.node');//动作节点
     $percentOne = 'ladder_percent_one';
     $percentHalfKeep = 'ladder_percent_half_keep';
@@ -22,10 +22,6 @@ function ladderInterestcoupon(){
     $usefulTime = $activityModel->getUsefulTimeByName($activityName);
     if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time']) return 1;
 
-    $activityConf = json_decode($usefulTime['conf_json'],true);
-    if(isset($activityConf) && isset($activityConf['total_amount'])  && isset($activityConf['single_amount']) 
-     && !empty($activityConf['total_amount'])  && !empty($activityConf['single_amount'])  )
-        throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动相关配置失败');
 
     $awardNode = new \Model\AwardNode();//活动节点
     $nodeId = $awardNode->getNode($percentOne);//获取节点id
@@ -36,7 +32,7 @@ function ladderInterestcoupon(){
     //单笔充值 小于1w 发放一张0.5阶梯加息劵 7天
     //发放1%加息 结束时间=阶梯加息活动结束时间
 
-    if($rechargeAmountTotal >= $activityConf['total_amount'] || $rechargeAmount >= $activityConf['single_amount']){
+    if($rechargeAmountTotal >= 20000 || $rechargeAmount >= 10000){
         $nodeId = $awardNode->getNode($percentOne);
         if(empty($nodeId))
             throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
@@ -44,7 +40,7 @@ function ladderInterestcoupon(){
 
         // }else if($rechargeAmount >= 10000 && $rechargeAmountTotal < 20000){
         // 	coupon($userId, $awardNode->getNode($percentOne) ); //ladder_percent_one_keep 1%的 发放并激活
-    }else if($rechargeAmount < $activityConf['single_amount']){
+    }else if($rechargeAmount < 10000){
         //判断是否已经发放加息劵
         $operateCoupon = new \Model\MarketingInterestcoupon();
         $sourceOne = getInfo('sourceId','ladder_percent_one');
@@ -56,8 +52,8 @@ function ladderInterestcoupon(){
         $one = $awardNode->getNode($percentOne);
         if(empty($half) || empty($one))
             throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
-        coupon($rechargeTime,$userId, $half, true,7,$rechargeAmount,$activityConf['single_amount']); //发一个7天 0.5的 发放并激活
-        coupon($rechargeTime,$userId, $one,true,14,$rechargeAmount,$activityConf['single_amount']); //预发 一个1%的 发放
+        coupon($rechargeTime,$userId, $half, true,7,$rechargeAmount); //发一个7天 0.5的 发放并激活
+        coupon($rechargeTime,$userId, $one,true,14,$rechargeAmount); //预发 一个1%的 发放
     }
 }
 
@@ -77,13 +73,7 @@ function disLadderInterestcoupon(){
     $usefulTime = $activityModel->getUsefulTimeByName($activityName);
     if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time']) return 1;
 
-    $activityConf = json_decode($usefulTime['conf_json'],true);
-    if(isset($activityConf) && isset($activityConf['total_amount'])  && isset($activityConf['single_amount']) 
-     && !empty($activityConf['total_amount'])  && !empty($activityConf['single_amount'])  )
-        throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动相关配置失败');
-
-
-    if($withdrawAmountTotal >= $activityConf['total_amount']) return true;
+    if($withdrawAmountTotal >= 20000) return true;
     $ladderPercentOne = 'ladder_percent_one';
     $percentHalfKeep = 'ladder_percent_half_keep';
     $awardNode = new \Model\AwardNode();//活动节点
@@ -163,9 +153,8 @@ function disLadderInterestcoupon(){
 
 /**
  * 阶梯发加息劵
- * 充值时间、用户id、活动节点id、是否激活、延迟几天发送、充值金额、阀值1、
  */
-function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0,$amount='', $threshold){
+function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0,$amount=''){
     $dateNow = $rechargeTime;
     $awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
     $operateCoupon = new \Model\MarketingInterestcoupon();
@@ -240,7 +229,7 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0,$amoun
         if(count($res) > 1 && $res[$isExistCoupon['id']]['source_id'] == $oneSourceId){
             //2、把这两张券直接只为失效
             //场景：全额提现后 再充值一次小于1w时，不作操作
-            if(!empty($amount) && $amount< $threshold) return;
+            if(!empty($amount) && $amount<10000) return;
             //***************************************************
             foreach ($res as $key => $value) {
                 # code...
