@@ -234,7 +234,10 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0,$amoun
 
     }else{
         // 1、是否有其他的加息劵
-        $res = $operateCoupon->isOtherActivateExist($userId);//
+        $sourceOne = getInfo('sourceId','ladder_percent_one');
+        $sourceHarf = getInfo('sourceId','ladder_percent_half_keep');
+        $whereStr = $sourceOne.",".$sourceHarf;
+        $res = $operateCoupon->isOtherActivateExist($userId,$whereStr);//
         // var_dump($res);exit;
         $oneSourceId = getInfo('sourceId','ladder_percent_one');
         if(count($res) > 1 && $res[$isExistCoupon['id']]['source_id'] == $oneSourceId){

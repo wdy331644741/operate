@@ -11,8 +11,8 @@ class MarketingInterestcoupon extends Model {
     }
 
     //是否有其他 阶梯加息已经计息的加息劵
-    public function isOtherActivateExist($userId){
-        $result = $this->where("`user_id` = {$userId} and `source_id` in (10,11) and `status` = 1")
+    public function isOtherActivateExist($userId,$sourceId){
+        $result = $this->where("`user_id` = {$userId} and `source_id` in ({$sourceId}) and `status` = 1")
         ->orderby("id DESC")
         ->get()
         ->resultArr();
