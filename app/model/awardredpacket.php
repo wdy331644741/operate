@@ -13,6 +13,10 @@ class AwardRedpacket extends Model
             $this->initArData($pkVal);
     }
 
+    public function getAwardInfo($nodeId){
+        return $this->where(" limit_node = {$nodeId} AND is_del = 0")->get()->rowArr();
+    }
+
     public function switchStausById($id)
     {
         $where = ['id' => $id];

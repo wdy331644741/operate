@@ -1,6 +1,7 @@
 <?php defined("__FRAMEWORKNAME__") or die("No permission to access!");
 use App\service\rpcserverimpl\Common;
 use App\service\exception\AllErrorException;
+use Model\MarketingRedpactek;
 /**
  * 新好友邀请活动
  * @pageroute
@@ -12,143 +13,30 @@ function inviteredpacket(){
     $rechargeTime = I('post.time');//充值时间
     $rechargeAmount = I('post.amount');//充值金额
     $fromUserid = I('post.from_id');//邀请该用户的id
-    // $nodeName = I('post.node');//动作节点
-    $percentOne = 'ladder_percent_one';
-    $percentHalfKeep = 'ladder_percent_half_keep';
 
-    $activityName = 'ladder';//复投活动名称
+    $nodeName = 'frist_regular';//node name
+
+    $activityName = 'invite';//新手活动名称
     $activityModel = new \Model\MarketingActivity();
     //获取活动开始、结束时间
     $usefulTime = $activityModel->getUsefulTimeByName($activityName);
-    if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time']) return 1;
+    if(!$usefulTime) throw new Exception("no activate!", 7112);//没有找到活动数据
+    if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time'])
+        throw new Exception("activate colsed!", 7112);
 
-
+    //获取节点id
     $awardNode = new \Model\AwardNode();//活动节点
-    $nodeId = $awardNode->getNode($percentOne);//获取节点id
-    if(!empty($nodeId)){
-        //活动节点不存在
-    }
-    //单笔充值大于1w  或者 累计本金大于2w
-    //单笔充值 小于1w 发放一张0.5阶梯加息劵 7天
-    //发放1%加息 结束时间=阶梯加息活动结束时间
+    $nodeId = $awardNode->getNode($nodeName);//获取节点id
 
-    if($rechargeAmountTotal >= 20000 || $rechargeAmount >= 10000){
-        $nodeId = $awardNode->getNode($percentOne);
-        if(empty($nodeId))
-            throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
-        coupon($rechargeTime,$userId,$nodeId);//ladder_percent_one_keep 1%的 发放并激活
+    $marketingRedpactekModel = new \Model\MarketingRedpactek();
+    $run = $marketingRedpactekModel->giveUserRedPacket($userId,$nodeId);
 
-        // }else if($rechargeAmount >= 10000 && $rechargeAmountTotal < 20000){
-        // 	coupon($userId, $awardNode->getNode($percentOne) ); //ladder_percent_one_keep 1%的 发放并激活
-    }else if($rechargeAmount < 10000){
-        //判断是否已经发放加息劵
-        $operateCoupon = new \Model\MarketingInterestcoupon();
-        $sourceOne = getInfo('sourceId','ladder_percent_one');
-        $sourceHarf = getInfo('sourceId','ladder_percent_half_keep');
-        $whereStr = $sourceOne.",".$sourceHarf;
-        $alreadyGave = $operateCoupon->getActivateAndStatusDataStr($userId,$whereStr);
-        if($alreadyGave) return true;
-        $half = $awardNode->getNode($percentHalfKeep);
-        $one = $awardNode->getNode($percentOne);
-        if(empty($half) || empty($one))
-            throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
-        coupon($rechargeTime,$userId, $half, true,7,$rechargeAmount); //发一个7天 0.5的 发放并激活
-        coupon($rechargeTime,$userId, $one,true,14,$rechargeAmount); //预发 一个1%的 发放
-    }
-}
+    //preSendRedPackToUser 请求用户中心接口
+    unset($run['id']);
+    unset($run['award']);
+    $proPost = $run;
+    $rs = Common::jsonRpcApiCall((object)$proPost, 'preSendRedPackToUser', config('RPC_API.passport'));
 
-/**
- * 阶梯加息 - 提现
- * @pageroute
- */
-function disLadderInterestcoupon(){
-    $userId = I('post.user_id', '', 'intval');//用户id
-    $withdrawTime = I('post.datetime');//充值时间
-    $withdrawAmount = I('post.amount');//充值金额
-    $withdrawAmountTotal = I('post.total_amount');//累计本金
-
-    $activityName = 'ladder';//复投活动名称
-    $activityModel = new \Model\MarketingActivity();
-    //获取活动开始、结束时间
-    $usefulTime = $activityModel->getUsefulTimeByName($activityName);
-    if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time']) return 1;
-
-    if($withdrawAmountTotal >= 20000) return true;
-    $ladderPercentOne = 'ladder_percent_one';
-    $percentHalfKeep = 'ladder_percent_half_keep';
-    $awardNode = new \Model\AwardNode();//活动节点
-    // $nodeId = $awardNode->getNode($ladderPercentOne);//获取节点id
-    $harfNodeId = $awardNode->getNode($percentHalfKeep);//21 test
-    $oneNodeId = $awardNode->getNode($ladderPercentOne);//20 test 
-    $nodeId = array(
-        $awardNode->getNode($ladderPercentOne),
-        $awardNode->getNode($percentHalfKeep)
-    );
-    if(empty($nodeId)){
-        throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动节点失败');
-    }
-
-    //查询operate_加息劵表中是否给该用户激活过加息劵
-    $awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
-    $operateCoupon = new \Model\MarketingInterestcoupon();
-    $awardCouponInfo = $awardCoupon->filterUsefulInterestCoupon($nodeId);
-    $awardCouponIds = array_column($awardCouponInfo,'id');
-    $isExistCoupon = $operateCoupon->isActivateExist($userId, $awardCouponIds);
-
-    if(empty($isExistCoupon)) return true;
-    if(count($isExistCoupon)>1){
-        // var_export($isExistCoupon);exit;
-
-        if($isExistCoupon[1]['effective_start'] < $withdrawTime && $isExistCoupon[1]['effective_end'] > $withdrawTime ){
-            //提现时间在0.5加息时间段内
-            //更新0.5结束时间、并取消1%
-            informdisable($isExistCoupon[1]['uuid'],1,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
-            informdisable($isExistCoupon[0]['uuid'],0,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
-            // $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
-            // $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
-            coupon($withdrawTime,$userId, $harfNodeId, true,7); //发一个7天 0.5的 发放并激活
-            coupon($withdrawTime,$userId, $oneNodeId,true,14); //预发 一个1%的 发放
-            echo "提现时间在0.5加息时间段内";exit;
-        }else if($isExistCoupon[0]['effective_start'] < $withdrawTime && $isExistCoupon[0]['effective_end'] > $withdrawTime){
-            //提现时间在1%加息时间段内
-            //更新1% 结束时间
-            informdisable($isExistCoupon[0]['uuid'],1,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
-            informdisable($isExistCoupon[1]['uuid'],0,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
-            coupon($withdrawTime,$userId, $harfNodeId, true,7); //发一个7天 0.5的 发放并激活
-            coupon($withdrawTime,$userId, $oneNodeId,true,14); //预发 一个1%的 发放
-            // $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],1,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
-            // $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],1,0);
-            echo "提现时间在1%加息时间段内";exit;
-        }else if($isExistCoupon[1]['effective_start'] > $withdrawTime){
-            //提现时间在加息之前
-            //把0.5  1的加息券全部都干掉
-            informdisable($isExistCoupon[1]['uuid'],0,0,$isExistCoupon[1]['effective_start'],$withdrawTime);
-            informdisable($isExistCoupon[0]['uuid'],0,0,$isExistCoupon[0]['effective_start'],$withdrawTime);
-            coupon($withdrawTime,$userId, $harfNodeId, true,7); //发一个7天 0.5的 发放并激活
-            coupon($withdrawTime,$userId, $oneNodeId,true,14); //预发 一个1%的 发放
-            // $operateCoupon->updateActivate($isExistCoupon[1]['uuid'],0,0);
-            // $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
-            echo "提现时间在加息之前";exit;
-        }
-    }elseif(count($isExistCoupon) == 1 && $isExistCoupon[0]['effective_start'] < $withdrawTime){
-        //如果只有一张1%的
-        //停止计息  调取用户中心 接口
-        $disactivePost = [
-            // 'uuid' => $addCouponRes['uuid'],
-            // 'status' => 1,
-            'token' => $isExistCoupon[0]['uuid'],
-            'status' => 0,
-            // 'interestcouponId' => $coupon['id'],
-            'loseTime'  => $withdrawTime,
-        ];
-        $rs = Common::jsonRpcApiCall((object)$disactivePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
-        // $rs = true;
-        if($rs){
-            $operateCoupon->updateActivate($isExistCoupon[0]['uuid'],0,0);
-            coupon($withdrawTime,$userId, $harfNodeId, true,7); //发一个7天 0.5的 发放并激活
-            coupon($withdrawTime,$userId, $oneNodeId,true,14); //预发 一个1%的 发放
-        }
-    }
 }
 
 /**
