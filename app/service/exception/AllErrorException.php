@@ -158,6 +158,8 @@ class AllErrorException extends BasicException
     const PASSPORT_RETURN_ACTIVATE_HARF_FALSE = 7112; //用户中心返回激活失败0.5%
     const PASSPORT_RETURN_ACTIVATE_ONE_FALSE = 7113; //用户中心返回激活失败1%
     const LADDER_DATA_EXCEPTION = 7114; //阶梯加息数据异常
+    const REDPACKET_EXCEED_MAX_LIMIT = 7115; //阶梯加息数据异常
+    const REDPACKET_INSERT_FALUSE = 7116;//预发放红包失败
 
     protected static $errorArray = array(
         self::API_MIS_PARAMS => "缺少必要参数",
@@ -281,6 +283,8 @@ class AllErrorException extends BasicException
         self::PASSPORT_RETURN_ACTIVATE_HARF_FALSE => "用户中心返回激活失败0.5%",
         self::PASSPORT_RETURN_ACTIVATE_ONE_FALSE => "用户中心返回激活失败1%",
         self::LADDER_DATA_EXCEPTION => "阶梯加息数据异常",
+        self::REDPACKET_EXCEED_MAX_LIMIT => "红包超出最大限制",
+        self::REDPACKET_INSERT_FALUSE => "插入预发放红包失败",
 
     );
 

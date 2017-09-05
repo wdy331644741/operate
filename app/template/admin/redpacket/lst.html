@@ -1,0 +1,99 @@
+{include file="header.html"}
+<style>
+    .adminstatus { cursor:pointer;}
+</style>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="top-title">
+        <h2 class="sub-header">Redpacket配置</h2>
+        <div class="top-tools">
+            <a href="?c=redpacket&a=add"class="btn btn-primary">增加Redpacket</a>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+    <div id="myTabContent" class="tab-content" style="margin-top:10px">
+        <!-- start 已上线 -->
+        <div class="table-responsive tab-pane fade in active" id="no2">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th >id</th>
+                    <th >名称</th>
+                    <th >固定金额</th>
+                    <th >随机最小金额</th>
+                    <th >随机最大金额</th>
+                    <th >最大拆分数量</th>
+                    <th >开始使用时间</th>
+                    <th >结束使用时间</th>
+                    <th >描述</th>
+                    <th >活动节点</th>
+                    <th >状态</th>
+                    <th >是否允许重复领取</th>
+                    <th >一天最多领取次数</th>
+                    <th >是否删除</th>
+                    <th >操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {if $list}
+                {foreach $list as $item}
+                <tr id="onlinetr_{$item.id}">
+                    <td class="id">{$item.id}</td>
+                    <td>{$item.title}</td>
+                    <td>{$item.amount}</td>
+                    <td>{$item.min_amount}</td>
+                    <td>{$item.max_amount}</td>
+                    <td>{$item.max_split}</td>
+                    <td>{$item.usetime_start}</td>
+                    <td>{$item.usetime_end}</td>
+                    <td>{$item.limit_desc}</td>
+                    <td>{$item.node_title}</td>
+                    <td>
+                    {if $item.status == 1}
+                        <span class="adminstatus adminonline">已启用</span>
+                        {else}
+                        <span class="adminstatus adminoffline">未启用</span>
+                        {/if}
+                    </td>
+                    <td>
+                    {if isset($item.repeat)}是{else}是{/if}
+                    </td>
+                    <td>{$item.max_counts}</td>
+                    <td>
+                        {if $item.is_del == 1}
+                        <span class="adminstatus adminonline">已删除</span>
+                        {else}
+                        <span class="adminstatus adminoffline">未删除</span>
+                        {/if}
+                    </td>
+                    
+                    <td>
+                        {if $item.status ==1}
+                        <a href="javascript:void(0);"  class="btn btn-danger btn-xs status">禁用</a>
+                        {else}
+                        <a href="javascript:void(0);"  class="btn btn-primary btn-xs status">启用</a>
+                        {/if}
+                        <a href="{U('admin.php',['c'=>'redpacket','a'=>'upd','id'=> $item.id])}" class="btn btn-success btn-xs">编辑</a>
+                    </td>
+                </tr>
+                {/foreach}
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+</body>
+<script type="text/javascript">
+        $(".status").click(function(){
+            var id=$(this).parent().parent().find('td:first').html();
+            var msg=$(this).html();
+            if(confirm('你确定要'+msg+"吗？")){
+                window.location.href="?c=redpacket&a=status&id="+id;
+            }
+        });
+
+</script>
+{include file="footer.html"}

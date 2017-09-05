@@ -14,6 +14,7 @@ function add()
         }
         $data['check_login'] = I('post.check_login', '','trim');
         $data['activity_name'] = I('post.activity_name','trim');
+        $data['conf_json'] = I('post.conf_json','trim');
         $data['title'] = $title;
         $data['img_url'] = $imgUrl;
         $data['link_url'] = $linkUrl;
@@ -112,6 +113,7 @@ function upd()
         }
         $data['check_login'] = I('post.check_login', '','trim');
         $data['activity_name'] = I('post.activity_name','trim');
+        $data['conf_json'] = I('post.conf_json','trim');
         $data['title'] = $title;
         $data['img_url'] = $imgUrl;
         $data['link_url'] = $linkUrl;

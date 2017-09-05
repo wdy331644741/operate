@@ -896,6 +896,185 @@ return array (
     ),
     'pk_name' => 'id',
   ),
+  'award_redpacket' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'title' => 
+    array (
+      'field' => 'title',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '32',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'redpacketet_type' => 
+    array (
+      'field' => 'redpacketet_type',
+      'key' => '',
+      'default' => '1',
+      'type' => 'tinyint',
+      'lenght' => '1',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'amount' => 
+    array (
+      'field' => 'amount',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'min_amount' => 
+    array (
+      'field' => 'min_amount',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'max_amount' => 
+    array (
+      'field' => 'max_amount',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'max_split' => 
+    array (
+      'field' => 'max_split',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '3',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'usetime_start' => 
+    array (
+      'field' => 'usetime_start',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'usetime_end' => 
+    array (
+      'field' => 'usetime_end',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'limit_desc' => 
+    array (
+      'field' => 'limit_desc',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '32',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'limit_node' => 
+    array (
+      'field' => 'limit_node',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'tinyint',
+      'lenght' => '2',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'is_del' => 
+    array (
+      'field' => 'is_del',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'tinyint',
+      'lenght' => '2',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'repeat' => 
+    array (
+      'field' => 'repeat',
+      'key' => '',
+      'default' => '1',
+      'type' => 'tinyint',
+      'lenght' => '1',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'day_repeat' => 
+    array (
+      'field' => 'day_repeat',
+      'key' => '',
+      'default' => '1',
+      'type' => 'tinyint',
+      'lenght' => '1',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'max_counts' => 
+    array (
+      'field' => 'max_counts',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'tinyint',
+      'lenght' => '2',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'redpacket_name' => 
+    array (
+      'field' => 'redpacket_name',
+      'key' => '',
+      'default' => NULL,
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'pk_name' => 'id',
+  ),
   'award_withdraw' => 
   array (
     'id' => 
@@ -956,25 +1135,13 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
-    'counts' => 
+    'create_time' => 
     array (
-      'field' => 'counts',
-      'key' => '',
-      'default' => '1',
-      'type' => 'int',
-      'lenght' => '20',
-      'unsigned' => false,
-      'null' => true,
-    ),
-    'remark' => 
-    array (
-      'field' => 'remark',
+      'field' => 'create_time',
       'key' => '',
       'default' => NULL,
-      'type' => 'varchar',
-      'lenght' => '200',
       'unsigned' => false,
-      'null' => true,
+      'null' => false,
     ),
     'update_time' => 
     array (
@@ -1256,6 +1423,16 @@ return array (
       'field' => 'activity_name',
       'key' => '',
       'default' => NULL,
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'conf_json' => 
+    array (
+      'field' => 'conf_json',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
       'lenght' => '100',
       'unsigned' => false,
       'null' => true,
@@ -1768,139 +1945,6 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
-    'rate' => 
-    array (
-      'field' => 'rate',
-      'key' => '',
-      'default' => '100.0000',
-      'unsigned' => false,
-      'null' => true,
-    ),
-    'pk_name' => 'id',
-  ),
-  'marketing_withdrawcoupon' => 
-  array (
-    'id' => 
-    array (
-      'field' => 'id',
-      'key' => 'PRI',
-      'default' => NULL,
-      'type' => 'int',
-      'lenght' => '10',
-      'unsigned' => true,
-      'null' => false,
-    ),
-    'user_id' => 
-    array (
-      'field' => 'user_id',
-      'key' => 'MUL',
-      'default' => NULL,
-      'type' => 'int',
-      'lenght' => '10',
-      'unsigned' => true,
-      'null' => false,
-    ),
-    'uuid' => 
-    array (
-      'field' => 'uuid',
-      'key' => 'UNI',
-      'default' => NULL,
-      'lenght' => '36',
-      'unsigned' => false,
-      'null' => false,
-    ),
-    'source_id' => 
-    array (
-      'field' => 'source_id',
-      'key' => 'MUL',
-      'default' => NULL,
-      'type' => 'int',
-      'lenght' => '10',
-      'unsigned' => true,
-      'null' => false,
-    ),
-    'source_name' => 
-    array (
-      'field' => 'source_name',
-      'key' => '',
-      'default' => NULL,
-      'type' => 'varchar',
-      'lenght' => '100',
-      'unsigned' => false,
-      'null' => false,
-    ),
-    'effective_start' => 
-    array (
-      'field' => 'effective_start',
-      'key' => 'MUL',
-      'default' => NULL,
-      'unsigned' => false,
-      'null' => false,
-    ),
-    'effective_end' => 
-    array (
-      'field' => 'effective_end',
-      'key' => 'MUL',
-      'default' => NULL,
-      'unsigned' => false,
-      'null' => false,
-    ),
-    'order_id' => 
-    array (
-      'field' => 'order_id',
-      'key' => '',
-      'default' => NULL,
-      'type' => 'varchar',
-      'lenght' => '64',
-      'unsigned' => false,
-      'null' => true,
-    ),
-    'limit_desc' => 
-    array (
-      'field' => 'limit_desc',
-      'key' => '',
-      'default' => '',
-      'type' => 'varchar',
-      'lenght' => '250',
-      'unsigned' => false,
-      'null' => true,
-    ),
-    'is_activate' => 
-    array (
-      'field' => 'is_activate',
-      'key' => '',
-      'default' => '0',
-      'type' => 'tinyint',
-      'lenght' => '3',
-      'unsigned' => false,
-      'null' => false,
-    ),
-    'is_use' => 
-    array (
-      'field' => 'is_use',
-      'key' => 'MUL',
-      'default' => '0',
-      'type' => 'tinyint',
-      'lenght' => '3',
-      'unsigned' => true,
-      'null' => false,
-    ),
-    'create_time' => 
-    array (
-      'field' => 'create_time',
-      'key' => '',
-      'default' => NULL,
-      'unsigned' => false,
-      'null' => false,
-    ),
-    'update_time' => 
-    array (
-      'field' => 'update_time',
-      'key' => '',
-      'default' => NULL,
-      'unsigned' => false,
-      'null' => true,
-    ),
     'pk_name' => 'id',
   ),
   'marketing_interestcoupon' => 
@@ -2058,6 +2102,157 @@ return array (
       'default' => NULL,
       'unsigned' => false,
       'null' => true,
+    ),
+    'pk_name' => 'id',
+  ),
+  'marketing_redpactek' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'accept_userid' => 
+    array (
+      'field' => 'accept_userid',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'uuid' => 
+    array (
+      'field' => 'uuid',
+      'key' => 'UNI',
+      'default' => NULL,
+      'lenght' => '36',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'source_id' => 
+    array (
+      'field' => 'source_id',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'source_name' => 
+    array (
+      'field' => 'source_name',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '32',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'amount' => 
+    array (
+      'field' => 'amount',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'usetime_start' => 
+    array (
+      'field' => 'usetime_start',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'usetime_end' => 
+    array (
+      'field' => 'usetime_end',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'limit_desc' => 
+    array (
+      'field' => 'limit_desc',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '32',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'type' => 
+    array (
+      'field' => 'type',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'tinyint',
+      'lenght' => '2',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'effective_start' => 
+    array (
+      'field' => 'effective_start',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'is_activate' => 
+    array (
+      'field' => 'is_activate',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'tinyint',
+      'lenght' => '1',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'is_used' => 
+    array (
+      'field' => 'is_used',
+      'key' => 'MUL',
+      'default' => NULL,
+      'type' => 'tinyint',
+      'lenght' => '1',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => 'MUL',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => 'MUL',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'be_invite_id' => 
+    array (
+      'field' => 'be_invite_id',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
     ),
     'pk_name' => 'id',
   ),
@@ -2495,7 +2690,7 @@ return array (
     'user_id' => 
     array (
       'field' => 'user_id',
-      'key' => '',
+      'key' => 'MUL',
       'default' => '0',
       'lenght' => '20',
       'unsigned' => false,
@@ -2579,7 +2774,7 @@ return array (
     'meta_id' => 
     array (
       'field' => 'meta_id',
-      'key' => '',
+      'key' => 'MUL',
       'default' => '0',
       'type' => 'int',
       'lenght' => '11',
@@ -2691,68 +2886,6 @@ return array (
       'lenght' => '4',
       'unsigned' => false,
       'null' => false,
-    ),
-    'pk_name' => 'id',
-  ),
-  'promoter_statistics' => 
-  array (
-    'id' => 
-    array (
-      'field' => 'id',
-      'key' => 'PRI',
-      'default' => NULL,
-      'type' => 'int',
-      'lenght' => '10',
-      'unsigned' => false,
-      'null' => false,
-    ),
-    'date' => 
-    array (
-      'field' => 'date',
-      'key' => '',
-      'default' => NULL,
-      'unsigned' => false,
-      'null' => true,
-    ),
-    'adds' => 
-    array (
-      'field' => 'adds',
-      'key' => '',
-      'default' => '0',
-      'type' => 'int',
-      'lenght' => '10',
-      'unsigned' => false,
-      'null' => true,
-    ),
-    'register_adds' => 
-    array (
-      'field' => 'register_adds',
-      'key' => '',
-      'default' => '0',
-      'type' => 'int',
-      'lenght' => '10',
-      'unsigned' => false,
-      'null' => true,
-    ),
-    'recharge_adds' => 
-    array (
-      'field' => 'recharge_adds',
-      'key' => '',
-      'default' => '0',
-      'type' => 'int',
-      'lenght' => '10',
-      'unsigned' => false,
-      'null' => true,
-    ),
-    'withdraw_adds' => 
-    array (
-      'field' => 'withdraw_adds',
-      'key' => '',
-      'default' => '0',
-      'type' => 'int',
-      'lenght' => '10',
-      'unsigned' => false,
-      'null' => true,
     ),
     'pk_name' => 'id',
   ),
