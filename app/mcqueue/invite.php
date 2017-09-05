@@ -29,15 +29,54 @@ function inviteredpacket(){
     $nodeId = $awardNode->getNode($nodeName);//获取节点id
 
     $marketingRedpactekModel = new \Model\MarketingRedpactek();
-    $run = $marketingRedpactekModel->giveUserRedPacket($userId,$nodeId);
+    $run = $marketingRedpactekModel->giveUserRedPacket($fromUserid,$userId,$nodeId);//发放红包
 
     //preSendRedPackToUser 请求用户中心接口
     unset($run['id']);
-    unset($run['award']);
+    unset($run['award']);//相关红包的配置参数
     $proPost = $run;
-    $rs = Common::jsonRpcApiCall((object)$proPost, 'preSendRedPackToUser', config('RPC_API.passport'));
+    $res = Common::jsonRpcApiCall((object)$proPost, 'preSendRedPackToUser', config('RPC_API.passport'));
+    if($res['result']){
+        //激活红包
+        $activePost = [
+            'uuid' => $run['uuid'],
+        ];
+        $activeRes = Common::jsonRpcApiCall((object)$activePost, 'activeRedPackToUser', config('RPC_API.passport'));
+        if($activeRes['result']){
+            $marketingRedpactekModel->changeRedPacketIsused($run['uuid'],1);
+        }
+    }else{
+        throw new Exception("preSendRedPack false!", 7112);
+    }
 
 }
+
+
+function invitecoupon(){
+    $userId = I('post.user_id', '', 'intval');
+    $time = I('post.time', '');
+
+    $nodeName = 'frist_regular';//node name
+
+    $activityName = 'invite';//新手活动名称
+    $activityModel = new \Model\MarketingActivity();
+    //获取活动开始、结束时间
+    $usefulTime = $activityModel->getUsefulTimeByName($activityName);
+    if(!$usefulTime) throw new Exception("no activate!", 7112);//没有找到活动数据
+    if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time'])
+        throw new Exception("activate colsed!", 7112);
+
+
+    //请求用户中心获得邀请关系接口
+    $getInviteUser = Common::jsonRpcApiCall((object)$proPost, 'preSendRedPackToUser', config('RPC_API.passport'));
+    if($getInviteUser['result'] >= 5){
+        //发一张2%加息券
+
+    }
+
+}
+
+
 
 /**
  * 阶梯发加息劵
@@ -185,28 +224,6 @@ function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0,$amoun
     }
 
 
-}
-
-/**
- * 提现禁用加息券
- */
-function informdisable($uuid,$activate=1,$status=1,$effective_start='',$effective_end=''){
-    $operateCoupon = new \Model\MarketingInterestcoupon();
-    $disactivePost = [
-        // 'uuid' => $addCouponRes['uuid'],
-        // 'status' => 1,
-        'token' => $uuid,
-        'status' => $status,
-        // 'interestcouponId' => $coupon['id'],
-        'loseTime'  => $effective_end,
-    ];
-    $rs = Common::jsonRpcApiCall((object)$disactivePost, 'disableInterestCouponToUser', config('RPC_API.passport'));
-    if($rs['result']){
-        $operateCoupon->updateActivate($uuid,1,0,$effective_start,$effective_end);
-        return true;
-    }else{
-        return false;
-    }
 }
 
 /**

@@ -1427,6 +1427,16 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
+    'conf_json' => 
+    array (
+      'field' => 'conf_json',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => true,
+    ),
     'pk_name' => 'id',
   ),
   'marketing_article' => 
@@ -2104,7 +2114,7 @@ return array (
       'default' => NULL,
       'type' => 'int',
       'lenght' => '10',
-      'unsigned' => false,
+      'unsigned' => true,
       'null' => false,
     ),
     'accept_userid' => 
@@ -2233,6 +2243,16 @@ return array (
       'default' => NULL,
       'unsigned' => false,
       'null' => true,
+    ),
+    'be_invite_id' => 
+    array (
+      'field' => 'be_invite_id',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => false,
+      'null' => false,
     ),
     'pk_name' => 'id',
   ),
