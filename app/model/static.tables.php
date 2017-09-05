@@ -1294,6 +1294,40 @@ return array (
     ),
     'pk_name' => 'id',
   ),
+  'gloab_connfig' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '11',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'key' => 
+    array (
+      'field' => 'key',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'value' => 
+    array (
+      'field' => 'value',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '255',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'pk_name' => 'id',
+  ),
   'marketing_activity' => 
   array (
     'id' => 

@@ -54,4 +54,22 @@ CREATE TABLE `marketing_redpactek` (
 ALTER TABLE `wlcoperate`.`marketing_activity` ADD COLUMN `conf_json` varchar(100) COMMENT '活动相关配置' AFTER `activity_name`;
 
 
+CREATE TABLE `gloab_connfig` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(100) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='全局配置参数'
+
+
+
+
+
+基础数据
+insert into `wlcoperate`.`admin_node` ( `controller`, `action`, `remark`, `parent_id`, `url_host`, `status`, `update_time`, `create_time`) values ( 'gloab_config', 'index', '全局配置', '1', '1', '1', '0000-00-00 00:00:00', '2017-09-05 21:17:08');
+
+insert into `wlcoperate`.`admin_node` ( `controller`, `action`, `remark`, `parent_id`, `url_host`, `status`, `update_time`, `create_time`) values ( 'redpacket', 'index', '红包配置', '142', '1', '1', '0000-00-00 00:00:00', '2017-09-01 10:57:56');
+
 

@@ -3,7 +3,8 @@ use App\service\rpcserverimpl\Common;
 use App\service\exception\AllErrorException;
 use Model\MarketingRedpactek;
 /**
- * 新好友邀请活动
+ * 新好友邀请活动 被邀请人完成定期首投 邀请人获得10红包
+ * 监听定期投资事件
  * @pageroute
  */
 function inviteredpacket(){
@@ -12,7 +13,7 @@ function inviteredpacket(){
     $userId = I('post.user_id', '', 'intval');//充值定期用户id
     $rechargeTime = I('post.time');//充值时间
     $rechargeAmount = I('post.amount');//充值金额
-    $fromUserid = I('post.from_id');//邀请该用户的id
+    $fromUserid = I('post.from_user_id');//邀请该用户的id
 
     $nodeName = 'frist_regular';//node name
 
@@ -51,27 +52,40 @@ function inviteredpacket(){
 
 }
 
-
+/**
+ * 新好友邀请活动 每完成5个好友邀请 邀请人获得一张2加息券
+ * 监听注册事件
+ * @pageroute
+ */
 function invitecoupon(){
     $userId = I('post.user_id', '', 'intval');
     $time = I('post.time', '');
-
+    $fromUserId = I('post.from_user_id', '', 'intval');
     $nodeName = 'frist_regular';//node name
 
+    if($fromUserId == 0)
+        exit("fromUserid null");
     $activityName = 'invite';//新手活动名称
     $activityModel = new \Model\MarketingActivity();
     //获取活动开始、结束时间
     $usefulTime = $activityModel->getUsefulTimeByName($activityName);
     if(!$usefulTime) throw new Exception("no activate!", 7112);//没有找到活动数据
-    if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time'])
+    if($time < $usefulTime['start_time'] || $time > $usefulTime['end_time'])
         throw new Exception("activate colsed!", 7112);
 
 
     //请求用户中心获得邀请关系接口
-    $getInviteUser = Common::jsonRpcApiCall((object)$proPost, 'preSendRedPackToUser', config('RPC_API.passport'));
-    if($getInviteUser['result'] >= 5){
+    $getPost = [
+        "userId" => $fromUserId,
+    ];
+    $getInviteUser = Common::jsonRpcApiCall((object)$getPost, 'getUserByFromId', config('RPC_API.passport'));
+    var_dump($getInviteUser['result']['data']);
+    if(empty($getInviteUser['result']['data'] ))
+        throw new Exception("获取邀请关系数据异常!", 7112);
+    if(count($getInviteUser['result']['data'] ) % 5 == 0){
         //发一张2%加息券
-
+        $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
+        exit("55555");
     }
 
 }
