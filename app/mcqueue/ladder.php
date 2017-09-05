@@ -75,7 +75,7 @@ function disLadderInterestcoupon(){
     $activityModel = new \Model\MarketingActivity();
     //获取活动开始、结束时间
     $usefulTime = $activityModel->getUsefulTimeByName($activityName);
-    if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time']) return 1;
+    if($withdrawTime < $usefulTime['start_time'] || $withdrawTime > $usefulTime['end_time']) return 1;
 
     $activityConf = json_decode($usefulTime['conf_json'],true);
     if(isset($activityConf) && isset($activityConf['total_amount'])  && isset($activityConf['single_amount']) 
