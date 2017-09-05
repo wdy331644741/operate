@@ -77,11 +77,10 @@ function disLadderInterestcoupon(){
     $usefulTime = $activityModel->getUsefulTimeByName($activityName);
     if($withdrawTime < $usefulTime['start_time'] || $withdrawTime > $usefulTime['end_time']) return 1;
 
-    $activityConf = json_decode($usefulTime['conf_json'],true);
-    if(isset($activityConf) && isset($activityConf['total_amount'])  && isset($activityConf['single_amount']) 
-     && !empty($activityConf['total_amount'])  && !empty($activityConf['single_amount'])  )
+    $activityConf = json_decode(htmlspecialchars_decode($usefulTime['conf_json']),true);
+    if(!isset($activityConf) || !isset($activityConf['total_amount'])  || !isset($activityConf['single_amount']) 
+     || empty($activityConf['total_amount'])  || empty($activityConf['single_amount'])  )
         throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动相关配置失败');
-
 
     if($withdrawAmountTotal >= $activityConf['total_amount']) return true;
     $ladderPercentOne = 'ladder_percent_one';
@@ -165,7 +164,7 @@ function disLadderInterestcoupon(){
  * 阶梯发加息劵
  * 充值时间、用户id、活动节点id、是否激活、延迟几天发送、充值金额、阀值1、
  */
-function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0,$amount='', $threshold){
+function coupon($rechargeTime,$userId,$nodeId,$activate=true,$laterDays=0,$amount='', $threshold=''){
     $dateNow = $rechargeTime;
     $awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
     $operateCoupon = new \Model\MarketingInterestcoupon();
