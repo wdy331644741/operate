@@ -8,6 +8,34 @@ use App\service\rpcserverimpl\Common;
 class SendCouponRpcImpl extends BaseRpcImpl
 {
 
+
+    // private $type = [
+    //     1 => 'award_interestcoupon',
+    //     2 => 'award_experience',
+    //     3 => 'award_withdraw',
+    //     4 => 'redPacket',
+
+    // ];
+
+    //手动发放奖品时打开注释
+    public function activitySendAction($type,$userId,$nodeId){
+        switch ($type){
+            case 1:
+                return $this->Acoupon($userId, $nodeId);
+                break;
+            // case 2:
+            //     return $this->Aexperience($userId, $nodeId);
+            //     break;
+            // case 3:
+            //     return $this->AfreeWithdraw($userId, $nodeI);
+            //     break;
+            // case 4:
+            //     return $this->Aredpacket($userId, $nodeI);
+            //     break;
+            default:
+                break;
+        }
+    }
     /**
      * 根据类型发放不同奖品
      * @param $type
@@ -32,7 +60,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
         }
     }
     /**
-     * 发加息劵
+     * 发加息劵-针对手动发放的
      * @pageroute
      */
     private function coupon($userId,$nodeId,$type){
@@ -186,6 +214,55 @@ class SendCouponRpcImpl extends BaseRpcImpl
             return false;
         }
 
+        return true;
+    }
+
+
+    private function Acoupon($userId,$nodeId){
+        $operateCoupon = new \Model\MarketingInterestcoupon();
+        $awardCouponModel = new \Model\AwardInterestcoupon();
+        $awardCouponInfo = $awardCouponModel->filterUsefulInterestCoupon($nodeId);
+
+        //*********************发放加息劵*********************
+        $couponInfo = array(
+            'id' => $awardCouponInfo['id'],
+            'title' => $awardCouponInfo['title'],
+            'rate' => $awardCouponInfo['rate'],
+            'days' => $awardCouponInfo['days'],//加息券加息天数
+            'effective_days' => $awardCouponInfo['effective_days'],//加息券有效天数
+            'effective_start' => $awardCouponInfo['effective_start'],//加息券有效开始时间
+            'effective_end' => $awardCouponInfo['effective_end'],//加息券有效结束时间
+            'limit_desc' => $awardCouponInfo['limit_desc'],
+            'is_use'     => 0,//is_use 默认为0
+        );
+        $addCouponRes = $operateCoupon -> addCouponForUser($userId,$couponInfo);
+        //***************************************************
+        //通知用户中心发放加息劵
+        unset($addCouponRes['id']);
+        $proPost = [
+            'interestCoupon' => $addCouponRes
+        ];
+        $preRes = Common::jsonRpcApiCall((object)$proPost, 'preSendInterestCouponToUser', config('RPC_API.passport'));
+
+        if ($preRes) {
+            $activePost = [
+                'uuid' => $addCouponRes['uuid'],
+                'status' => 1,
+                'immediately' => FALSE//立即使用
+                // 'effective_start' =>  计息的开始时间
+                // 'effective_end'   =>  计息的结束时间
+            ];
+            $rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
+        }
+
+        //update operate database  status
+        if($rpcRes) {
+            $operateCoupon->updateActivate($addCouponRes['uuid']);
+        }
+
+        if (!$preRes || !$rpcRes || !$addCouponRes){
+            return false;
+        }
         return true;
     }
 

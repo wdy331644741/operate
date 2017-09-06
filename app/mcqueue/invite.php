@@ -2,6 +2,7 @@
 use App\service\rpcserverimpl\Common;
 use App\service\exception\AllErrorException;
 use Model\MarketingRedpactek;
+use App\service\rpcserverimpl\SendCouponRpcImpl;
 /**
  * 新好友邀请活动 被邀请人完成定期首投 邀请人获得10红包
  * 监听定期投资事件
@@ -61,7 +62,7 @@ function invitecoupon(){
     $userId = I('post.user_id', '', 'intval');
     $time = I('post.time', '');
     $fromUserId = I('post.from_user_id', '', 'intval');
-    $nodeName = 'frist_regular';//node name
+    $nodeName = 'five_invite_coupon';//node name
 
     if($fromUserId == 0)
         exit("fromUserid null");
@@ -73,6 +74,9 @@ function invitecoupon(){
     if($time < $usefulTime['start_time'] || $time > $usefulTime['end_time'])
         throw new Exception("activate colsed!", 7112);
 
+    //获取节点id
+    $awardNode = new \Model\AwardNode();//活动节点
+    $nodeId = $awardNode->getNode($nodeName);//获取节点id
 
     //请求用户中心获得邀请关系接口
     $getPost = [
@@ -84,9 +88,12 @@ function invitecoupon(){
         throw new Exception("获取邀请关系数据异常!", 7112);
     if(count($getInviteUser['result']['data'] ) % 5 == 0){
         //发一张2%加息券
-        $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
-        $giveInterestcouponModel->giveUserInterest();
-        exit("55555");
+        // $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
+        // $giveInterestcouponModel->giveUserInterest();
+        // exit("55555");
+        $send = new SendCouponRpcImpl();
+        $sendRes = $send->activitySendAction(1, $fromUserId, $nodeId);
+        var_dump($sendRes);exit;
     }
 
 }
