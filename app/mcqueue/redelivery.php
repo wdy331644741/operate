@@ -81,7 +81,7 @@ function coupon($userId,$nodeId){
 		$activePost = [
 			'uuid' => $addCouponRes['uuid'],
 			'status' => 1,
-			'immediately' => FALSE//立即使用
+			// 'immediately' => FALSE//立即使用  用户中心修改接口逻辑  不做操作直接返回ture
 			// 'effective_start' =>  计息的开始时间
 			// 'effective_end'   =>  计息的结束时间
 		];
