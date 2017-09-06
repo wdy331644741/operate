@@ -87,7 +87,7 @@ function invitecoupon(){
     if(empty($getInviteUser['result']['data'] ))
         throw new Exception("获取邀请关系数据异常!", 7112);
     if(count($getInviteUser['result']['data'] ) % 5 == 0){
-        //发一张2%加息券
+        //发一张2%加息券  直接发放没有什么逻辑，直接调用手动发放奖品rpc
         // $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
         // $giveInterestcouponModel->giveUserInterest();
         // exit("55555");
