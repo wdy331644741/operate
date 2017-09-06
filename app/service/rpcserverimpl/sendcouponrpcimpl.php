@@ -23,9 +23,9 @@ class SendCouponRpcImpl extends BaseRpcImpl
             case 1:
                 return $this->Acoupon($userId, $nodeId);
                 break;
-            // case 2:
-            //     return $this->Aexperience($userId, $nodeId);
-            //     break;
+            case 2:
+                return $this->Aexperience($userId, $nodeId);
+                break;
             // case 3:
             //     return $this->AfreeWithdraw($userId, $nodeI);
             //     break;
@@ -248,7 +248,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
             $activePost = [
                 'uuid' => $addCouponRes['uuid'],
                 'status' => 1,
-                'immediately' => 2//立即使用 用户中心修改接口逻辑 不传immediately  不做操作直接返回ture
+                'immediately' => 1//立即使用 用户中心修改接口逻辑 不传immediately  不做操作直接返回ture
                 // 'effective_start' =>  计息的开始时间
                 // 'effective_end'   =>  计息的结束时间
             ];
@@ -263,6 +263,56 @@ class SendCouponRpcImpl extends BaseRpcImpl
         if (!$preRes || !$rpcRes || !$addCouponRes){
             return false;
         }
+        return true;
+    }
+
+    private function Aexperience($userId,$nodeId){
+
+        $operateExperience = new \Model\MarketingExperience();
+        $awardExpModel = new \Model\AwardExperience();
+        $awardExpInfo = $awardExpModel->filterUsefulInterestCoupon($nodeId);
+var_dump($awardExpInfo);exit;
+        $amount = $awardExpInfo['amount'];
+        if ($awardExpInfo['amount_type']==1){
+            $amount = rand($awardExpInfo['min_amount'],$awardExpInfo['max_amount']);
+        }
+
+        //***************发放体验金************************
+        $experienceInfo = array(
+            'id'         => $awardExpInfo['id'],
+            'title'      => $awardExpInfo['title'],
+            'amount'     => $amount,
+            'days'       => $awardExpInfo['days'],//10天后有效 +5天使用时间
+            'limit_desc' => $awardExpInfo['limit_desc'],
+            'amount_type'=> $awardExpInfo['amount_type'],
+            'is_use'     => 1
+        );
+        $addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo);
+        //后使用
+        $expId = $addExperienceRes['id'];
+        unset($addExperienceRes['id']);
+        //通知用户中心 预发放体验金
+        if($addExperienceRes){
+            $activePost = array(
+                'expAward'   => $addExperienceRes,
+            );
+            $resRpc = Common::jsonRpcApiCall((object)$activePost, 'preSendExperienceGoldToUser', config('RPC_API.passport'));
+        }
+
+        $activePost = [
+            'uuid' => $addExperienceRes['uuid'],
+            'status' => 1,
+
+        ];
+        $rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateExperienceGoldToUser', config('RPC_API.passport'));
+
+        if($rpcRes){
+            $operateExperience->updateStatusOfUse($expId);
+        }
+        if (!$resRpc || !$rpcRes || !$addExperienceRes){
+            return false;
+        }
+
         return true;
     }
 

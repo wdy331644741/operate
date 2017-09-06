@@ -99,6 +99,55 @@ function invitecoupon(){
 }
 
 
+/**
+ * 新好友邀请活动 被邀请人福利：完成首次投资即可获得10000元体验金，体验时间为1天
+ * 监听充值事件
+ * @pageroute
+ */
+function inviterecharge(){
+    $userId = I('post.user_id', '', 'intval');//用户id
+    $rechargeTime = I('post.time');//充值时间
+    $rechargeAmount = I('post.amount');//充值金额
+    $rechargeAmountTotal = I('post.total');//累计本金
+
+    $nodeName = 'frist_regular';//node name
+
+    $activityName = 'invite';//新手活动名称
+    $activityModel = new \Model\MarketingActivity();
+    //获取活动开始、结束时间
+    $usefulTime = $activityModel->getUsefulTimeByName($activityName);
+    if(!$usefulTime) throw new Exception("no activate!", 7112);//没有找到活动数据
+    if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time'])
+        throw new Exception("activate colsed!", 7112);
+
+    //获取节点id
+    $awardNode = new \Model\AwardNode();//活动节点
+    $nodeId = $awardNode->getNode($nodeName);//获取节点id
+
+
+    //请求用户中心 该用户注册相关数据
+    $post = [
+        'userId' => $userId,
+        'params' => 'from_user_id,create_time',
+    ];
+    $userInfo = Common::jsonRpcApiCall((object)$post, 'getUserBasicInfo', config('RPC_API.passport'));
+    var_dump($userInfo);exit;
+    // if(empty($userInfo['result']) )
+    if($userInfo['from_user_id'] == 0 )
+        exit("注册用户没有from_user_id");
+
+    if($userInfo['create_time'] >= $usefulTime['start_time'] && $userInfo['create_time'] <= $usefulTime['end_time']){
+        //发送1w体验金
+        $send = new SendCouponRpcImpl();
+        $sendRes = $send->activitySendAction(2, $fromUserId, $nodeId);
+
+    }else{
+        exit("该用户的注册日期不在活动范围内");
+    }
+
+
+
+}
 
 /**
  * 阶梯发加息劵
