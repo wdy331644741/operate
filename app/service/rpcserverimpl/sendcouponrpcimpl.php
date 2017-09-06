@@ -237,7 +237,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
         );
         $addCouponRes = $operateCoupon -> addCouponForUser($userId,$couponInfo);
         //***************************************************
-        //通知用户中心发放加息劵
+        //通知用户中心发放加息劵  预发放
         unset($addCouponRes['id']);
         $proPost = [
             'interestCoupon' => $addCouponRes
@@ -248,16 +248,16 @@ class SendCouponRpcImpl extends BaseRpcImpl
             $activePost = [
                 'uuid' => $addCouponRes['uuid'],
                 'status' => 1,
-                'immediately' => FALSE//立即使用 用户中心修改接口逻辑 不传immediately  不做操作直接返回ture
+                'immediately' => 2//立即使用 用户中心修改接口逻辑 不传immediately  不做操作直接返回ture
                 // 'effective_start' =>  计息的开始时间
                 // 'effective_end'   =>  计息的结束时间
             ];
             $rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
         }
 
-        //update operate database  status
+        //update operate database  is_use status
         if($rpcRes) {
-            $operateCoupon->updateActivate($addCouponRes['uuid']);
+            $operateCoupon->updateIsuse($addCouponRes['uuid']);
         }
 
         if (!$preRes || !$rpcRes || !$addCouponRes){
