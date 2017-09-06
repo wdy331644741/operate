@@ -85,6 +85,7 @@ function invitecoupon(){
     if(count($getInviteUser['result']['data'] ) % 5 == 0){
         //发一张2%加息券
         $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
+        $giveInterestcouponModel->giveUserInterest();
         exit("55555");
     }
 
