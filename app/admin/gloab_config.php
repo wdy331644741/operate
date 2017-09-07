@@ -22,6 +22,7 @@ function add()
 
             //更新redis
             $redis = getReidsInstance();
+            $redis->hset('operate_gloab_conf',$data['key'],$data['value'] );
             $remindInfo = $redis->hgetall('operate_gloab_conf');
             ajaxReturn(['error' => 0, 'message' => '添加配置成功']);
 
@@ -85,6 +86,7 @@ function upd()
                 throw new \Exception('修改失败', 4011);
             //更新redis
             $redis = getReidsInstance();
+            $redis->hset('operate_gloab_conf',$data['key'],$data['value'] );
             $remindInfo = $redis->hgetall('operate_gloab_conf');
             ajaxReturn(['error' => 0, 'message' => '修改成功']);
 
