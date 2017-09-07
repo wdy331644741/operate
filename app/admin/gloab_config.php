@@ -20,6 +20,9 @@ function add()
             if (!$result)
                 throw new \Exception('添加node失败', 4011);
 
+            //更新redis
+            $redis = getReidsInstance();
+            $remindInfo = $redis->hgetall('operate_gloab_conf');
             ajaxReturn(['error' => 0, 'message' => '添加配置成功']);
 
         } catch (\Exception $e) {
@@ -80,7 +83,9 @@ function upd()
             $result = $gloabConfig->where(['id' => $id])->upd($data);
             if (!$result)
                 throw new \Exception('修改失败', 4011);
-
+            //更新redis
+            $redis = getReidsInstance();
+            $remindInfo = $redis->hgetall('operate_gloab_conf');
             ajaxReturn(['error' => 0, 'message' => '修改成功']);
 
         } catch (\Exception $e) {
