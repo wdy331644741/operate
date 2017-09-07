@@ -110,7 +110,7 @@ function inviterecharge(){
     $rechargeAmount = I('post.amount');//充值金额
     $rechargeAmountTotal = I('post.total');//累计本金
 
-    $nodeName = 'frist_regular';//node name
+    $nodeName = 'bing_invite_tenTthonsend_exp';//node name
 
     $activityName = 'invite';//新手活动名称
     $activityModel = new \Model\MarketingActivity();
@@ -130,16 +130,16 @@ function inviterecharge(){
         'userId' => $userId,
         'params' => 'from_user_id,create_time',
     ];
-    $userInfo = Common::jsonRpcApiCall((object)$post, 'getUserBasicInfo', config('RPC_API.passport'));
-    var_dump($userInfo);exit;
+    $userInfo = Common::jsonRpcApiCall((object)$post, '_getUserBasicInfo', config('RPC_API.passport'));
+    // var_dump($userInfo);exit("asds");
     // if(empty($userInfo['result']) )
-    if($userInfo['from_user_id'] == 0 )
+    if($userInfo['result']['data']['from_user_id'] == 0 )
         exit("注册用户没有from_user_id");
 
-    if($userInfo['create_time'] >= $usefulTime['start_time'] && $userInfo['create_time'] <= $usefulTime['end_time']){
-        //发送1w体验金
+    if($userInfo['result']['data']['create_time'] >= $usefulTime['start_time'] && $userInfo['result']['data']['create_time'] <= $usefulTime['end_time']){
+        //发送1w体验金  type =2 体验金
         $send = new SendCouponRpcImpl();
-        $sendRes = $send->activitySendAction(2, $fromUserId, $nodeId);
+        $sendRes = $send->activitySendAction(2, $userId, $nodeId);
 
     }else{
         exit("该用户的注册日期不在活动范围内");

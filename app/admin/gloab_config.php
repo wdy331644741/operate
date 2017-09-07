@@ -6,29 +6,21 @@ function add()
 {
 
     if (IS_POST) {
-        $title = $name = null;
-        $requireFields = ['title', 'name'];
-        foreach ($requireFields as $field) {
-            $$field = I('post.' . $field, '', 'trim');
-            if ('' === $$field)
-                ajaxReturn(['error' => 4000, 'message' => $field . '不能为空']);
-        }
+        $gloabConfig = new Model\GloabConfig();
 
-
-        $bannerModel = new Model\GloabConnfig();
-
-        $bannerModel->title = $title;
-        $bannerModel->name = $name;
-        
-        $bannerModel->create_time = date('Y-m-d H:i:s');//注册时间
+        $gloabConfig->key = I('post.key', '', 'trim');;
+        $gloabConfig->value = json_encode($_POST['data'] );
+        $gloabConfig->remark = I('post.remark', '', 'trim');
+        $gloabConfig->create_time = date('Y-m-d H:i:s');//注册时间
+        // var_dump($gloabConfig->value );exit;
 
         try {
 
-            $result = $bannerModel->save();
+            $result = $gloabConfig->save();
             if (!$result)
                 throw new \Exception('添加node失败', 4011);
 
-            ajaxReturn(['error' => 0, 'message' => '添加banner图成功']);
+            ajaxReturn(['error' => 0, 'message' => '添加配置成功']);
 
         } catch (\Exception $e) {
             ajaxReturn(['error' => $e->getCode(), 'message' => $e->getMessage()]);
@@ -55,7 +47,7 @@ function index()
 function lst()
 {
     $framework = getFrameworkInstance();
-    $bannerModel = new \Model\GloabConnfig();
+    $bannerModel = new \Model\GloabConfig();
     $list = $bannerModel->get()->resultArr();
 
     $framework->smarty->assign('list', $list);
@@ -70,33 +62,39 @@ function upd()
 {
     $id = I('get.id/d', 0);
     if (IS_POST) {
-        $title = $name = null;
-        $requireFields = ['title', 'name'];
-        foreach ($requireFields as $field) {
-            $$field = I('post.' . $field, '', 'trim');
-            if ('' === $$field)
-                ajaxReturn(['error' => 4000, 'message' => $field . '不能为空']);
-        }
-        $data['title'] = $title;
-        $data['name'] = $name;
+        $gloabConfig = new Model\GloabConfig();
+
+        // $gloabConfig->key = I('post.key', '', 'trim');
+        // $gloabConfig->value = json_encode($_POST['data'] );
+        // $gloabConfig->remark = I('post.remark', '', 'trim');
+        // $gloabConfig->create_time = date('Y-m-d H:i:s');
+        // var_dump($gloabConfig->value );exit;
 
         try {
-            $bannerModel = new \Model\GloabConnfig();
-            //创建用户账号
-            $userId = $bannerModel->where(['id' => $id])->upd($data);
-            if (!$userId)
-                throw new \Exception('修改node失败', 4011);
 
-            ajaxReturn(['error' => 0, 'message' => '修改banner成功']);
+            $data['key'] = I('post.key', '', 'trim');
+            $data['remark'] = I('post.remark', '', 'trim');
+            $data['update_time'] = date('Y-m-d H:i:s');
+            $data['value'] = json_encode($_POST['data'] );
+
+            $result = $gloabConfig->where(['id' => $id])->upd($data);
+            if (!$result)
+                throw new \Exception('修改失败', 4011);
+
+            ajaxReturn(['error' => 0, 'message' => '修改成功']);
+
         } catch (\Exception $e) {
             ajaxReturn(['error' => $e->getCode(), 'message' => $e->getMessage()]);
         }
 
     } else {
         $framework = getFrameworkInstance();
-        $bannerModel = new \Model\GloabConnfig();
+        $bannerModel = new \Model\GloabConfig();
         $row = $bannerModel->where(['id' => $id])->get()->rowArr();
+        $json_data = json_decode( stripslashes ($row['value'] ),true);
+
         $framework->smarty->assign('item', $row);
+        $framework->smarty->assign('json_data', $json_data);
         $framework->smarty->display('gloab_config/upd.html');
     }
 }

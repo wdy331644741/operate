@@ -722,6 +722,96 @@ return array (
     ),
     'pk_name' => 'id',
   ),
+  'award_extend' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'user' => 
+    array (
+      'field' => 'user',
+      'key' => '',
+      'default' => '',
+      'type' => 'varchar',
+      'lenght' => '255',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'award_type' => 
+    array (
+      'field' => 'award_type',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'tinyint',
+      'lenght' => '2',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'award_id' => 
+    array (
+      'field' => 'award_id',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'remark' => 
+    array (
+      'field' => 'remark',
+      'key' => '',
+      'default' => '',
+      'type' => 'varchar',
+      'lenght' => '50',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'send_count' => 
+    array (
+      'field' => 'send_count',
+      'key' => '',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'send_status' => 
+    array (
+      'field' => 'send_status',
+      'key' => 'MUL',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => '0000-00-00 00:00:00',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => '',
+      'default' => '0000-00-00 00:00:00',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'pk_name' => 'id',
+  ),
   'award_interestcoupon' => 
   array (
     'id' => 
@@ -1294,7 +1384,7 @@ return array (
     ),
     'pk_name' => 'id',
   ),
-  'gloab_connfig' => 
+  'gloab_config' => 
   array (
     'id' => 
     array (
@@ -1323,6 +1413,42 @@ return array (
       'default' => NULL,
       'type' => 'varchar',
       'lenght' => '255',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'remark' => 
+    array (
+      'field' => 'remark',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '255',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'tinyint',
+      'lenght' => '1',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => '',
+      'default' => NULL,
       'unsigned' => false,
       'null' => true,
     ),

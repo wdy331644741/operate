@@ -248,7 +248,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
             $activePost = [
                 'uuid' => $addCouponRes['uuid'],
                 'status' => 1,
-                'immediately' => 1//立即使用 用户中心修改接口逻辑 不传immediately  不做操作直接返回ture
+                'immediately' => 2//立即使用 用户中心修改接口逻辑 不传immediately  不做操作直接返回ture
                 // 'effective_start' =>  计息的开始时间
                 // 'effective_end'   =>  计息的结束时间
             ];
@@ -271,7 +271,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
         $operateExperience = new \Model\MarketingExperience();
         $awardExpModel = new \Model\AwardExperience();
         $awardExpInfo = $awardExpModel->filterUsefulInterestCoupon($nodeId);
-var_dump($awardExpInfo);exit;
+
         $amount = $awardExpInfo['amount'];
         if ($awardExpInfo['amount_type']==1){
             $amount = rand($awardExpInfo['min_amount'],$awardExpInfo['max_amount']);
