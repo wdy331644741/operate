@@ -10,12 +10,13 @@ use App\service\rpcserverimpl\SendCouponRpcImpl;
  */
 function inviteredpacket(){
 
-    // logs('记录复投发放体验金:' . PHP_EOL . var_export($_POST, true), 'redeliveryExperience');
     $userId = I('post.user_id', '', 'intval');//充值定期用户id
-    $rechargeTime = I('post.time');//充值时间
+    $rechargeTime = I('post.buy_time');//充值时间
     $rechargeAmount = I('post.amount');//充值金额
-    $fromUserid = I('post.from_user_id');//邀请该用户的id
+    $fromUserid = I('post.from_id');//邀请该用户的id
 
+    if($fromUserid == 0)
+        exit("没有邀请人id");
     $nodeName = 'frist_regular';//node name
 
     $activityName = 'invite';//新手活动名称
@@ -47,6 +48,7 @@ function inviteredpacket(){
         if($activeRes['result']){
             $marketingRedpactekModel->changeRedPacketIsused($run['uuid'],1);
         }
+        exit("发送成功");
     }else{
         throw new Exception("preSendRedPack false!", 7112);
     }
