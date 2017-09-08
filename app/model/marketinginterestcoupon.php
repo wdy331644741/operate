@@ -11,8 +11,8 @@ class MarketingInterestcoupon extends Model {
     }
 
     //是否有其他 阶梯加息已经计息的加息劵
-    public function isOtherActivateExist($userId){
-        $result = $this->where("`user_id` = {$userId} and `source_id` in (10,11) and `status` = 1")
+    public function isOtherActivateExist($userId,$sourceId){
+        $result = $this->where("`user_id` = {$userId} and `source_id` in ({$sourceId}) and `status` = 1")
         ->orderby("id DESC")
         ->get()
         ->resultArr();
@@ -151,6 +151,12 @@ class MarketingInterestcoupon extends Model {
             ->upd(array('is_use' => 1, 'update_time' => date('Y-m-d H:i:s')));
     }
 
+    //更新is_use状态
+    public function updateIsuse($uuid,$is_use = 1){
+        return $this->where("`uuid` = '{$uuid}' AND `status` = 1")
+            ->upd(array('is_use' => $is_use, 'update_time' => date('Y-m-d H:i:s')));
+    }
+
     //更新激活状态及时间
     public function updateActivate($uuid,$activate=1,$status=1,$effective_start='',$effective_end=''){
         if(!empty($effective_start) && !empty($effective_end)){
@@ -173,12 +179,19 @@ class MarketingInterestcoupon extends Model {
     }
 
     public function getActivateAndStatusData($userId){
-        $qq = $this->where("`user_id` = {$userId} and `status` = 1 and `is_activate` = 1 and `source_id` in (10,11)")
+        $res = $this->where("`user_id` = {$userId} and `status` = 1 and `is_activate` = 1 ")
             ->get()->resultArr();
             // logs($this->getLastQuery(),'22222222');
-        return $qq;
+        return $res;
     }
-    // //激活状态
+    //$sourceId  string
+    public function getActivateAndStatusDataStr($userId,$sourceId){
+        $res = $this->where("`user_id` = {$userId} and `status` = 1 and `is_activate` = 1 and `source_id` in ({$sourceId}) and effective_start < Now() and effective_end > Now()")
+            ->get()->resultArr();
+            // logs($this->getLastQuery(),'22222222');
+        return $res;
+    }
+    // //激活状态 old on dev
     // public function updateActivate($uuid){
     //     return $this->where("`uuid` = '{$uuid}'")
     //         ->upd(array('is_activate' => 1, 'update_time' => date('Y-m-d H:i:s')));

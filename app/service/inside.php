@@ -7,8 +7,8 @@ function index()
 {
     $jsonRPCServer = new Lib\jsonRPCServer();//实例化jsonServer
 
-    //账户相关
-    $jsonRPCServer->addService(loadRpcImpl('InsideRpcImpl'));
+    //对内接口
+    $jsonRPCServer->addService(loadRpcImpl('ConfigRpcImpl'));
 
     $jsonRPCServer->processingRequests();
 }

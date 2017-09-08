@@ -4,8 +4,8 @@ define("RUN_MODE","cli"); // 访问模式仅限cli模式
 define('__WEBROOT__',__DIR__);
 define("__APP_ROOT_PATH__", dirname(__WEBROOT__));
 define('__FRAMEWORK_PATH__',dirname(__APP_ROOT_PATH__).'/system');
-//define('__FRAMEWORK_PATH__','/home/liuqi/www/wl_framework');
-//define('__FRAMEWORK_PATH__',dirname(__APP_ROOT_PATH__).'/system');
+define('__FRAMEWORK_PATH__','/home/liuqi/www/wl_framework');
+
 define("__PROJECT_NAME__", 'autotools');
 $argv = ['autotools', 'generatortable', 'run'];
 $argc = count($argv);

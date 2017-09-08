@@ -595,7 +595,18 @@ class AccountRpcImpl extends BaseRpcImpl
         }
 
         $MarketingInterestcouponModel = new \Model\MarketingInterestcoupon();
-        $couponData = $MarketingInterestcouponModel->getActivateAndStatusData($this->userId);
+
+        $awardNode = new \Model\AwardNode();//活动节点
+        $awardCoupon = new \Model\AwardInterestcoupon();//加息劵配置
+        $oneNodeId = $awardNode->getNode('ladder_percent_one');
+        $harfNodeId = $awardNode->getNode('ladder_percent_half_keep');
+
+        $oneSourceId = $awardCoupon->filterUsefulInterestCoupon($oneNodeId);
+        $harfSourceId = $awardCoupon->filterUsefulInterestCoupon($harfNodeId);
+
+        $sourceId = $oneSourceId['id'].",".$harfSourceId['id'];
+
+        $couponData = $MarketingInterestcouponModel->getActivateAndStatusDataStr($this->userId,$sourceId);
         if(count($couponData) > 1)
             throw new AllErrorException(AllErrorException::LADDER_DATA_EXCEPTION);
         // var_export($couponData);exit;

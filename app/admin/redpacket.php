@@ -5,46 +5,47 @@
 function add()
 {
     if (IS_POST) {
-        $title = $amount = $minAmount = $maxAmount = $days = $effectiveEnd = $limitDesc = $limitNode = $status = $repeat = null;
-        $requireFields = ['title', 'amount', 'minAmount', 'maxAmount', 'days', 'effectiveEnd', 'limitDesc', 'limitNode', 'status', 'repeat'];
+        $title = $max_split = $usetime_start = $usetime_end = $limitDesc = $limitNode = $status = $repeat = $day_repeat = null;
+        $requireFields = ['title', 'max_split', 'usetime_start', 'usetime_end', 'limitDesc', 'limitNode', 'status', 'repeat', 'day_repeat'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
-                ajaxReturn(['error' => 4000, 'message' => $$field . '不能为空']);
+                ajaxReturn(['error' => 4000, 'message' => $field . '不能为空']);
         }
 
-        if ($minAmount && $maxAmount) {
-            $data['amount'] = 0;
-            $data['min_amount'] = $minAmount;
-            $data['max_amount'] = $maxAmount;
-            $data['amount_type'] = \Model\AwardExperience::TYPE_RAND;
-        } else {
+        $amount = I('post.amount', '', 'trim');
+        $min_amount = I('post.min_amount', '', 'trim');
+        $max_amount = I('post.max_amount', '', 'trim');
+        if (!empty($amount)) {
             $data['amount'] = $amount;
             $data['min_amount'] = 0;
             $data['max_amount'] = 0;
-            $data['amount_type'] = \Model\AwardExperience::TYPE_NORMAL;
+        } else {
+            $data['amount'] = 0;
+            if($min_amount>=$max_amount)
+                ajaxReturn(['error' => 4000, 'message' => '随机最小金额不得大于最大金额']);
+            $data['min_amount'] = $min_amount;
+            $data['max_amount'] = $max_amount;
         }
         $data['title'] = $title;
-        $data['days'] = I('post.days','', 'trim');
-        $data['hours'] = I('post.hours','', 'trim');
-        if($data['hours'] == 0 && $data['days'] == 0){
-            ajaxReturn(['error' => 4000, 'message' => '加息时长不能为空']);
-        }
-        $data['effective_end'] = $effectiveEnd;
+        $data['max_split'] = $max_split;
+        $data['usetime_start'] = $usetime_start;
+        $data['usetime_end'] = $usetime_end;
         $data['limit_desc'] = $limitDesc;
         $data['limit_node'] = $limitNode;
         $data['status'] = $status;
         $data['repeat'] = $repeat;
-        $data['create_time'] = date('Y-m-d H:i:s');//注册时间
-
+        $data['day_repeat'] = $day_repeat;
+        $data['max_counts'] = I('post.max_counts', '', 'trim');
+        $data['create_time'] = date('Y-m-d H:i:s');
         try {
-            $expModel = new \Model\AwardExperience();
+            $expModel = new \Model\AwardRedpacket();
             //创建用户账号
             $id = $expModel->add($data);
             if (!$id)
-                throw new \Exception('添加experience失败', 4011);
+                throw new \Exception('添加redpacket失败', 4011);
 
-            ajaxReturn(['error' => 0, 'message' => '添加experience成功']);
+            ajaxReturn(['error' => 0, 'message' => '添加redpacket成功']);
         } catch (\Exception $e) {
             ajaxReturn(['error' => $e->getCode(), 'message' => $e->getMessage()]);
         }
@@ -56,7 +57,7 @@ function add()
         $nodeListQuery = $nodeModel->get()->resultArr();
         $nodeList = array_combine(array_column($nodeListQuery, 'id'), $nodeListQuery);
         $framework->smarty->assign('nodeList', $nodeList);
-        $framework->smarty->display('experience/add.html');
+        $framework->smarty->display('redpacket/add.html');
     }
 }
 
@@ -74,8 +75,8 @@ function index()
 function lst()
 {
     $framework = getFrameworkInstance();
-    $experienceUserModel = new \Model\AwardExperience();
-    $list = $experienceUserModel->get()->resultArr();
+    $redpacketUserModel = new \Model\AwardRedpacket();
+    $list = $redpacketUserModel->get()->resultArr();
 
     $nodeModel = new \Model\AwardNode();
     $nodeListQuery = $nodeModel->get()->resultArr();
@@ -87,9 +88,10 @@ function lst()
             }
         }
     }
+    unset($val);
     $framework->smarty->assign('list', $list);
     $framework->smarty->assign('nodeList', $nodeList);
-    $framework->smarty->display('experience/lst.html');
+    $framework->smarty->display('redpacket/lst.html');
 }
 
 /**
@@ -99,9 +101,9 @@ function lst()
 function status()
 {
     $id = I('get.id/d', 0);
-    $goto = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '?c=experience&a=index';
+    $goto = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '?c=redpacket&a=index';
     if ($id) {
-        $bannerModel = new \Model\AwardExperience();
+        $bannerModel = new \Model\AwardRedpacket();
         if ($bannerModel->switchStausById($id))
             redirect($goto, '2', '切换成功');
         else
@@ -119,52 +121,54 @@ function upd()
 {
     $id = I('get.id/d', 0);
     if (IS_POST) {
-        $title = $amount = $minAmount = $maxAmount = $effectiveEnd = $limitDesc = $limitNode = $status = $repeat = null;
-        $requireFields = ['title', 'amount', 'minAmount', 'maxAmount', 'effectiveEnd', 'limitDesc', 'limitNode', 'status', 'repeat'];
+        $title = $max_split = $usetime_start = $usetime_end = $limit_desc = $limitNode = $status = $repeat = $day_repeat = $max_counts = null;
+        $requireFields = ['title', 'max_split', 'usetime_start', 'usetime_end', 'limit_desc', 'limitNode', 'status', 'repeat', 'day_repeat', 'max_counts'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
-                ajaxReturn(['error' => 4000, 'message' => $$field . '不能为空']);
+                ajaxReturn(['error' => 4000, 'message' => $field . '不能为空']);
         }
 
-        if ($minAmount && $maxAmount) {
-            $data['amount'] = 0;
-            $data['min_amount'] = $minAmount;
-            $data['max_amount'] = $maxAmount;
-            $data['amount_type'] = \Model\AwardExperience::TYPE_RAND;
-        } else {
+        $amount = I('post.amount', '', 'trim');
+        $min_amount = I('post.min_amount', '', 'trim');
+        $max_amount = I('post.max_amount', '', 'trim');
+        if (!empty($amount)) {
             $data['amount'] = $amount;
             $data['min_amount'] = 0;
             $data['max_amount'] = 0;
-            $data['amount_type'] = \Model\AwardExperience::TYPE_NORMAL;
+        } else {
+            $data['amount'] = 0;
+            if($min_amount>=$max_amount)
+                ajaxReturn(['error' => 4000, 'message' => '随机最小金额不得大于最大金额']);
+            $data['min_amount'] = $min_amount;
+            $data['max_amount'] = $max_amount;
         }
         $data['title'] = $title;
-        $data['days'] = I('post.days','', 'trim');
-        $data['hours'] = I('post.hours','', 'trim');
-        if($data['hours'] == 0 && $data['days'] == 0){
-            ajaxReturn(['error' => 4000, 'message' => '加息时长不能为空']);
-        }
-        $data['effective_end'] = $effectiveEnd;
-        $data['limit_desc'] = $limitDesc;
+        $data['max_split'] = $max_split;
+        $data['usetime_start'] = $usetime_start;
+        $data['usetime_end'] = $usetime_end;
+        $data['limit_desc'] = $limit_desc;
         $data['limit_node'] = $limitNode;
         $data['status'] = $status;
         $data['repeat'] = $repeat;
-        $data['update_time'] = date('Y-m-d H:i:s');//注册时间
+        $data['day_repeat'] = $day_repeat;
+        $data['max_counts'] = $max_counts;
+        $data['update_time'] = date('Y-m-d H:i:s');
         try {
-            $expModel = new \Model\AwardExperience();
+            $expModel = new \Model\AwardRedpacket();
             //创建用户账号
             $id = $expModel->where(['id' => $id])->upd($data);
             if (!$id)
-                throw new \Exception('修改experience失败', 4011);
+                throw new \Exception('修改redpacket失败', 4011);
 
-            ajaxReturn(['error' => 0, 'message' => '修改experience成功']);
+            ajaxReturn(['error' => 0, 'message' => '修改redpacket成功']);
         } catch (\Exception $e) {
             ajaxReturn(['error' => $e->getCode(), 'message' => $e->getMessage()]);
         }
 
     } else {
         $framework = getFrameworkInstance();
-        $expModel = new \Model\AwardExperience();
+        $expModel = new \Model\AwardRedpacket();
         $row = $expModel->where(['id' => $id])->get()->rowArr();
 
         $nodeModel = new \Model\AwardNode();
@@ -173,6 +177,6 @@ function upd()
 
         $framework->smarty->assign('item', $row);
         $framework->smarty->assign('nodeList', $nodeList);
-        $framework->smarty->display('experience/upd.html');
+        $framework->smarty->display('redpacket/upd.html');
     }
 }
