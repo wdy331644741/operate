@@ -15,6 +15,10 @@ function add()
         // var_dump($gloabConfig->value );exit;
 
         try {
+            // $data['key'] = I('post.key', '', 'trim');
+            // $data['remark'] = I('post.remark', '', 'trim');
+            // $data['update_time'] = date('Y-m-d H:i:s');
+            // $data['value'] = json_encode($_POST['data'] );
 
             $result = $gloabConfig->save();
             if (!$result)
@@ -22,7 +26,7 @@ function add()
 
             //更新redis
             $redis = getReidsInstance();
-            $redis->hset('operate_gloab_conf',$data['key'],$data['value'] );
+            $redis->hset('operate_gloab_conf',$gloabConfig->key,$gloabConfig->value );
             $remindInfo = $redis->hgetall('operate_gloab_conf');
             ajaxReturn(['error' => 0, 'message' => '添加配置成功']);
 

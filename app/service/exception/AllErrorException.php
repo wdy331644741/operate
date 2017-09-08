@@ -160,6 +160,7 @@ class AllErrorException extends BasicException
     const LADDER_DATA_EXCEPTION = 7114; //阶梯加息数据异常
     const REDPACKET_EXCEED_MAX_LIMIT = 7115; //阶梯加息数据异常
     const REDPACKET_INSERT_FALUSE = 7116;//预发放红包失败
+    const GET_CONF_EMPTY = 7117;//获取operate全局参数不存在
 
     protected static $errorArray = array(
         self::API_MIS_PARAMS => "缺少必要参数",
@@ -285,6 +286,7 @@ class AllErrorException extends BasicException
         self::LADDER_DATA_EXCEPTION => "阶梯加息数据异常",
         self::REDPACKET_EXCEED_MAX_LIMIT => "红包超出最大限制",
         self::REDPACKET_INSERT_FALUSE => "插入预发放红包失败",
+        self::GET_CONF_EMPTY => "获取operate全局参数不存在",
 
     );
 
