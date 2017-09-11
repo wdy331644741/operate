@@ -25,7 +25,7 @@ class MarketingRedpactek extends Model
 		if($day_repeat == 0){ //当天不允许重复发放
 			$havedRedpacketToday = $this->getRedpacketByUseridDate($accept_userid,date("Y-m-d"));
 			if(count($havedRedpacketToday) >= 1){
-                throw new AllErrorException(AllErrorException::REDPACKET_EXCEED_MAX_LIMIT);//每天  不允许重复发放
+                throw new AllErrorException(AllErrorException::REDPACKET_EXCEED_DAY_MAX_LIMIT);//每天  不允许重复发放
 			}
 		}
 		$max_counts = $repeat == 1?(int)$awardRedPacket['max_counts']:1;//最大领取次数
@@ -66,6 +66,8 @@ class MarketingRedpactek extends Model
     //给用户添加记录-内部方法
     private function insertRedPacketData($accept_userid,$userId, $awardInfo)
     {   
+        if(empty($awardInfo))
+            throw new AllErrorException(AllErrorException::REDPACKET_AWAED_FALSE);
         $data = array( 
             'accept_userid'   => $accept_userid,
             'uuid'            => create_guid(),

@@ -158,9 +158,11 @@ class AllErrorException extends BasicException
     const PASSPORT_RETURN_ACTIVATE_HARF_FALSE = 7112; //用户中心返回激活失败0.5%
     const PASSPORT_RETURN_ACTIVATE_ONE_FALSE = 7113; //用户中心返回激活失败1%
     const LADDER_DATA_EXCEPTION = 7114; //阶梯加息数据异常
-    const REDPACKET_EXCEED_MAX_LIMIT = 7115; //阶梯加息数据异常
+    const REDPACKET_EXCEED_MAX_LIMIT = 7115; //
     const REDPACKET_INSERT_FALUSE = 7116;//预发放红包失败
     const GET_CONF_EMPTY = 7117;//获取operate全局参数不存在
+    const REDPACKET_EXCEED_DAY_MAX_LIMIT = 7118;//达到每日最大发放数量
+    const REDPACKET_AWAED_FALSE = 7119;//红包配置异常
 
     protected static $errorArray = array(
         self::API_MIS_PARAMS => "缺少必要参数",
@@ -278,7 +280,6 @@ class AllErrorException extends BasicException
         self::RECHARGE_CANCEL => "充值已取消",
         self::BINDCARD_NOT_RECHARGE => "信息校验完成，但充值未成功，请重新充值",
 
-        
         self::COUPON_UNDIFIND => "相关劵信息不存在",
         self::ACTIVATE_NODE => "获取活动节点失败",
         self::PASSPORT_RETURN_ACTIVATE_HARF_FALSE => "用户中心返回激活失败0.5%",
@@ -287,6 +288,8 @@ class AllErrorException extends BasicException
         self::REDPACKET_EXCEED_MAX_LIMIT => "红包超出最大限制",
         self::REDPACKET_INSERT_FALUSE => "插入预发放红包失败",
         self::GET_CONF_EMPTY => "获取operate全局参数不存在",
+        self::REDPACKET_EXCEED_DAY_MAX_LIMIT => "达到每日最大发放数量",
+        self::REDPACKET_AWAED_FALSE => "红包配置异常",
 
     );
 
