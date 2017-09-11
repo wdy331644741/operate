@@ -22,10 +22,10 @@ class MarketingRedpactek extends Model
 		$repeat = $awardRedPacket['repeat'];//是否可以重复发放该红包(同一个userid)
 		$day_repeat = $awardRedPacket['day_repeat'];//当天是否重复发放
 
-		if($day_repeat == 0){
+		if($day_repeat == 0){ //当天不允许重复发放
 			$havedRedpacketToday = $this->getRedpacketByUseridDate($accept_userid,date("Y-m-d"));
-			if(conut($havedRedpacketToday) > 1){
-
+			if(count($havedRedpacketToday) >= 1){
+                throw new AllErrorException(AllErrorException::REDPACKET_EXCEED_MAX_LIMIT);//每天  不允许重复发放
 			}
 		}
 		$max_counts = $repeat == 1?(int)$awardRedPacket['max_counts']:1;//最大领取次数
