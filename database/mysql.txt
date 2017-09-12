@@ -94,25 +94,27 @@ CREATE TABLE `gloab_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='全局配置参数’;
 
-基础数据
+###基础数据
 
-//新建菜单
+##新建菜单
 insert into `admin_node` ( `controller`, `action`, `remark`, `parent_id`, `url_host`, `status`, `update_time`, `create_time`) values ( 'gloab_config', 'index', '全局配置', '1', '1', '1', '0000-00-00 00:00:00', '2017-09-05 21:17:08');
 
 insert into `admin_node` ( `controller`, `action`, `remark`, `parent_id`, `url_host`, `status`, `update_time`, `create_time`) values ( 'redpacket', 'index', '红包配置', '142', '1', '1', '0000-00-00 00:00:00', '2017-09-01 10:57:56');
 
 
 
-//新建节点
+##新建节点
 insert into `award_node` ( `title`, `name`, `create_time`) values ( '好友首投定期10元红包', 'frist_regular', '2017-09-01 15:57:26');
 insert into `award_node` ( `title`, `name`, `create_time`) values ( '每完成5个好友邀请 邀请人获得一张2加息券', 'five_invite_coupon', '2017-09-05 19:39:19');
 insert into `award_node` ( `title`, `name`, `create_time`) values ( '好友邀请活动 被邀请人1w体验金', 'bing_invite_tenTthonsend_exp', '2017-09-06 15:53:32');
 
 
-//活动项
+##活动项
 insert into `marketing_activity` ( `title`, `img_url`, `link_url`, `sort`, `start_time`, `end_time`, `desc`, `is_del`, `check_login`, `status`, `update_time`, `create_time`, `activity_name`, `conf_json`) values ( '新手活动', '1e0626ae4b42e6e957e5f3752e2a8eb4.png', 'https://test.izhuanbei.com/wechat/sign_in/sign_in.html', '5', '2017-05-01 17:30:00', '2017-10-13 23:35:00', '', '0', '1', '1', '2017-09-07 21:10:34', '2017-05-12 10:11:02', 0x696e76697465, '');
 
 
+##红包配置
+insert into `award_redpacket` ( `title`, `redpacketet_type`, `amount`, `min_amount`, `max_amount`, `max_split`, `usetime_start`, `usetime_end`, `limit_desc`, `limit_node`, `create_time`, `update_time`, `status`, `is_del`, `repeat`, `day_repeat`, `max_counts`, `redpacket_name`) values ( '定期首投10元红包', '1', '10.00', '0.00', '0.00', '1', '2017-09-01 00:00:00', '2017-09-30 23:55:00', '好友首次投资定期获得', '23', '2017-09-01 15:56:06', '2017-09-04 16:44:31', '1', '0', '1', '1', '5', null);
 
 
 

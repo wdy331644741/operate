@@ -14,7 +14,10 @@ function inviteredpacket(){
     $rechargeTime = I('post.buy_time');//充值时间
     $rechargeAmount = I('post.amount');//充值金额
     $fromUserid = I('post.from_id');//邀请该用户的id
+    $demand_count = I('post.demand_count');//投资定期次数
 
+    if($demand_count>1)
+        exit("不是首次定期投资");
     if($fromUserid == 0)
         exit("没有邀请人id");
     $nodeName = 'frist_regular';//node name
