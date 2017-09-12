@@ -113,13 +113,15 @@ insert into `award_node` ( `title`, `name`, `create_time`) values ( '好友邀�
 insert into `marketing_activity` ( `title`, `img_url`, `link_url`, `sort`, `start_time`, `end_time`, `desc`, `is_del`, `check_login`, `status`, `update_time`, `create_time`, `activity_name`, `conf_json`) values ( '新手活动', '1e0626ae4b42e6e957e5f3752e2a8eb4.png', 'https://test.izhuanbei.com/wechat/sign_in/sign_in.html', '5', '2017-05-01 17:30:00', '2017-10-13 23:35:00', '', '0', '1', '1', '2017-09-07 21:10:34', '2017-05-12 10:11:02', 0x696e76697465, '');
 
 
-##红包配置
+##红包配置   需要登录后台调整相关节点
 insert into `award_redpacket` ( `title`, `redpacketet_type`, `amount`, `min_amount`, `max_amount`, `max_split`, `usetime_start`, `usetime_end`, `limit_desc`, `limit_node`, `create_time`, `update_time`, `status`, `is_del`, `repeat`, `day_repeat`, `max_counts`, `redpacket_name`) values ( '定期首投10元红包', '1', '10.00', '0.00', '0.00', '1', '2017-09-01 00:00:00', '2017-09-30 23:55:00', '好友首次投资定期获得', '23', '2017-09-01 15:56:06', '2017-09-04 16:44:31', '1', '0', '1', '1', '5', null);
 
+##体验金配置  需要登录后台调整相关节点
+insert into `award_experience` ( `title`, `amount_type`, `amount`, `min_amount`, `max_amount`, `days`, `hours`, `effective_end`, `limit_desc`, `limit_node`, `update_time`, `create_time`, `status`, `is_del`, `repeat`, `experience_name`) values ( '邀请活动，被邀请人首次投资送1w体验金', '0', '10000', '0', '0', '1', '0', '2017-12-15 15:50:00', '邀请活动，被邀请人首次投资送1w体验金', '25', '2017-09-06 15:53:42', '2017-09-06 15:51:02', '1', '0', '0', null);
 
 
-
-
+##加息券配置  需要登录后台调整相关节点
+insert into `award_interestcoupon` ( `title`, `rate`, `days`, `effective_days`, `effective_start`, `effective_end`, `limit_desc`, `limit_node`, `update_time`, `create_time`, `status`, `is_del`, `coupon`) values ( '邀请活动2%加息券', '2.0000', '5', '0', '2017-09-04 15:30:00', '2017-09-30 02:15:00', '完成5个好友邀请 邀请人获得一张2加息券', '24', '2017-09-05 19:39:30', '2017-09-05 19:37:56', '1', '0', '');
 
 ######运营中心数据库###########################
 
@@ -129,7 +131,7 @@ insert into `award_redpacket` ( `title`, `redpacketet_type`, `amount`, `min_amou
 insert into `tags` ( `title`, `name`, `suber_count`, `send_ch`, `remark`, `create_time`, `update_time`) values ( '购买定期事件', 'demand_buy_term', '1', '1', '购买定期通知运营中心', '2017-09-12 11:16:31', '0000-00-00 00:00:00');
 
 
-##订阅表-测试环境url
+##订阅表-测试环境url 登录后台调整url
 insert into `subscribe` ( `tag_id`, `url`, `remark`, `order`, `status`, `create_time`, `update_time`) values ( '12', 'https://test.izhuanbei.com/operate/mcqueue.php?c=invite&a=inviteredpacket', '购买定期 送给邀请人10元红包', '0', '1', '2017-09-12 11:17:23', null);
 insert into `subscribe` ( `tag_id`, `url`, `remark`, `order`, `status`, `create_time`, `update_time`) values ( '9', 'https://test.izhuanbei.com/operate/mcqueue.php?c=invite&a=invitecoupon', '邀请活动-每完成5个好友邀请', '0', '1', '2017-09-12 11:27:36', null);
 insert into `subscribe` ( `tag_id`, `url`, `remark`, `order`, `status`, `create_time`, `update_time`) values ( '8', 'https://test.izhuanbei.com/operate/mcqueue.php?c=invite&a=inviterecharge', '邀请活动-被邀请人福利', '0', '1', '2017-09-12 11:28:42', null);
