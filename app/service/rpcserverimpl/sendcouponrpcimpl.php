@@ -233,7 +233,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
             'effective_start' => $awardCouponInfo['effective_start'],//加息券有效开始时间
             'effective_end' => $awardCouponInfo['effective_end'],//加息券有效结束时间
             'limit_desc' => $awardCouponInfo['limit_desc'],
-            'is_use'     => 0,//is_use 默认为0
+            'is_use'     => 1,//is_use 默认为0 沿用老的流程，预发的时候 is_use为1，不用再走激活步骤
         );
         $addCouponRes = $operateCoupon -> addCouponForUser($userId,$couponInfo);
         //***************************************************
