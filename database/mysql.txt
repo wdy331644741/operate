@@ -37,6 +37,17 @@ CREATE TABLE `award_extend` (
   KEY `normal_send_status` (`send_status`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='手动发放奖品表’;
 
+CREATE TABLE `award_extend` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user` varchar(255) NOT NULL DEFAULT '' COMMENT '发放人手机号/用户id',
+  `award_type` tinyint(2) unsigned NOT NULL COMMENT '奖品类型  1:体验金 2：加息券 3:提现券',
+  `award_id` int(10) unsigned NOT NULL COMMENT '奖品id',
+  `remark` varchar(50) NOT NULL DEFAULT '' COMMENT '发放备注',
+  `send_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发送人数',
+  `send_status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0 发送中 1发送成功',
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
 
 
 CREATE TABLE `marketing_redpactek` (
@@ -83,7 +94,7 @@ CREATE TABLE `gloab_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='全局配置参数’;
 
-###基础数据
+###基础数据######运营中心数据库
 
 ##新建菜单
 insert into `admin_node` ( `controller`, `action`, `remark`, `parent_id`, `url_host`, `status`, `update_time`, `create_time`) values ( 'gloab_config', 'index', '全局配置', '1', '1', '1', '0000-00-00 00:00:00', '2017-09-05 21:17:08');
@@ -104,6 +115,35 @@ insert into `marketing_activity` ( `title`, `img_url`, `link_url`, `sort`, `star
 
 ##红包配置
 insert into `award_redpacket` ( `title`, `redpacketet_type`, `amount`, `min_amount`, `max_amount`, `max_split`, `usetime_start`, `usetime_end`, `limit_desc`, `limit_node`, `create_time`, `update_time`, `status`, `is_del`, `repeat`, `day_repeat`, `max_counts`, `redpacket_name`) values ( '定期首投10元红包', '1', '10.00', '0.00', '0.00', '1', '2017-09-01 00:00:00', '2017-09-30 23:55:00', '好友首次投资定期获得', '23', '2017-09-01 15:56:06', '2017-09-04 16:44:31', '1', '0', '1', '1', '5', null);
+
+
+
+
+
+
+######运营中心数据库###########################
+
+
+#############消息中心数据库######################
+##增加消息中心 tags
+insert into `tags` ( `title`, `name`, `suber_count`, `send_ch`, `remark`, `create_time`, `update_time`) values ( '购买定期事件', 'demand_buy_term', '1', '1', '购买定期通知运营中心', '2017-09-12 11:16:31', '0000-00-00 00:00:00');
+
+
+##订阅表-测试环境url
+insert into `subscribe` ( `tag_id`, `url`, `remark`, `order`, `status`, `create_time`, `update_time`) values ( '12', 'https://test.izhuanbei.com/operate/mcqueue.php?c=invite&a=inviteredpacket', '购买定期 送给邀请人10元红包', '0', '1', '2017-09-12 11:17:23', null);
+insert into `subscribe` ( `tag_id`, `url`, `remark`, `order`, `status`, `create_time`, `update_time`) values ( '9', 'https://test.izhuanbei.com/operate/mcqueue.php?c=invite&a=invitecoupon', '邀请活动-每完成5个好友邀请', '0', '1', '2017-09-12 11:27:36', null);
+insert into `subscribe` ( `tag_id`, `url`, `remark`, `order`, `status`, `create_time`, `update_time`) values ( '8', 'https://test.izhuanbei.com/operate/mcqueue.php?c=invite&a=inviterecharge', '邀请活动-被邀请人福利', '0', '1', '2017-09-12 11:28:42', null);
+
+
+
+
+
+#############消息中心数据库######################
+
+
+
+
+
 
 
 
