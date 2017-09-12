@@ -90,6 +90,15 @@ function invitecoupon(){
     $getInviteUser = Common::jsonRpcApiCall((object)$getPost, 'getUserByFromId', config('RPC_API.passport'));
     if(empty($getInviteUser['result']['data'][$fromUserId]['list'] ))
         throw new Exception("获取邀请关系数据异常!", 7112);
+    //并发注册时 bug
+    $invites = count($getInviteUser['result']['data'][$fromUserId]['list'] );
+    $willGiveCount = floor($invites/5);
+    //查找该用户名下已经存在的加息券数量
+    //获取到该活动相关的加息券sourceId
+    $inviteCouponSourceId = getInfo('sourceId','five_invite_coupon');
+    $couponModel = new \Model\MarketingInterestcoupon();
+    $allreadyHave = $couponModel->isOtherActivateExist($fromUserId,$inviteCouponSourceId);
+    var_dump($allreadyHave);exit;
     if(count($getInviteUser['result']['data'][$fromUserId]['list'] ) % 5 == 0){
         //发一张2%加息券  直接发放没有什么逻辑，直接调用手动发放奖品rpc
         // $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
