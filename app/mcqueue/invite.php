@@ -88,9 +88,9 @@ function invitecoupon(){
         "userId" => $fromUserId,
     ];
     $getInviteUser = Common::jsonRpcApiCall((object)$getPost, 'getUserByFromId', config('RPC_API.passport'));
-    if(empty($getInviteUser['result']['data'][$fromUserid]['list'] ))
+    if(empty($getInviteUser['result']['data'][$fromUserId]['list'] ))
         throw new Exception("获取邀请关系数据异常!", 7112);
-    if(count($getInviteUser['result']['data'][$fromUserid]['list'] ) % 5 == 0){
+    if(count($getInviteUser['result']['data'][$fromUserId]['list'] ) % 5 == 0){
         //发一张2%加息券  直接发放没有什么逻辑，直接调用手动发放奖品rpc
         // $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
         // $giveInterestcouponModel->giveUserInterest();
