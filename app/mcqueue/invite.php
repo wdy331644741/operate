@@ -120,9 +120,9 @@ function invitecoupon(){
             # code...
             $send = new SendCouponRpcImpl();
             $sendRes = $send->activitySendAction(1, $fromUserId, $nodeId);
-            logs($fromUserId.":补发加息券\n
+            logs($fromUserId.":补发加息券-
                 willGiveCount:".$willGiveCount.
-                "\nallreadyHave:".$allreadyHave
+                "-allreadyHave:".$allreadyHave
                 ,"bufajiaxiquan");
             exit("补发加息券");
         }
