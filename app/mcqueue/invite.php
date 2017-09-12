@@ -98,7 +98,8 @@ function invitecoupon(){
     $inviteCouponSourceId = getInfo('sourceId','five_invite_coupon');
     $couponModel = new \Model\MarketingInterestcoupon();
     $allreadyHave = $couponModel->isOtherActivateExist($fromUserId,$inviteCouponSourceId);
-    var_dump($allreadyHave);exit;
+    // var_dump($allreadyHave);exit;
+    logs($fromUserId."->".count($getInviteUser['result']['data'][$fromUserId]['list'] , "invite_counts");
     if(count($getInviteUser['result']['data'][$fromUserId]['list'] ) % 5 == 0){
         //发一张2%加息券  直接发放没有什么逻辑，直接调用手动发放奖品rpc
         // $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
