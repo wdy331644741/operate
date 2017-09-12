@@ -117,6 +117,18 @@ function inviterecharge(){
     $nodeName = 'bing_invite_tenTthonsend_exp';//node name
 
     $activityName = 'invite';//新手活动名称
+
+    //1 判断在此之前 充值次数
+    $postParams = array(
+            'userId'     => $userId,
+            'startTime'  => '',//活动开始时间
+            'endTime'    => $rechargeTime,
+            'status'     => 200,
+        );
+    $rechargeTimes = Common::jsonRpcApiCall((object)$postParams, 'getRechargeRecords', config('RPC_API.passport'));
+    // $rechargeTimes = 2;
+    if(count($rechargeTimes['result']) > 1) return "充值次数".count($rechargeTimes['result']);// 需要是首投
+
     $activityModel = new \Model\MarketingActivity();
     //获取活动开始、结束时间
     $usefulTime = $activityModel->getUsefulTimeByName($activityName);
