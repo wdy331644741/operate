@@ -91,7 +91,7 @@ function invitecoupon(){
     if(empty($getInviteUser['result']['data'][$fromUserId]['list'] ))
         throw new Exception("获取邀请关系数据异常!", 7112);
     //并发注册时 bug
-    $invites = count($getInviteUser['result']['data'][$fromUserId]['list'] );
+    $invites = count($getInviteUser['result']['data'][$fromUserId]['list'] );//12个
     $willGiveCount = floor($invites/5);
     //查找该用户名下已经存在的加息券数量
     //获取到该活动相关的加息券sourceId
@@ -99,7 +99,14 @@ function invitecoupon(){
     $couponModel = new \Model\MarketingInterestcoupon();
     $allreadyHave = $couponModel->isOtherActivateExist($fromUserId,$inviteCouponSourceId);
     // var_dump($allreadyHave);exit;
-    logs($fromUserId."->".count($getInviteUser['result']['data'][$fromUserId]['list'] , "invite_counts");
+    $allreadyHave = count($allreadyHave);//已经发了多少张加息券
+    logs($fromUserId."->".count($getInviteUser['result']['data'][$fromUserId]['list'] ) , "invite_counts");
+    //补几张并且  不等于5的倍数时
+    // if(count($getInviteUser['result']['data'][$fromUserId]['list'] ) % 5 != 0){
+        
+    // }
+    
+
     if(count($getInviteUser['result']['data'][$fromUserId]['list'] ) % 5 == 0){
         //发一张2%加息券  直接发放没有什么逻辑，直接调用手动发放奖品rpc
         // $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
@@ -108,6 +115,14 @@ function invitecoupon(){
         $send = new SendCouponRpcImpl();
         $sendRes = $send->activitySendAction(1, $fromUserId, $nodeId);
         exit("发送加息券成功");
+    }else{
+        for ($i=0; $i < $willGiveCount-$allreadyHave; $i++) { 
+            # code...
+            $send = new SendCouponRpcImpl();
+            $sendRes = $send->activitySendAction(1, $fromUserId, $nodeId);
+            logs($fromUserId.":补发加息券","bufajiaxiquan");
+            echo $fromUserId.":补发加息券";
+        }
     }
 
 }
