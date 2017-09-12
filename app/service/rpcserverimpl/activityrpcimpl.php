@@ -49,7 +49,7 @@ class ActivityRpcImpl extends BaseRpcImpl
         $activityModel = new \Model\MarketingActivity();
         $activities = $activityModel->activityList($params->page);
 
-        
+        $pastAactivities = $ingAactivities = [];
         $pagecounts = ceil(count($activities)/5);
         foreach ($activities as $key => $activity) {
             $activity['img_url'] = $storage->getViewUrl($activity['img_url']);
