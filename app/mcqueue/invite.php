@@ -101,6 +101,9 @@ function invitecoupon(){
     // var_dump($allreadyHave);exit;
     $allreadyHave = count($allreadyHave);//已经发了多少张加息券
     logs($fromUserId."->".count($getInviteUser['result']['data'][$fromUserId]['list'] ) , "invite_counts");
+    logs($fromUserId.":补发加息券?-willGiveCount:".$willGiveCount.
+                "-allreadyHave:".$allreadyHave
+                ,"bufajiaxiquan");
     //补几张并且  不等于5的倍数时
     // if(count($getInviteUser['result']['data'][$fromUserId]['list'] ) % 5 != 0){
         
@@ -120,10 +123,7 @@ function invitecoupon(){
             # code...
             $send = new SendCouponRpcImpl();
             $sendRes = $send->activitySendAction(1, $fromUserId, $nodeId);
-            logs($fromUserId.":补发加息券-
-                willGiveCount:".$willGiveCount.
-                "-allreadyHave:".$allreadyHave
-                ,"bufajiaxiquan");
+            
             exit("补发加息券");
         }
     }
