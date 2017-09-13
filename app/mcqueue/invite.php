@@ -110,7 +110,7 @@ function invitecoupon(){
     // }
     
 
-    if(count($getInviteUser['result']['data'][$fromUserId]['list'] ) % 5 == 0){
+    if($invites % 5 == 0){
         //发一张2%加息券  直接发放没有什么逻辑，直接调用手动发放奖品rpc
         // $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
         // $giveInterestcouponModel->giveUserInterest();
