@@ -84,6 +84,11 @@ function invitecoupon(){
     $awardNode = new \Model\AwardNode();//活动节点
     $nodeId = $awardNode->getNode($nodeName);//获取节点id
 
+    //取redis中 邀请活动每邀请n个人  送一张加息券
+    $redis = getReidsInstance();
+    $activityInfo = $redis->hget('operate_gloab_conf',$activityName);
+    $activityInfo = json_decode($activityInfo,true);
+    $eachSend = $activityInfo['invite_each_coupon'];
     //请求用户中心获得邀请关系接口
     // $getPost = [
     //     "userId" => $fromUserId,
@@ -94,7 +99,7 @@ function invitecoupon(){
     //并发注册时 bug
     // $invites = count($getInviteUser['result']['data'][$fromUserId]['list'] );//12个
     $invites = $countNum;
-    $willGiveCount = floor($invites/5);
+    $willGiveCount = floor($invites/$eachSend);
     //查找该用户名下已经存在的加息券数量
     //获取到该活动相关的加息券sourceId
     $inviteCouponSourceId = getInfo('sourceId','five_invite_coupon');
@@ -106,12 +111,12 @@ function invitecoupon(){
     logs($fromUserId."->".$countNum, "invite_counts");
     logs($fromUserId."willGiveCount->".$willGiveCount."-----allreadyHave->".$allreadyHave, "coupon_status");
     //补几张并且  不等于5的倍数时
-    // if(count($getInviteUser['result']['data'][$fromUserId]['list'] ) % 5 != 0){
+    // if(count($getInviteUser['result']['data'][$fromUserId]['list'] ) % $eachSend != 0){
         
     // }
     
 
-    if($invites % 5 == 0){
+    if($invites % $eachSend == 0){
         //发一张2%加息券  直接发放没有什么逻辑，直接调用手动发放奖品rpc
         // $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
         // $giveInterestcouponModel->giveUserInterest();
