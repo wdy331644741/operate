@@ -31,7 +31,22 @@ function add()
             $userId = $activityModel->add($data);
             if (!$userId)
                 throw new \Exception('添加activity失败', 4011);
-
+            //更新redis*******************************************************
+            $redis = getReidsInstance();
+            //先获取redis中相关活动的设置
+            $activityKey = empty($data['activity_name'])?"default":$data['activity_name'];
+            $activityInfo = $redis->hget('operate_gloab_conf',$activityKey);
+            $activityInfo = json_decode($activityInfo,true);
+            $activityInfo['start_time'] = $data['start_time'];
+            $activityInfo['end_time'] = $data['end_time'];
+            $activityInfo['status'] = $data['status'];
+            //保存数据到gloab_config表中
+            $config = new \Model\GloabConfig();
+            $sync = $config->redisToDb($activityKey,json_encode($activityInfo));
+            if(!$sync)
+                throw new \Exception('同步配置失败', 4011);
+            $redis->hset('operate_gloab_conf',$activityKey, json_encode($activityInfo));
+            //****************************************************************
             ajaxReturn(['error' => 0, 'message' => '添加activity成功']);
         } catch (\Exception $e) {
             ajaxReturn(['error' => $e->getCode(), 'message' => $e->getMessage()]);
@@ -86,10 +101,26 @@ function status()
     $goto = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '?c=activity&a=index';
     if ($id) {
         $activityModel = new \Model\MarketingActivity();
-        if ($activityModel->switchStausById($id))
+        $res = $activityModel->switchStausById($id);
+        if ($res){
+            //更新redis*******************************************************
+            $redis = getReidsInstance();
+            //先获取redis中相关活动的设置
+            $activityKey = empty($res['activity_name'])?"default":$res['activity_name'];
+            $activityInfo = $redis->hget('operate_gloab_conf',$activityKey);
+            $activityInfo = json_decode($activityInfo,true);
+            $activityInfo['status'] = $res['status'];
+            //保存数据到gloab_config表中
+            $config = new \Model\GloabConfig();
+            $sync = $config->redisToDb($activityKey,json_encode($activityInfo));
+            if(!$sync)
+                throw new \Exception('同步配置失败', 4011);
+            $redis->hset('operate_gloab_conf',$activityKey, json_encode($activityInfo));
+            //****************************************************************
             redirect($goto, '2', '切换成功');
-        else
+        }else{
             redirect($goto, '2', '切换失败');
+        }
     } else {
         redirect($goto, 2, '数据不合法');
     }
@@ -130,6 +161,22 @@ function upd()
             $userId = $activityModel->where(['id' => $id])->upd($data);
             if (!$userId)
                 throw new \Exception('修改activity失败', 4011);
+            //更新redis*******************************************************
+            $redis = getReidsInstance();
+            //先获取redis中相关活动的设置
+            $activityKey = empty($data['activity_name'])?"default":$data['activity_name'];
+            $activityInfo = $redis->hget('operate_gloab_conf',$activityKey);
+            $activityInfo = json_decode($activityInfo,true);
+            $activityInfo['start_time'] = $data['start_time'];
+            $activityInfo['end_time'] = $data['end_time'];
+            $activityInfo['status'] = $data['status'];
+            //保存数据到gloab_config表中
+            $config = new \Model\GloabConfig();
+            $sync = $config->redisToDb($activityKey,json_encode($activityInfo));
+            if(!$sync)
+                throw new \Exception('同步配置失败', 4011);
+            $redis->hset('operate_gloab_conf',$activityKey, json_encode($activityInfo));
+            //****************************************************************
 
             ajaxReturn(['error' => 0, 'message' => '修改activity成功']);
         } catch (\Exception $e) {

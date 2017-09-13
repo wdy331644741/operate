@@ -20,7 +20,8 @@ class MarketingActivity extends Model
             $status = self::STATUS_FALSE;
         else
             $status = self::STATUS_TRUE;
-        return $this->where($where)->upd(['status' => $status]);
+        $this->where($where)->upd(['status' => $status]);
+        return $this->where($where)->get()->rowArr();
     }
 
     public function activityList($page)

@@ -36,18 +36,19 @@
             <!-- <p style="">注：value为二维json格式</p> -->
         {foreach $json_data as $k => $v}
         <div class="form-group data">
-            {if $v == reset($json_data)}
+            {$keys = array_keys($json_data)}
+            {if $k == $keys[0]}
             <label class="col-sm-2 control-label"><span class="name_span">value</span><i>*</i></label>
             {else}
             <label class="col-sm-2 control-label"><span class="name_span"></span><i></i></label>
             {/if}
             
             <div class="col-sm-7">
-                <input type="text" class="form-control asd" placeholder="json_key" name="value_k" id="value" value="{$k}">
+                <input type="text" class="form-control asd" placeholder="json_key" name="value_k" {if $k == 'start_time'||$k == 'end_time'||$k == 'status'}disabled="disabled"{/if} id="value" value="{$k}">
                 <p style="display: inline-block;margin: 5px 0 0 25px">-></p>
-                <input type="text" class="form-control asdd" placeholder="json_value" name="value_v" id="" value="{$v}">
+                <input type="text" class="form-control asdd" placeholder="json_value" name="value_v" {if $k == 'start_time'||$k == 'end_time'||$k == 'status'}disabled="disabled"{/if} id="" value="{$v}">
             </div>
-                {if $v == reset($json_data)}
+                {if $k == $keys[0]}
                 <input type="button" style="margin-top: 5px" id="add" value="+">
                 {else}
                 <input type="button" style="margin-top: 5px" onclick=wang(this)  value="-">

@@ -9,18 +9,18 @@ function add()
         $gloabConfig = new Model\GloabConfig();
 
         $gloabConfig->key = I('post.key', '', 'trim');;
-        $gloabConfig->value = json_encode($_POST['data'] );
+        $gloabConfig->value = stripslashes(json_encode($_POST['data'] ) );
         $gloabConfig->remark = I('post.remark', '', 'trim');
         $gloabConfig->create_time = date('Y-m-d H:i:s');//注册时间
         // var_dump($gloabConfig->value );exit;
 
         try {
-            // $data['key'] = I('post.key', '', 'trim');
-            // $data['remark'] = I('post.remark', '', 'trim');
-            // $data['update_time'] = date('Y-m-d H:i:s');
-            // $data['value'] = json_encode($_POST['data'] );
+            $data['key'] = I('post.key', '', 'trim');
+            $data['remark'] = I('post.remark', '', 'trim');
+            $data['update_time'] = date('Y-m-d H:i:s');
+            $data['value'] = stripslashes(json_encode($_POST['data'] ) );
 
-            $result = $gloabConfig->save();
+            $result = $gloabConfig->add($data);
             if (!$result)
                 throw new \Exception('添加node失败', 4011);
 
@@ -109,3 +109,24 @@ function upd()
         $framework->smarty->display('gloab_config/upd.html');
     }
 }
+
+/**
+ * @pageroute
+ * 编辑企业账号
+ */
+function clearRedis(){
+    $goto = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '?c=gloab_config&a=index';
+    redirect($goto, 2, 'redis清空成功');
+}
+
+/**
+ * @pageroute
+ * 编辑企业账号
+ */
+function writeRedis(){
+    $goto = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '?c=gloab_config&a=index';
+    redirect($goto, 2, '写入redis成功');
+}
+
+
+
