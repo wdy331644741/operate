@@ -24,4 +24,8 @@ class GloabConfig extends Model
     	// return $this->where("`status` = 1")->whereIn('key', $key)->get()->resultArr();
     	return $res;
     }
+
+    public function redisToDb($key,$value){
+        return $this->where(['key' => $key])->upd(['value' => $value]);
+    }
 }
