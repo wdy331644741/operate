@@ -67,9 +67,10 @@ function invitecoupon(){
     $userId = I('post.user_id', '', 'intval');
     $time = I('post.time', '');
     $fromUserId = I('post.from_user_id', '', 'intval');
+    $countNum = I('post.count', '', 'intval');
     $nodeName = 'five_invite_coupon';//node name
 
-    if($fromUserId == 0)
+    if($fromUserId == 0 || $countNum == 0)
         exit("fromUserid null");
     $activityName = 'invite';//新手活动名称
     $activityModel = new \Model\MarketingActivity();
@@ -84,14 +85,15 @@ function invitecoupon(){
     $nodeId = $awardNode->getNode($nodeName);//获取节点id
 
     //请求用户中心获得邀请关系接口
-    $getPost = [
-        "userId" => $fromUserId,
-    ];
-    $getInviteUser = Common::jsonRpcApiCall((object)$getPost, 'getUserByFromId', config('RPC_API.passport'));
-    if(empty($getInviteUser['result']['data'][$fromUserId]['list'] ))
-        throw new Exception("获取邀请关系数据异常!", 7112);
+    // $getPost = [
+    //     "userId" => $fromUserId,
+    // ];
+    // $getInviteUser = Common::jsonRpcApiCall((object)$getPost, 'getUserByFromId', config('RPC_API.passport'));
+    // if(empty($getInviteUser['result']['data'][$fromUserId]['list'] ))
+    //     throw new Exception("获取邀请关系数据异常!", 7112);
     //并发注册时 bug
-    $invites = count($getInviteUser['result']['data'][$fromUserId]['list'] );//12个
+    // $invites = count($getInviteUser['result']['data'][$fromUserId]['list'] );//12个
+    $invites = $countNum;
     $willGiveCount = floor($invites/5);
     //查找该用户名下已经存在的加息券数量
     //获取到该活动相关的加息券sourceId
@@ -100,7 +102,8 @@ function invitecoupon(){
     $allreadyHave = $couponModel->isOtherActivateExist($fromUserId,$inviteCouponSourceId);
     // var_dump($allreadyHave);exit;
     $allreadyHave = count($allreadyHave);//已经发了多少张加息券
-    logs($fromUserId."->".count($getInviteUser['result']['data'][$fromUserId]['list'] ) , "invite_counts");
+    logs($fromUserId."->".$countNum, "invite_counts");
+    logs($fromUserId."willGiveCount->".$willGiveCount."-----allreadyHave->".$allreadyHave, "coupon_status");
     //补几张并且  不等于5的倍数时
     // if(count($getInviteUser['result']['data'][$fromUserId]['list'] ) % 5 != 0){
         
