@@ -146,7 +146,11 @@ function inviterecharge(){
     $rechargeTime = I('post.time');//充值时间
     $rechargeAmount = I('post.amount');//充值金额
     $rechargeAmountTotal = I('post.total');//累计本金
+    $rechargeOrderId = I('post.order_id');//累计本金
 
+    if(empty($rechargeOrderId)){
+        exit("虚伪的充值事件");
+    }
     $nodeName = 'bing_invite_tenTthonsend_exp';//node name
 
     $activityName = 'invite';//新手活动名称
