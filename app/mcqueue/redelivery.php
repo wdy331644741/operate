@@ -13,6 +13,11 @@ function redeliveryExperience(){
 	$rechargeTime = I('post.time');//充值时间
 	$rechargeAmount = I('post.amount');//充值金额
 	// $nodeName = I('post.node');//动作节点
+	$rechargeOrderId = I('post.order_id');//累计本金
+
+    if(empty($rechargeOrderId)){
+        exit("虚伪的充值事件");
+    }
 	$nodeName = 'recharge';
 	$activityName = 'redelivery';//复投活动名称
 	$activityModel = new \Model\MarketingActivity();
