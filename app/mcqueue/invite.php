@@ -115,7 +115,8 @@ function invitecoupon(){
         
     // }
     
-
+    /**
+    //9.14再次修改  不要判断了。前提是用户中心推过来的消息，一个都不漏
     if($invites % $eachSend == 0){
         //发一张2%加息券  直接发放没有什么逻辑，直接调用手动发放奖品rpc
         // $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
@@ -132,6 +133,18 @@ function invitecoupon(){
             
             exit("补发加息券");
         }
+    }
+    **/
+
+    //9.14再次修改  不要判断了。前提是用户中心推过来的消息，一个都不漏
+    if($invites % $eachSend == 0){
+        //发一张2%加息券  直接发放没有什么逻辑，直接调用手动发放奖品rpc
+        // $giveInterestcouponModel = new \Model\MarketingInterestcoupon();
+        // $giveInterestcouponModel->giveUserInterest();
+        // exit("55555");
+        $send = new SendCouponRpcImpl();
+        $sendRes = $send->activitySendAction(1, $fromUserId, $nodeId);
+        exit("发送加息券成功");
     }
 
 }
