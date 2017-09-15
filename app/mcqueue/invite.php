@@ -87,6 +87,7 @@ function invitecoupon(){
     //取redis中 邀请活动每邀请n个人  送一张加息券
     $redis = getReidsInstance();
     $activityInfo = $redis->hget('operate_gloab_conf',$activityName);
+    logs($activityInfo,"invite_redis");
     $activityInfo = json_decode($activityInfo,true);
     $eachSend = $activityInfo['invite_each_coupon'];
     //请求用户中心获得邀请关系接口
