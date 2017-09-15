@@ -43,8 +43,8 @@ function add()
             //保存数据到gloab_config表中
             $config = new \Model\GloabConfig();
             $sync = $config->redisToDb($activityKey,json_encode($activityInfo));
-            if(!$sync)
-                throw new \Exception('同步配置失败', 4011);
+            // if(!$sync)
+            //     throw new \Exception('同步配置失败', 4011);
             $redis->hset('operate_gloab_conf',$activityKey, json_encode($activityInfo));
             //****************************************************************
             ajaxReturn(['error' => 0, 'message' => '添加activity成功']);
@@ -113,8 +113,8 @@ function status()
             //保存数据到gloab_config表中
             $config = new \Model\GloabConfig();
             $sync = $config->redisToDb($activityKey,json_encode($activityInfo));
-            if(!$sync)
-                throw new \Exception('同步配置失败', 4011);
+            // if(!$sync)
+            //     throw new \Exception('同步配置失败', 4011);
             $redis->hset('operate_gloab_conf',$activityKey, json_encode($activityInfo));
             //****************************************************************
             redirect($goto, '2', '切换成功');
@@ -178,8 +178,8 @@ function upd()
             //保存数据到gloab_config表中
             $config = new \Model\GloabConfig();
             $sync = $config->redisToDb($activityKey,json_encode($activityInfo));
-            if(!$sync)
-                throw new \Exception('同步配置失败', 4011);
+            // if(!$sync)
+            //     throw new \Exception('同步配置失败', 4011);
             $redis->hset('operate_gloab_conf',$activityKey, json_encode($activityInfo));
             //****************************************************************
 
