@@ -5,7 +5,7 @@ install
 -------
 
 ```bash
-    git clone git@192.168.20.240:haopeiwen/hq_passport.git
+    git clone git@192.168.20.240:demand/demand_operate.git
     cd hq_passport
     git clone git@192.168.20.240:liuqi/wl_framework.git system
 ```
@@ -23,6 +23,7 @@ install
     - [个人中心签到](doc/user.md#个人中心签到)
     - [获取用户的签到记录](doc/user.md#获取用户的签到记录)
 - [活动相关](doc/activity.md#_2)
-    - [banner图](doc/activity.md#banner图)
-    - [活动列表](doc/activity.md#活动列表)
-    - [系统公告](doc/activity.md#系统公告)
+    - [banner图](#banner图)
+    - [活动列表](#活动列表)
+    - [系统公告](#系统公告)
+    - [获取首页文案展示](#获取首页文案展示)
