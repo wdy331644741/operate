@@ -1,6 +1,7 @@
 <?php defined("__FRAMEWORKNAME__") or die("No permission to access!");
 use App\service\rpcserverimpl\Common;
 use App\service\exception\AllErrorException;
+use Lib\LockSys;
 /**
  * 阶梯加息 - 充值
  * @pageroute
@@ -35,6 +36,12 @@ function ladderInterestcoupon(){
     //单笔充值大于1w  或者 累计本金大于2w
     //单笔充值 小于1w 发放一张0.5阶梯加息劵 7天
     //发放1%加息 结束时间=阶梯加息活动结束时间
+
+    //开启redis锁
+    $lockSystem = new \Lib\LockSys(LockSys::LOCK_TYPE_REDIS);
+    $lockKey = "ladder.".$userId;
+    $lockSystem->getLock($lockKey,3);//redis单机锁  延迟8秒
+    // var_dump($lockSystem);exit;
 
     if($rechargeAmountTotal >= $activityConf['total_amount'] || $rechargeAmount >= $activityConf['single_amount']){
         $nodeId = $awardNode->getNode($percentOne);
