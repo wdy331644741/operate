@@ -43,8 +43,8 @@ function add()
             //保存数据到gloab_config表中
             $config = new \Model\GloabConfig();
             $sync = $config->redisToDb($activityKey,json_encode($activityInfo));
-            if(!$sync)
-                throw new \Exception('同步配置失败', 4011);
+            // if(!$sync)
+            //     throw new \Exception('同步配置失败', 4011);
             $redis->hset('operate_gloab_conf',$activityKey, json_encode($activityInfo));
             //****************************************************************
             ajaxReturn(['error' => 0, 'message' => '添加activity成功']);
@@ -113,8 +113,8 @@ function status()
             //保存数据到gloab_config表中
             $config = new \Model\GloabConfig();
             $sync = $config->redisToDb($activityKey,json_encode($activityInfo));
-            if(!$sync)
-                throw new \Exception('同步配置失败', 4011);
+            // if(!$sync)
+            //     throw new \Exception('同步配置失败', 4011);
             $redis->hset('operate_gloab_conf',$activityKey, json_encode($activityInfo));
             //****************************************************************
             redirect($goto, '2', '切换成功');
@@ -165,16 +165,21 @@ function upd()
             $redis = getReidsInstance();
             //先获取redis中相关活动的设置
             $activityKey = empty($data['activity_name'])?"default":$data['activity_name'];
+            logs($activityKey,"activityKey");
             $activityInfo = $redis->hget('operate_gloab_conf',$activityKey);
+            logs($activityInfo,"activityKey");
+
             $activityInfo = json_decode($activityInfo,true);
             $activityInfo['start_time'] = $data['start_time'];
             $activityInfo['end_time'] = $data['end_time'];
             $activityInfo['status'] = $data['status'];
+            logs($activityInfo,"activityKey");
+            
             //保存数据到gloab_config表中
             $config = new \Model\GloabConfig();
             $sync = $config->redisToDb($activityKey,json_encode($activityInfo));
-            if(!$sync)
-                throw new \Exception('同步配置失败', 4011);
+            // if(!$sync)
+            //     throw new \Exception('同步配置失败', 4011);
             $redis->hset('operate_gloab_conf',$activityKey, json_encode($activityInfo));
             //****************************************************************
 
