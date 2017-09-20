@@ -942,6 +942,16 @@ return array (
       'unsigned' => false,
       'null' => true,
     ),
+    'contact_activity' => 
+    array (
+      'field' => 'contact_activity',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => true,
+    ),
     'pk_name' => 'id',
   ),
   'award_node' => 
@@ -1430,7 +1440,7 @@ return array (
     array (
       'field' => 'status',
       'key' => '',
-      'default' => NULL,
+      'default' => '1',
       'type' => 'tinyint',
       'lenght' => '1',
       'unsigned' => false,
@@ -2107,6 +2117,122 @@ return array (
     ),
     'pk_name' => 'id',
   ),
+  'marketing_index' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '10',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'title' => 
+    array (
+      'field' => 'title',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '50',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'img_url' => 
+    array (
+      'field' => 'img_url',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '150',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'link_url' => 
+    array (
+      'field' => 'link_url',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '150',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'pos' => 
+    array (
+      'field' => 'pos',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'varchar',
+      'lenght' => '50',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'status_name' => 
+    array (
+      'field' => 'status_name',
+      'key' => '',
+      'default' => '1',
+      'type' => 'varchar',
+      'lenght' => '50',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'start_time' => 
+    array (
+      'field' => 'start_time',
+      'key' => 'MUL',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'end_time' => 
+    array (
+      'field' => 'end_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'is_del' => 
+    array (
+      'field' => 'is_del',
+      'key' => 'MUL',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => 'MUL',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '3',
+      'unsigned' => true,
+      'null' => false,
+    ),
+    'update_time' => 
+    array (
+      'field' => 'update_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'create_time' => 
+    array (
+      'field' => 'create_time',
+      'key' => '',
+      'default' => NULL,
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'pk_name' => 'id',
+  ),
   'marketing_interestcoupon' => 
   array (
     'id' => 
@@ -2260,6 +2386,16 @@ return array (
       'field' => 'update_time',
       'key' => '',
       'default' => NULL,
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'type' => 
+    array (
+      'field' => 'type',
+      'key' => '',
+      'default' => NULL,
+      'type' => 'tinyint',
+      'lenght' => '3',
       'unsigned' => false,
       'null' => true,
     ),

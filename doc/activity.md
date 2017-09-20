@@ -6,6 +6,7 @@
 - [banner图](#banner图)
 - [活动列表](#活动列表)
 - [系统公告](#系统公告)
+- [获取首页文案展示](#获取首页文案展示)
 
 
 活动相关
@@ -181,3 +182,52 @@
 错误信息 | 错误码 | 错误说明
 :--|:--|:--
 缺少必要参数 | 1000 | 缺少接口所需参数
+
+## 获取首页文案展示
+
+说明：默认展示default
+
+#### 请求参数
+```
+{
+    "jsonrpc": "2.0",
+    "method": "getIndexSlogan",
+    "params": [
+        
+    ],
+    "id": 1
+}
+```
+
+##### 返回结果
+```
+成功：
+        {
+            "jsonrpc": "2.0",
+            "result": {
+                "code": 0,
+                "message": "success",
+                "data": {
+                    "title": "测试默认展示文案test",
+                    "link_url": "https://baidu.com",
+                    "display_name": "default" //default为默认状态、actively活动、notice公告
+                }
+            },
+            "id": 1
+        }
+
+失败：
+        {
+        "jsonrpc": "2.0",
+        "error":{
+            "code": 1111,
+            "message": "错误信息xxx"
+        },
+        "id": 1
+        }
+```
+
+错误信息 | 错误码 | 错误说明
+:--|:--|:--
+缺少必要参数 | 1000 | 缺少接口所需参数
+
