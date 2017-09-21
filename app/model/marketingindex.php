@@ -30,8 +30,13 @@ class MarketingIndex extends Model
     }
 
     //判断 存入的时间段是否有冲突
-    public function hasConflict($start_time,$end_time,$id){
-        $sql = "select * from marketing_index where ((start_time > '$start_time' AND start_time < '$end_time') OR (start_time < '$start_time' AND end_time > '$end_time') OR (end_time > '$start_time' AND end_time < '$end_time')) AND pos = 0 AND status = 1 AND is_del = 0 AND id != $id";
+    public function hasConflict($start_time,$end_time,$id=0){
+        if($id != ''){
+            $sql = "select * from marketing_index where ((start_time > '$start_time' AND start_time < '$end_time') OR (start_time < '$start_time' AND end_time > '$end_time') OR (end_time > '$start_time' AND end_time < '$end_time')) AND pos = 0 AND status = 1 AND is_del = 0 AND id != $id";
+
+        }else{
+            $sql = "select * from marketing_index where ((start_time > '$start_time' AND start_time < '$end_time') OR (start_time < '$start_time' AND end_time > '$end_time') OR (end_time > '$start_time' AND end_time < '$end_time')) AND pos = 0 AND status = 1 AND is_del = 0 ";
+        }
         // echo $sql;exit;
         return $this->query($sql)->resultArr();
     }
