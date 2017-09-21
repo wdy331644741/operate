@@ -34,7 +34,7 @@ function add()
             }
         }
         //判断 时间段是否有交集冲突
-        $conflict = $sloganModel->hasConflict($sloganModel->start_time,$sloganModel->end_time);
+        $conflict = $sloganModel->hasConflict($sloganModel->start_time,$sloganModel->end_time,'');
         if(!empty($conflict)){
             ajaxReturn(['error' => 4000, 'message' => '与其他时间有冲突']);
         }
