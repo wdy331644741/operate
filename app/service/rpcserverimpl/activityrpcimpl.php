@@ -45,12 +45,26 @@ class ActivityRpcImpl extends BaseRpcImpl
         $define = $indexModel->getMomentSlogen();//获取定义的展示文案
         $default = $indexModel->getDefaultSlogen();//获取默认的展示文案
 
-
-        $resData = [
-            'title' => $default['title'],
-            'link_url' => $default['link_url'],
-            'display_name' => $default['display_name'],
-        ];
+        //优先展示定义的文案
+        if(!empty($define)){
+            // if(count($define)>1)
+            $resData = [
+                'title' => $define['title'],
+                'link_url' => $define['link_url'],
+                'display_name' => $define['display_name'],
+            ];
+        }else{
+            $resData = [
+                'title' => $default['title'],
+                'link_url' => $default['link_url'],
+                'display_name' => $default['display_name'],
+            ];
+        }
+        // $resData = [
+        //     'title' => $default['title'],
+        //     'link_url' => $default['link_url'],
+        //     'display_name' => $default['display_name'],
+        // ];
         return array(
             'code'    => 0,
             'message' => 'success',

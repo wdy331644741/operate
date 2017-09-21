@@ -154,7 +154,7 @@ function upd()
         }
 
         //判断 时间段是否有交集冲突
-        $conflict = $sloganModel->hasConflict($data['start_time'],$data['end_time']);
+        $conflict = $sloganModel->hasConflict($data['start_time'],$data['end_time'],$id);
         if(!empty($conflict)){
             ajaxReturn(['error' => 4000, 'message' => '与其他时间有冲突']);
         }
