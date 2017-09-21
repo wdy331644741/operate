@@ -33,6 +33,12 @@ function add()
                 ajaxReturn(['error' => 4000, 'message' => '已经存在 默认展示的"'.$hasDefault['title']]);
             }
         }
+        //判断 时间段是否有交集冲突
+        $conflict = $sloganModel->hasConflict($sloganModel->start_time,$sloganModel->end_time);
+        if(!empty($conflict)){
+            ajaxReturn(['error' => 4000, 'message' => '与其他时间有冲突']);
+        }
+        // var_dump($conflict);exit;
         try {
 
             $result = $sloganModel->save();
@@ -47,13 +53,7 @@ function add()
 
     } else {
         $framework = getFrameworkInstance();
-        $storage = new Storage\Storage();
-        $urlReturn = $storage->getUploadUrl();
-        $url = '';
-        if ($urlReturn['status'] == 200) {
-            $url = $urlReturn['msg'];
-        }
-        $framework->smarty->assign('url', $url);
+        
         $framework->smarty->display('slogan/add.html');
     }
 }
@@ -143,6 +143,8 @@ function upd()
         $data['status'] = $status;
         $data['update_time'] = date('Y-m-d H:i:s');//注册时间
 
+        $sloganModel = new \Model\MarketingIndex();
+
         //判断  默认的
         if($pos == 1){
             $hasDefault = $sloganModel->hasDefault();
@@ -150,8 +152,14 @@ function upd()
                 ajaxReturn(['error' => 4000, 'message' => '已经存在 默认展示的"'.$hasDefault['title']]);
             }
         }
+
+        //判断 时间段是否有交集冲突
+        $conflict = $sloganModel->hasConflict($data['start_time'],$data['end_time']);
+        if(!empty($conflict)){
+            ajaxReturn(['error' => 4000, 'message' => '与其他时间有冲突']);
+        }
+
         try {
-            $sloganModel = new \Model\MarketingIndex();
             //创建用户账号
             $userId = $sloganModel->where(['id' => $id])->upd($data);
             if (!$userId)

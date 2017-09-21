@@ -24,7 +24,6 @@
                     <th >开始展示时间</th>
                     <th >结束展示时间</th>
                     <th >状态</th>
-                    <th >创建</th>
                     <th >操作</th>
                 </tr>
                 </thead>
@@ -46,7 +45,6 @@
                         <span class="adminstatus adminoffline">禁用</span>
                         {/if}
                     </td>
-                    <td>{$item.create_time}</td>
                     <td>
                         {if $item.status ==1}
                         <a href="javascript:void(0);"  class="btn btn-warning btn-xs status">禁用</a>
@@ -54,7 +52,7 @@
                         <a href="javascript:void(0);"  class="btn btn-primary btn-xs status">启用</a>
                         {/if}
                         <a href="{U('admin.php',['c'=>'index_slogan','a'=>'upd','id'=> $item.id])}" class="btn btn-success btn-xs">编辑</a>
-                        <a href="{U('admin.php',['c'=>'index_slogan','a'=>'del','id'=> $item.id])}" class="btn btn-danger btn-xs">删除</a>
+                        <a href="javascript:void(0);" class="btn btn-danger btn-xs del">删除</a>
                     </td>
                 </tr>
                 {/foreach}
@@ -75,6 +73,14 @@
             var msg=$(this).html();
             if(confirm('你确定要'+msg+"吗？")){
                 window.location.href="?c=index_slogan&a=status&id="+id;
+            }
+        });
+
+        $(".del").click(function(){
+            var id=$(this).parent().parent().find('td:first').html();
+            var msg=$(this).html();
+            if(confirm('你确定要'+msg+"吗？")){
+                window.location.href="?c=index_slogan&a=del&id="+id;
             }
         });
     })
