@@ -1,0 +1,123 @@
+{include file="header.html"}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <form class="form-horizontal" id="form01">
+        <div class="top-title">
+            <h2 class="sub-header">编辑app_index</h2>
+            <div class="top-tools">
+                <button type="button" class="btn btn-primary" id="submit">保存</button>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">标题</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="标题" name="title" id="title" value="{$item.title}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">链接地址</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" placeholder="链接地址" name="linkUrl" id="linkUrl" value="{$item.link_url}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">是否默认</span><i>*</i></label>
+            <label class="radio-inline">
+                <input type="radio" name="pos" id="status_no" value="1" {if $item.pos == 1}checked{/if}> 是
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="pos" id="status_yes" value="0" {if $item.pos == 0}checked{/if}> 否
+            </label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">状态码</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="状态码"  name="display_name" id="display_name" value="{$item.display_name}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">开始时间</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" placeholder="开始时间" name="startTime" id="startTime" value="{$item.start_time}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">结束时间</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="结束时间" name="endTime" id="endTime" value="{$item.end_time}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">状态</span><i>*</i></label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="status_no" value="0" {if $item.status == 0}checked{/if}> 禁用
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="status_yes" value="1" {if $item.status == 1}checked{/if}> 启用
+            </label>
+        </div>
+    </form>
+</div>
+
+<script>
+    $("#startTime").datetimepicker({
+        language:'zh-CN',
+    });
+    $("#endTime").datetimepicker({
+        language:'zh-CN'
+    });
+</script>
+<!-- <script type="text/javascript">
+    $(function() {
+        $('#img').uploadify({
+            'buttonText'    : '选择图片',
+
+            'fileObjName' : 'filename',
+            'swf'      : 'admin/uploadify/uploadify.swf',
+
+            'uploader' : "{$url}",
+            'onUploadSuccess':function(file, data, response){
+                var data=JSON.parse(data);
+                if(data.err_code==0){
+                    filejosn = $.parseJSON(data.err_msg);
+                    $.each(filejosn,function(index,imgval)
+                    {
+                        if(index == 'filename')
+                        {
+                           $("#imgUrl").val(imgval.name);
+                           $("#img_view").attr('src',imgval.url);
+                           $("#img_view").show();
+                        }
+                    });
+                }else{
+                    layer.alert(data.err_msg);
+                }
+
+            }
+        });
+    });
+</script> -->
+
+<script>
+    $(function () {
+        //提交表单
+        $("#submit").click(function () {
+            $.ajax({
+                "url": "",
+                'type': 'POST',
+                'data': $('#form01').serialize(),
+                'dataType': 'json',
+                'success': function (data) {
+                    if (data.error != 0) {
+                        layer.alert(data.message);
+                    } else {
+                        window.location.href = '{U("admin.php",["c" => I("get.c/s","index"),"a" => "index"])}';
+                    }
+                }
+
+            });
+        });
+    });
+</script>
+{include file="footer.html"}

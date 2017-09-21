@@ -33,6 +33,46 @@ class ActivityRpcImpl extends BaseRpcImpl
     }
 
     /**
+     * app_index  移动端手机展示
+     *
+     * @JsonRpcMethod
+     */
+    public function getIndexSlogan()
+    {
+        //获取当前有效slogan
+        // $storage = new Storage();
+        $indexModel = new \Model\MarketingIndex();
+        $define = $indexModel->getMomentSlogen();//获取定义的展示文案
+        $default = $indexModel->getDefaultSlogen();//获取默认的展示文案
+
+        //优先展示定义的文案
+        if(!empty($define)){
+            // if(count($define)>1)
+            $resData = [
+                'title' => $define['title'],
+                'link_url' => $define['link_url'],
+                'display_name' => $define['display_name'],
+            ];
+        }else{
+            $resData = [
+                'title' => $default['title'],
+                'link_url' => $default['link_url'],
+                'display_name' => $default['display_name'],
+            ];
+        }
+        // $resData = [
+        //     'title' => $default['title'],
+        //     'link_url' => $default['link_url'],
+        //     'display_name' => $default['display_name'],
+        // ];
+        return array(
+            'code'    => 0,
+            'message' => 'success',
+            'data'    => $resData
+        );
+    }
+
+    /**
      * 活动列表
      *
      * @JsonRpcMethod
