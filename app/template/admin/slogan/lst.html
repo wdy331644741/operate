@@ -49,11 +49,12 @@
                     <td>{$item.create_time}</td>
                     <td>
                         {if $item.status ==1}
-                        <a href="javascript:void(0);"  class="btn btn-danger btn-xs status">禁用</a>
+                        <a href="javascript:void(0);"  class="btn btn-warning btn-xs status">禁用</a>
                         {else}
                         <a href="javascript:void(0);"  class="btn btn-primary btn-xs status">启用</a>
                         {/if}
                         <a href="{U('admin.php',['c'=>'index_slogan','a'=>'upd','id'=> $item.id])}" class="btn btn-success btn-xs">编辑</a>
+                        <a href="{U('admin.php',['c'=>'index_slogan','a'=>'del','id'=> $item.id])}" class="btn btn-danger btn-xs">删除</a>
                     </td>
                 </tr>
                 {/foreach}

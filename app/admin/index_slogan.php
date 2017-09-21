@@ -6,26 +6,33 @@ function add()
 {
 
     if (IS_POST) {
-        $title = $linkUrl = $pos = $startTime = $endTime = $status = null;
-        $requireFields = ['title','linkUrl', 'pos', 'startTime', 'endTime', 'status'];
+        $title = $linkUrl = $pos = $startTime = $endTime = $status = $display_name = null;
+        $requireFields = ['title','linkUrl', 'pos', 'startTime', 'endTime', 'status', 'display_name'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
                 ajaxReturn(['error' => 4000, 'message' => $field . '不能为空']);
         }
-// var_dump($title);exit;
 
         $sloganModel = new Model\MarketingIndex();
 
         $sloganModel->title = $title;
         $sloganModel->link_url = $linkUrl;
         $sloganModel->pos = $pos;
+        $sloganModel->display_name = $display_name;
         $sloganModel->start_time = $startTime;
         $sloganModel->end_time = $endTime;
         $sloganModel->is_del = 0;
         $sloganModel->status = $status;
         $sloganModel->create_time = date('Y-m-d H:i:s');//注册时间
 
+        //判断  默认的
+        if($sloganModel->pos == 1){
+            $hasDefault = $sloganModel->hasDefault();
+            if(!empty($hasDefault)){
+                ajaxReturn(['error' => 4000, 'message' => '已经存在 默认展示的"'.$hasDefault['title']]);
+            }
+        }
         try {
 
             $result = $sloganModel->save();
@@ -66,10 +73,7 @@ function lst()
 {
     $framework = getFrameworkInstance();
     $sloganModel = new \Model\MarketingIndex();
-    $list = $sloganModel->get()->resultArr();
-    // $storage = new Storage\Storage();
-    // foreach ($list as $index => $item)
-    //     $list[$index]['img_url'] = $storage->getViewUrl($item['img_url']);
+    $list = $sloganModel->getIndexList();
     $framework->smarty->assign('list', $list);
     $framework->smarty->display('slogan/lst.html');
 }
@@ -88,6 +92,26 @@ function status()
             redirect($goto, '2', '切换成功');
         else
             redirect($goto, '2', '切换失败');
+    } else {
+        redirect($goto, 2, '数据不合法');
+    }
+
+}
+
+/**
+ * 冻结/解冻功能
+ * @pageroute
+ */
+function del()
+{
+    $id = I('get.id/d', 0);
+    $goto = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '?c=slogan&a=index';
+    if ($id) {
+        $sloganModel = new \Model\MarketingIndex();
+        if ($sloganModel->delById($id))
+            redirect($goto, '2', '删除成功');
+        else
+            redirect($goto, '2', '删除失败');
     } else {
         redirect($goto, 2, '数据不合法');
     }
@@ -118,8 +142,14 @@ function upd()
         $data['end_time'] = $endTime;
         $data['status'] = $status;
         $data['update_time'] = date('Y-m-d H:i:s');//注册时间
-// var_dump($data);exit("sads");
 
+        //判断  默认的
+        if($pos == 1){
+            $hasDefault = $sloganModel->hasDefault();
+            if(!empty($hasDefault)){
+                ajaxReturn(['error' => 4000, 'message' => '已经存在 默认展示的"'.$hasDefault['title']]);
+            }
+        }
         try {
             $sloganModel = new \Model\MarketingIndex();
             //创建用户账号

@@ -32,16 +32,16 @@
         <div class="form-group">
             <label class="col-sm-2 control-label"><span class="name_span">是否默认</span><i>*</i></label>
             <label class="radio-inline">
-                <input type="radio" name="pos" id="status_no" value="0" > 是
+                <input type="radio" name="pos" id="status_no" value="1" > 是
             </label>
             <label class="radio-inline">
-                <input type="radio" name="pos" id="status_yes" value="1" checked> 否
+                <input type="radio" name="pos" id="status_yes" value="0" checked> 否
             </label>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label"><span class="name_span">状态码</span><i>*</i></label>
             <div class="col-sm-7">
-                <input type="text" class="form-control name" placeholder="状态码"  name="sort" id="sort" value="">
+                <input type="text" class="form-control name" placeholder="状态码"  name="display_name" id="display_name" value="">
             </div>
         </div>
         <div class="form-group">
@@ -117,7 +117,7 @@
                 'data': $('#form01').serialize(),
                 'dataType': 'json',
                 'success': function (data) {
-                    if (data.error == "undefined") {
+                    if (data.error != 0) {
                         layer.alert(data.message);
                     } else {
                         window.location.href = '{U("admin.php",["c" => I("get.c/s","index"),"a" => "index"])}';

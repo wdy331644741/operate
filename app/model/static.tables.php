@@ -875,7 +875,7 @@ return array (
       'key' => '',
       'default' => NULL,
       'unsigned' => false,
-      'null' => false,
+      'null' => true,
     ),
     'limit_desc' => 
     array (
@@ -2169,15 +2169,15 @@ return array (
       'unsigned' => false,
       'null' => false,
     ),
-    'status_name' => 
+    'display_name' => 
     array (
-      'field' => 'status_name',
+      'field' => 'display_name',
       'key' => '',
-      'default' => '1',
+      'default' => NULL,
       'type' => 'varchar',
       'lenght' => '50',
       'unsigned' => false,
-      'null' => true,
+      'null' => false,
     ),
     'start_time' => 
     array (
