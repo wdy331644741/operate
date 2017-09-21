@@ -321,7 +321,7 @@ class RedeemCode extends Model
     {
         $now =date("Y-m-d H:i:s");
 //        $this->tableName = 'redeem_code';
-        $sql = "update redeem_code set `status` =1 ,`redeem_time` = '{$now}', `user_id` = $userId where `code`=$id and `status`=0";
+        $sql = "update redeem_code set `status` =1 ,`redeem_time` = '{$now}', `user_id` = $userId where `code`='$id' and `status`=0";
 
         return $this->exec($sql);
 //        return $this->update(['user_id' => $userId,'status'=>1,
