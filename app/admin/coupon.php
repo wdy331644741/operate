@@ -26,10 +26,12 @@ function add()
         $data['status'] = $status;
         $data['create_time'] = date('Y-m-d H:i:s');//注册时间
         if($type_interest == 'days'){
+            unset($data['effective_start']);
+            unset($data['effective_end']);
             if(empty($data['effective_days']) )
                 ajaxReturn(['error' => 4000, 'message' => '有效天数不能为空']);
         }else if($type_interest == 'between'){
-            // var_dump($data);exit;
+            unset($data['effective_days']);
             if(empty($data['effective_start']) || empty($data['effective_end']) || $data['effective_start'] == "0000-00-00 00:00:00" ||$data['effective_end'] == "0000-00-00 00:00:00")
                 ajaxReturn(['error' => 4000, 'message' => '开始结束时间不能为空']);
         }
