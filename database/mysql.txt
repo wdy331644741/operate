@@ -1,1 +1,23 @@
 ALTER TABLE `wlcoperate`.`award_interestcoupon` CHANGE COLUMN `effective_end` `effective_end` datetime COMMENT '有效期结束时间';
+
+insert into `wlcoperate`.`admin_node` ( `controller`, `action`, `remark`, `parent_id`, `url_host`, `status`, `update_time`, `create_time`) values ( 'index_slogan', 'index', '移动端首页配置', '50', '1', '1', '0000-00-00 00:00:00', '2017-09-20 21:09:30');
+
+
+CREATE TABLE `marketing_index` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) NOT NULL COMMENT '文案',
+  `img_url` varchar(150) DEFAULT NULL COMMENT 'banner图',
+  `link_url` varchar(150) DEFAULT NULL COMMENT '链接地址',
+  `pos` varchar(50) NOT NULL COMMENT '是否是默认',
+  `display_name` varchar(50) NOT NULL COMMENT '状态码',
+  `start_time` datetime NOT NULL COMMENT '开始展示时间',
+  `end_time` datetime NOT NULL COMMENT '结束展示时间',
+  `is_del` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否已删除',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '状态:0显示，1显示。',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `start_time` (`start_time`,`end_time`),
+  KEY `status` (`status`),
+  KEY `is_del` (`is_del`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='App首页状态图'
