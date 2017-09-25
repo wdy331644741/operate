@@ -27,3 +27,4 @@ install
     - [活动列表](doc/activity.md#活动列表)
     - [系统公告](doc/activity.md#系统公告)
     - [获取首页文案展示](doc/activity.md#获取首页文案展示)
+    - [兑换码-兑换接口](doc/activity.md#兑换码-兑换接口)
