@@ -14,7 +14,7 @@
 ----------------
 
 接口地址
-> 域名/service.php?c=inside
+> 域名/service.php?c=account
 
 请求方式
 > post
