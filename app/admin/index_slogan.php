@@ -6,8 +6,8 @@ function add()
 {
 
     if (IS_POST) {
-        $title = $linkUrl = $pos = $startTime = $endTime = $status = $display_name = null;
-        $requireFields = ['title','linkUrl', 'pos', 'startTime', 'endTime', 'status', 'display_name'];
+        $title = $linkUrl = $pos = $startTime = $endTime = $status = $display_name = $check_login = null;
+        $requireFields = ['title','linkUrl', 'pos', 'startTime', 'endTime', 'status', 'display_name', 'check_login'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -22,6 +22,7 @@ function add()
         $sloganModel->display_name = $display_name;
         $sloganModel->start_time = $startTime;
         $sloganModel->end_time = $endTime;
+        $sloganModel->check_login = $check_login;
         $sloganModel->is_del = 0;
         $sloganModel->status = $status;
         $sloganModel->create_time = date('Y-m-d H:i:s');//注册时间
@@ -126,8 +127,8 @@ function upd()
 {
     $id = I('get.id/d', 0);
     if (IS_POST) {
-        $title = $linkUrl = $pos = $startTime = $endTime = $status = null;
-        $requireFields = ['title','linkUrl', 'pos', 'startTime', 'endTime', 'status'];
+        $title = $linkUrl = $pos = $startTime = $endTime = $status = $check_login = null;
+        $requireFields = ['title','linkUrl', 'pos', 'startTime', 'endTime', 'status', 'check_login'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
 
@@ -141,6 +142,7 @@ function upd()
         $data['start_time'] = $startTime;
         $data['end_time'] = $endTime;
         $data['status'] = $status;
+        $data['check_login'] = $check_login;
         $data['update_time'] = date('Y-m-d H:i:s');//注册时间
 
         $sloganModel = new \Model\MarketingIndex();

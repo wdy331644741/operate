@@ -208,9 +208,10 @@
                 "code": 0,
                 "message": "success",
                 "data": {
-                    "title": "测试默认展示文案test",
+                    "title": "测试默认展示文案",
                     "link_url": "https://baidu.com",
-                    "display_name": "default" //default为默认状态、actively活动、notice公告
+                    "display_name": "default",//default为默认状态、actively活动、notice公告
+                    "check_login": "0" //0不需要登录，1需要登录
                 }
             },
             "id": 1

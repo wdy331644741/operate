@@ -21,6 +21,7 @@
                     <th >链接地址</th>
                     <th >是否是默认</th>
                     <th >状态码</th>
+                    <th >是否需要登录</th>
                     <th >开始展示时间</th>
                     <th >结束展示时间</th>
                     <th >状态</th>
@@ -36,6 +37,13 @@
                     <td>{$item.link_url}</td>
                     <td>{$item.pos}</td>
                     <td>{$item.display_name}</td>
+                    <td>
+                        {if $item.check_login == 1}
+                        <span class="adminstatus adminonline">是</span>
+                        {else}
+                        <span class="adminstatus adminoffline">否</span>
+                        {/if}
+                    </td>
                     <td>{$item.start_time}</td>
                     <td>{$item.end_time}</td>
                     <td>
