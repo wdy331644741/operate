@@ -23,6 +23,8 @@ function ladderInterestcoupon(){
     $usefulTime = $activityModel->getUsefulTimeByName($activityName);
     if($rechargeTime < $usefulTime['start_time'] || $rechargeTime > $usefulTime['end_time']) return 1;
 
+    //html 实体字符反转
+    $usefulTime['conf_json'] = htmlspecialchars_decode($usefulTime['conf_json']);
     $activityConf = json_decode($usefulTime['conf_json'],true);
     if(isset($activityConf) && isset($activityConf['total_amount'])  && isset($activityConf['single_amount']) 
      && !empty($activityConf['total_amount'])  && !empty($activityConf['single_amount'])  )
