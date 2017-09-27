@@ -21,3 +21,10 @@ CREATE TABLE `marketing_index` (
   KEY `status` (`status`),
   KEY `is_del` (`is_del`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='App首页状态图'
+
+
+
+
+
+ALTER TABLE `wlcoperate`.`marketing_index` ADD COLUMN `check_login` tinyint(1) DEFAULT 0 COMMENT '是否需要登录' AFTER `end_time`;
+

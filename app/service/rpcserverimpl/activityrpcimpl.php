@@ -52,12 +52,14 @@ class ActivityRpcImpl extends BaseRpcImpl
                 'title' => $define['title'],
                 'link_url' => $define['link_url'],
                 'display_name' => $define['display_name'],
+                'check_login' => $define['check_login'],
             ];
         }else{
             $resData = [
                 'title' => $default['title'],
                 'link_url' => $default['link_url'],
                 'display_name' => $default['display_name'],
+                'check_login' => $default['check_login'],
             ];
         }
         // $resData = [
