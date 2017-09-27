@@ -26,9 +26,10 @@ function ladderInterestcoupon(){
     //html 实体字符反转
     $usefulTime['conf_json'] = htmlspecialchars_decode($usefulTime['conf_json']);
     $activityConf = json_decode($usefulTime['conf_json'],true);
-    if(isset($activityConf) && isset($activityConf['total_amount'])  && isset($activityConf['single_amount']) 
-     && !empty($activityConf['total_amount'])  && !empty($activityConf['single_amount'])  )
-        throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动相关配置失败');
+    logs($activityConf,"conf_json");
+    // if(isset($activityConf) && isset($activityConf['total_amount'])  && isset($activityConf['single_amount']) 
+    //  && !empty($activityConf['total_amount'])  && !empty($activityConf['single_amount'])  )
+    //     throw new AllErrorException(AllErrorException::ACTIVATE_NODE, [], '获取活动相关配置失败');
 
     $awardNode = new \Model\AwardNode();//活动节点
     $nodeId = $awardNode->getNode($percentOne);//获取节点id
