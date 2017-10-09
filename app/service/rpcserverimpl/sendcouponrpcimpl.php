@@ -126,6 +126,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
             'title'      => $awardExpInfo['title'],
             'amount'     => $amount,
             'days'       => $awardExpInfo['days'],//10天后有效 +5天使用时间
+            'hours'       => $awardExpInfo['hours'],//按小时的体验金
             'limit_desc' => $awardExpInfo['limit_desc'],
             'amount_type'=> $awardExpInfo['amount_type'],
             'is_use'     => 1
