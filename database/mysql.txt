@@ -28,3 +28,5 @@ CREATE TABLE `marketing_index` (
 
 ALTER TABLE `wlcoperate`.`marketing_index` ADD COLUMN `check_login` tinyint(1) DEFAULT 0 COMMENT '是否需要登录' AFTER `end_time`;
 
+
+ALTER TABLE `wlcoperate`.`marketing_index` CHANGE COLUMN `start_time` `start_time` datetime COMMENT '开始展示时间', CHANGE COLUMN `end_time` `end_time` datetime COMMENT '结束展示时间';

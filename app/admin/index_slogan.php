@@ -6,8 +6,8 @@ function add()
 {
 
     if (IS_POST) {
-        $title = $linkUrl = $pos = $startTime = $endTime = $status = $display_name = $check_login = null;
-        $requireFields = ['title','linkUrl', 'pos', 'startTime', 'endTime', 'status', 'display_name', 'check_login'];
+        $title = $linkUrl = $status = $display_name = $check_login = null;
+        $requireFields = ['title','linkUrl', 'status', 'display_name', 'check_login'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -16,6 +16,14 @@ function add()
 
         $sloganModel = new Model\MarketingIndex();
 
+        if($display_name == "default"){
+            $startTime = $endTime = '';
+            $pos = 1;//是默认
+        }else{
+            $pos = 0;
+            $startTime = I('post.startTime', '', 'trim');
+            $endTime = I('post.endTime', '', 'trim');
+        }
         $sloganModel->title = $title;
         $sloganModel->link_url = $linkUrl;
         $sloganModel->pos = $pos;
@@ -35,9 +43,9 @@ function add()
             }
         }
         //判断 时间段是否有交集冲突
-        $conflict = $sloganModel->hasConflict($sloganModel->start_time,$sloganModel->end_time,'');
+        $conflict = $sloganModel->hasConflict($sloganModel->display_name, $sloganModel->start_time, $sloganModel->end_time, '');
         if(!empty($conflict)){
-            ajaxReturn(['error' => 4000, 'message' => '与其他时间有冲突']);
+            ajaxReturn(['error' => 4000, 'message' => '与其他'.$sloganModel->display_name.'时间有冲突']);
         }
         // var_dump($conflict);exit;
         try {
@@ -75,6 +83,23 @@ function lst()
     $framework = getFrameworkInstance();
     $sloganModel = new \Model\MarketingIndex();
     $list = $sloganModel->getIndexList();
+    foreach ($list as &$value) {
+        # code...
+        switch ($value['display_name']) {
+            case 'default':
+                $value['display_name'] = '默认';
+                break;
+            case 'activity':
+                $value['display_name'] = '活动';
+                break;
+            case 'notice':
+                $value['display_name'] = '公告';
+                break;
+            default:
+                # code...
+                break;
+        }
+    }
     $framework->smarty->assign('list', $list);
     $framework->smarty->display('slogan/lst.html');
 }
@@ -127,8 +152,8 @@ function upd()
 {
     $id = I('get.id/d', 0);
     if (IS_POST) {
-        $title = $linkUrl = $pos = $startTime = $endTime = $status = $check_login = null;
-        $requireFields = ['title','linkUrl', 'pos', 'startTime', 'endTime', 'status', 'check_login'];
+        $title = $linkUrl = $status = $check_login = $display_name = null;
+        $requireFields = ['title','linkUrl', 'status', 'check_login', 'display_name'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
 
@@ -136,9 +161,19 @@ function upd()
                 ajaxReturn(['error' => 4000, 'message' => $field . '不能为空']);
         }
 
+        if($display_name == "default"){
+            $startTime = $endTime = '';
+            $pos = 1;//是默认
+        }else{
+            $pos = 0;
+            $startTime = I('post.startTime', '', 'trim');
+            $endTime = I('post.endTime', '', 'trim');
+        }
+
         $data['title'] = $title;
         $data['link_url'] = $linkUrl;
         $data['pos'] = $pos;
+        $data['display_name'] = $display_name;
         $data['start_time'] = $startTime;
         $data['end_time'] = $endTime;
         $data['status'] = $status;

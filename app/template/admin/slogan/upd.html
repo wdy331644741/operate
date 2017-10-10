@@ -21,7 +21,7 @@
                 <input type="text" class="form-control" placeholder="链接地址" name="linkUrl" id="linkUrl" value="{$item.link_url}">
             </div>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label class="col-sm-2 control-label"><span class="name_span">是否默认</span><i>*</i></label>
             <label class="radio-inline">
                 <input type="radio" name="pos" id="status_no" value="1" {if $item.pos == 1}checked{/if}> 是
@@ -29,11 +29,16 @@
             <label class="radio-inline">
                 <input type="radio" name="pos" id="status_yes" value="0" {if $item.pos == 0}checked{/if}> 否
             </label>
-        </div>
+        </div> -->
         <div class="form-group">
-            <label class="col-sm-2 control-label"><span class="name_span">状态码</span><i>*</i></label>
+            <label class="col-sm-2 control-label"><span class="name_span">类型</span><i>*</i></label>
             <div class="col-sm-7">
-                <input type="text" class="form-control name" placeholder="状态码"  name="display_name" id="display_name" value="{$item.display_name}">
+                <!-- <input type="text" class="form-control name" placeholder="状态码"  name="display_name" id="display_name" value="{$item.display_name}"> -->
+                <select id="display_name" name="display_name">
+                    <option id="default" value ="default" {if $item.display_name == 'default'}selected = "selected"{/if}>默认</option>
+                    <option value ="notice"  {if $item.display_name == 'notice'}selected = "selected"{/if}>公告</option>
+                    <option value="activity" {if $item.display_name == 'activity'}selected = "selected"{/if}>活动</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
@@ -45,13 +50,13 @@
                 <input type="radio" name="check_login" id="status_yes" value="0" {if $item.check_login == 0}checked{/if}> 否
             </label>
         </div>
-        <div class="form-group">
+        <div id="start" class="form-group" style="display: {if $item.pos != 0}none;{/if}">
             <label class="col-sm-2 control-label"><span class="name_span">开始时间</span><i>*</i></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control" placeholder="开始时间" name="startTime" id="startTime" value="{$item.start_time}">
             </div>
         </div>
-        <div class="form-group">
+        <div id="end" class="form-group" style="display: {if $item.pos != 0}none;{/if}">
             <label class="col-sm-2 control-label"><span class="name_span">结束时间</span><i>*</i></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control name" placeholder="结束时间" name="endTime" id="endTime" value="{$item.end_time}">
@@ -77,36 +82,6 @@
         language:'zh-CN'
     });
 </script>
-<!-- <script type="text/javascript">
-    $(function() {
-        $('#img').uploadify({
-            'buttonText'    : '选择图片',
-
-            'fileObjName' : 'filename',
-            'swf'      : 'admin/uploadify/uploadify.swf',
-
-            'uploader' : "{$url}",
-            'onUploadSuccess':function(file, data, response){
-                var data=JSON.parse(data);
-                if(data.err_code==0){
-                    filejosn = $.parseJSON(data.err_msg);
-                    $.each(filejosn,function(index,imgval)
-                    {
-                        if(index == 'filename')
-                        {
-                           $("#imgUrl").val(imgval.name);
-                           $("#img_view").attr('src',imgval.url);
-                           $("#img_view").show();
-                        }
-                    });
-                }else{
-                    layer.alert(data.err_msg);
-                }
-
-            }
-        });
-    });
-</script> -->
 
 <script>
     $(function () {
@@ -127,6 +102,17 @@
 
             });
         });
+        //是 默认时，不需要开始和结束时间
+        $("#display_name").change(function (){
+            console.log($(this).val())
+            if($(this).val() != 'default'){
+                $("#start").show();
+                $("#end").show();
+            }else{
+                $("#start").hide();
+                $("#end").hide();
+            }
+        })
     });
 </script>
 {include file="footer.html"}
