@@ -812,6 +812,94 @@ return array (
     ),
     'pk_name' => 'id',
   ),
+  'award_hand_record' => 
+  array (
+    'id' => 
+    array (
+      'field' => 'id',
+      'key' => 'PRI',
+      'default' => NULL,
+      'type' => 'int',
+      'lenght' => '11',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'user_id' => 
+    array (
+      'field' => 'user_id',
+      'key' => '',
+      'default' => '0',
+      'lenght' => '20',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'award_extend_id' => 
+    array (
+      'field' => 'award_extend_id',
+      'key' => 'MUL',
+      'default' => '0',
+      'type' => 'int',
+      'lenght' => '11',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'status' => 
+    array (
+      'field' => 'status',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '4',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'mark' => 
+    array (
+      'field' => 'mark',
+      'key' => '',
+      'default' => '',
+      'type' => 'varchar',
+      'lenght' => '100',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'ctime' => 
+    array (
+      'field' => 'ctime',
+      'key' => '',
+      'default' => '0000-00-00 00:00:00',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'utime' => 
+    array (
+      'field' => 'utime',
+      'key' => '',
+      'default' => '0000-00-00 00:00:00',
+      'unsigned' => false,
+      'null' => true,
+    ),
+    'award_type' => 
+    array (
+      'field' => 'award_type',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '4',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'award_id' => 
+    array (
+      'field' => 'award_id',
+      'key' => '',
+      'default' => '0',
+      'lenght' => '20',
+      'unsigned' => false,
+      'null' => false,
+    ),
+    'pk_name' => 'id',
+  ),
   'award_interestcoupon' => 
   array (
     'id' => 
@@ -2185,7 +2273,7 @@ return array (
       'key' => 'MUL',
       'default' => NULL,
       'unsigned' => false,
-      'null' => false,
+      'null' => true,
     ),
     'end_time' => 
     array (
@@ -2193,7 +2281,17 @@ return array (
       'key' => '',
       'default' => NULL,
       'unsigned' => false,
-      'null' => false,
+      'null' => true,
+    ),
+    'check_login' => 
+    array (
+      'field' => 'check_login',
+      'key' => '',
+      'default' => '0',
+      'type' => 'tinyint',
+      'lenght' => '1',
+      'unsigned' => false,
+      'null' => true,
     ),
     'is_del' => 
     array (

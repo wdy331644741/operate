@@ -42,17 +42,26 @@ class ActivityRpcImpl extends BaseRpcImpl
         //获取当前有效slogan
         // $storage = new Storage();
         $indexModel = new \Model\MarketingIndex();
-        $define = $indexModel->getMomentSlogen();//获取定义的展示文案
+        $activity_define = $indexModel->getMomentSlogen('activity');//获取定义的展示文案
+        $notice_define = $indexModel->getMomentSlogen('notice');//获取定义的展示文案
         $default = $indexModel->getDefaultSlogen();//获取默认的展示文案
 
         //优先展示定义的文案
-        if(!empty($define)){
-            // if(count($define)>1)
+        //活动》公告》日常
+        if(!empty($activity_define)){
+            // if(count($activity_define)>1)
             $resData = [
-                'title' => $define['title'],
-                'link_url' => $define['link_url'],
-                'display_name' => $define['display_name'],
-                'check_login' => $define['check_login'],
+                'title' => $activity_define['title'],
+                'link_url' => $activity_define['link_url'],
+                'display_name' => $activity_define['display_name'],
+                'check_login' => $activity_define['check_login'],
+            ];
+        }elseif(!empty($notice_define)){
+            $resData = [
+                'title' => $notice_define['title'],
+                'link_url' => $notice_define['link_url'],
+                'display_name' => $notice_define['display_name'],
+                'check_login' => $notice_define['check_login'],
             ];
         }else{
             $resData = [

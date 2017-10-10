@@ -29,37 +29,34 @@
                 <input type="text" class="form-control" placeholder="链接地址" name="linkUrl" id="linkUrl" value="">
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label"><span class="name_span">是否默认</span><i>*</i></label>
-            <label class="radio-inline">
-                <input type="radio" name="pos" id="status_no" value="1" > 是
-            </label>
-            <label class="radio-inline">
-                <input type="radio" name="pos" id="status_yes" value="0" checked> 否
-            </label>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label"><span class="name_span">状态码</span><i>*</i></label>
+        
+        <div id="type" class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">类型</span><i>*</i></label>
             <div class="col-sm-7">
-                <input type="text" class="form-control name" placeholder="状态码（枚举）：默认default、公告notice、活动activity"  name="display_name" id="display_name" value="">
+                <!-- <input type="text" class="form-control name" placeholder="状态码（枚举）：默认default、公告notice、活动activity"  name="display_name" id="display_name" value=""> -->
+                <select id="display_name" name="display_name">
+                    <option id="default" value ="default" selected = "selected">默认</option>
+                    <option value ="notice" >公告</option>
+                    <option value="activity">活动</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label"><span class="name_span">是否需要登录</span><i>*</i></label>
             <label class="radio-inline">
-                <input type="radio" name="check_login" id="status_no" value="1" > 是
+                <input type="radio" name="check_login" id="" value="1" > 是
             </label>
             <label class="radio-inline">
-                <input type="radio" name="check_login" id="status_yes" value="0" checked> 否
+                <input type="radio" name="check_login" id="" value="0" checked> 否
             </label>
         </div>
-        <div class="form-group">
+        <div id="start" class="form-group" style="display: none;">
             <label class="col-sm-2 control-label"><span class="name_span">开始时间</span><i>*</i></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control" placeholder="开始时间" name="startTime" id="startTime" value="">
             </div>
         </div>
-        <div class="form-group">
+        <div id="end" class="form-group" style="display: none;">
             <label class="col-sm-2 control-label"><span class="name_span">结束时间</span><i>*</i></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control name" placeholder="结束时间" name="endTime" id="endTime" value="">
@@ -85,36 +82,6 @@
         language:'zh-CN'
     });
 </script>
-<!-- <script type="text/javascript">
-    $(function() {
-        $('#img').uploadify({
-            'buttonText'    : '选择图片',
-
-            'fileObjName' : 'filename',
-            'swf'      : 'admin/uploadify/uploadify.swf',
-
-            'uploader' : "{$url}",
-            'onUploadSuccess':function(file, data, response){
-                var data=JSON.parse(data);
-                if(data.err_code==0){
-                    filejosn = $.parseJSON(data.err_msg);
-                    $.each(filejosn,function(index,imgval)
-                    {
-                        if(index == 'filename')
-                        {
-                           $("#imgUrl").val(imgval.name);
-                           $("#img_view").attr('src',imgval.url);
-                           $("#img_view").show();
-                        }
-                    });
-                }else{
-                    layer.alert(data.err_msg);
-                }
-
-            }
-        });
-    });
-</script> -->
 
 <script>
     $(function () {
@@ -129,12 +96,24 @@
                     if (data.error != 0) {
                         layer.alert(data.message);
                     } else {
+                        layer.alert(data.message);
                         window.location.href = '{U("admin.php",["c" => I("get.c/s","index"),"a" => "index"])}';
                     }
                 }
 
             });
         });
+        //是 默认时，不需要开始和结束时间
+        $("#display_name").change(function (){
+            console.log($(this).val())
+            if($(this).val() != 'default'){
+                $("#start").show();
+                $("#end").show();
+            }else{
+                $("#start").hide();
+                $("#end").hide();
+            }
+        })
     });
 </script>
 {include file="footer.html"}
