@@ -82,7 +82,8 @@ function awardType()
         $where = "`is_del` = 0 AND `status` = 1 AND effective_end > '{$date}'";
     } elseif($type==2){
         $awardModel = new \Model\AwardInterestcoupon();
-        $where = "`is_del` = 0 AND `status` = 1 AND effective_start < '{$date}' AND effective_end > '{$date}'";
+        // $where = "`is_del` = 0 AND `status` = 1 AND effective_start < '{$date}' AND effective_end > '{$date}'";
+        $where = "`is_del` = 0 AND `status` = 1 AND (effective_end > '{$date}' OR effective_end = null OR effective_end = ' 0000-00-00 00:00:00')";
     } elseif ($type==3){
         $awardModel = new \Model\AwardWithdraw();
         $where = "`is_del` = 0 AND `status` = 1";

@@ -103,17 +103,17 @@ class SendCouponRpcImpl extends BaseRpcImpl
             $rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
         }
 
-        $preRes = self::commCall(['interestCoupon' => $addCouponRes], 'preSendInterestCouponToUser');
+        // $preRes = self::commCall(['interestCoupon' => $addCouponRes], 'preSendInterestCouponToUser');
 
-        if (is_array($preRes)) return $preRes;
+        // if (is_array($preRes)) return $preRes;
 
-        $actRes = self::commCall([
-            'uuid' => $addCouponRes['uuid'],
-            'status' => 1,
-            'immediately' => FALSE//立即使用
-        ],'activateInterestCouponToUser');
+        // $actRes = self::commCall([
+        //     'uuid' => $addCouponRes['uuid'],
+        //     'status' => 1,
+        //     'immediately' => FALSE//立即使用
+        // ],'activateInterestCouponToUser');
 
-        if (is_array($actRes)) return $actRes;
+        // if (is_array($actRes)) return $actRes;
 
         $operateCoupon->updateActivate($addCouponRes['uuid']);
 
