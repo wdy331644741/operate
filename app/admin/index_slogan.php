@@ -6,8 +6,8 @@ function add()
 {
 
     if (IS_POST) {
-        $title = $linkUrl = $status = $display_name = $check_login = null;
-        $requireFields = ['title','linkUrl', 'status', 'display_name', 'check_login'];
+        $title  = $status = $display_name = $check_login = null;
+        $requireFields = ['title', 'status', 'display_name', 'check_login'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
             if ('' === $$field)
@@ -25,7 +25,7 @@ function add()
             $endTime = I('post.endTime', '', 'trim');
         }
         $sloganModel->title = $title;
-        $sloganModel->link_url = $linkUrl;
+        $sloganModel->link_url = I('post.linkUrl', '', 'trim');
         $sloganModel->pos = $pos;
         $sloganModel->display_name = $display_name;
         $sloganModel->start_time = $startTime;
@@ -152,8 +152,8 @@ function upd()
 {
     $id = I('get.id/d', 0);
     if (IS_POST) {
-        $title = $linkUrl = $status = $check_login = $display_name = null;
-        $requireFields = ['title','linkUrl', 'status', 'check_login', 'display_name'];
+        $title  = $status = $check_login = $display_name = null;
+        $requireFields = ['title', 'status', 'check_login', 'display_name'];
         foreach ($requireFields as $field) {
             $$field = I('post.' . $field, '', 'trim');
 
@@ -171,7 +171,7 @@ function upd()
         }
 
         $data['title'] = $title;
-        $data['link_url'] = $linkUrl;
+        $data['link_url'] = I('post.linkUrl', '', 'trim');
         $data['pos'] = $pos;
         $data['display_name'] = $display_name;
         $data['start_time'] = $startTime;
