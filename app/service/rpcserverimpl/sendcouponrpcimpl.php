@@ -133,15 +133,21 @@ class SendCouponRpcImpl extends BaseRpcImpl
         if (empty($awardExpInfo)) return ['is_ok' => false, 'msg'=>'奖品不可用'];
 
         $amount = $awardExpInfo['amount'];
-        if ($awardExpInfo['amount_type']==1){
-            $amount = rand($awardExpInfo['min_amount'],$awardExpInfo['max_amount']);
-        }
+        // model层会做金额匹配
+        // if ($awardExpInfo['amount_type']==1){
+        //     $amount = rand($awardExpInfo['min_amount'],$awardExpInfo['max_amount']);
+        // }
 
         $experienceInfo = array(
             'id' 	     => $awardExpInfo['id'],
             'title'      => $awardExpInfo['title'],
-            'amount'     => $amount,
+            //'amount'     => $amount,
             'days'       => $awardExpInfo['days'],//10天后有效 +5天使用时间
+            'hours'      => $awardExpInfo['hours'],
+            'amount_type'=> $awardExpInfo['amount_type'],
+            'amount'     => $awardExpInfo['amount'],
+            'min_amount' => $awardExpInfo['min_amount'],
+            'max_amount' => $awardExpInfo['max_amount'],
             'limit_desc' => $awardExpInfo['limit_desc'],
             'amount_type'=> $awardExpInfo['amount_type'],
             'is_use'     => 1
