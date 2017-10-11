@@ -24,8 +24,9 @@ class MarketingIndex extends Model
     }
 
     //是否有已经 存在的 展示的 默认的
-    public function hasDefault(){
-        return $this->where(['is_del'=>0 , 'pos'=> 1 ,'status'=> 1])->get()->rowArr();
+    public function hasDefault($id){
+        // return $this->where(['is_del'=>0 , 'pos'=> 1 ,'status'=> 1])->get()->rowArr();
+        return $this->where("`is_del` = 0 AND `pos` = 1 AND `status` = 1 AND id != {$id}")->get()->rowArr();
 
     }
 

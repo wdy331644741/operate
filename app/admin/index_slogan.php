@@ -184,7 +184,7 @@ function upd()
 
         //判断  默认的
         if($pos == 1){
-            $hasDefault = $sloganModel->hasDefault();
+            $hasDefault = $sloganModel->hasDefault($id);
             if(!empty($hasDefault)){
                 ajaxReturn(['error' => 4000, 'message' => '已经存在 默认展示的"'.$hasDefault['title']]);
             }
