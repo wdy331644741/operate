@@ -85,3 +85,103 @@ function friendsShare()
     }
 
 }
+
+
+
+/**
+ * 手动发放
+ *
+ * @pageroute
+ **/
+function manual()
+{
+    $manualPushRecordsModel = new \Model\AwardExtend();
+    $unsendRecords = $manualPushRecordsModel->getUnsendRecords();
+    if (!empty($unsendRecords)) {
+        foreach ($unsendRecords as $record) {
+            if ($nums = dealRecordAndReturnSuccessNums($record)) {
+                $manualPushRecordsModel->updateSendStatus($record['id'], $nums);
+            }
+        }
+    }
+    echo $nums;
+}
+
+//处理奖品发放记录并返回成功数
+function dealRecordAndReturnSuccessNums($record)
+{
+    $successNums = 0;
+    $userIds = filterAndMapPhoneToUserIds($record['user']);
+
+    foreach ($userIds as $userId) {
+        try {
+            if ($record['award_type'] == 1) {
+                pushActivateExperienceRecord($userId, $record['award_id']);
+            }
+
+            if ($record['award_type'] == 2) {
+                pushToBeActivatedInterestCoupon($userId, $record['award_id']);
+            }
+        } catch (\Exception $e) {
+            continue;
+        }
+        $successNums++;
+    }
+
+    return $successNums;
+}
+
+//立即发放激活态体验金
+function pushActivateExperienceRecord($userId, $expId)
+{
+    $params = array('user_id' => $userId, 'id' => $expId);
+
+    // Common::localApiCall((object) $params, 'pushActivateExperienceRecord', 'InsideRpcImpl');
+    Common::jsonRpcApiCall((object)$params, 'pushActivateExperienceRecord', config('RPC_API.passport'));
+}
+
+
+//发放理财券
+function pushToBeActivatedInterestCoupon($userId, $couponId)
+{
+    $params = array('user_id' => $userId, 'id' => $couponId);
+
+    // Common::localApiCall((object) $params, 'pushToBeActivatedInterestCoupon', 'InsideRpcImpl');
+    Common::jsonRpcApiCall((object)$params, 'pushToBeActivatedInterestCoupon', config('RPC_API.passport'));
+}
+
+
+
+function filterAndMapPhoneToUserIds($user)
+{
+    $result = [];
+    if (is_string($user)) {
+        $user = explode(',', $user);
+    }
+
+    foreach ($user as $item) {
+        if ($userId = ifUserExistsAndReturnUserId($item)) {
+            $result[] = $userId;
+        }
+    }
+
+    //去重，同样的用户只发一次
+    return array_unique($result);
+}
+
+function ifUserExistsAndReturnUserId($userMark)
+{
+    $userModel = new \Model\AuthUser();
+    if (preg_match('/^1[0-9]{10}$/', $userMark)) {
+        $userInfo = $userModel->getUserInfoByName($userMark);
+        if (!empty($userInfo)) {
+            return $userInfo->id;
+        }
+    }
+
+    if ($userModel->getUserName($userMark)) {
+        return $userMark;
+    }
+
+    return false;
+}
