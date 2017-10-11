@@ -62,6 +62,8 @@ class SendCouponRpcImpl extends BaseRpcImpl
     }
     /**
      * 发加息劵
+     * 发加息劵-针对手动发放的
+     * @pageroute
      */
     private function coupon($userId,$nodeId,$type){
 

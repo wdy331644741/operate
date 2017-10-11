@@ -39,7 +39,7 @@ class RedeemRpcImpl extends BaseRpcImpl
         }
 
         $redeemData = $verifyRes['redeem_data'];
-        $status = $redeemModel->updateStatus($redeemData['id'], $this->userId);
+        $status = $redeemModel->updateStatus($redeemData['code'], $this->userId);
 
         if (empty($status)){
             return [

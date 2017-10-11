@@ -1,0 +1,119 @@
+{include file="header.html"}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <form class="form-horizontal" id="form01">
+        <div class="top-title">
+            <h2 class="sub-header">添加app_index</h2>
+            <div class="top-tools">
+                <button type="button" class="btn btn-primary" id="submit">保存</button>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">标题</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="标题" name="title" id="title" value="">
+            </div>
+        </div>
+        <!-- <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">图片</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="button" class="form-control" name="img" id="img" value="">
+                <input type="hidden" class="form-control" placeholder="图片" name="imgUrl" id="imgUrl" value="">
+                <img id="img_view" src="" width="120px" style="display:none"/>
+            </div>
+        </div> -->
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">链接地址</span></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" placeholder="链接地址" name="linkUrl" id="linkUrl" value="">
+            </div>
+        </div>
+        
+        <div id="type" class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">类型</span><i>*</i></label>
+            <div class="col-sm-7">
+                <!-- <input type="text" class="form-control name" placeholder="状态码（枚举）：默认default、公告notice、活动activity"  name="display_name" id="display_name" value=""> -->
+                <select id="display_name" name="display_name">
+                    <option id="default" value ="default" selected = "selected">默认</option>
+                    <option value ="notice" >公告</option>
+                    <option value="activity">活动</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">是否需要登录</span><i>*</i></label>
+            <label class="radio-inline">
+                <input type="radio" name="check_login" id="" value="1" > 是
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="check_login" id="" value="0" checked> 否
+            </label>
+        </div>
+        <div id="start" class="form-group" style="display: none;">
+            <label class="col-sm-2 control-label"><span class="name_span">开始时间</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" placeholder="开始时间" name="startTime" id="startTime" value="">
+            </div>
+        </div>
+        <div id="end" class="form-group" style="display: none;">
+            <label class="col-sm-2 control-label"><span class="name_span">结束时间</span><i>*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control name" placeholder="结束时间" name="endTime" id="endTime" value="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="name_span">状态</span><i>*</i></label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="status_no" value="0" > 禁用
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="status_yes" value="1" checked> 启用
+            </label>
+        </div>
+    </form>
+</div>
+
+<script>
+    $("#startTime").datetimepicker({
+        language:'zh-CN',
+    });
+    $("#endTime").datetimepicker({
+        language:'zh-CN'
+    });
+</script>
+
+<script>
+    $(function () {
+        //提交表单
+        $("#submit").click(function () {
+            $.ajax({
+                "url": "",
+                'type': 'POST',
+                'data': $('#form01').serialize(),
+                'dataType': 'json',
+                'success': function (data) {
+                    if (data.error != 0) {
+                        layer.alert(data.message);
+                    } else {
+                        layer.alert(data.message);
+                        window.location.href = '{U("admin.php",["c" => I("get.c/s","index"),"a" => "index"])}';
+                    }
+                }
+
+            });
+        });
+        //是 默认时，不需要开始和结束时间
+        $("#display_name").change(function (){
+            console.log($(this).val())
+            if($(this).val() != 'default'){
+                $("#start").show();
+                $("#end").show();
+            }else{
+                $("#start").hide();
+                $("#end").hide();
+            }
+        })
+    });
+</script>
+{include file="footer.html"}

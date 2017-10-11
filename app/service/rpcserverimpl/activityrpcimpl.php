@@ -33,6 +33,57 @@ class ActivityRpcImpl extends BaseRpcImpl
     }
 
     /**
+     * app_index  移动端手机展示
+     *
+     * @JsonRpcMethod
+     */
+    public function getIndexSlogan()
+    {
+        //获取当前有效slogan
+        // $storage = new Storage();
+        $indexModel = new \Model\MarketingIndex();
+        $activity_define = $indexModel->getMomentSlogen('activity');//获取定义的展示文案
+        $notice_define = $indexModel->getMomentSlogen('notice');//获取定义的展示文案
+        $default = $indexModel->getDefaultSlogen();//获取默认的展示文案
+
+        //优先展示定义的文案
+        //活动》公告》日常
+        if(!empty($activity_define)){
+            // if(count($activity_define)>1)
+            $resData = [
+                'title' => $activity_define['title'],
+                'link_url' => $activity_define['link_url'],
+                'display_name' => $activity_define['display_name'],
+                'check_login' => $activity_define['check_login'],
+            ];
+        }elseif(!empty($notice_define)){
+            $resData = [
+                'title' => $notice_define['title'],
+                'link_url' => $notice_define['link_url'],
+                'display_name' => $notice_define['display_name'],
+                'check_login' => $notice_define['check_login'],
+            ];
+        }else{
+            $resData = [
+                'title' => $default['title'],
+                'link_url' => $default['link_url'],
+                'display_name' => $default['display_name'],
+                'check_login' => $default['check_login'],
+            ];
+        }
+        // $resData = [
+        //     'title' => $default['title'],
+        //     'link_url' => $default['link_url'],
+        //     'display_name' => $default['display_name'],
+        // ];
+        return array(
+            'code'    => 0,
+            'message' => 'success',
+            'data'    => $resData
+        );
+    }
+
+    /**
      * 活动列表
      *
      * @JsonRpcMethod
