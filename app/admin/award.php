@@ -73,18 +73,22 @@ function add()
 function awardType()
 {
     $type = I('post.type');
+    $date = date("Y-m-d H:i:s");
     if(!$type)
         ajaxReturn(['error' => 4000, 'message' => '奖品类型不能为空']);
     //类型1为体验金 2为加息劵 3 提现次数
     if($type ==1) {
         $awardModel = new \Model\AwardExperience();
+        $where = "`is_del` = 0 AND `status` = 1 AND effective_end > '{$date}'";
     } elseif($type==2){
         $awardModel = new \Model\AwardInterestcoupon();
+        $where = "`is_del` = 0 AND `status` = 1 AND effective_start < '{$date}' AND effective_end > '{$date}'";
     } elseif ($type==3){
         $awardModel = new \Model\AwardWithdraw();
+        $where = "`is_del` = 0 AND `status` = 1";
     }
 
-    $list = $awardModel->where(['status'=>1])->get()->resultArr();
+    $list = $awardModel->where($where)->get()->resultArr();
 
     ajaxReturn(['error' => 0, 'message'=>$list]);
 }
