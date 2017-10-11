@@ -37,7 +37,7 @@ function add()
 
         //判断  默认的
         if($sloganModel->pos == 1){
-            $hasDefault = $sloganModel->hasDefault();
+            $hasDefault = $sloganModel->hasDefault('');
             if(!empty($hasDefault)){
                 ajaxReturn(['error' => 4000, 'message' => '已经存在 默认展示的"'.$hasDefault['title']]);
             }
