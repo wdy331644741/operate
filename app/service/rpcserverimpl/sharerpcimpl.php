@@ -33,6 +33,15 @@ class ShareRpcImpl extends BaseRpcImpl
      */
     public function getSignPackage($params) {
         $jsapiTicket = $this->getJsApiTicket();
+        if(!$jsapiTicket){
+            return array(
+                'error'=>100,
+                'msg'=>'获取api_ticket失败'
+            );
+        }
+        // 注意 URL 一定要动态获取，不能 hardcode.
+       // $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        //$url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $url = $params->url;
         $timestamp = time();
         $nonceStr = $this->createNonceStr();
@@ -68,7 +77,7 @@ class ShareRpcImpl extends BaseRpcImpl
         //$redis->hDel('WX_JSAPI_TICKET','jsapi_ticket','expire_time');
         //$redis->hDel('WX_ACCESS_TOKEN','access_token','expire_time');
         $data = $redis->hGetAll('WX_JSAPI_TICKET');
-        if (!isset($data['jsapi_ticket']) || $data['expire_time'] < time()) {
+        if (!isset($data['jsapi_ticket']) ||empty($data['jsapi_ticket'])|| $data['expire_time'] < time()) {
             $accessToken = $this->getAccessToken();
             // 如果是企业号用以下 URL 获取 ticket
            // $url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=$accessToken";
@@ -88,7 +97,7 @@ class ShareRpcImpl extends BaseRpcImpl
         // access_token 应该全局存储与更新，放入redis中
         $redis = getReidsInstance();
         $data = $redis->hGetAll('WX_ACCESS_TOKEN');
-        if (!isset($data['access_token']) || $data['expire_time'] < time()) {
+        if (!isset($data['access_token']) || empty($data['access_token']) || $data['expire_time'] < time()) {
             // 如果是企业号用以下URL获取access_token
             //$url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=$this->appId&corpsecret=$this->appSecret";
             $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appSecret";
