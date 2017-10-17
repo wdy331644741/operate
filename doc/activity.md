@@ -7,10 +7,7 @@
 - [活动列表](#活动列表)
 - [系统公告](#系统公告)
 - [获取首页文案展示](#获取首页文案展示)
-<<<<<<< HEAD
 - [兑换码-兑换接口](#兑换码-兑换接口)
-=======
->>>>>>> index
 
 
 活动相关
@@ -212,16 +209,10 @@
                 "code": 0,
                 "message": "success",
                 "data": {
-<<<<<<< HEAD
-                    "title": "测试默认展示文案test",
-                    "link_url": "https://baidu.com",
-                    "display_name": "default" //default为默认状态、actively活动、notice公告
-=======
                     "title": "测试默认展示文案",
                     "link_url": "https://baidu.com",
                     "display_name": "default",//default为默认状态、actively活动、notice公告
                     "check_login": "0" //0不需要登录，1需要登录
->>>>>>> index
                 }
             },
             "id": 1
@@ -242,7 +233,6 @@
 :--|:--|:--
 缺少必要参数 | 1000 | 缺少接口所需参数
 
-<<<<<<< HEAD
 
 
 ## 兑换码-兑换接口
@@ -293,5 +283,3 @@
 1100 | 兑换码已兑换
 
 
-=======
->>>>>>> index
