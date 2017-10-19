@@ -17,6 +17,10 @@ class AwardRedpacket extends Model
         return $this->where(" limit_node = {$nodeId} AND is_del = 0")->get()->rowArr();
     }
 
+    public function getAwardInfoArr($nodeId){
+        return $this->where(" limit_node = {$nodeId} AND is_del = 0")->get()->resultArr();
+    }
+
     public function switchStausById($id)
     {
         $where = ['id' => $id];
@@ -27,5 +31,9 @@ class AwardRedpacket extends Model
             $status = self::STATUS_TRUE;
 
         return $this->where($where)->upd(['status' => $status]);
+    }
+
+    public function getRedpacketInfoByName($name){
+        return $this->where("redpacket_name = '{$name}' AND status = 1 AND is_del = 0")->get()->rowArr();
     }
 }

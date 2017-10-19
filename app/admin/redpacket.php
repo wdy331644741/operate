@@ -36,7 +36,7 @@ function add()
         $data['status'] = $status;
         $data['repeat'] = $repeat;
         $data['day_repeat'] = $day_repeat;
-        $data['max_counts'] = I('post.max_counts', '', 'trim');
+        $data['max_counts'] = $repeat == 0?1:I('post.max_counts', '', 'trim');
         $data['create_time'] = date('Y-m-d H:i:s');
         try {
             $expModel = new \Model\AwardRedpacket();
@@ -152,7 +152,7 @@ function upd()
         $data['status'] = $status;
         $data['repeat'] = $repeat;
         $data['day_repeat'] = $day_repeat;
-        $data['max_counts'] = $max_counts;
+        $data['max_counts'] = $repeat == 0?1:I('post.max_counts', '', 'trim');
         $data['update_time'] = date('Y-m-d H:i:s');
         try {
             $expModel = new \Model\AwardRedpacket();

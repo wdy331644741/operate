@@ -107,7 +107,7 @@
                 <input type="radio" name="day_repeat" id="repeat_yes" value="1"> 是
             </label>
         </div>
-        <div id="max_c" class="form-group">
+        <div id="max_c" class="form-group" style="display: {if $item.repeat == 0}none{/if};">
             <label class="col-sm-2 control-label"><span class="name_span">最大领取次数</span><i>*</i></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control name" placeholder="" name="max_counts" id="max_counts" value="{$item.max_counts}">

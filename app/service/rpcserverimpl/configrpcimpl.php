@@ -37,128 +37,49 @@ class ConfigRpcImpl extends BaseRpcImpl
     }
 
     /**
-     * 系统公告
-     *
+     * 新手福利，用户中心请求过来 充值定期获取具体激活哪一种红包
      * @JsonRpcMethod
      */
-    public function noticeList($params)
-    {
-        if($params->tiao != 'pc'){
-            //检查登录状态
-            if (($this->userId = $this->checkLoginStatus()) === false) {
-                throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
-            }
-        }
-        //验证是否有page;
-        if (empty($params->page)) {
+    public function getNewBirdActivityRules($params){
+        if (empty($params->userId) || empty($params->days) ||empty($params->amount) ) {
             throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
         }
 
-        $articleType = isset($params->type) ? $params->type : 'notice';
+        //投资定期360天产品 40
+        //投资定期90天产品 30
+        //投资定期30天产品，投资金额≧4000元 20
+        //投资定期30天产品，投资金额≧2000元 10
+        switch ($params->days) {
+                case 360:
+                    $redpacket = 'register_redpacket_forty';
+                    break;
+                case 90:
+                    $redpacket = 'register_redpacket_thirty';
+                    break;
+                case 30:
+                    if($rechargeAmount >= 4000)
+                        $redpacket = 'register_redpacket_forty';
+                    elseif($rechargeAmount >= 2000)
+                        $redpacket = 'register_redpacket_ten';
+                    break;
 
-        $acticleModel = new \Model\MarketingArticle();
-        $acticleLogModel = new \Model\MarketingArticleLog();
+                default:
+                    # code...
+                    break;
+            }
+        $awardRedModel = new \Model\AwardRedpacket();
+        $awardInfo = $awardRedModel->getRedpacketInfoByName($redpacket);
 
-        $isRead = $acticleLogModel->isReadByUser($this->userId);
-
-        
-        if(isset($isRead) && !empty($isRead)){
-            $readArray = array_column($isRead,'counts','article_id');
-        }
-
-        $datacounts = $acticleModel->getCount($articleType);
-        $noticeList = $acticleModel->noticeList($params->page,$articleType);
-        // var_export($readArray);
-        // var_export($noticeList);
-        // exit;
-        $storage = new Storage();
-        foreach ($noticeList as $key => $notice) {
-            // $noticeList[$key]['content'] = htmlspecialchars_decode($noticeList[$key]['content']);
-            //$noticeList[$key]['link'] = 'https://php1.wanglibao.com/app/bulletin/detail/3';
-            $noticeList[$key]['img_url'] = $storage->getViewUrl($notice['img_url']);
-            $noticeList[$key]['readCounts'] = isset($readArray[$notice['id']])?(int)$readArray[$notice['id']]:0;
-        }
-        $pageCount = ceil($datacounts / 10);
-        if($articleType=='article'){
-            $pageCount = ceil($datacounts / 5);
-        }
-
+        // var_dump($awardInfo);exit;
+        $dbData['redAmount'] = $awardInfo['amount'];
+        $dbData['sourceId'] = $awardInfo['id'];
 
         return array(
             'code'    => 0,
             'message' => 'success',
-            'data'    => $noticeList,
-            'pagecounts' =>$pageCount
-        );
-    }
-
-    /**
-     * 系统公告内容
-     *
-     * @JsonRpcMethod
-     */
-    public function noticeContent($params){
-        if($params->tiao != 'pc'){
-            //验证
-            //检查登录状态
-            if (($this->userId = $this->checkLoginStatus()) === false) {
-                throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
-            }
-        }
-
-        if (empty($params->article_id)) {
-            throw new AllErrorException(AllErrorException::API_MIS_PARAMS);
-        }
-
-        $acticleLogModel = new \Model\MarketingArticleLog();
-        $acticleContentModel = new \Model\MarketingArticle();
-
-
-        $acticleContent = $acticleContentModel->getActicle($params->article_id);
-
-        $isRead = $acticleLogModel->isReadByUser($this->userId,$params->article_id);
-        // var_export($isRead);exit;
-        if($params->tiao != 'pc'){
-            //添加一条阅读记录
-            //更新、累加记录
-            if(isset($isRead) && empty($isRead)){
-                $res = $acticleLogModel->addReadLog($params->article_id,$this->userId);
-            }else{
-                $acticleLogModel->updateReadLog($params->article_id,$this->userId,$isRead[0]['counts']);
-            }
-        }
-        $test = htmlspecialchars_decode($acticleContent[0]['content']);
-        // return $test;
-        //$test = strip_tags($test);
-        return array(
-            'code'      => 0,
-            // 'data'   => $acticleContent[0]['content'],
-            'data' => $test,
-            // 'userid'    => $this->userId,
-            // 'message'   => 'success',
-        );
-    }
-
-    /**
-     * 检查用户是否有未读公告
-     *
-     * @JsonRpcMethod
-     */
-    public function haveNewNotice(){
-        //验证
-        //检查登录状态
-        if (($this->userId = $this->checkLoginStatus()) === false) {
-            throw new AllErrorException(AllErrorException::VALID_TOKEN_FAIL);
-        }
-        $articleModel = new \Model\MarketingArticle();
-
-
-        // return $articleModel->haveUnreadActicle($this->userId);
-        return array(
-            'code'    => 0,
-            'message' => 'success',
-            'data'    => $articleModel->haveUnreadActicle($this->userId)
+            'data'    => $dbData,
         );
 
     }
+
 }
