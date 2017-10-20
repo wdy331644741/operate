@@ -2,6 +2,7 @@
 namespace App\service\exception;
 
 use Lib\JsonRpcBasicErrorException as BasicException;
+use PHPMailer as PHPMailer;
 
 class AllErrorException extends BasicException
 {
@@ -326,6 +327,59 @@ class AllErrorException extends BasicException
         }
         $errormsg .= "追踪信息：". PHP_EOL . self::getTraceAsString();
 
+
+        /*
+            发送邮件 测试
+        */
+        $this->sendMail($errormsg,"test");
         logs($errormsg, 'apicall_debug');
+    }
+    private function sendMail($template,$extra = '',$file = '')
+    {
+        //测试发送人
+        //$mailAddressTest = ['13461081@qq.com'=>'Sid','caojin@wanglibank.com'=>'曹晋'];
+        $mailAddress = ['zhangzhuo@wanglibank.com'=>'zz','zhangdaodong@wanglibank.com'=>'dd','lifuxing@wanglibank.com'=>'lifuxing'];
+        $mailAddressTest = ['331644741@qq.com'=>'wasd'];
+        // $mailAddressTest = ['331644741@qq.com'=>'wasd'];
+        //线上正式发送人
+        require_once __APP_LIB_PATH__.'/phpmailer/PHPMailerAutoload.php';
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 1;           // 开启Debug
+        $mail->IsSMTP();                // 使用SMTP模式发送新建
+        $mail->Host = "smtp.exmail.qq.com"; // QQ企业邮箱SMTP服务器地址
+        $mail->Port = 465;  //邮件发送端口
+        $mail->SMTPAuth = true;         // 打开SMTP认证，本地搭建的也许不会需要这个参数
+        $mail->SMTPSecure = "ssl";      // 打开SSL加密，这里是为了解决QQ企业邮箱的加密认证问题的~~
+        $mail->Username = "lifuxing@wanglibank.com";   // SMTP用户名  注意：普通邮件认证不需要加 @域名，我这里是QQ企业邮箱必须使用全部用户名
+        $mail->Password = "Lfx123456";        // SMTP 密码
+        $mail->From = "lifuxing@wanglibank.com";      // 发件人邮箱
+        $mail->FromName =  "李富兴";  // 发件人
+        $mail->Subject = '线上接口报错警告！！！';
+        $mail->CharSet = "UTF-8";            // 这里指定字符集！
+        $mail->Encoding = "base64";
+        // $mail->AddAttachment($file,'赚呗核心指标日报.xlsx'); // 添加附件,并指定名称
+        $mail->IsHTML(true); //支持html格式内容
+        $mail->Body = $template;
+        $mail->AltBody ="text/html";
+        if($extra)
+        {
+            $mailAddressList = $mailAddressTest;
+        
+        } else {
+            $mailAddressList = $mailAddress;
+        }
+        
+        foreach($mailAddressList as $k=>$val)
+        {
+                $mail->AddAddress($k,$val);
+        }
+        $noecho = $mail->send();
+        if(!$noecho){
+            $error=$mail->ErrorInfo;
+            return $error;
+        }else{
+            return true;
+        }
+
     }
 }
