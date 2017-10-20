@@ -44,6 +44,10 @@ class AccountRpcImpl extends BaseRpcImpl
         //签到
         $message = Common::jsonRpcApiCall((object)$params, 'userSignIn', config('RPC_API.passport'));
 
+        if(isset($message['result']) && !$message['result']){
+            //今日已签到
+            return false;
+        }
         if (isset($message['result']) && count($message['result']) != 0) {
             return $message['result'];
         } else {

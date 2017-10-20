@@ -16,6 +16,8 @@ function register(){
 	$activityInfo = getConfig($activity_name);
 	if($activityInfo['start_time'] > $time || $activityInfo['end_time'] < $time)
 		exit("未在活动时间范围内");
+	//待激活的体验金  effective时间段
+	$effective_start = date('Y-m-d H:i:s',strtotime($activityInfo['end_time']) - 1 );
 
 	$activiteExp = 'newbird_activite_exprience';//节点名称 	新手活动注册待激活体验金
 	$activiteAvailable = 'newbird_available';//新手活动注册立即获得
@@ -27,8 +29,8 @@ function register(){
     $activiteRedId = $nodeModel->getNode($activiteRed);
     try {
 
-        experience($userId, $activiteAvailableId,true);//发放5w x 3小时 和66 x 365天
-        experience($userId, $activiteExpId,false);//绑卡 首投
+        experience($userId, $activiteAvailableId,true,array() );//发放5w x 3小时 和66 x 365天
+        experience($userId, $activiteExpId,false,['effective_start'=> $effective_start ,'effective_end'=> $activityInfo['end_time']]);//绑卡 首投
         redpactek($userId, $activiteRedId);
         //coupon($userId, $nodeId);//注册加息券
         
@@ -279,27 +281,45 @@ function activiteRedPacket($nodeName,$userId,$redpacket){
 }
 
 //发放体验金
-function experience($userId,$nodeId,$activate=true){
+function experience($userId,$nodeId,$activate=true,$effective = array() ){
 	$awardExperience = new \Model\AwardExperience();//体验金配置
 	$operateExperience = new \Model\MarketingExperience();
 
 	$awardExpInfo = $awardExperience->_filterUsefulExperience($nodeId);
+	// var_dump($awardExpInfo);exit;
 	if(empty($awardExpInfo))
 		throw new \Exception("节点下未配置体验金", 74232);
 	foreach ($awardExpInfo as $key => $value) {
 		$isExistExperience = $operateExperience->isExist($userId, $value['id']);
 	    if(empty($isExistExperience)){
 		   	//***************发放体验金************************
-			$experienceInfo = array(
+		   	if(!empty($effective)){
+		   		$params_rate_time = empty($value['days'])?"hours":"days";
+		   		$experienceInfo = array(
+		   			'uuid'            => create_guid(),
+	                'source_id'       => $value['id'],
+	                'source_name'     => $value['title'],
+	                'amount'          => $value['amount'],
+	                'effective_start' => $effective['effective_start'],
+	                'effective_end'   => $effective['effective_end'],
+	                'continuous_'.$params_rate_time => $value[$params_rate_time],
+	                'limit_desc'      => $value['limit_desc'],
+	                'create_time'     => date('Y-m-d H:i:s'),
+	                'is_use'          => 1
+		   			);
+		   	}else{
+		   		$experienceInfo = array(
 				'id' 	     => $value['id'],
 				'title'      => $value['title'],
 				'amount'     => $value['amount'],
 				'days'       => $value['days'],//计息时长
-				'hours'       => $value['hours'],
+				'hours'      => $value['hours'],
 				'limit_desc' => $value['limit_desc'],
 				'amount_type'=> $value['amount_type'],
 	            'is_use'     => 1
 				);
+		   	}
+			
 			$addExperienceRes = $operateExperience -> addExperienceForUser($userId,$experienceInfo);
 			$expId = $addExperienceRes['id'];
 			unset($addExperienceRes['id']);
@@ -315,11 +335,13 @@ function experience($userId,$nodeId,$activate=true){
 						'uuid' => $addExperienceRes['uuid'],
 						'status' => 1
 						);
+					// var_dump($activePost);
 					Common::jsonRpcApiCall((object)$activePost, 'activateExperienceGoldToUser', config('RPC_API.passport'));
 					$operateExperience->updateStatusOfUse($expId);
 				}
 			}
 			//****************************************************		
+			sleep(2);
 	    }
 	}
     
