@@ -41,7 +41,10 @@ class MarketingExperience extends Model {
         }else{
             $data = $this->getExperienceDataByTypeLater($expInfo,$laterdays);
         }
-        
+        //如果设置了uuid，是由控制层直接处理好insert数据
+        if(isset($expInfo['uuid']) && !empty($expInfo['uuid'])){
+            $data = $expInfo;
+        }
 
         $data['user_id'] = $userId;
         $res = $this->add($data);
