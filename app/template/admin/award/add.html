@@ -91,7 +91,8 @@
                             //tableValue += '<td><a href="javascript:void(0);"  class="btn btn-primary btn-xs status">选择</a></td></tr>';
                         });
 
-                    }else
+                    }
+                    else if(awardType ==1)
                     {
                         tablename += "<th >id</th><th >体验金类型</th><th >体验金金额</th><th >加息天数</th><th >限制说明</th><th >状态</th><th >操作</th>";
 
@@ -105,6 +106,24 @@
 
                             tableValue += "<td>"+value.amount+"</td>";
                             tableValue += "<td>"+value.days+"</td>";
+                            tableValue += "<td>"+value.limit_desc+"</td>";
+                            if(value.status ==1){
+                                tableValue += "<td>启用</td><td><a href='javascript:void(0);'  class='btn btn-primary btn-xs status'>选择</a></td></tr>";
+                            }else{
+                                tableValue += "<td>未启用</td><td>&nbsp;</td></tr>";
+                            }
+                            //tableValue += '<td><a href="javascript:void(0);"  class="btn btn-primary btn-xs status">选择</a></td></tr>';
+                        });
+                    }
+                    else if(awardType == 3)
+                    {
+                        tablename += "<th >id</th><th >提现券名称</th><th >有效结束时间</th><th >限制说明</th><th >状态</th><th >操作</th>";
+
+                        $.each(data.message,function(key,value){
+                            tableValue += "<tr id = ><td>"+value.id+"</td>";
+
+                            tableValue += "<td>"+value.title+"</td>";
+                            tableValue += "<td>"+value.effective_end+"</td>";
                             tableValue += "<td>"+value.limit_desc+"</td>";
                             if(value.status ==1){
                                 tableValue += "<td>启用</td><td><a href='javascript:void(0);'  class='btn btn-primary btn-xs status'>选择</a></td></tr>";

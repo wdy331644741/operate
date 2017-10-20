@@ -7,7 +7,8 @@ class MarketingRedpactek extends Model
 	const IS_USED = 1;
     const PRE_IS_ACTIVATE = 0;
     const IS_ACTIVATE = 0;
-    const REDPACKET_TYPE_DEFAULT = 1;
+    const REDPACKET_TYPE_REGISTER = 2;//注册
+    const REDPACKET_TYPE_INVITE = 1;//好友邀请
 
     public function __construct($pkVal = '')
     {
@@ -15,7 +16,7 @@ class MarketingRedpactek extends Model
         if ($pkVal)
             $this->initArData($pkVal);
     }
-    //领取红包id  他邀请的人id  节点id
+    //accept_userid领取红包id  userId他邀请的人id  节点id
     public function giveUserRedPacket($accept_userid,$userId,$nodeId){
     	$redPacketInfo = new AwardRedpacket();
     	$awardRedPacket = $redPacketInfo->getAwardInfo($nodeId);
@@ -23,7 +24,7 @@ class MarketingRedpactek extends Model
 		$day_repeat = $awardRedPacket['day_repeat'];//当天是否重复发放
 
 		if($day_repeat == 0){ //当天不允许重复发放
-			$havedRedpacketToday = $this->getRedpacketByUseridDate($accept_userid,date("Y-m-d"));
+			$havedRedpacketToday = $this->getRedpacketByUseridDate($accept_userid,$awardRedPacket['id'],date("Y-m-d"));
 			if(count($havedRedpacketToday) >= 1){
                 throw new AllErrorException(AllErrorException::REDPACKET_EXCEED_DAY_MAX_LIMIT);//每天  不允许重复发放
 			}
@@ -43,6 +44,44 @@ class MarketingRedpactek extends Model
     	return $inseertRes;
     }
 
+    /*
+     * accept_userid 领取红包id
+     * userId 他邀请的人id
+     * nodeId 节点id
+     * type 红包类型
+     * isUsed 激活
+    */
+    public function _giveUserRedPacket($accept_userid,$userId,$nodeId,$type,$isUsed = 1){
+        $redPacketInfo = new AwardRedpacket();
+        $awardRedPacketArr = $redPacketInfo->getAwardInfoArr($nodeId);
+
+        foreach ($awardRedPacketArr as $key => $awardRedPacket) {
+            $repeat = $awardRedPacket['repeat'];//是否可以重复发放该红包(同一个userid)
+            $day_repeat = $awardRedPacket['day_repeat'];//当天是否重复发放
+
+            if($day_repeat == 0){ //当天不允许重复发放
+                $havedRedpacketToday = $this->getRedpacketByUseridDate($accept_userid,$awardRedPacket['id'],date("Y-m-d"),$isUsed);
+                if(count($havedRedpacketToday) >= 1){
+                    throw new AllErrorException(AllErrorException::REDPACKET_EXCEED_DAY_MAX_LIMIT);//每天  不允许重复发放
+                }
+            }
+            $max_counts = $awardRedPacket['max_counts'];//最大领取次数
+
+            //查找该用户名下已有的红包数量
+            $havedRedpacket = $this->getRedpacketByUserid($accept_userid);
+
+            if(count($havedRedpacket) >= $max_counts)
+                throw new AllErrorException(AllErrorException::REDPACKET_EXCEED_MAX_LIMIT);
+
+            $inseertRes[$key] = $this->insertRedPacketData($accept_userid,$userId,$awardRedPacket,$type);//add data
+            if(!$inseertRes[$key])//添加失败
+                throw new AllErrorException(AllErrorException::REDPACKET_INSERT_FALUSE);
+            $inseertRes[$key]['award'] = $awardRedPacket;//附带上红包配置
+        }
+        
+        return $inseertRes;
+    }
+
     public function changeRedPacketIsused($uuid,$is_used_status){
     	$changeArr = [];
     	if($is_used_status == 1){
@@ -58,13 +97,18 @@ class MarketingRedpactek extends Model
     	return $this->where(['accept_userid'=>$userId , 'is_used'=>$is_used])->get()->resultArr();
     }
 
-    private function getRedpacketByUseridDate($userId,$date,$is_used = 1){
+    //查找 待激活红包信息
+    public function isExecuteBeactivated($userId,$source_id,$isUsed){
+        return $this->where(['accept_userid'=>$userId , 'source_id'=>$source_id , 'is_used'=> $isUsed])->get()->rowArr();
+    }
+
+    private function getRedpacketByUseridDate($userId,$source_id,$date,$is_used = 1){
     	$timeStart = $date." 00:00:00";
     	$timeEnd = $date." 23:59:59";
-    	return $this->where("accept_userid = {$userId} AND create_time >= '{$timeStart}' AND create_time <= '{$timeEnd}' AND is_used = {$is_used}")->get()->resultArr();
+    	return $this->where("accept_userid = {$userId} AND source_id = {$source_id} AND create_time >= '{$timeStart}' AND create_time <= '{$timeEnd}' ")->get()->resultArr();
     }
     //给用户添加记录-内部方法
-    private function insertRedPacketData($accept_userid,$userId, $awardInfo)
+    private function insertRedPacketData($accept_userid,$userId, $awardInfo,$redType = 1)
     {   
         if(empty($awardInfo))
             throw new AllErrorException(AllErrorException::REDPACKET_AWAED_FALSE);
@@ -76,7 +120,7 @@ class MarketingRedpactek extends Model
             'amount'          => $awardInfo['amount'],
             'usetime_start'   => $awardInfo['usetime_start'], 
             'usetime_end'     => $awardInfo['usetime_end'], 
-            'type'            => self::REDPACKET_TYPE_DEFAULT,
+            'type'            => $redType,
             'limit_desc'      => $awardInfo['limit_desc'],
             'effective_start' => '',//用户点击使用的时间 
             'is_used'         => self::PRE_IS_USED,

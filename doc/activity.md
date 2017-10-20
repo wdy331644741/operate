@@ -209,6 +209,9 @@
                 "code": 0,
                 "message": "success",
                 "data": {
+                    "title": "测试默认展示文案test",
+                    "link_url": "https://baidu.com",
+                    "display_name": "default" //default为默认状态、actively活动、notice公告
                     "title": "测试默认展示文案",
                     "link_url": "https://baidu.com",
                     "display_name": "default",//default为默认状态、actively活动、notice公告

@@ -26,6 +26,29 @@ class GloabConfig extends Model
     }
 
     public function redisToDb($key,$value){
-        return $this->where(['key' => $key])->upd(['value' => $value]);
+        //exit($value);
+        $hasKey = $this->isSetKey($key);
+        // var_dump($hasKey);exit;
+        if($hasKey){
+            //upd
+            return $this->where(['id' => $hasKey])->upd(['value' => $value]);
+        }else{
+            //add
+            $this->key = $key;
+            $this->value = stripslashes($value);
+
+            $res = $this->save();
+            return $res;
+        }
+        // return $this->where(['key' => $key])->upd(['value' => $value]);
+    }
+
+    private function isSetKey($key){
+        $res = $this->where(['key' => $key])->get()->rowArr();
+        if(!empty($res)){
+            return $res['id'];
+        }else{
+            return false;
+        }
     }
 }

@@ -55,8 +55,12 @@ class MarketingExperience extends Model {
     }
 
     //更新使用状态
-    public function updateStatusOfUse($id)
+    public function updateStatusOfUse($id,$effective = array())
     {
+        if(!empty($effective)){
+            return $this->where("`id` = {$id} and `is_use` = 1 and `is_activate` = 0 ")
+            ->upd(array('is_activate' => 1 ,'update_time' => date('Y-m-d H:i:s'),'effective_start' => $effective['effective_start'] ,'effective_end' => $effective['effective_end'] ));
+        }
         return $this->where("`id` = {$id} and `is_use` = 1 and `is_activate` = 0 ")
             ->upd(array('is_activate' => 1 ,'update_time' => date('Y-m-d H:i:s')));
         // return $this->where("`id` = {$id} and `is_use` = 0 and `is_activate` = 0 ")

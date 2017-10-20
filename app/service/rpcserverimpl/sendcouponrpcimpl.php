@@ -61,6 +61,7 @@ class SendCouponRpcImpl extends BaseRpcImpl
         }
     }
     /**
+     * 发加息劵
      * 发加息劵-针对手动发放的
      * @pageroute
      */
@@ -86,18 +87,33 @@ class SendCouponRpcImpl extends BaseRpcImpl
         if (empty($addCouponRes)) return ['is_ok' => false, 'msg' => '添加记录失败'];
         //通知用户中心发放加息劵
         unset($addCouponRes['id']);
+        $proPost = [
+            'interestCoupon' => $addCouponRes
+        ];
+        $preRes = Common::jsonRpcApiCall((object)$proPost, 'preSendInterestCouponToUser', config('RPC_API.passport'));
 
-        $preRes = self::commCall(['interestCoupon' => $addCouponRes], 'preSendInterestCouponToUser');
+        if ($preRes) {
+            $activePost = [
+                'uuid' => $addCouponRes['uuid'],
+                'status' => 1,
+                // 'immediately' => FALSE//立即使用 用户中心修改接口逻辑 不传immediately  不做操作直接返回ture
+                // 'effective_start' =>  计息的开始时间
+                // 'effective_end'   =>  计息的结束时间
+            ];
+            $rpcRes = Common::jsonRpcApiCall((object)$activePost, 'activateInterestCouponToUser', config('RPC_API.passport'));
+        }
 
-        if (is_array($preRes)) return $preRes;
+        // $preRes = self::commCall(['interestCoupon' => $addCouponRes], 'preSendInterestCouponToUser');
 
-        $actRes = self::commCall([
-            'uuid' => $addCouponRes['uuid'],
-            'status' => 1,
-            'immediately' => FALSE//立即使用
-        ],'activateInterestCouponToUser');
+        // if (is_array($preRes)) return $preRes;
 
-        if (is_array($actRes)) return $actRes;
+        // $actRes = self::commCall([
+        //     'uuid' => $addCouponRes['uuid'],
+        //     'status' => 1,
+        //     'immediately' => FALSE//立即使用
+        // ],'activateInterestCouponToUser');
+
+        // if (is_array($actRes)) return $actRes;
 
         $operateCoupon->updateActivate($addCouponRes['uuid']);
 
