@@ -127,12 +127,18 @@ function bandcard(){
         if(empty($activeExpData))
         	throw new \Exception("该用户不存在待激活绑卡体验金", 75521);
 
+        $effective_start = $time;
+        $effective_end = strtotime($time) + $sourceId['days']*86400 + $sourceId['hours']*3600;
+        $effective_end = date('Y-m-d H:i:s',$effective_end);
+
         $activePost = array(
 						'uuid' => $activeExpData['uuid'],
-						'status' => 1
+						'status' => 1,
+						'effective_start' => $effective_start,
+						'effective_end' => $effective_end,
 						);
 		Common::jsonRpcApiCall((object)$activePost, 'activateExperienceGoldToUser', config('RPC_API.passport'));
-		$ExperienceModel->updateStatusOfUse($expId);
+		$ExperienceModel->updateStatusOfUse($activeExpData['id'],['effective_start' => $effective_start,'effective_end' => $effective_end]);
 		exit($userId."激活".$activeExpData['source_name']."成功");
 
     } catch (\Exception $e) {
