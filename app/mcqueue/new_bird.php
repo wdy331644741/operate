@@ -138,7 +138,7 @@ function bandcard(){
 						'effective_end' => $effective_end,
 						);
 		Common::jsonRpcApiCall((object)$activePost, 'activateExperienceGoldToUser', config('RPC_API.passport'));
-		$ExperienceModel->updateStatusOfUse($expId);
+		$ExperienceModel->updateStatusOfUse($activeExpData['id'],['effective_start' => $effective_start,'effective_end' => $effective_end]);
 		exit($userId."激活".$activeExpData['source_name']."成功");
 
     } catch (\Exception $e) {
